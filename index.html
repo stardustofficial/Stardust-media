@@ -19,9 +19,6 @@
         body {
             -webkit-tap-highlight-color: transparent;
         }
-        .tab-content {
-            transition: opacity 0.2s ease-in-out;
-        }
     </style>
 </head>
 <body class="bg-white font-sans antialiased text-gray-900 pb-24">
@@ -30,7 +27,7 @@
         <div onclick="switchTab('home')" class="text-red-600 font-black text-2xl tracking-tighter cursor-pointer select-none">STARDUST</div>
         <div class="flex-1 relative">
             <svg class="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-            <input type="text" id="search-bar" onkeyup="filterPins()" placeholder="Search inspired ideas..." class="w-full bg-[#E9E9E9] hover:bg-[#E1E1E1] pl-10 pr-4 py-2.5 rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-black/10 transition">
+            <input type="text" id="search-bar" onkeyup="filterPins()" placeholder="Search inspired ideas..." class="w-full bg-[#E9E9E9] hover:bg-[#E1E1E1] pl-10 pr-4 py-2.5 rounded-full text-sm font-medium focus:outline-none transition">
         </div>
     </nav>
 
@@ -39,7 +36,7 @@
 
     <div class="p-4 max-w-7xl mx-auto">
 
-        <section id="tab-home" class="tab-content row">
+        <section id="tab-home" class="tab-content">
             <div id="pin-container" class="pin-grid">
                 </div>
         </section>
@@ -55,7 +52,7 @@
                 </div>
             </div>
             <div class="mt-4 flex gap-2">
-                <input type="text" id="chat-input" placeholder="Write a message..." class="flex-1 bg-white border border-gray-200 px-4 py-3 rounded-full text-sm focus:outline-none focus:border-gray-400">
+                <input type="text" id="chat-input" placeholder="Write a message..." class="flex-1 bg-white border border-gray-200 px-4 py-3 rounded-full text-sm focus:outline-none">
                 <button onclick="sendMessage()" class="bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-full text-sm font-bold transition">Send</button>
             </div>
         </section>
@@ -63,7 +60,7 @@
         <section id="tab-profile" class="tab-content hidden text-center mt-6 max-w-md mx-auto">
             <div class="relative w-28 h-28 mx-auto group cursor-pointer" onclick="document.getElementById('profile-pic-input').click()">
                 <img id="profile-img" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150" class="w-28 h-28 rounded-full object-cover border border-gray-100 shadow-inner">
-                <div class="absolute bottom-0 right-0 bg-white border border-gray-200 p-1.5 rounded-full shadow-md hover:scale-105 transition">
+                <div class="absolute bottom-0 right-0 bg-white border border-gray-200 p-1.5 rounded-full shadow-md">
                     <svg class="w-3.5 h-3.5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                 </div>
             </div>
@@ -71,12 +68,12 @@
             <div class="mt-4 px-4 flex flex-col items-center">
                 <div onclick="editProfileField('name')" class="flex items-center gap-2 cursor-pointer group hover:bg-gray-50 px-3 py-1 rounded-full transition border border-transparent hover:border-gray-200">
                     <h1 id="profile-name" class="text-2xl font-bold tracking-tight text-gray-900">STARDUST User</h1>
-                    <svg class="w-4 h-4 text-gray-400 opacity-60 group-hover:opacity-100 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                 </div>
                 
                 <div onclick="editProfileField('username')" class="flex items-center gap-1.5 mt-1 cursor-pointer group hover:bg-gray-50 px-2.5 py-0.5 rounded-full transition border border-transparent hover:border-gray-200">
                     <p id="profile-username" class="text-gray-500 text-sm font-medium">@stardust_creator</p>
-                    <svg class="w-3.5 h-3.5 text-gray-400 opacity-0 group-hover:opacity-100 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                    <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                 </div>
             </div>
             
@@ -92,7 +89,7 @@
     <div id="photo-modal" class="fixed inset-0 bg-black/90 z-50 hidden flex flex-col justify-between p-4 backdrop-blur-sm">
         <div class="flex justify-between items-center w-full max-w-md mx-auto pt-2">
             <h3 id="modal-title" class="text-white text-sm font-bold tracking-wide truncate max-w-[70%]">Stardust Image</h3>
-            <button onclick="closePhotoModal()" class="bg-white/10 text-white rounded-full p-2 hover:bg-white/20 transition focus:outline-none">
+            <button onclick="closePhotoModal()" class="bg-white/10 text-white rounded-full p-2 hover:bg-white/20 transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
         </div>
@@ -103,7 +100,7 @@
 
         <div class="w-full max-w-sm mx-auto pb-6">
             <button id="modal-download-btn" onclick="downloadImage()" class="w-full bg-white text-black text-sm font-black py-4 px-6 rounded-full flex items-center justify-center gap-2 shadow-lg hover:bg-gray-100 active:scale-95 transition-all duration-150">
-                <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                 Download to Gallery
             </button>
         </div>
@@ -113,12 +110,15 @@
         <button onclick="switchTab('home')" id="nav-home" class="flex items-center justify-center p-2.5 rounded-full bg-black text-white transition-all duration-200">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg>
         </button>
+        
         <button onclick="document.getElementById('file-input').click()" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
         </button>
-        <button onclick="switchTab('messages')" id="nav-messages" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200 relative">
+
+        <button onclick="switchTab('messages')" id="nav-messages" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
         </button>
+
         <button onclick="switchTab('profile')" id="nav-profile" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
         </button>
@@ -150,7 +150,6 @@
             renderProfileGrid();
         }
 
-        // 📥 CLOUD SYNC CORE: Auto-displays photos inside Home feed with Popup trigger
         database.ref('pins').on('value', (snapshot) => {
             const container = document.getElementById('pin-container');
             container.innerHTML = '';
@@ -159,10 +158,8 @@
             if(data) {
                 Object.keys(data).reverse().forEach(key => {
                     const pin = data[key];
-                    // Clean text rendering instead of links
                     const displayTitle = pin.title && !pin.title.startsWith('data:') ? pin.title : "Stardust Inspiration";
                     
-                    // Element with custom attributes to avoid string escaping issues
                     const pinElement = document.createElement('div');
                     pinElement.className = "pin-item bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:opacity-95 transition cursor-zoom-in";
                     pinElement.onclick = function() { openPhotoModal(pin.img, displayTitle); };
@@ -198,7 +195,6 @@
             }
         }
 
-        // 🖼️ LIGHTBOX MODAL HANDLERS (Photo Open & Save Functions)
         function openPhotoModal(imgSrc, titleText) {
             currentModalImgData = imgSrc;
             currentModalTitle = titleText;
@@ -209,20 +205,18 @@
             const modal = document.getElementById('photo-modal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            document.body.style.overflow = 'hidden'; // Stop scrolling behind
+            document.body.style.overflow = 'hidden';
         }
 
         function closePhotoModal() {
             const modal = document.getElementById('photo-modal');
             modal.classList.add('hidden');
             modal.classList.remove('flex');
-            document.body.style.overflow = ''; // Restore scrolling
+            document.body.style.overflow = '';
         }
 
         function downloadImage() {
             if(!currentModalImgData) return;
-            
-            // Premium direct canvas/link extraction for gallery storage
             const downloadLink = document.createElement("a");
             downloadLink.href = currentModalImgData;
             downloadLink.download = currentModalTitle.replace(/\s+/g, '_') + ".jpg";
@@ -231,12 +225,10 @@
             document.body.removeChild(downloadLink);
         }
 
-        // 📤 CLOUD MULTI-USER UPLOAD CONTROLLER
         function handleUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
             
-            // Gande extended extension strings ko block karke solid title nikalna
             let cleanTitle = file.name.split('.')[0] || "Stardust Capture";
             if(cleanTitle.length > 25) cleanTitle = cleanTitle.substring(0, 22) + "...";
 
@@ -250,7 +242,7 @@
                 database.ref('pins').push(pinData).then(() => {
                     switchTab('home');
                 }).catch((err) => {
-                    alert("Upload Engine Interrupted: " + err.message);
+                    alert("Upload Failed: " + err.message);
                 });
 
                 localUploadedPins.unshift(pinData);
@@ -317,19 +309,19 @@
             chatBox.scrollTop = chatBox.scrollHeight;
 
             setTimeout(() => {
-                chatBox.innerHTML += `<div class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">STARDUST Media features are optimized. Pop-up and download systems running smoothly.</div>`;
+                chatBox.innerHTML += `<div class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">STARDUST Hub operational. System functions fully restored.</div>`;
                 chatBox.scrollTop = chatBox.scrollHeight;
             }, 1000);
         }
 
         function filterPins() {
             const query = document.getElementById('search-bar').value.toLowerCase();
-            document.querySelectorAll('.pin-item').forEach(item => }
-            item.style.display = item.innerText.toLowerCase().includes(query) ? "block" : "none";
+            document.querySelectorAll('.pin-item').forEach(item => {
+                item.style.display = item.innerText.toLowerCase().includes(query) ? "block" : "none";
             });
         }
 
         initProfile();
     </script>
 </body>
-</html>    
+                </html>
