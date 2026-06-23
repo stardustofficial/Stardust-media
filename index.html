@@ -19,18 +19,17 @@
         }
         body {
             -webkit-tap-highlight-color: transparent;
-            transition: background-color 0.2s ease, color 0.2s ease;
         }
     </style>
 </head>
 <body id="app-body" class="bg-white text-gray-950 font-sans antialiased pb-24">
 
-    <div id="auth-wall" class="fixed inset-0 bg-white dark:bg-gray-950 z-[200] flex flex-col items-center justify-center p-6 text-center">
+    <div id="auth-wall" class="fixed inset-0 bg-white z-[200] flex flex-col items-center justify-center p-6 text-center">
         <div class="max-w-sm w-full space-y-6">
             <h1 class="text-red-600 font-black text-5xl tracking-tighter select-none mb-2 animate-pulse">STARDUST</h1>
-            <p id="lang-tagline" class="text-gray-500 dark:text-gray-400 text-sm font-medium leading-relaxed px-4">Discover, track and share premium visual ideas with your cloud sync profile instantly.</p>
+            <p id="lang-tagline" class="text-gray-500 text-sm font-medium leading-relaxed px-4">Discover, track and share premium visual ideas with your cloud sync profile instantly.</p>
             <div class="pt-4">
-                <button onclick="handleGoogleLogin()" class="w-full bg-black dark:bg-white dark:text-black hover:opacity-90 text-white font-bold text-sm py-4 px-6 rounded-full flex items-center justify-center gap-3 transition shadow-lg active:scale-95">
+                <button onclick="handleGoogleLogin()" class="w-full bg-black hover:opacity-90 text-white font-bold text-sm py-4 px-6 rounded-full flex items-center justify-center gap-3 transition shadow-lg active:scale-95">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.24 10.285V13.4h6.887c-.275 1.565-1.88 4.604-6.887 4.604-4.33 0-7.866-3.577-7.866-8s3.536-8 7.866-8c2.46 0 4.105 1.025 5.047 1.926l2.427-2.334C17.955 2.192 15.34 1 12.24 1 6.033 1 12.24s5.033 11.24 11.24 11.24c6.478 0 10.793-4.537 10.793-10.986 0-.745-.079-1.32-.174-1.887H12.24z"/></svg>
                     <span id="lang-login-btn">Continue with Google</span>
                 </button>
@@ -38,18 +37,16 @@
         </div>
     </div>
 
-    <nav id="app-nav" class="sticky top-0 bg-white/95 dark:bg-gray-950/95 backdrop-blur-md px-5 py-4 flex items-center justify-between gap-4 z-40 border-b border-gray-100 dark:border-gray-900 shadow-sm">
+    <nav id="app-nav" class="sticky top-0 bg-white/95 backdrop-blur-md px-5 py-4 flex items-center justify-between gap-4 z-40 border-b border-gray-100 shadow-sm">
         <div onclick="switchTab('home')" class="text-red-600 font-black text-2xl tracking-tighter cursor-pointer select-none">STARDUST</div>
         <div class="flex-1 relative">
             <svg class="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-            <input type="text" id="search-bar" onkeyup="filterPins()" placeholder="Search inspired ideas..." class="w-full bg-[#E9E9E9] dark:bg-gray-900 dark:text-gray-100 dark:border dark:border-gray-800 pl-10 pr-4 py-2.5 rounded-full text-sm font-medium focus:outline-none transition">
+            <input type="text" id="search-bar" onkeyup="filterPins()" placeholder="Search inspired ideas..." class="w-full bg-[#E9E9E9] pl-10 pr-4 py-2.5 rounded-full text-sm font-medium focus:outline-none transition">
         </div>
-        <button onclick="openSettingsModal()" class="p-2 bg-gray-100 dark:bg-gray-900 dark:text-white rounded-full hover:scale-105 active:scale-95 transition">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-        </button>
     </nav>
 
     <input type="file" id="file-input" accept="image/*" class="hidden" onchange="handleUpload(event)">
+    <input type="file" id="pfp-file-input" accept="image/*" class="hidden" onchange="handlePfpUpload(event)">
 
     <div class="p-4 max-w-7xl mx-auto">
 
@@ -57,55 +54,117 @@
             <div id="pin-container" class="pin-grid"></div>
         </section>
 
-        <section id="tab-messages" class="tab-content hidden max-w-md mx-auto bg-gray-50 dark:bg-gray-900 border border-gray-200/60 dark:border-gray-800 rounded-3xl p-5 shadow-sm">
-            <h2 id="lang-control-room" class="text-lg font-bold mb-4 text-gray-800 dark:text-white flex items-center gap-2">Stardust Control Room</h2>
-            <div class="space-y-3 h-80 overflow-y-auto p-3 bg-white dark:bg-gray-950 rounded-2xl border border-gray-100 dark:border-gray-800 mb-4" id="chat-box">
-                <div id="lang-welcome-msg" class="bg-[#E9E9E9] dark:bg-gray-900 text-gray-800 dark:text-gray-100 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">
+        <section id="tab-messages" class="tab-content hidden max-w-md mx-auto bg-gray-50 border border-gray-200/60 rounded-3xl p-5 shadow-sm">
+            <h2 id="lang-control-room" class="text-lg font-bold mb-4 text-gray-800 flex items-center gap-2">Stardust Control Room</h2>
+            <div class="space-y-3 h-80 overflow-y-auto p-3 bg-white rounded-2xl border border-gray-100 mb-4" id="chat-box">
+                <div id="lang-welcome-msg" class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">
                     Welcome to STARDUST Core System! Use this portal for official app announcements, guidelines, and tool rules.
                 </div>
             </div>
             
-            <div class="flex gap-2 items-center bg-white dark:bg-gray-950 p-1 rounded-full border border-gray-200 dark:border-gray-800">
-                <input type="text" id="chat-input" placeholder="Ask Stardust Bot..." class="flex-1 pl-4 pr-2 py-2 text-sm font-medium focus:outline-none bg-transparent dark:text-white">
+            <div class="flex gap-2 items-center bg-white p-1 rounded-full border border-gray-200">
+                <input type="text" id="chat-input" placeholder="Ask Stardust Bot..." class="flex-1 pl-4 pr-2 py-2 text-sm font-medium focus:outline-none bg-transparent">
                 <button onclick="triggerBotReply()" id="lang-send-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-2.5 px-4 rounded-full transition active:scale-95">Send</button>
             </div>
         </section>
 
-        <section id="tab-profile" class="tab-content hidden text-center mt-6 max-w-md mx-auto">
+        <section id="tab-profile" class="tab-content hidden text-center mt-2 max-w-md mx-auto relative">
+            <div class="w-full flex justify-end px-2 mb-2">
+                <button onclick="openSettingsModal()" class="p-2 text-gray-700 hover:bg-gray-100 rounded-full transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+
             <div class="relative w-28 h-28 mx-auto flex items-center justify-center">
-                <img id="profile-img" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150" class="w-28 h-28 rounded-full object-cover border border-gray-100 dark:border-gray-800 shadow-md">
+                <img id="profile-img" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150" class="w-28 h-28 rounded-full object-cover border border-gray-100 shadow-md">
             </div>
             
             <div class="mt-4 px-4 flex flex-col items-center">
-                <h1 id="profile-name" class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">STARDUST User</h1>
-                <p id="profile-username" class="text-gray-500 dark:text-gray-400 text-sm font-medium mt-1">@stardust_creator</p>
-                <p id="profile-bio" class="text-gray-400 dark:text-gray-500 text-xs mt-2 px-6 font-medium italic">No bio written yet.</p>
-                
-                <div class="mt-4">
-                    <button onclick="openProfileEditorModal()" id="lang-edit-profile-btn" class="bg-gray-100 dark:bg-gray-900 dark:text-white text-xs font-bold py-2 px-6 rounded-full transition border dark:border-gray-800">Edit Profile</button>
-                </div>
+                <h1 id="profile-name" class="text-2xl font-bold tracking-tight text-gray-900">STARDUST User</h1>
+                <p id="profile-username" class="text-gray-500 text-sm font-medium mt-1">@stardust_creator</p>
+                <p id="profile-bio" class="text-gray-400 text-xs mt-2 px-6 font-medium italic">No bio written yet.</p>
             </div>
             
-            <div class="flex justify-center gap-4 mt-8 border-b border-gray-100 dark:border-gray-900 pb-3 text-sm font-bold">
-                <span id="lang-my-uploads" class="text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white pb-3 tracking-wide">My Upload Records</span>
+            <div class="flex justify-center gap-4 mt-8 border-b border-gray-100 pb-3 text-sm font-bold">
+                <span id="lang-my-uploads" class="text-gray-900 border-b-2 border-gray-900 pb-3 tracking-wide">My Upload Records</span>
             </div>
             <div id="profile-pin-container" class="pin-grid mt-5"></div>
         </section>
     </div>
 
-    <div id="settings-modal" class="fixed inset-0 bg-black/60 z-[160] hidden items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white dark:bg-gray-900 rounded-3xl w-full max-w-sm p-6 space-y-5 shadow-2xl border dark:border-gray-800">
-            <h3 id="lang-settings-title" class="text-lg font-black text-gray-900 dark:text-white tracking-tight">App Settings Menu</h3>
+    <div id="settings-modal" class="fixed inset-0 bg-black/50 z-[160] hidden items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl w-full max-w-sm p-6 relative shadow-2xl border overflow-hidden max-h-[85vh] flex flex-col">
             
-            <div class="space-y-4">
-                <div class="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3">
-                    <span id="lang-theme-lbl" class="text-sm font-bold text-gray-700 dark:text-gray-300">Display Theme</span>
-                    <button onclick="toggleAppTheme()" id="theme-btn-text" class="bg-black text-white dark:bg-white dark:text-black font-bold text-xs py-2 px-4 rounded-full shadow transition">Dark Mode</button>
+            <div id="settings-main-screen" class="space-y-4 flex-1">
+                <h3 id="lang-settings-title" class="text-lg font-black text-gray-900 tracking-tight border-b pb-2 mb-4">Settings</h3>
+                
+                <div class="space-y-1">
+                    <button onclick="showSettingsPage('page-account')" class="w-full flex items-center justify-between py-3 px-4 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition">
+                        <span id="lang-opt-account">1. Edit Name & Bio</span>
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+
+                    <button onclick="showSettingsPage('page-pfp')" class="w-full flex items-center justify-between py-3 px-4 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition">
+                        <span id="lang-opt-pfp">2. Change Profile Picture</span>
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+
+                    <button onclick="showSettingsPage('page-lang')" class="w-full flex items-center justify-between py-3 px-4 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition">
+                        <span id="lang-opt-lang">3. System Language</span>
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+
+                    <button onclick="showSettingsPage('page-support')" class="w-full flex items-center justify-between py-3 px-4 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition">
+                        <span id="lang-opt-support">4. Customer Support</span>
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
                 </div>
 
-                <div class="space-y-1.5 border-b border-gray-100 dark:border-gray-800 pb-3">
-                    <label id="lang-language-lbl" class="block text-xs font-bold text-gray-500">SYSTEM LANGUAGE</label>
-                    <select id="lang-select" onchange="changeSystemLanguage(this.value)" class="w-full bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-white border border-gray-200 dark:border-gray-800 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none">
+                <div class="flex gap-2 pt-6 border-t mt-4">
+                    <button onclick="closeSettingsModal()" id="lang-close-settings" class="w-1/2 bg-gray-100 text-gray-800 text-xs font-bold py-3 rounded-full transition">Close</button>
+                    <button onclick="handleLogOut()" id="lang-signout-btn" class="w-1/2 bg-red-50 text-red-600 text-xs font-bold py-3 rounded-full hover:bg-red-100 transition">Sign Out</button>
+                </div>
+            </div>
+
+            <div id="page-account" class="settings-sub-page hidden space-y-4 flex-1">
+                <div class="flex items-center gap-2 border-b pb-2 mb-2">
+                    <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                    <h4 id="lang-sub-acc-title" class="font-black text-sm text-gray-900 uppercase tracking-wider">Account Settings</h4>
+                </div>
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-400 mb-1">DISPLAY NAME</label>
+                        <input type="text" id="edit-name-input" class="w-full bg-gray-50 text-gray-800 border rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-400 mb-1">CUSTOM BIO</label>
+                        <textarea id="edit-bio-input" rows="3" class="w-full bg-gray-50 text-gray-800 border rounded-xl px-3 py-2 text-sm font-medium focus:outline-none resize-none"></textarea>
+                    </div>
+                    <button onclick="saveProfileCustomizations()" id="lang-save-profile-btn" class="w-full bg-black text-white text-xs font-bold py-3 rounded-xl transition">Save Details</button>
+                </div>
+            </div>
+
+            <div id="page-pfp" class="settings-sub-page hidden space-y-4 flex-1">
+                <div class="flex items-center gap-2 border-b pb-2 mb-2">
+                    <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                    <h4 id="lang-sub-pfp-title" class="font-black text-sm text-gray-900 uppercase tracking-wider">Profile Picture</h4>
+                </div>
+                <div class="text-center py-4 space-y-4">
+                    <p class="text-xs text-gray-500 font-medium px-2">No need for online links. Tap below to choose any photo directly from your native device gallery.</p>
+                    <button onclick="document.getElementById('pfp-file-input').click()" id="lang-choose-gal-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-3 px-6 rounded-full transition shadow-md inline-block">
+                        Open Local Gallery
+                    </button>
+                </div>
+            </div>
+
+            <div id="page-lang" class="settings-sub-page hidden space-y-4 flex-1">
+                <div class="flex items-center gap-2 border-b pb-2 mb-2">
+                    <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                    <h4 id="lang-sub-lang-title" class="font-black text-sm text-gray-900 uppercase tracking-wider">Language Engine</h4>
+                </div>
+                <div class="space-y-2">
+                    <label id="lang-language-lbl" class="block text-[10px] font-bold text-gray-400">SELECT APP LANGUAGE</label>
+                    <select id="lang-select" onchange="changeSystemLanguage(this.value)" class="w-full bg-gray-50 text-gray-800 border rounded-xl px-3 py-2.5 text-sm font-semibold focus:outline-none">
                         <option value="en">English (Default)</option>
                         <option value="hi">Hindi (हिन्दी)</option>
                         <option value="es">Spanish (Español)</option>
@@ -113,42 +172,20 @@
                         <option value="ar">Arabic (العربية)</option>
                     </select>
                 </div>
+            </div>
 
+            <div id="page-support" class="settings-sub-page hidden space-y-4 flex-1">
+                <div class="flex items-center gap-2 border-b pb-2 mb-2">
+                    <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                    <h4 id="lang-sub-sup-title" class="font-black text-sm text-gray-900 uppercase tracking-wider">Support Portal</h4>
+                </div>
                 <div class="space-y-2">
-                    <label id="lang-support-lbl" class="block text-xs font-bold text-gray-500">CUSTOMER SUPPORT PANEL</label>
-                    <textarea id="support-text-input" rows="2" placeholder="Describe your technical error or suggestion..." class="w-full bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-white border border-gray-200 dark:border-gray-800 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none resize-none"></textarea>
+                    <label id="lang-support-lbl" class="block text-[10px] font-bold text-gray-400">DESCRIBE ERROR OR FEEDBACK</label>
+                    <textarea id="support-text-input" rows="4" placeholder="Write your context here..." class="w-full bg-gray-50 text-gray-800 border rounded-xl px-3 py-2 text-xs font-medium focus:outline-none resize-none"></textarea>
                     <button onclick="submitSupportTicket()" id="lang-submit-ticket-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-2.5 rounded-xl transition">Submit Ticket</button>
                 </div>
             </div>
 
-            <div class="flex gap-2 pt-2">
-                <button onclick="closeSettingsModal()" id="lang-close-settings" class="w-1/2 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-white text-xs font-bold py-3 rounded-full transition">Close</button>
-                <button onclick="handleLogOut()" id="lang-signout-btn" class="w-1/2 bg-red-50 text-red-600 text-xs font-bold py-3 rounded-full hover:bg-red-100 transition">Sign Out</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="edit-profile-modal" class="fixed inset-0 bg-black/60 z-[150] hidden items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white dark:bg-gray-900 rounded-3xl w-full max-w-sm p-6 space-y-4 shadow-2xl border dark:border-gray-800">
-            <h3 id="lang-edit-profile-title" class="text-lg font-black text-gray-900 dark:text-white tracking-tight">Customize Stardust Identity</h3>
-            <div class="space-y-3">
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 mb-1">DISPLAY NAME</label>
-                    <input type="text" id="edit-name-input" class="w-full bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-white border border-gray-200 dark:border-gray-800 rounded-xl px-3 py-2.5 text-sm font-semibold focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 mb-1">AVATAR IMAGE URL (PFP)</label>
-                    <input type="text" id="edit-pfp-input" class="w-full bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-white border border-gray-200 dark:border-gray-800 rounded-xl px-3 py-2.5 text-sm font-medium focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 mb-1">CUSTOM BIO</label>
-                    <textarea id="edit-bio-input" rows="2" class="w-full bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-white border border-gray-200 dark:border-gray-800 rounded-xl px-3 py-2 text-sm font-medium focus:outline-none resize-none"></textarea>
-                </div>
-            </div>
-            <div class="flex gap-2 pt-2">
-                <button onclick="closeProfileEditorModal()" id="lang-cancel-profile-btn" class="w-1/2 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-white text-xs font-bold py-3 rounded-full transition">Cancel</button>
-                <button onclick="saveProfileCustomizations()" id="lang-save-profile-btn" class="w-1/2 bg-black dark:bg-white dark:text-black text-white text-xs font-bold py-3 rounded-full transition">Save Changes</button>
-            </div>
         </div>
     </div>
 
@@ -171,17 +208,17 @@
         </div>
     </div>
 
-    <div class="fixed bottom-4 left-1/2 -translate-x-1/2 max-w-sm w-[90%] bg-white/95 dark:bg-gray-950/95 backdrop-blur-md py-3 px-6 flex justify-between items-center z-30 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100/80 dark:border-gray-900">
-        <button onclick="switchTab('home')" id="nav-home" class="flex items-center justify-center p-2.5 rounded-full bg-black text-white dark:bg-white dark:text-black transition-all duration-200">
+    <div class="fixed bottom-4 left-1/2 -translate-x-1/2 max-w-sm w-[90%] bg-white/95 backdrop-blur-md py-3 px-6 flex justify-between items-center z-30 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100/80">
+        <button onclick="switchTab('home')" id="nav-home" class="flex items-center justify-center p-2.5 rounded-full bg-black text-white transition-all duration-200">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg>
         </button>
-        <button onclick="document.getElementById('file-input').click()" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 transition-all duration-200">
+        <button onclick="document.getElementById('file-input').click()" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
         </button>
-        <button onclick="switchTab('messages')" id="nav-messages" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 transition-all duration-200">
+        <button onclick="switchTab('messages')" id="nav-messages" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
         </button>
-        <button onclick="switchTab('profile')" id="nav-profile" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 transition-all duration-200">
+        <button onclick="switchTab('profile')" id="nav-profile" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
         </button>
     </div>
@@ -217,18 +254,14 @@
                 controlRoom: "Stardust Control Room",
                 welcomeMsg: "Welcome to STARDUST Core System! Use this portal for official app announcements, guidelines, and tool rules.",
                 sendBtn: "Send",
-                editProfileBtn: "Edit Profile",
                 myUploads: "My Upload Records",
-                settingsTitle: "App Settings Menu",
-                themeLbl: "Display Theme",
-                langLbl: "SYSTEM LANGUAGE",
-                supportLbl: "CUSTOMER SUPPORT PANEL",
-                submitTicket: "Submit Ticket",
+                settingsTitle: "Settings",
+                optAccount: "1. Edit Name & Bio",
+                optPfp: "2. Change Profile Picture",
+                optLang: "3. System Language",
+                optSupport: "4. Customer Support",
                 closeSettings: "Close",
                 signOut: "Sign Out",
-                editProfileTitle: "Customize Stardust Identity",
-                cancelBtn: "Cancel",
-                saveBtn: "Save Changes",
                 noBio: "No bio written yet.",
                 supportSuccess: "Ticket submitted successfully to core dashboard!"
             },
@@ -239,18 +272,14 @@
                 controlRoom: "स्टारडस्ट कंट्रोल रूम",
                 welcomeMsg: "स्टारडस्ट कोर सिस्टम में आपका स्वागत है! आधिकारिक घोषणाओं और नियमों के लिए इस पोर्टल का उपयोग करें।",
                 sendBtn: "भेजें",
-                editProfileBtn: "प्रोफ़ाइल बदलें",
                 myUploads: "मेरे अपलोड रिकॉर्ड्स",
-                settingsTitle: "ऐप सेटिंग्स मेनू",
-                themeLbl: "डिस्प्ले थीम",
-                langLbl: "सिस्टम की भाषा",
-                supportLbl: "कस्टमर सपोर्ट पैनल",
-                submitTicket: "शिकायत दर्ज करें",
+                settingsTitle: "सेटिंग्स",
+                optAccount: "1. नाम और बायो बदलें",
+                optPfp: "2. प्रोफाइल फोटो अपलोड करें",
+                optLang: "3. सिस्टम की भाषा",
+                optSupport: "4. कस्टमर सपोर्ट डेस्क",
                 closeSettings: "बंद करें",
                 signOut: "लॉग आउट",
-                editProfileTitle: "स्टारडस्ट पहचान कस्टमाइज़ करें",
-                cancelBtn: "रद्द करें",
-                saveBtn: "बदलाव सुरक्षित करें",
                 noBio: "अभी तक कोई बायो नहीं लिखा गया है।",
                 supportSuccess: "आपकी शिकायत कोर डैशबोर्ड पर सफलतापूर्वक सबमिट हो गई है!"
             },
@@ -261,18 +290,14 @@
                 controlRoom: "Sala de Control de Stardust",
                 welcomeMsg: "¡Bienvenido al sistema central de STARDUST! Utilice este portal para anuncios oficiales y normas.",
                 sendBtn: "Enviar",
-                editProfileBtn: "Editar perfil",
                 myUploads: "Mis registros de carga",
-                settingsTitle: "Menú de configuración",
-                themeLbl: "Tema de pantalla",
-                langLbl: "IDIOMA DEL SISTEMA",
-                supportLbl: "PANEL DE ATENCIÓN AL CLIENTE",
-                submitTicket: "Enviar ticket",
+                settingsTitle: "Configuración",
+                optAccount: "1. Editar nombre y biografía",
+                optPfp: "2. Cambiar foto de perfil",
+                optLang: "3. Idioma del sistema",
+                optSupport: "4. Atención al cliente",
                 closeSettings: "Cerrar",
                 signOut: "Cerrar sesión",
-                editProfileTitle: "Personalizar la identidad de Stardust",
-                cancelBtn: "Cancelar",
-                saveBtn: "Guardar cambios",
                 noBio: "Ninguna biografía escrita todavía.",
                 supportSuccess: "¡Ticket enviado con éxito al panel central!"
             },
@@ -283,18 +308,14 @@
                 controlRoom: "Salle de contrôle Stardust",
                 welcomeMsg: "Bienvenue dans le système STARDUST ! Utilisez ce portail pour les annonces officielles et les règles.",
                 sendBtn: "Envoyer",
-                editProfileBtn: "Modifier le profil",
                 myUploads: "Mes téléchargements",
-                settingsTitle: "Menu des paramètres",
-                themeLbl: "Thème d'affichage",
-                langLbl: "LANGUE DU SYSTÈME",
-                supportLbl: "PANNEAU DE SUPPORT CLIENT",
-                submitTicket: "Soumettre le ticket",
+                settingsTitle: "Paramètres",
+                optAccount: "1. Modifier le nom et la biographie",
+                optPfp: "2. Changer la photo de profil",
+                optLang: "3. Langue du système",
+                optSupport: "4. Support client",
                 closeSettings: "Fermer",
                 signOut: "Déconnexion",
-                editProfileTitle: "Personnaliser l'identité Stardust",
-                cancelBtn: "Annuler",
-                saveBtn: "Enregistrer",
                 noBio: "Aucune biographie écrite pour le moment.",
                 supportSuccess: "Ticket soumis avec succès au tableau de bord !"
             },
@@ -305,18 +326,14 @@
                 controlRoom: "غرفة التحكم ستاردست",
                 welcomeMsg: "مرحبًا بك في نظام ستاردست الأساسي! استخدم هذه البوابة للإعلانات الرسمية والقواعد.",
                 sendBtn: "إرسال",
-                editProfileBtn: "تعديل الملف الشخصي",
                 myUploads: "سجلات التحميل الخاصة بي",
-                settingsTitle: "قائمة الإعدادات",
-                themeLbl: "مظهر العرض",
-                langLbl: "لغة النظام",
-                supportLbl: "لوحة دعم العملاء",
-                submitTicket: "إرسال التذكرة",
+                settingsTitle: "الإعدادات",
+                optAccount: "1. تعديل الاسم والسيرة الذاتية",
+                optPfp: "2. تغيير الصورة الشخصية",
+                optLang: "3. لغة النظام",
+                optSupport: "4. دعم العملاء",
                 closeSettings: "إغلاق",
                 signOut: "تسجيل الخروج",
-                editProfileTitle: "تخصيص هوية ستاردست",
-                cancelBtn: "إلغاء",
-                saveBtn: "حفظ التغييرات",
                 noBio: "لم يتم كتابة سيرة ذاتية بعد.",
                 supportSuccess: "تم تقديم التذكرة بنجاح إلى اللوحة الأساسية!"
             }
@@ -364,6 +381,62 @@
             auth.signOut().then(() => { location.reload(); });
         }
 
+        // Instagram Navigation Engine Inside Settings Modal
+        function showSettingsPage(pageId) {
+            document.getElementById('settings-main-screen').classList.add('hidden');
+            document.querySelectorAll('.settings-sub-page').forEach(page => page.classList.add('hidden'));
+            document.getElementById(pageId).classList.remove('hidden');
+            
+            if(pageId === 'page-account') {
+                document.getElementById('edit-name-input').value = customProfileCache.name;
+                document.getElementById('edit-bio-input').value = customProfileCache.bio === "No bio written yet." ? "" : customProfileCache.bio;
+            }
+        }
+
+        function backToSettingsMain() {
+            document.querySelectorAll('.settings-sub-page').forEach(page => page.classList.add('hidden'));
+            document.getElementById('settings-main-screen').classList.remove('hidden');
+        }
+
+        function openSettingsModal() { 
+            backToSettingsMain();
+            document.getElementById('settings-modal').style.display = 'flex'; 
+        }
+        
+        function closeSettingsModal() { 
+            document.getElementById('settings-modal').style.display = 'none'; 
+        }
+
+        function saveProfileCustomizations() {
+            if(!currentUserData) return;
+            const inputName = document.getElementById('edit-name-input').value.trim();
+            const inputBio = document.getElementById('edit-bio-input').value.trim();
+
+            if(!inputName) return;
+
+            database.ref('users/' + currentUserData.uid).update({
+                name: inputName,
+                bio: inputBio || "No bio written yet."
+            }).then(() => { backToSettingsMain(); });
+        }
+
+        // Direct Native Gallery Image Processing For Profile Picture
+        function handlePfpUpload(event) {
+            const file = event.target.files[0];
+            if (!file || !currentUserData) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                database.ref('users/' + currentUserData.uid).update({
+                    pfp: e.target.result
+                }).then(() => {
+                    alert("Profile Picture successfully sync'd from gallery!");
+                    backToSettingsMain();
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+
         function changeSystemLanguage(langKey) {
             activeLanguage = langKey;
             const dict = langPack[langKey];
@@ -374,37 +447,19 @@
             document.getElementById('lang-control-room').innerText = dict.controlRoom;
             document.getElementById('lang-welcome-msg').innerText = dict.welcomeMsg;
             document.getElementById('lang-send-btn').innerText = dict.sendBtn;
-            document.getElementById('lang-edit-profile-btn').innerText = dict.editProfileBtn;
             document.getElementById('lang-my-uploads').innerText = dict.myUploads;
+            
             document.getElementById('lang-settings-title').innerText = dict.settingsTitle;
-            document.getElementById('lang-theme-lbl').innerText = dict.themeLbl;
-            document.getElementById('lang-language-lbl').innerText = dict.langLbl;
-            document.getElementById('lang-support-lbl').innerText = dict.supportLbl;
-            document.getElementById('lang-submit-ticket-btn').innerText = dict.submitTicket;
+            document.getElementById('lang-opt-account').innerText = dict.optAccount;
+            document.getElementById('lang-opt-pfp').innerText = dict.optPfp;
+            document.getElementById('lang-opt-lang').innerText = dict.optLang;
+            document.getElementById('lang-opt-support').innerText = dict.optSupport;
+            
             document.getElementById('lang-close-settings').innerText = dict.closeSettings;
             document.getElementById('lang-signout-btn').innerText = dict.signOut;
-            document.getElementById('lang-edit-profile-title').innerText = dict.editProfileTitle;
-            document.getElementById('lang-cancel-profile-btn').innerText = dict.cancelBtn;
-            document.getElementById('lang-save-profile-btn').innerText = dict.saveBtn;
             
             if(customProfileCache.bio === "No bio written yet." || customProfileCache.bio === "") {
                 document.getElementById('profile-bio').innerText = dict.noBio;
-            }
-        }
-
-        // 🌗 TRUE FULL-BODY THEME TOGGLE FUNCTION
-        function toggleAppTheme() {
-            const body = document.getElementById('app-body');
-            const themeBtn = document.getElementById('theme-btn-text');
-            
-            body.classList.toggle('dark');
-            
-            if(body.classList.contains('dark')) {
-                themeBtn.innerText = "Light Mode";
-                themeBtn.className = "bg-white text-black font-bold text-xs py-2 px-4 rounded-full shadow transition";
-            } else {
-                themeBtn.innerText = "Dark Mode";
-                themeBtn.className = "bg-black text-white font-bold text-xs py-2 px-4 rounded-full shadow transition";
             }
         }
 
@@ -429,32 +484,6 @@
             }).catch(err => { alert("Error: " + err.message); });
         }
 
-        function openSettingsModal() { document.getElementById('settings-modal').style.display = 'flex'; }
-        function closeSettingsModal() { document.getElementById('settings-modal').style.display = 'none'; }
-        
-        function openProfileEditorModal() {
-            document.getElementById('edit-name-input').value = customProfileCache.name;
-            document.getElementById('edit-pfp-input').value = customProfileCache.pfp;
-            document.getElementById('edit-bio-input').value = customProfileCache.bio === "No bio written yet." ? "" : customProfileCache.bio;
-            document.getElementById('edit-profile-modal').style.display = 'flex';
-        }
-        function closeProfileEditorModal() { document.getElementById('edit-profile-modal').style.display = 'none'; }
-
-        function saveProfileCustomizations() {
-            if(!currentUserData) return;
-            const inputName = document.getElementById('edit-name-input').value.trim();
-            const inputPfp = document.getElementById('edit-pfp-input').value.trim();
-            const inputBio = document.getElementById('edit-bio-input').value.trim();
-
-            if(!inputName) return;
-
-            database.ref('users/' + currentUserData.uid).set({
-                name: inputName,
-                pfp: inputPfp || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150",
-                bio: inputBio || "No bio written yet."
-            }).then(() => { closeProfileEditorModal(); });
-        }
-
         function listenToCloudDataStream() {
             database.ref('pins').on('value', (snapshot) => {
                 const globalContainer = document.getElementById('pin-container');
@@ -468,9 +497,9 @@
                         const pin = data[key];
                         const displayTitle = pin.title ? pin.title : "Stardust Idea";
                         const pinElement = document.createElement('div');
-                        pinElement.className = "pin-item bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden shadow-sm hover:opacity-95 transition cursor-zoom-in";
+                        pinElement.className = "pin-item bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:opacity-95 transition cursor-zoom-in";
                         pinElement.onclick = function() { openPhotoModal(pin.img, displayTitle, pin.desc || "", pin.uploaderName || "Anonymous"); };
-                        pinElement.innerHTML = `<img src="${pin.img}" class="w-full h-auto object-cover"><div class="p-2.5 text-xs font-semibold text-gray-800 dark:text-gray-200 truncate">${displayTitle}</div>`;
+                        pinElement.innerHTML = `<img src="${pin.img}" class="w-full h-auto object-cover"><div class="p-2.5 text-xs font-semibold text-gray-800 truncate">${displayTitle}</div>`;
                         
                         globalContainer.appendChild(pinElement);
                         if(currentUserData && pin.uploaderUid === currentUserData.uid) {
@@ -525,7 +554,7 @@
             document.getElementById(`tab-${tabName}`).classList.remove('hidden');
             ['home', 'messages', 'profile'].forEach(t => {
                 const btn = document.getElementById(`nav-${t}`);
-                if(btn) btn.className = (t === tabName) ? "flex items-center justify-center p-2.5 rounded-full bg-black text-white dark:bg-white dark:text-black transition-all" : "flex items-center justify-center p-2.5 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 transition-all";
+                if(btn) btn.className = (t === tabName) ? "flex items-center justify-center p-2.5 rounded-full bg-black text-white transition-all" : "flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all";
             });
         }
 
@@ -545,7 +574,7 @@
 
             setTimeout(() => {
                 let botReply = "🤖 SYSTEM NOTICE: Your message logged in control stream. For technical complaints, use the Customer Support ticket box inside Profile Settings!";
-                chatBox.innerHTML += `<div class="bg-[#E9E9E9] dark:bg-gray-900 text-gray-800 dark:text-white p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">${botReply}</div>`;
+                chatBox.innerHTML += `<div class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">${botReply}</div>`;
                 chatBox.scrollTop = chatBox.scrollHeight;
             }, 1000);
         }
