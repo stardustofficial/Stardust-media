@@ -388,8 +388,12 @@
             document.getElementById(pageId).classList.remove('hidden');
             
             if(pageId === 'page-account') {
-                document.getElementById('edit-name-input').value = customProfileCache.name;
-                document.getElementById('edit-bio-input').value = customProfileCache.bio === "No bio written yet." ? "" : customProfileCache.bio;
+            document.getElementById('edit-name-input').value = customProfileCache.name;
+            document.getElementById('edit-bio-input').value = customProfileCache.bio === "No bio written yet." ? "" : customProfileCache.bio;
+            
+            // Ye line sahi tarike se aise aayegi:
+            if (typeof loadSavedUsernameInSettings === 'function') {
+                loadSavedUsernameInSettings();
             }
         }
 
@@ -408,6 +412,10 @@
         }
 
         function saveProfileCustomizations() {
+            if (typeof handleProfileAndUsernameUpdate === 'function') {
+    handleProfileAndUsernameUpdate();
+    return;
+}
             if(!currentUserData) return;
             const inputName = document.getElementById('edit-name-input').value.trim();
             const inputBio = document.getElementById('edit-bio-input').value.trim();
@@ -499,7 +507,25 @@
                         const pinElement = document.createElement('div');
                         pinElement.className = "pin-item bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:opacity-95 transition cursor-zoom-in";
                         pinElement.onclick = function() { openPhotoModal(pin.img, displayTitle, pin.desc || "", pin.uploaderName || "Anonymous"); };
-                        pinElement.innerHTML = `<img src="${pin.img}" class="w-full h-auto object-cover"><div class="p-2.5 text-xs font-semibold text-gray-800 truncate">${displayTitle}</div>`;
+                        // LINE 502 KO ISSE REPLACE KAREIN:
+pinElement.innerHTML = `
+    <div class="relative overflow-hidden group" ondblclick="handleDoubleTapLike(event, '${key}')">
+        <img src="${pin.img}" class="w-full h-auto object-cover">
+    </div>
+    <div class="p-2.5 flex items-center justify-between">
+        <div>
+            <h3 class="font-bold text-sm">${displayTitle}</h3>
+            <p class="text-xs text-gray-500 line-clamp-1">${pin.desc || ''}</p>
+            <span class="text-[10px] font-semibold text-gray-400 like-count-${key}">0 likes</span>
+        </div>
+        <button class="like-btn-${key} focus:outline-none transition-transform active:scale-125" onclick="toggleLikePost('${key}')">
+            <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+        </button>
+    </div>
+`;
+
+// Aur iske theek neeche (Line 505 par globalContainer.append se pehle) ye line jod do:
+if (typeof attachLikeListenersAndCount === 'function') attachLikeListenersAndCount(key, pin, pinElement);
                         
                         globalContainer.appendChild(pinElement);
                         if(currentUserData && pin.uploaderUid === currentUserData.uid) {
@@ -611,6 +637,44 @@ function getLikeStatusAndCount(pinData, callback) {
     const count = Object.keys(likesObj).length;
     const isLikedByMe = currentUserData ? !!likesObj[currentUserData.uid] : false;
     callback(count, isLikedByMe);
+}
+        // ─── USERNAME SYSTEM FOR PROFILE SETTINGS ───
+
+function updateStardustUsername(newUsername) {
+    if (!currentUserData) return;
+    const userId = currentUserData.uid;
+    
+    // Clean username: lowercase aur spaces hatane ke liye
+    const cleanedUsername = newUsername.trim().toLowerCase().replace(/\s+/g, '');
+    
+    if (cleanedUsername === "") {
+        alert("Username khali nahi ho sakta, bhai!");
+        return;
+    }
+
+    // Pehle check karo ki ye username kisi aur ne toh nahi liya hai
+    database.ref('users').orderByChild('username').equalTo(cleanedUsername).once('value', (snapshot) => {
+        if (snapshot.exists()) {
+            // Check karo ki ye username isi current user ka hi toh nahi hai
+            const existingUsers = snapshot.val();
+            const ownerId = Object.keys(existingUsers)[0];
+            if (ownerId !== userId) {
+                alert("Bhai, ye username pehle se kisi ne le rakha hai! Kuch naya try karo.");
+                return;
+            }
+        }
+        
+        // Agar username unique hai ya user ka khud ka hai, toh save kar do
+        database.ref('users/' + userId).update({
+            username: cleanedUsername
+        }).then(() => {
+            alert("Username ekdum makkhan tarike se update ho gaya!");
+            // UI me handle karne ke liye page reload ya text update kar sakte hain
+            if(document.getElementById('profile-username')) {
+                document.getElementById('profile-username').innerText = '@' + cleanedUsername;
+            }
+        });
+    });
 }
     </script>
 </body>
