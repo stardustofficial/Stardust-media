@@ -163,7 +163,7 @@
                         <span class="bg-white/20 text-[9px] font-black px-2 py-0.5 rounded-full">SALE</span>
                     </div>
                     <button id="activate-premium-btn" onclick="simulatePremiumPurchase()" class="w-full bg-white text-purple-700 font-black text-xs py-2 rounded-xl active:scale-95 transition shadow">
-                        Activate Membership (Cheap Plan)
+                        Activate Membership
                     </button>
                 </div>
 
@@ -403,13 +403,13 @@
         function handleGoogleLogin() { auth.signInWithPopup(googleProvider).catch((err) => { alert("Auth Error: " + err.message); }); }
         function handleLogOut() { auth.signOut().then(() => { location.reload(); }); }
 
-        // SUBSCRIPTION NITRO ENGINE SIMULATION
+        // SUBSCRIPTION NITRO ENGINE ENTIRELY IN ENGLISH
         function simulatePremiumPurchase() {
             if(!currentUserData) return;
-            const confirmBuy = confirm("Bhai, kya aap Cheap Nitro Subscription Plan activate karke saare Profile Theme aur Custom Fonts unlock karna chahte hain?");
+            const confirmBuy = confirm("Are you sure you want to activate STARDUST NITRO PREMIUM membership?");
             if(confirmBuy) {
                 database.ref('users/' + currentUserData.uid).update({ isPremium: true }).then(() => {
-                    alert("🎉 Badhai Ho! Aapka STARDUST NITRO PREMIUM active ho gaya hai. Ab aap Colors aur Fonts change kar sakte hain!");
+                    alert("🎉 Success! STARDUST NITRO PREMIUM is now active on your account!");
                 });
             }
         }
@@ -541,7 +541,7 @@
                 userTray.innerHTML = ''; const users = snapshot.val(); let count = 0;
                 if(users) {
                     Object.keys(users).forEach(uid => {
-                        count++; const u = users[uid]; const div = document.createElement('div');
+                        if(uid === currentUserData.uid) return; const u = users[uid]; const div = document.createElement('div');
                         div.className = "flex items-center justify-between bg-white p-2 rounded-xl border cursor-pointer hover:bg-red-50 text-gray-900";
                         div.onclick = () => { userTray.classList.add('hidden'); document.getElementById('search-bar').value = ''; loadUserIdentitySpace(uid); };
                         div.innerHTML = `<div class="flex items-center gap-2"><img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" class="w-6 h-6 rounded-full object-cover"><div class="text-xs"><p class="font-black">${u.name || 'Member'}</p><p class="text-gray-400 text-[10px]">@${u.username}</p></div></div><span class="text-[10px] bg-red-600 text-white font-bold py-1 px-2.5 rounded-full">View Hub</span>`;
