@@ -37,12 +37,15 @@
         </div>
     </div>
 
-    <nav id="app-nav" class="sticky top-0 bg-white/95 backdrop-blur-md px-5 py-4 flex items-center justify-between gap-4 z-40 border-b border-gray-100 shadow-sm">
-        <div onclick="switchTab('home')" class="text-red-600 font-black text-2xl tracking-tighter cursor-pointer select-none">STARDUST</div>
-        <div class="flex-1 relative">
-            <svg class="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-            <input type="text" id="search-bar" onkeyup="filterPins()" placeholder="Search inspired ideas..." class="w-full bg-[#E9E9E9] pl-10 pr-4 py-2.5 rounded-full text-sm font-medium focus:outline-none transition">
+    <nav id="app-nav" class="sticky top-0 bg-white/95 backdrop-blur-md px-5 py-4 flex flex-col gap-2 z-40 border-b border-gray-100 shadow-sm">
+        <div class="flex items-center justify-between gap-4 w-full">
+            <div onclick="switchTab('home')" class="text-red-600 font-black text-2xl tracking-tighter cursor-pointer select-none">STARDUST</div>
+            <div class="flex-1 relative">
+                <svg class="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <input type="text" id="search-bar" onkeyup="filterPinsAndUsers()" placeholder="Search ideas or usernames..." class="w-full bg-[#E9E9E9] pl-10 pr-4 py-2.5 rounded-full text-sm font-medium focus:outline-none transition">
+            </div>
         </div>
+        <div id="user-search-results-tray" class="hidden w-full bg-gray-50 rounded-2xl p-3 border border-gray-100 space-y-2 max-h-[160px] overflow-y-auto"></div>
     </nav>
 
     <input type="file" id="file-input" accept="image/*" class="hidden" onchange="handleUpload(event)">
@@ -54,35 +57,39 @@
             <div id="pin-container" class="pin-grid"></div>
         </section>
 
-        <section id="tab-messages" class="tab-content hidden max-w-lg mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 border border-gray-200/60 rounded-3xl p-4 shadow-sm min-h-[500px]">
+        <section id="tab-messages" class="tab-content hidden max-w-lg mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 border border-gray-200/60 rounded-3xl p-4 shadow-sm min-h-[480px]">
             <div class="md:col-span-1 border-r pr-2 flex flex-col">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2 px-1">Active Chat Members</h3>
-                <div id="inbox-users-list" class="flex-1 overflow-y-auto space-y-1 max-h-[120px] md:max-h-[440px]">
+                <h3 class="text-[10px] font-black uppercase tracking-wider text-gray-400 mb-2 px-1">Active Chat Members</h3>
+                <div id="inbox-users-list" class="flex-1 overflow-y-auto space-y-1 max-h-[110px] md:max-h-[400px]">
                     <p class="text-[11px] text-gray-400 text-center py-2">Loading users...</p>
                 </div>
             </div>
             
             <div class="md:col-span-2 flex flex-col justify-between">
                 <div class="flex items-center gap-2 border-b pb-2 mb-2">
-                    <span id="chat-window-header-title" class="text-sm font-black text-gray-800">Stardust Broadcast Bot</span>
+                    <span id="chat-window-header-title" class="text-sm font-black text-gray-800">Stardust Core Bot</span>
                 </div>
                 
-                <div class="space-y-3 h-72 overflow-y-auto p-3 bg-white rounded-2xl border border-gray-100 mb-3" id="chat-box">
+                <div class="space-y-3 h-64 overflow-y-auto p-3 bg-white rounded-2xl border border-gray-100 mb-3" id="chat-box">
                     <div id="lang-welcome-msg" class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">
                         Welcome to STARDUST Core System! Click any dynamic active user on the left to start a private encrypted real-time chat, or talk to the Bot stream directly.
                     </div>
                 </div>
                 
                 <div class="flex gap-2 items-center bg-white p-1 rounded-full border border-gray-200">
-                    <input type="text" id="chat-input" placeholder="Type a message..." class="flex-1 pl-4 pr-2 py-2 text-sm font-medium focus:outline-none bg-transparent">
+                    <input type="text" id="chat-input" placeholder="Ask Stardust..." class="flex-1 pl-4 pr-2 py-2 text-sm font-medium focus:outline-none bg-transparent">
                     <button onclick="sendChatMessage()" id="lang-send-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-2.5 px-4 rounded-full transition active:scale-95">Send</button>
                 </div>
             </div>
         </section>
 
         <section id="tab-profile" class="tab-content hidden text-center mt-2 max-w-md mx-auto relative">
-            <div class="w-full flex justify-end px-2 mb-2">
-                <button onclick="openSettingsModal()" class="p-2 text-gray-700 hover:bg-gray-100 rounded-full transition">
+            <div class="w-full flex justify-between items-center px-2 mb-2">
+                <button id="profile-back-to-my-btn" onclick="loadUserIdentitySpace('me')" class="hidden flex items-center gap-1 text-xs font-bold text-red-600 bg-red-50 py-1.5 px-3 rounded-full transition active:scale-95">
+                    ← My Profile
+                </button>
+                <div class="flex-1"></div>
+                <button onclick="openSettingsModal()" id="profile-settings-trigger-btn" class="p-2 text-gray-700 hover:bg-gray-100 rounded-full transition">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
             </div>
@@ -94,11 +101,19 @@
             <div class="mt-4 px-4 flex flex-col items-center">
                 <h1 id="profile-name" class="text-2xl font-bold tracking-tight text-gray-900">STARDUST User</h1>
                 <p id="profile-username" class="text-gray-500 text-sm font-medium mt-1">@stardust_creator</p>
-                <p id="profile-bio" class="text-gray-400 text-xs mt-2 px-6 font-medium italic">No bio written yet.</p>
+                
+                <div class="flex items-center gap-4 mt-3 text-xs font-bold text-gray-600">
+                    <div><span id="profile-followers-count" class="text-gray-900 font-black">0</span> Followers</div>
+                    <div><span id="profile-following-count" class="text-gray-900 font-black">0</span> Following</div>
+                </div>
+                
+                <button id="profile-follow-action-btn" onclick="handleNetworkFollowToggle()" class="hidden mt-4 w-32 text-xs font-black py-2.5 rounded-full transition active:scale-95 shadow-sm"></button>
+
+                <p id="profile-bio" class="text-gray-400 text-xs mt-3 px-6 font-medium italic">No bio written yet.</p>
             </div>
             
             <div class="flex justify-center gap-4 mt-8 border-b border-gray-100 pb-3 text-sm font-bold">
-                <span id="lang-my-uploads" class="text-gray-900 border-b-2 border-gray-900 pb-3 tracking-wide">My Upload Records</span>
+                <span id="lang-my-uploads" class="text-gray-900 border-b-2 border-gray-900 pb-3 tracking-wide">Upload Records</span>
             </div>
             <div id="profile-pin-container" class="pin-grid mt-5"></div>
         </section>
@@ -141,12 +156,12 @@
             <div id="page-account" class="settings-sub-page hidden space-y-4 flex-1">
                 <div class="flex items-center gap-2 border-b pb-2 mb-2">
                     <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
-                    <h4 id="lang-sub-acc-title" class="font-black text-sm text-gray-900 uppercase tracking-wider">Account Settings</h4>
+                    <h4 class="font-black text-sm text-gray-900 uppercase tracking-wider">Identity Management</h4>
                 </div>
                 <div class="space-y-3">
                     <div>
-                        <label class="block text-[10px] font-bold text-gray-400 mb-1">STARDUST UNIQUE USERNAME (@)</label>
-                        <input type="text" id="edit-username-input" placeholder="e.g. zishangamerz" class="w-full bg-gray-50 text-gray-800 border rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-red-500">
+                        <label class="block text-[10px] font-bold text-gray-400 mb-1">STARDUST UNIQUE HANDLE (@)</label>
+                        <input type="text" id="edit-username-input" placeholder="e.g. creativemind" class="w-full bg-gray-50 text-gray-800 border rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-red-500">
                     </div>
                     <div>
                         <label class="block text-[10px] font-bold text-gray-400 mb-1">DISPLAY NAME</label>
@@ -156,18 +171,18 @@
                         <label class="block text-[10px] font-bold text-gray-400 mb-1">CUSTOM BIO</label>
                         <textarea id="edit-bio-input" rows="3" class="w-full bg-gray-50 text-gray-800 border rounded-xl px-3 py-2 text-sm font-medium focus:outline-none resize-none"></textarea>
                     </div>
-                    <button onclick="saveProfileCustomizations()" id="lang-save-profile-btn" class="w-full bg-black text-white text-xs font-bold py-3 rounded-xl transition">Save Details</button>
+                    <button onclick="saveProfileCustomizations()" class="w-full bg-black text-white text-xs font-bold py-3 rounded-xl transition">Save Identity</button>
                 </div>
             </div>
 
             <div id="page-pfp" class="settings-sub-page hidden space-y-4 flex-1">
                 <div class="flex items-center gap-2 border-b pb-2 mb-2">
                     <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
-                    <h4 id="lang-sub-pfp-title" class="font-black text-sm text-gray-900 uppercase tracking-wider">Profile Picture</h4>
+                    <h4 class="font-black text-sm text-gray-900 uppercase tracking-wider">Profile Picture</h4>
                 </div>
                 <div class="text-center py-4 space-y-4">
                     <p class="text-xs text-gray-500 font-medium px-2">No need for online links. Tap below to choose any photo directly from your native device gallery.</p>
-                    <button onclick="document.getElementById('pfp-file-input').click()" id="lang-choose-gal-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-3 px-6 rounded-full transition shadow-md inline-block">
+                    <button onclick="document.getElementById('pfp-file-input').click()" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-3 px-6 rounded-full transition shadow-md inline-block">
                         Open Local Gallery
                     </button>
                 </div>
@@ -176,16 +191,13 @@
             <div id="page-lang" class="settings-sub-page hidden space-y-4 flex-1">
                 <div class="flex items-center gap-2 border-b pb-2 mb-2">
                     <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
-                    <h4 id="lang-sub-lang-title" class="font-black text-sm text-gray-900 uppercase tracking-wider">Language Engine</h4>
+                    <h4 class="font-black text-sm text-gray-900 uppercase tracking-wider">Language Engine</h4>
                 </div>
                 <div class="space-y-2">
-                    <label id="lang-language-lbl" class="block text-[10px] font-bold text-gray-400">SELECT APP LANGUAGE</label>
+                    <label class="block text-[10px] font-bold text-gray-400">SELECT APP LANGUAGE</label>
                     <select id="lang-select" onchange="changeSystemLanguage(this.value)" class="w-full bg-gray-50 text-gray-800 border rounded-xl px-3 py-2.5 text-sm font-semibold focus:outline-none">
                         <option value="en">English (Default)</option>
                         <option value="hi">Hindi (हिन्दी)</option>
-                        <option value="es">Spanish (Español)</option>
-                        <option value="fr">French (Français)</option>
-                        <option value="ar">Arabic (العربية)</option>
                     </select>
                 </div>
             </div>
@@ -193,12 +205,12 @@
             <div id="page-support" class="settings-sub-page hidden space-y-4 flex-1">
                 <div class="flex items-center gap-2 border-b pb-2 mb-2">
                     <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
-                    <h4 id="lang-sub-sup-title" class="font-black text-sm text-gray-900 uppercase tracking-wider">Support Portal</h4>
+                    <h4 class="font-black text-sm text-gray-900 uppercase tracking-wider">Support Portal</h4>
                 </div>
                 <div class="space-y-2">
-                    <label id="lang-support-lbl" class="block text-[10px] font-bold text-gray-400">DESCRIBE ERROR OR FEEDBACK</label>
+                    <label class="block text-[10px] font-bold text-gray-400">DESCRIBE ERROR OR FEEDBACK</label>
                     <textarea id="support-text-input" rows="4" placeholder="Write your context here..." class="w-full bg-gray-50 text-gray-800 border rounded-xl px-3 py-2 text-xs font-medium focus:outline-none resize-none"></textarea>
-                    <button onclick="submitSupportTicket()" id="lang-submit-ticket-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-2.5 rounded-xl transition">Submit Ticket</button>
+                    <button onclick="submitSupportTicket()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-2.5 rounded-xl transition">Submit Ticket</button>
                 </div>
             </div>
         </div>
@@ -207,13 +219,12 @@
     <div id="comment-modal" class="fixed inset-0 bg-black/60 z-[160] hidden items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl w-full max-w-sm p-5 flex flex-col max-h-[80vh]">
             <div class="flex items-center justify-between border-b pb-3 mb-3">
-                <h3 class="font-bold text-lg text-gray-900">Comments Tray</h3>
+                <h3 class="font-bold text-lg text-gray-900">Comments</h3>
                 <button onclick="closeCommentModal()" class="text-gray-500 font-bold p-1">✕</button>
             </div>
-            <div id="comments-list-container" class="flex-1 overflow-y-auto space-y-3 pr-1 text-sm my-2 min-h-[180px]">
-                </div>
+            <div id="comments-list-container" class="flex-1 overflow-y-auto space-y-3 pr-1 text-sm my-2 min-h-[160px]"></div>
             <div class="flex gap-2 pt-3 border-t">
-                <input type="text" id="comment-input-field" class="flex-1 bg-gray-100 border rounded-xl p-2.5 text-sm focus:outline-none" placeholder="Add sweet remarks...">
+                <input type="text" id="comment-input-field" class="flex-1 bg-gray-100 border rounded-xl p-2.5 text-sm focus:outline-none" placeholder="Write feedback...">
                 <button id="submit-comment-btn" class="bg-black text-white px-4 rounded-xl text-sm font-bold">Post</button>
             </div>
         </div>
@@ -226,11 +237,25 @@
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
         </div>
-        <div class="flex-1 flex flex-col items-center justify-center max-w-lg mx-auto my-2 overflow-hidden w-full">
-            <img id="modal-img" src="" class="max-w-full max-h-[50vh] object-contain rounded-2xl shadow-2xl border border-white/10">
-            <p id="modal-desc" class="text-gray-400 text-xs mt-3 text-center px-6 max-h-[10vh] overflow-y-auto leading-relaxed font-medium"></p>
-            <span id="modal-author" class="text-gray-500 text-[10px] mt-1 font-mono tracking-wider"></span>
+        
+        <div class="flex-1 flex flex-col items-center justify-center max-w-lg mx-auto my-1 overflow-hidden w-full relative">
+            <img id="modal-img" src="" class="max-w-full max-h-[40vh] object-contain rounded-2xl shadow-2xl border border-white/10">
+            <p id="modal-desc" class="text-gray-400 text-xs mt-3 text-center px-6 max-h-[8vh] overflow-y-auto leading-relaxed font-medium"></p>
+            <span id="modal-author" class="text-red-500 text-[10px] mt-1 font-black tracking-wider uppercase cursor-pointer hover:underline"></span>
+            
+            <div class="flex items-center justify-center gap-6 mt-4 w-full bg-white/5 py-2.5 px-4 rounded-full max-w-xs border border-white/10">
+                <button id="modal-like-trigger-btn" class="flex items-center gap-1.5 focus:outline-none text-white text-xs font-bold transition active:scale-125">
+                    <svg id="modal-like-svg" class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                    <span id="modal-like-counter-text">0 likes</span>
+                </button>
+                
+                <button id="modal-comment-trigger-btn" class="flex items-center gap-1.5 focus:outline-none text-white text-xs font-bold transition active:scale-110">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                    <span>Comments</span>
+                </button>
+            </div>
         </div>
+
         <div class="w-full max-w-sm mx-auto pb-8">
             <button id="modal-download-btn" onclick="downloadImage()" class="w-full bg-white text-black text-sm font-black py-4 px-6 rounded-full flex items-center justify-center gap-2 shadow-xl hover:bg-gray-100 transition">
                 Download to Gallery
@@ -276,8 +301,9 @@
         let customProfileCache = { name: "", pfp: "", bio: "", username: "" };
         let activeLanguage = "en";
         
-        let activeChatTargetUid = "bot"; // Default chat mode tracker
+        let activeChatTargetUid = "bot"; 
         let activeCommentPinId = null;
+        let selectedProfileUid = "me"; // Space context view manager
 
         const langPack = {
             en: {
@@ -295,16 +321,15 @@
                 optSupport: "4. Customer Support",
                 closeSettings: "Close",
                 signOut: "Sign Out",
-                noBio: "No bio written yet.",
-                supportSuccess: "Ticket submitted successfully to core dashboard!"
+                noBio: "No bio written yet."
             },
             hi: {
-                tagline: "क्लाウド सिंक प्रोफ़ाइल के साथ प्रीमियम विज़ुअल आइडियाज़ खोजें और तुरंत साझा करें।",
+                tagline: "क्लाउड सिंक प्रोफ़ाइल के साथ प्रीमियम विज़ुअल आइडियाज़ खोजें और तुरंत साझा करें।",
                 loginBtn: "गूगल के साथ आगे बढ़ें",
                 searchPlaceholder: "आइडियाज़ खोजें...",
                 controlRoom: "स्टारडस्ट कंट्रोल रूम",
                 welcomeMsg: "स्टारडस्ट कोर सिस्टम में आपका स्वागत है! किसी भी यूज़र पर क्लिक करके चैट शुरू करें या बोट से बात करें।",
-                sendBtn: "भेजें",
+                sendBtn: "भेjें",
                 myUploads: "मेरे अपलोड रिकॉर्ड्स",
                 settingsTitle: "सेटिंग्स",
                 optAccount: "1. नाम, बायो और हैंडल बदलें",
@@ -313,8 +338,7 @@
                 optSupport: "4. कस्टमर सपोर्ट डेस्क",
                 closeSettings: "बंद करें",
                 signOut: "लॉग आउट",
-                noBio: "अभी तक कोई बायो नहीं लिखा गया है।",
-                supportSuccess: "आपकी शिकायत कोर डैशबोर्ड पर सफलतापूर्वक सबमिट हो गई है!"
+                noBio: "अभी तक कोई बायो नहीं लिखा गया है।"
             }
         };
 
@@ -323,7 +347,7 @@
                 currentUserData = user;
                 document.getElementById('auth-wall').classList.add('hidden');
                 
-                // Track user profile real-time update
+                // Track dynamic node for self session details
                 database.ref('users/' + user.uid).on('value', (snapshot) => {
                     const cloudData = snapshot.val();
                     if(cloudData) {
@@ -337,7 +361,6 @@
                         customProfileCache.bio = "Inspired via Stardust Core.";
                         customProfileCache.username = user.email.split('@')[0];
                         
-                        // Seed basic schema initially
                         database.ref('users/' + user.uid).set({
                             name: customProfileCache.name,
                             pfp: customProfileCache.pfp,
@@ -346,10 +369,9 @@
                         });
                     }
 
-                    document.getElementById('profile-name').innerText = customProfileCache.name;
-                    document.getElementById('profile-username').innerText = '@' + customProfileCache.username;
-                    document.getElementById('profile-img').src = customProfileCache.pfp;
-                    document.getElementById('profile-bio').innerText = customProfileCache.bio;
+                    if(selectedProfileUid === "me") {
+                        loadUserIdentitySpace("me");
+                    }
                 });
                 
                 listenToCloudDataStream();
@@ -369,118 +391,164 @@
             auth.signOut().then(() => { location.reload(); });
         }
 
-        function showSettingsPage(pageId) {
-            document.getElementById('settings-main-screen').classList.add('hidden');
-            document.querySelectorAll('.settings-sub-page').forEach(page => page.classList.add('hidden'));
-            document.getElementById(pageId).classList.remove('hidden');
-            
-            if(pageId === 'page-account') {
-                document.getElementById('edit-name-input').value = customProfileCache.name;
-                document.getElementById('edit-bio-input').value = customProfileCache.bio === "No bio written yet." ? "" : customProfileCache.bio;
-                document.getElementById('edit-username-input').value = customProfileCache.username;
-            }
-        }
-
-        function backToSettingsMain() {
-            document.querySelectorAll('.settings-sub-page').forEach(page => page.classList.add('hidden'));
-            document.getElementById('settings-main-screen').classList.remove('hidden');
-        }
-
-        function openSettingsModal() { 
-            backToSettingsMain();
-            document.getElementById('settings-modal').style.display = 'flex'; 
-        }
-        
-        function closeSettingsModal() { 
-            document.getElementById('settings-modal').style.display = 'none'; 
-        }
-
-        // UNIQUE USERNAME VALIDATION + METADATA SYNC
-        function saveProfileCustomizations() {
+        // PROFILE SPACE ARCHITECTURE WITH INTEGRATED LIVE TRAFFIC LOADER (FOLLOWERS / UNFOLLOWERS INDEX)
+        function loadUserIdentitySpace(targetUid) {
             if(!currentUserData) return;
-            const inputName = document.getElementById('edit-name-input').value.trim();
-            const inputBio = document.getElementById('edit-bio-input').value.trim();
-            const inputUsername = document.getElementById('edit-username-input').value.trim().toLowerCase().replace(/\s+/g, '');
+            selectedProfileUid = targetUid;
+            
+            const isMe = (targetUid === "me" || targetUid === currentUserData.uid);
+            const finalUid = isMe ? currentUserData.uid : targetUid;
+            
+            // UI Component state resets
+            document.getElementById('profile-back-to-my-btn').style.display = isMe ? "none" : "block";
+            document.getElementById('profile-settings-trigger-btn').style.display = isMe ? "block" : "none";
+            document.getElementById('profile-follow-action-btn').style.display = isMe ? "none" : "block";
 
-            if(!inputName || !inputUsername) {
-                alert("Name and Username handle are core validation dependencies!");
+            database.ref('users/' + finalUid).once('value', (snapshot) => {
+                const uData = snapshot.val() || {};
+                document.getElementById('profile-name').innerText = uData.name || "Stardust Member";
+                document.getElementById('profile-username').innerText = '@' + (uData.username || "creator");
+                document.getElementById('profile-img').src = uData.pfp || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150";
+                document.getElementById('profile-bio').innerText = uData.bio || "No bio written yet.";
+                
+                // Fetch Social Network Counts
+                syncSocialNetworkCounters(finalUid);
+                switchTab('profile');
+            });
+        }
+
+        // SYSTEM NETWORKING SUITE: LIVE FOLLOW LOGIC WITH FIREBASE MAPS
+        function syncSocialNetworkCounters(uid) {
+            // Followers node tracking
+            database.ref('network/followers/' + uid).on('value', (snap) => {
+                const data = snap.val() || {};
+                document.getElementById('profile-followers-count').innerText = Object.keys(data).length;
+                
+                if(uid !== currentUserData.uid) {
+                    const btn = document.getElementById('profile-follow-action-btn');
+                    if(data[currentUserData.uid]) {
+                        btn.innerText = "Unfollow";
+                        btn.className = "mt-4 w-32 text-xs font-black py-2.5 rounded-full bg-gray-100 text-gray-800 transition active:scale-95 shadow-sm";
+                    } else {
+                        btn.innerText = "Follow";
+                        btn.className = "mt-4 w-32 text-xs font-black py-2.5 rounded-full bg-red-600 text-white transition active:scale-95 shadow-sm";
+                    }
+                }
+            });
+
+            // Following node tracking
+            database.ref('network/following/' + uid).on('value', (snap) => {
+                const data = snap.val() || {};
+                document.getElementById('profile-following-count').innerText = Object.keys(data).length;
+            });
+
+            // Stream user record posts filter
+            database.ref('pins').once('value', (snapshot) => {
+                const profileContainer = document.getElementById('profile-pin-container');
+                profileContainer.innerHTML = '';
+                const data = snapshot.val();
+                let totalPinsUploaded = 0;
+
+                if(data) {
+                    Object.keys(data).reverse().forEach(key => {
+                        const pin = data[key];
+                        if(pin.uploaderUid === uid) {
+                            totalPinsUploaded++;
+                            const element = document.createElement('div');
+                            element.className = "pin-item bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:opacity-95 transition relative flex flex-col cursor-zoom-in";
+                            element.onclick = () => openPhotoModal(pin.img, pin.title || "Stardust Card", pin.desc || "", pin.uploaderName || "Anonymous", key, pin.uploaderUid);
+                            element.innerHTML = `<img src="${pin.img}" class="w-full h-auto object-cover"><div class="p-2 text-[11px] font-bold truncate">${pin.title || 'Stardust Idea'}</div>`;
+                            profileContainer.appendChild(element);
+                        }
+                    });
+                }
+                if(totalPinsUploaded === 0) profileContainer.innerHTML = '<div class="text-center text-gray-400 text-xs py-10 col-span-2">No uploads shared.</div>';
+            });
+        }
+
+        function handleNetworkFollowToggle() {
+            if(selectedProfileUid === "me" || selectedProfileUid === currentUserData.uid) return;
+            const targetUid = selectedProfileUid;
+            
+            const followerRef = database.ref('network/followers/' + targetUid + '/' + currentUserData.uid);
+            const followingRef = database.ref('network/following/' + currentUserData.uid + '/' + targetUid);
+
+            followerRef.once('value', (snap) => {
+                if(snap.exists()) {
+                    followerRef.remove();
+                    followingRef.remove();
+                } else {
+                    followerRef.set(true);
+                    followingRef.set(true);
+                }
+            });
+        }
+
+        // ADVANCED REALTIME USER HANDLE SEARCH ENGINE DISCOVERY TRAY
+        function filterPinsAndUsers() {
+            const query = document.getElementById('search-bar').value.toLowerCase().trim();
+            const userTray = document.getElementById('user-search-results-tray');
+            
+            if(!query) {
+                userTray.classList.add('hidden');
+                userTray.innerHTML = '';
+                // Fallback normal card filter loop
+                document.querySelectorAll('#pin-container .pin-item').forEach(item => item.style.display = "block");
                 return;
             }
 
-            database.ref('users').orderByChild('username').equalTo(inputUsername).once('value', (snapshot) => {
-                if(snapshot.exists()) {
-                    const matches = snapshot.val();
-                    const ownerId = Object.keys(matches)[0];
-                    if(ownerId !== currentUserData.uid) {
-                        alert("Bhai, ye unique handle pehle se koi use kar raha hai! Kuch aur dalo.");
-                        return;
-                    }
+            // 1. Filtering local DOM layout visual posts matching context text
+            document.querySelectorAll('#pin-container .pin-item').forEach(item => {
+                item.style.display = item.innerText.toLowerCase().includes(query) ? "block" : "none";
+            });
+
+            // 2. Fetching remote dynamic unique usernames mapped in core space
+            database.ref('users').orderByChild('username').startAt(query).endAt(query + "\uf8ff").once('value', (snapshot) => {
+                userTray.innerHTML = '';
+                const users = snapshot.val();
+                let countFound = 0;
+
+                if(users) {
+                    Object.keys(users).forEach(uid => {
+                        countFound++;
+                        const u = users[uid];
+                        const div = document.createElement('div');
+                        div.className = "flex items-center justify-between bg-white p-2 rounded-xl border border-gray-100 shadow-sm cursor-pointer hover:bg-red-50 transition";
+                        div.onclick = () => {
+                            userTray.classList.add('hidden');
+                            document.getElementById('search-bar').value = '';
+                            loadUserIdentitySpace(uid);
+                        };
+                        div.innerHTML = `
+                            <div class="flex items-center gap-2">
+                                <img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" class="w-6 h-6 rounded-full object-cover">
+                                <div class="text-xs">
+                                    <p class="font-black text-gray-800">${u.name || 'Stardust Creator'}</p>
+                                    <p class="text-gray-400 text-[10px]">@${u.username || 'creator'}</p>
+                                </div>
+                            </div>
+                            <span class="text-[10px] bg-red-600 text-white font-bold py-1 px-2.5 rounded-full">View Hub</span>
+                        `;
+                        userTray.appendChild(div);
+                    });
                 }
 
-                database.ref('users/' + currentUserData.uid).update({
-                    name: inputName,
-                    bio: inputBio || "No bio written yet.",
-                    username: inputUsername
-                }).then(() => { 
-                    alert("Profile metadata synchronized!");
-                    backToSettingsMain(); 
-                    closeSettingsModal();
-                });
+                if(countFound > 0) userTray.classList.remove('hidden');
+                else userTray.classList.add('hidden');
             });
         }
 
-        function handlePfpUpload(event) {
-            const file = event.target.files[0];
-            if (!file || !currentUserData) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                database.ref('users/' + currentUserData.uid).update({ pfp: e.target.result })
-                .then(() => { alert("Profile Picture synced!"); backToSettingsMain(); });
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function changeSystemLanguage(langKey) {
-            activeLanguage = langKey;
-            const dict = langPack[langKey] || langPack['en'];
-            document.getElementById('lang-tagline').innerText = dict.tagline;
-            document.getElementById('lang-login-btn').innerText = dict.loginBtn;
-            document.getElementById('search-bar').placeholder = dict.searchPlaceholder;
-            document.getElementById('lang-send-btn').innerText = dict.sendBtn;
-            document.getElementById('lang-my-uploads').innerText = dict.myUploads;
-            document.getElementById('lang-settings-title').innerText = dict.settingsTitle;
-        }
-
-        function submitSupportTicket() {
-            const supportInput = document.getElementById('support-text-input');
-            const queryText = supportInput.value.trim();
-            if(!queryText || !currentUserData) return;
-
-            database.ref('support_tickets').push({
-                uid: currentUserData.uid, email: currentUserData.email,
-                userName: customProfileCache.name, message: queryText, timestamp: Date.now()
-            }).then(() => {
-                alert("Ticket processed!");
-                supportInput.value = '';
-                closeSettingsModal();
-            });
-        }
-
-        // HOME MAIN FEED LOOP WITH LIKE / DOUBLE-TAP / COMMENTS INTERACTION HOOK
+        // MAIN FEEDS RENDERING MATRIX PIPELINES
         function listenToCloudDataStream() {
             database.ref('pins').on('value', (snapshot) => {
                 const globalContainer = document.getElementById('pin-container');
-                const profileContainer = document.getElementById('profile-pin-container');
-                globalContainer.innerHTML = ''; profileContainer.innerHTML = '';
+                globalContainer.innerHTML = '';
                 const data = snapshot.val();
-                let hasLocalUploads = false;
                 
                 if(data) {
                     Object.keys(data).reverse().forEach(key => {
                         const pin = data[key];
                         const displayTitle = pin.title ? pin.title : "Stardust Idea";
-                        
-                        // Like algorithm variables
                         const likesObj = pin.likes || {};
                         const totalLikes = Object.keys(likesObj).length;
                         const likedByMe = currentUserData ? !!likesObj[currentUserData.uid] : false;
@@ -493,7 +561,7 @@
                                 <img src="${pin.img}" class="w-full h-auto object-cover">
                             </div>
                             <div class="p-3 flex flex-col justify-between flex-1">
-                                <div onclick="openPhotoModal('${pin.img}', \`${displayTitle}\`, \`${pin.desc || ''}\`, '${pin.uploaderName || 'Anonymous'}')" class="cursor-pointer">
+                                <div id="text-click-hook-${key}">
                                     <h3 class="font-bold text-xs text-gray-800 tracking-tight truncate">${displayTitle}</h3>
                                     <p class="text-[11px] text-gray-400 truncate mt-0.5">${pin.desc || ''}</p>
                                 </div>
@@ -513,29 +581,24 @@
                         
                         globalContainer.appendChild(pinElement);
                         
-                        // Instagram Style Double Tap Handler Connection
-                        const imageContainer = pinElement.querySelector(`#img-wrapper-${key}`);
-                        if(imageContainer) {
-                            imageContainer.addEventListener('dblclick', (event) => {
-                                handleDoubleTapLikeAnimation(event, key);
-                            });
-                        }
+                        // Bind detailed view triggers on card items click
+                        const setupTriggers = () => {
+                            openPhotoModal(pin.img, displayTitle, pin.desc || "", pin.uploaderName || "Anonymous", key, pin.uploaderUid);
+                        };
+                        pinElement.querySelector(`#img-wrapper-${key}`).onclick = setupTriggers;
+                        pinElement.querySelector(`#text-click-hook-${key}`).onclick = setupTriggers;
 
-                        if(currentUserData && pin.uploaderUid === currentUserData.uid) {
-                            hasLocalUploads = true;
-                            const profilePinElement = pinElement.cloneNode(true);
-                            // Bind handlers again on cloned node elements
-                            profilePinElement.querySelector(`#img-wrapper-${key}`).onclick = function() { openPhotoModal(pin.img, displayTitle, pin.desc || "", pin.uploaderName || "Anonymous"); };
-                            profileContainer.appendChild(profilePinElement);
-                        }
+                        // Double tap gesture setup
+                        pinElement.querySelector(`#img-wrapper-${key}`).addEventListener('dblclick', (e) => {
+                            handleDoubleTapLikeAnimation(e, key);
+                        });
                     });
                 }
                 if(!globalContainer.innerHTML) globalContainer.innerHTML = '<div class="text-center text-gray-400 py-16 col-span-2 font-medium">No ideas shared yet.</div>';
-                if(!hasLocalUploads) profileContainer.innerHTML = '<div class="text-center text-gray-400 text-xs py-10 col-span-2">No uploads shared.</div>';
             });
         }
 
-        // CORE ENGINE: LIKE CONTROLLER
+        // LIKES CORE MANAGEMENT SYNC ROUTERS
         function toggleLikePost(pinId) {
             if(!currentUserData) return;
             const likeRef = database.ref('pins/' + pinId + '/likes/' + currentUserData.uid);
@@ -545,18 +608,17 @@
             });
         }
 
-        // DOUBLE TAP ANIMATION ENGINE
         function handleDoubleTapLikeAnimation(event, pinId) {
             toggleLikePost(pinId);
             const container = event.currentTarget;
-            const pulseHeart = document.createElement('div');
-            pulseHeart.className = "absolute inset-0 flex items-center justify-center pointer-events-none animate-ping";
-            pulseHeart.innerHTML = `<svg class="w-16 h-16 text-red-500 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
-            container.appendChild(pulseHeart);
-            setTimeout(() => pulseHeart.remove(), 600);
+            const heart = document.createElement('div');
+            heart.className = "absolute inset-0 flex items-center justify-center pointer-events-none animate-ping";
+            heart.innerHTML = `<svg class="w-16 h-16 text-red-500 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
+            container.appendChild(heart);
+            setTimeout(() => heart.remove(), 600);
         }
 
-        // CORE ENGINE: COMMENTS HANDLER
+        // STARDUST REALTIME POST DISCUSSION PACK
         function openCommentModal(pinId) {
             activeCommentPinId = pinId;
             document.getElementById('comment-modal').style.display = 'flex';
@@ -566,19 +628,14 @@
                 container.innerHTML = '';
                 const list = snapshot.val();
                 if(!list) {
-                    container.innerHTML = `<p class="text-gray-400 text-center text-xs py-6">Be the first to leave a word!</p>`;
+                    container.innerHTML = `<p class="text-gray-400 text-center text-xs py-6">Be the first to comment!</p>`;
                     return;
                 }
                 Object.keys(list).forEach(cKey => {
                     const comment = list[cKey];
                     const row = document.createElement('div');
-                    row.className = "bg-gray-50 rounded-2xl p-2.5 border border-gray-100 text-xs";
-                    row.innerHTML = `
-                        <div class="flex justify-between font-bold text-gray-700 mb-0.5">
-                            <span>@${comment.username || 'member'}</span>
-                        </div>
-                        <p class="text-gray-600 font-medium">${comment.text}</p>
-                    `;
+                    row.className = "bg-gray-50 rounded-2xl p-2.5 border border-gray-100 text-xs text-left";
+                    row.innerHTML = `<p class="font-black text-gray-700">@${comment.username || 'member'}</p><p class="text-gray-600 mt-0.5">${comment.text}</p>`;
                     container.appendChild(row);
                 });
                 container.scrollTop = container.scrollHeight;
@@ -603,14 +660,66 @@
             document.getElementById('comment-modal').style.display = 'none';
         }
 
-        // CORE ENGINE: REAL-TIME PRIVATE MULTI-USER CHATS ENGINE
+        // PREMIUM PHOTO PREVIEW HOOK INTEGRATION FOR DETAILED SCREEN
+        function openPhotoModal(imgSrc, titleText, descText, author, pinKey, uploaderUid) {
+            currentModalImgData = imgSrc; currentModalTitle = titleText;
+            document.getElementById('modal-img').src = imgSrc;
+            document.getElementById('modal-title').innerText = titleText;
+            document.getElementById('modal-desc').innerText = descText;
+            
+            const authorEl = document.getElementById('modal-author');
+            authorEl.innerText = "BY: " + author.toUpperCase();
+            
+            // Dynamic Author Profile Redirection Setup
+            authorEl.onclick = () => {
+                closePhotoModal();
+                loadUserIdentitySpace(uploaderUid);
+            };
+
+            // Dynamic Action Listeners Attachment inside Modal Wrapper View Screen
+            const likeSvg = document.getElementById('modal-like-svg');
+            const likeTxt = document.getElementById('modal-like-counter-text');
+            const likeBtn = document.getElementById('modal-like-trigger-btn');
+            const commBtn = document.getElementById('modal-comment-trigger-btn');
+
+            // Listen Live to specific post counters
+            database.ref('pins/' + pinKey + '/likes').on('value', (snapshot) => {
+                const likes = snapshot.val() || {};
+                const total = Object.keys(likes).length;
+                likeTxt.innerText = `${total} likes`;
+                
+                if(currentUserData && likes[currentUserData.uid]) {
+                    likeSvg.className = "w-5 h-5 text-red-500 fill-current";
+                } else {
+                    likeSvg.className = "w-5 h-5 text-gray-400";
+                }
+            });
+
+            likeBtn.onclick = () => toggleLikePost(pinKey);
+            commBtn.onclick = () => openCommentModal(pinKey);
+
+            document.getElementById('photo-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Cleanup on dismiss
+            window.activeModalPinRefKey = pinKey;
+        }
+        
+        function closePhotoModal() { 
+            if(window.activeModalPinRefKey) {
+                database.ref('pins/' + window.activeModalPinRefKey + '/likes').off();
+            }
+            document.getElementById('photo-modal').style.display = 'none'; 
+            document.body.style.overflow = ''; 
+        }
+
+        // REAL-TIME INSTANT ENCRYPTED INTERACTIVE PRIVATE CHATS ENGINE
         function syncActiveInboxMembers() {
             database.ref('users').on('value', (snapshot) => {
                 const listEl = document.getElementById('inbox-users-list');
                 listEl.innerHTML = '';
                 const users = snapshot.val();
                 
-                // Static Option to clear back to System Bot Announcement channel
                 const botRow = document.createElement('div');
                 botRow.className = "p-2 hover:bg-gray-100 rounded-xl cursor-pointer text-xs font-bold text-red-600 border border-red-50 flex items-center gap-1.5 transition";
                 botRow.onclick = () => selectActiveChatTarget('bot', 'Stardust Broadcast Bot');
@@ -619,7 +728,7 @@
 
                 if(users && currentUserData) {
                     Object.keys(users).forEach(uid => {
-                        if(uid === currentUserData.uid) return; // exclude self
+                        if(uid === currentUserData.uid) return; 
                         const u = users[uid];
                         const row = document.createElement('div');
                         row.className = "p-2 hover:bg-gray-100 rounded-xl cursor-pointer text-xs font-semibold text-gray-700 truncate transition flex items-center gap-2";
@@ -646,12 +755,11 @@
                 return;
             }
 
-            // Creating unique node sequence reference node path for private DMs
             const chatNodeRef = currentUserData.uid < activeChatTargetUid 
                 ? `${currentUserData.uid}_${activeChatTargetUid}` 
                 : `${activeChatTargetUid}_${currentUserData.uid}`;
 
-            database.ref('chats/' + chatNodeRef).off(); // Unsubscribe pre-listeners
+            database.ref('chats/' + chatNodeRef).off(); 
             database.ref('chats/' + chatNodeRef).on('value', (snapshot) => {
                 chatBox.innerHTML = '';
                 const logs = snapshot.val();
@@ -680,12 +788,11 @@
             if(!msgVal) return;
 
             if(activeChatTargetUid === 'bot') {
-                // Default Bot response routing stream
                 const chatBox = document.getElementById('chat-box');
                 chatBox.innerHTML += `<div class="bg-black text-white p-3.5 rounded-2xl rounded-tr-none text-sm max-w-[85%] ml-auto text-right font-medium">${msgVal}</div>`;
                 input.value = ''; chatBox.scrollTop = chatBox.scrollHeight;
                 setTimeout(() => {
-                    chatBox.innerHTML += `<div class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">🤖 SYSTEM NOTICE: Bot logs locked. To text real users, select them from the dynamic 'Active Chat Members' panel on the left!</div>`;
+                    chatBox.innerHTML += `<div class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">🤖 SYSTEM NOTICE: For dynamic private chats, click any active member handle from the left column listing tray!</div>`;
                     chatBox.scrollTop = chatBox.scrollHeight;
                 }, 900);
                 return;
@@ -702,23 +809,85 @@
             }).then(() => { input.value = ''; });
         }
 
-        // STATIC MODAL UTILITIES & TAB NAVIGATION BACKBONE
-        function openPhotoModal(imgSrc, titleText, descText, author) {
-            currentModalImgData = imgSrc; currentModalTitle = titleText;
-            document.getElementById('modal-img').src = imgSrc;
-            document.getElementById('modal-title').innerText = titleText;
-            document.getElementById('modal-desc').innerText = descText;
-            document.getElementById('modal-author').innerText = "BY: " + author.toUpperCase();
-            document.getElementById('photo-modal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+        // ACCOUNT UTILS SETTINGS REGISTRATION RULES
+        function showSettingsPage(pageId) {
+            document.getElementById('settings-main-screen').classList.add('hidden');
+            document.querySelectorAll('.settings-sub-page').forEach(page => page.classList.add('hidden'));
+            document.getElementById(pageId).classList.remove('hidden');
+            
+            if(pageId === 'page-account') {
+                document.getElementById('edit-name-input').value = customProfileCache.name;
+                document.getElementById('edit-bio-input').value = customProfileCache.bio === "No bio written yet." ? "" : customProfileCache.bio;
+                document.getElementById('edit-username-input').value = customProfileCache.username;
+            }
         }
-        function closePhotoModal() { document.getElementById('photo-modal').style.display = 'none'; document.body.style.overflow = ''; }
+
+        function backToSettingsMain() {
+            document.querySelectorAll('.settings-sub-page').forEach(page => page.classList.add('hidden'));
+            document.getElementById('settings-main-screen').classList.remove('hidden');
+        }
+
+        function openSettingsModal() { backToSettingsMain(); document.getElementById('settings-modal').style.display = 'flex'; }
+        function closeSettingsModal() { document.getElementById('settings-modal').style.display = 'none'; }
+
+        function saveProfileCustomizations() {
+            if(!currentUserData) return;
+            const inputName = document.getElementById('edit-name-input').value.trim();
+            const inputBio = document.getElementById('edit-bio-input').value.trim();
+            const inputUsername = document.getElementById('edit-username-input').value.trim().toLowerCase().replace(/\s+/g, '');
+
+            if(!inputName || !inputUsername) { alert("Name and Handle cannot be blank references!"); return; }
+
+            database.ref('users').orderByChild('username').equalTo(inputUsername).once('value', (snapshot) => {
+                if(snapshot.exists()) {
+                    const matches = snapshot.val();
+                    const ownerId = Object.keys(matches)[0];
+                    if(ownerId !== currentUserData.uid) {
+                        alert("Bhai, ye username pehle se koi aur use kar raha hai! Please change custom handle.");
+                        return;
+                    }
+                }
+
+                database.ref('users/' + currentUserData.uid).update({
+                    name: inputName, bio: inputBio || "No bio written yet.", username: inputUsername
+                }).then(() => { 
+                    alert("Identity synchronization complete!"); 
+                    closeSettingsModal(); 
+                });
+            });
+        }
+
+        function handlePfpUpload(event) {
+            const file = event.target.files[0]; if (!file || !currentUserData) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                database.ref('users/' + currentUserData.uid).update({ pfp: e.target.result }).then(() => { alert("PFP Synced!"); closeSettingsModal(); });
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function changeSystemLanguage(langKey) {
+            activeLanguage = langKey;
+            const dict = langPack[langKey] || langPack['en'];
+            document.getElementById('lang-tagline').innerText = dict.tagline;
+            document.getElementById('lang-login-btn').innerText = dict.loginBtn;
+            document.getElementById('search-bar').placeholder = dict.searchPlaceholder;
+            document.getElementById('lang-send-btn').innerText = dict.sendBtn;
+            document.getElementById('lang-my-uploads').innerText = dict.myUploads;
+            document.getElementById('lang-settings-title').innerText = dict.settingsTitle;
+        }
+
+        function submitSupportTicket() {
+            const input = document.getElementById('support-text-input');
+            const val = input.value.trim(); if(!val) return;
+            database.ref('support_tickets').push({ uid: currentUserData.uid, text: val, timestamp: Date.now() }).then(() => { alert("Ticket Sent!"); input.value = ''; closeSettingsModal(); });
+        }
 
         function downloadImage() {
             if(!currentModalImgData) return;
-            const downloadLink = document.createElement("a"); downloadLink.href = currentModalImgData;
-            downloadLink.download = currentModalTitle.replace(/\s+/g, '_') + ".jpg";
-            document.body.appendChild(downloadLink); downloadLink.click(); document.body.removeChild(downloadLink);
+            const link = document.createElement("a"); link.href = currentModalImgData;
+            link.download = currentModalTitle.replace(/\s+/g, '_') + ".jpg";
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
         }
 
         function handleUpload(event) {
@@ -743,13 +912,6 @@
             ['home', 'messages', 'profile'].forEach(t => {
                 const btn = document.getElementById(`nav-${t}`);
                 if(btn) btn.className = (t === tabName) ? "flex items-center justify-center p-2.5 rounded-full bg-black text-white transition-all" : "flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all";
-            });
-        }
-
-        function filterPins() {
-            const query = document.getElementById('search-bar').value.toLowerCase();
-            document.querySelectorAll('#pin-container .pin-item').forEach(item => {
-                item.style.display = item.innerText.toLowerCase().includes(query) ? "block" : "none";
             });
         }
     </script>
