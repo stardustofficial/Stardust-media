@@ -19,18 +19,18 @@
         }
         body {
             -webkit-tap-highlight-color: transparent;
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
     </style>
 </head>
-<body id="app-body" class="bg-white font-sans antialiased text-gray-900 pb-24">
+<body id="app-body" class="bg-white text-gray-950 font-sans antialiased pb-24">
 
-    <div id="auth-wall" class="fixed inset-0 bg-white dark:bg-gray-900 z-[200] flex flex-col items-center justify-center p-6 text-center">
+    <div id="auth-wall" class="fixed inset-0 bg-white dark:bg-gray-950 z-[200] flex flex-col items-center justify-center p-6 text-center">
         <div class="max-w-sm w-full space-y-6">
             <h1 class="text-red-600 font-black text-5xl tracking-tighter select-none mb-2 animate-pulse">STARDUST</h1>
             <p id="lang-tagline" class="text-gray-500 dark:text-gray-400 text-sm font-medium leading-relaxed px-4">Discover, track and share premium visual ideas with your cloud sync profile instantly.</p>
             <div class="pt-4">
-                <button onclick="handleGoogleLogin()" class="w-full bg-black dark:bg-white dark:text-black hover:bg-gray-900 text-white font-bold text-sm py-4 px-6 rounded-full flex items-center justify-center gap-3 transition-all duration-200 shadow-lg active:scale-95">
+                <button onclick="handleGoogleLogin()" class="w-full bg-black dark:bg-white dark:text-black hover:opacity-90 text-white font-bold text-sm py-4 px-6 rounded-full flex items-center justify-center gap-3 transition shadow-lg active:scale-95">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.24 10.285V13.4h6.887c-.275 1.565-1.88 4.604-6.887 4.604-4.33 0-7.866-3.577-7.866-8s3.536-8 7.866-8c2.46 0 4.105 1.025 5.047 1.926l2.427-2.334C17.955 2.192 15.34 1 12.24 1 6.033 1 12.24s5.033 11.24 11.24 11.24c6.478 0 10.793-4.537 10.793-10.986 0-.745-.079-1.32-.174-1.887H12.24z"/></svg>
                     <span id="lang-login-btn">Continue with Google</span>
                 </button>
@@ -38,12 +38,15 @@
         </div>
     </div>
 
-    <nav id="app-nav" class="sticky top-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md px-5 py-4 flex items-center justify-between gap-4 z-40 border-b border-gray-100 dark:border-gray-800">
+    <nav id="app-nav" class="sticky top-0 bg-white/95 dark:bg-gray-950/95 backdrop-blur-md px-5 py-4 flex items-center justify-between gap-4 z-40 border-b border-gray-100 dark:border-gray-900 shadow-sm">
         <div onclick="switchTab('home')" class="text-red-600 font-black text-2xl tracking-tighter cursor-pointer select-none">STARDUST</div>
         <div class="flex-1 relative">
             <svg class="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-            <input type="text" id="search-bar" onkeyup="filterPins()" placeholder="Search inspired ideas..." class="w-full bg-[#E9E9E9] dark:bg-gray-800 dark:text-white pl-10 pr-4 py-2.5 rounded-full text-sm font-medium focus:outline-none transition">
+            <input type="text" id="search-bar" onkeyup="filterPins()" placeholder="Search inspired ideas..." class="w-full bg-[#E9E9E9] dark:bg-gray-900 dark:text-gray-100 dark:border dark:border-gray-800 pl-10 pr-4 py-2.5 rounded-full text-sm font-medium focus:outline-none transition">
         </div>
+        <button onclick="openSettingsModal()" class="p-2 bg-gray-100 dark:bg-gray-900 dark:text-white rounded-full hover:scale-105 active:scale-95 transition">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
     </nav>
 
     <input type="file" id="file-input" accept="image/*" class="hidden" onchange="handleUpload(event)">
@@ -54,15 +57,15 @@
             <div id="pin-container" class="pin-grid"></div>
         </section>
 
-        <section id="tab-messages" class="tab-content hidden max-w-md mx-auto bg-gray-50 dark:bg-gray-800 border border-gray-200/60 dark:border-gray-700 rounded-3xl p-5 shadow-sm">
+        <section id="tab-messages" class="tab-content hidden max-w-md mx-auto bg-gray-50 dark:bg-gray-900 border border-gray-200/60 dark:border-gray-800 rounded-3xl p-5 shadow-sm">
             <h2 id="lang-control-room" class="text-lg font-bold mb-4 text-gray-800 dark:text-white flex items-center gap-2">Stardust Control Room</h2>
-            <div class="space-y-3 h-80 overflow-y-auto p-3 bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 mb-4" id="chat-box">
-                <div id="lang-welcome-msg" class="bg-[#E9E9E9] dark:bg-gray-700 text-gray-800 dark:text-white p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">
+            <div class="space-y-3 h-80 overflow-y-auto p-3 bg-white dark:bg-gray-950 rounded-2xl border border-gray-100 dark:border-gray-800 mb-4" id="chat-box">
+                <div id="lang-welcome-msg" class="bg-[#E9E9E9] dark:bg-gray-900 text-gray-800 dark:text-gray-100 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">
                     Welcome to STARDUST Core System! Use this portal for official app announcements, guidelines, and tool rules.
                 </div>
             </div>
             
-            <div class="flex gap-2 items-center bg-white dark:bg-gray-900 p-1 rounded-full border border-gray-200 dark:border-gray-700">
+            <div class="flex gap-2 items-center bg-white dark:bg-gray-950 p-1 rounded-full border border-gray-200 dark:border-gray-800">
                 <input type="text" id="chat-input" placeholder="Ask Stardust Bot..." class="flex-1 pl-4 pr-2 py-2 text-sm font-medium focus:outline-none bg-transparent dark:text-white">
                 <button onclick="triggerBotReply()" id="lang-send-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-2.5 px-4 rounded-full transition active:scale-95">Send</button>
             </div>
@@ -70,10 +73,7 @@
 
         <section id="tab-profile" class="tab-content hidden text-center mt-6 max-w-md mx-auto">
             <div class="relative w-28 h-28 mx-auto flex items-center justify-center">
-                <img id="profile-img" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150" class="w-28 h-28 rounded-full object-cover border border-gray-100 dark:border-gray-800 shadow-inner">
-                <button onclick="openSettingsModal()" class="absolute -bottom-1 -right-1 bg-black text-white dark:bg-white dark:text-black rounded-full p-2 border-2 border-white dark:border-gray-900 shadow-md transition hover:scale-105">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                </button>
+                <img id="profile-img" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150" class="w-28 h-28 rounded-full object-cover border border-gray-100 dark:border-gray-800 shadow-md">
             </div>
             
             <div class="mt-4 px-4 flex flex-col items-center">
@@ -82,11 +82,11 @@
                 <p id="profile-bio" class="text-gray-400 dark:text-gray-500 text-xs mt-2 px-6 font-medium italic">No bio written yet.</p>
                 
                 <div class="mt-4">
-                    <button onclick="openProfileEditorModal()" id="lang-edit-profile-btn" class="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-white text-xs font-bold py-2 px-6 rounded-full transition">Edit Profile</button>
+                    <button onclick="openProfileEditorModal()" id="lang-edit-profile-btn" class="bg-gray-100 dark:bg-gray-900 dark:text-white text-xs font-bold py-2 px-6 rounded-full transition border dark:border-gray-800">Edit Profile</button>
                 </div>
             </div>
             
-            <div class="flex justify-center gap-4 mt-8 border-b border-gray-100 dark:border-gray-800 pb-3 text-sm font-bold">
+            <div class="flex justify-center gap-4 mt-8 border-b border-gray-100 dark:border-gray-900 pb-3 text-sm font-bold">
                 <span id="lang-my-uploads" class="text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white pb-3 tracking-wide">My Upload Records</span>
             </div>
             <div id="profile-pin-container" class="pin-grid mt-5"></div>
@@ -94,18 +94,18 @@
     </div>
 
     <div id="settings-modal" class="fixed inset-0 bg-black/60 z-[160] hidden items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white dark:bg-gray-800 rounded-3xl w-full max-w-sm p-6 space-y-5 shadow-2xl border dark:border-gray-700">
+        <div class="bg-white dark:bg-gray-900 rounded-3xl w-full max-w-sm p-6 space-y-5 shadow-2xl border dark:border-gray-800">
             <h3 id="lang-settings-title" class="text-lg font-black text-gray-900 dark:text-white tracking-tight">App Settings Menu</h3>
             
             <div class="space-y-4">
-                <div class="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-3">
+                <div class="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3">
                     <span id="lang-theme-lbl" class="text-sm font-bold text-gray-700 dark:text-gray-300">Display Theme</span>
                     <button onclick="toggleAppTheme()" id="theme-btn-text" class="bg-black text-white dark:bg-white dark:text-black font-bold text-xs py-2 px-4 rounded-full shadow transition">Dark Mode</button>
                 </div>
 
-                <div class="space-y-1.5 border-b border-gray-100 dark:border-gray-700 pb-3">
+                <div class="space-y-1.5 border-b border-gray-100 dark:border-gray-800 pb-3">
                     <label id="lang-language-lbl" class="block text-xs font-bold text-gray-500">SYSTEM LANGUAGE</label>
-                    <select id="lang-select" onchange="changeSystemLanguage(this.value)" class="w-full bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none">
+                    <select id="lang-select" onchange="changeSystemLanguage(this.value)" class="w-full bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-white border border-gray-200 dark:border-gray-800 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none">
                         <option value="en">English (Default)</option>
                         <option value="hi">Hindi (हिन्दी)</option>
                         <option value="es">Spanish (Español)</option>
@@ -116,37 +116,37 @@
 
                 <div class="space-y-2">
                     <label id="lang-support-lbl" class="block text-xs font-bold text-gray-500">CUSTOMER SUPPORT PANEL</label>
-                    <textarea id="support-text-input" rows="2" placeholder="Describe your technical error or suggestion..." class="w-full bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none resize-none"></textarea>
+                    <textarea id="support-text-input" rows="2" placeholder="Describe your technical error or suggestion..." class="w-full bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-white border border-gray-200 dark:border-gray-800 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none resize-none"></textarea>
                     <button onclick="submitSupportTicket()" id="lang-submit-ticket-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-2.5 rounded-xl transition">Submit Ticket</button>
                 </div>
             </div>
 
             <div class="flex gap-2 pt-2">
-                <button onclick="closeSettingsModal()" id="lang-close-settings" class="w-1/2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white text-xs font-bold py-3 rounded-full transition">Close</button>
+                <button onclick="closeSettingsModal()" id="lang-close-settings" class="w-1/2 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-white text-xs font-bold py-3 rounded-full transition">Close</button>
                 <button onclick="handleLogOut()" id="lang-signout-btn" class="w-1/2 bg-red-50 text-red-600 text-xs font-bold py-3 rounded-full hover:bg-red-100 transition">Sign Out</button>
             </div>
         </div>
     </div>
 
     <div id="edit-profile-modal" class="fixed inset-0 bg-black/60 z-[150] hidden items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white dark:bg-gray-800 rounded-3xl w-full max-w-sm p-6 space-y-4 shadow-2xl">
+        <div class="bg-white dark:bg-gray-900 rounded-3xl w-full max-w-sm p-6 space-y-4 shadow-2xl border dark:border-gray-800">
             <h3 id="lang-edit-profile-title" class="text-lg font-black text-gray-900 dark:text-white tracking-tight">Customize Stardust Identity</h3>
             <div class="space-y-3">
                 <div>
                     <label class="block text-xs font-bold text-gray-500 mb-1">DISPLAY NAME</label>
-                    <input type="text" id="edit-name-input" class="w-full bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2.5 text-sm font-semibold focus:outline-none">
+                    <input type="text" id="edit-name-input" class="w-full bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-white border border-gray-200 dark:border-gray-800 rounded-xl px-3 py-2.5 text-sm font-semibold focus:outline-none">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-500 mb-1">AVATAR IMAGE URL (PFP)</label>
-                    <input type="text" id="edit-pfp-input" class="w-full bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2.5 text-sm font-medium focus:outline-none">
+                    <input type="text" id="edit-pfp-input" class="w-full bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-white border border-gray-200 dark:border-gray-800 rounded-xl px-3 py-2.5 text-sm font-medium focus:outline-none">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-500 mb-1">CUSTOM BIO</label>
-                    <textarea id="edit-bio-input" rows="2" class="w-full bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm font-medium focus:outline-none resize-none"></textarea>
+                    <textarea id="edit-bio-input" rows="2" class="w-full bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-white border border-gray-200 dark:border-gray-800 rounded-xl px-3 py-2 text-sm font-medium focus:outline-none resize-none"></textarea>
                 </div>
             </div>
             <div class="flex gap-2 pt-2">
-                <button onclick="closeProfileEditorModal()" id="lang-cancel-profile-btn" class="w-1/2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white text-xs font-bold py-3 rounded-full transition">Cancel</button>
+                <button onclick="closeProfileEditorModal()" id="lang-cancel-profile-btn" class="w-1/2 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-white text-xs font-bold py-3 rounded-full transition">Cancel</button>
                 <button onclick="saveProfileCustomizations()" id="lang-save-profile-btn" class="w-1/2 bg-black dark:bg-white dark:text-black text-white text-xs font-bold py-3 rounded-full transition">Save Changes</button>
             </div>
         </div>
@@ -165,23 +165,23 @@
             <span id="modal-author" class="text-gray-500 text-[10px] mt-1 font-mono tracking-wider"></span>
         </div>
         <div class="w-full max-w-sm mx-auto pb-8">
-            <button id="modal-download-btn" onclick="downloadImage()" class="w-full bg-white text-black text-sm font-black py-4 px-6 rounded-full flex items-center justify-center gap-2 shadow-xl hover:bg-gray-100 transition shadow-inner">
+            <button id="modal-download-btn" onclick="downloadImage()" class="w-full bg-white text-black text-sm font-black py-4 px-6 rounded-full flex items-center justify-center gap-2 shadow-xl hover:bg-gray-100 transition">
                 Download to Gallery
             </button>
         </div>
     </div>
 
-    <div class="fixed bottom-4 left-1/2 -translate-x-1/2 max-w-sm w-[90%] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md py-3 px-6 flex justify-between items-center z-30 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100/80 dark:border-gray-800">
+    <div class="fixed bottom-4 left-1/2 -translate-x-1/2 max-w-sm w-[90%] bg-white/95 dark:bg-gray-950/95 backdrop-blur-md py-3 px-6 flex justify-between items-center z-30 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100/80 dark:border-gray-900">
         <button onclick="switchTab('home')" id="nav-home" class="flex items-center justify-center p-2.5 rounded-full bg-black text-white dark:bg-white dark:text-black transition-all duration-200">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg>
         </button>
-        <button onclick="document.getElementById('file-input').click()" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200">
+        <button onclick="document.getElementById('file-input').click()" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 transition-all duration-200">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
         </button>
-        <button onclick="switchTab('messages')" id="nav-messages" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200">
+        <button onclick="switchTab('messages')" id="nav-messages" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 transition-all duration-200">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
         </button>
-        <button onclick="switchTab('profile')" id="nav-profile" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200">
+        <button onclick="switchTab('profile')" id="nav-profile" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 transition-all duration-200">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
         </button>
     </div>
@@ -209,7 +209,6 @@
         let customProfileCache = { name: "", pfp: "", bio: "" };
         let activeLanguage = "en";
 
-        // Multilingual Repository Dictionary Data Matrix
         const langPack = {
             en: {
                 tagline: "Discover, track and share premium visual ideas with your cloud sync profile instantly.",
@@ -323,7 +322,6 @@
             }
         };
 
-        // 🛡️ STATE OBSERVER: Tracks Authentication Real-time Sync
         auth.onAuthStateChanged((user) => {
             if (user) {
                 currentUserData = user;
@@ -363,15 +361,13 @@
         }
 
         function handleLogOut() {
-            if(confirm("Log Out Profile?")) { auth.signOut().then(() => { location.reload(); }); }
+            auth.signOut().then(() => { location.reload(); });
         }
 
-        // 🌍 LANGUAGE ENGINE TRANSLATION INJECTOR
         function changeSystemLanguage(langKey) {
             activeLanguage = langKey;
             const dict = langPack[langKey];
 
-            // Render Nav & Wall Engine Text DOM Elements
             document.getElementById('lang-tagline').innerText = dict.tagline;
             document.getElementById('lang-login-btn').innerText = dict.loginBtn;
             document.getElementById('search-bar').placeholder = dict.searchPlaceholder;
@@ -396,12 +392,13 @@
             }
         }
 
-        // 🌗 DISPLAY THEME CONTROLLER ENGINE
+        // 🌗 TRUE FULL-BODY THEME TOGGLE FUNCTION
         function toggleAppTheme() {
             const body = document.getElementById('app-body');
             const themeBtn = document.getElementById('theme-btn-text');
             
             body.classList.toggle('dark');
+            
             if(body.classList.contains('dark')) {
                 themeBtn.innerText = "Light Mode";
                 themeBtn.className = "bg-white text-black font-bold text-xs py-2 px-4 rounded-full shadow transition";
@@ -411,7 +408,6 @@
             }
         }
 
-        // 📥 DYNAMIC CUSTOMER SUPPORT TICKETS CONTROLLER
         function submitSupportTicket() {
             const supportInput = document.getElementById('support-text-input');
             const queryText = supportInput.value.trim();
@@ -433,9 +429,7 @@
             }).catch(err => { alert("Error: " + err.message); });
         }
 
-        // MODAL TOGGLE ROUTINES
         function openSettingsModal() { document.getElementById('settings-modal').style.display = 'flex'; }
-        // Close function corrected to change display instead of class to map layout styles
         function closeSettingsModal() { document.getElementById('settings-modal').style.display = 'none'; }
         
         function openProfileEditorModal() {
@@ -474,9 +468,9 @@
                         const pin = data[key];
                         const displayTitle = pin.title ? pin.title : "Stardust Idea";
                         const pinElement = document.createElement('div');
-                        pinElement.className = "pin-item bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl overflow-hidden shadow-sm hover:opacity-95 transition cursor-zoom-in";
+                        pinElement.className = "pin-item bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden shadow-sm hover:opacity-95 transition cursor-zoom-in";
                         pinElement.onclick = function() { openPhotoModal(pin.img, displayTitle, pin.desc || "", pin.uploaderName || "Anonymous"); };
-                        pinElement.innerHTML = `<img src="${pin.img}" class="w-full h-auto object-cover"><div class="p-2.5 text-xs font-semibold text-gray-800 dark:text-white truncate">${displayTitle}</div>`;
+                        pinElement.innerHTML = `<img src="${pin.img}" class="w-full h-auto object-cover"><div class="p-2.5 text-xs font-semibold text-gray-800 dark:text-gray-200 truncate">${displayTitle}</div>`;
                         
                         globalContainer.appendChild(pinElement);
                         if(currentUserData && pin.uploaderUid === currentUserData.uid) {
@@ -531,7 +525,7 @@
             document.getElementById(`tab-${tabName}`).classList.remove('hidden');
             ['home', 'messages', 'profile'].forEach(t => {
                 const btn = document.getElementById(`nav-${t}`);
-                if(btn) btn.className = (t === tabName) ? "flex items-center justify-center p-2.5 rounded-full bg-black text-white dark:bg-white dark:text-black transition-all" : "flex items-center justify-center p-2.5 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all";
+                if(btn) btn.className = (t === tabName) ? "flex items-center justify-center p-2.5 rounded-full bg-black text-white dark:bg-white dark:text-black transition-all" : "flex items-center justify-center p-2.5 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 transition-all";
             });
         }
 
@@ -542,7 +536,6 @@
             });
         }
 
-        // 🤖 PLATFORM CONTEXT BOT SYSTEM
         function triggerBotReply() {
             const input = document.getElementById('chat-input'); const chatBox = document.getElementById('chat-box');
             const userMessage = input.value.trim(); if (!userMessage) return;
@@ -552,7 +545,7 @@
 
             setTimeout(() => {
                 let botReply = "🤖 SYSTEM NOTICE: Your message logged in control stream. For technical complaints, use the Customer Support ticket box inside Profile Settings!";
-                chatBox.innerHTML += `<div class="bg-[#E9E9E9] dark:bg-gray-700 text-gray-800 dark:text-white p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">${botReply}</div>`;
+                chatBox.innerHTML += `<div class="bg-[#E9E9E9] dark:bg-gray-900 text-gray-800 dark:text-white p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">${botReply}</div>`;
                 chatBox.scrollTop = chatBox.scrollHeight;
             }, 1000);
         }
