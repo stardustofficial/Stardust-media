@@ -8,6 +8,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Fira+Code:wght@600&family=Orbitron:wght@800&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         .pin-grid {
             columns: 2;
@@ -19,6 +20,31 @@
         }
         body {
             -webkit-tap-highlight-color: transparent;
+        }
+        /* DYNAMIC PREMIUM THEMES */
+        .theme-neon { background: linear-gradient(135deg, #1e1b4b, #311042) !important; color: #f3e8ff !important; }
+        .theme-cyber { background: linear-gradient(135deg, #0f172a, #020617) !important; color: #38bdf8 !important; }
+        .theme-gold { background: linear-gradient(135deg, #1c1917, #443c31) !important; color: #fef08a !important; }
+        .theme-mint { background: linear-gradient(135deg, #022c22, #064e3b) !important; color: #a7f3d0 !important; }
+        
+        /* FONTS MAPPING */
+        .font-modern { font-family: 'Inter', sans-serif !important; }
+        .font-serif { font-family: 'Cinzel', serif !important; }
+        .font-retro { font-family: 'Fira Code', monospace !important; }
+        .font-future { font-family: 'Orbitron', sans-serif !important; }
+
+        /* NITRO PROFILE GLOW ANIMATION */
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .premium-avatar-container {
+            position: relative;
+            padding: 5px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff0055, #00ffaa, #00a2ff, #ff0055);
+            background-size: 400%;
+            animation: rotateGlow 8s linear infinite;
         }
     </style>
 </head>
@@ -72,7 +98,7 @@
                 
                 <div class="space-y-3 h-64 overflow-y-auto p-3 bg-white rounded-2xl border border-gray-100 mb-3" id="chat-box">
                     <div id="lang-welcome-msg" class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">
-                        Welcome to STARDUST Core System! Click any dynamic active user on the left to start a private encrypted real-time chat, or talk to the Bot stream directly.
+                        Welcome to STARDUST Core System! Click any dynamic active user on the left to start a private encrypted real-time chat.
                     </div>
                 </div>
                 
@@ -83,71 +109,109 @@
             </div>
         </section>
 
-        <section id="tab-profile" class="tab-content hidden text-center mt-2 max-w-md mx-auto relative">
-            <div class="w-full flex justify-between items-center px-2 mb-2">
+        <section id="tab-profile" class="tab-content hidden text-center mt-2 max-w-md mx-auto p-6 rounded-3xl transition-all duration-300 relative border border-transparent">
+            <div class="w-full flex justify-between items-center px-2 mb-4">
                 <button id="profile-back-to-my-btn" onclick="loadUserIdentitySpace('me')" class="hidden flex items-center gap-1 text-xs font-bold text-red-600 bg-red-50 py-1.5 px-3 rounded-full transition active:scale-95">
                     ← My Profile
                 </button>
                 <div class="flex-1"></div>
-                <button onclick="openSettingsModal()" id="profile-settings-trigger-btn" class="p-2 text-gray-700 hover:bg-gray-100 rounded-full transition">
+                <button onclick="openSettingsModal()" id="profile-settings-trigger-btn" class="p-2 text-gray-700 hover:bg-gray-100 rounded-full bg-white/80 backdrop-blur transition shadow-sm">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
             </div>
 
-            <div class="relative w-28 h-28 mx-auto flex items-center justify-center">
-                <img id="profile-img" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150" class="w-28 h-28 rounded-full object-cover border border-gray-100 shadow-md">
+            <div id="pfp-wrapper" class="w-28 h-28 mx-auto flex items-center justify-center">
+                <img id="profile-img" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150" class="w-28 h-28 rounded-full object-cover border border-gray-100 shadow-md bg-white">
             </div>
             
             <div class="mt-4 px-4 flex flex-col items-center">
-                <h1 id="profile-name" class="text-2xl font-bold tracking-tight text-gray-900">STARDUST User</h1>
+                <h1 class="text-2xl font-bold tracking-tight flex items-center gap-1.5">
+                    <span id="profile-name">STARDUST User</span>
+                    <span id="premium-badge" class="hidden text-sm animate-bounce" title="Stardust Premium Member">👑</span>
+                </h1>
                 <p id="profile-username" class="text-gray-500 text-sm font-medium mt-1">@stardust_creator</p>
                 
-                <div class="flex items-center gap-4 mt-3 text-xs font-bold text-gray-600">
-                    <div><span id="profile-followers-count" class="text-gray-900 font-black">0</span> Followers</div>
-                    <div><span id="profile-following-count" class="text-gray-900 font-black">0</span> Following</div>
+                <div class="flex items-center gap-4 mt-3 text-xs font-bold opacity-90">
+                    <div><span id="profile-followers-count" class="font-black">0</span> Followers</div>
+                    <div><span id="profile-following-count" class="font-black">0</span> Following</div>
                 </div>
                 
                 <button id="profile-follow-action-btn" onclick="handleNetworkFollowToggle()" class="hidden mt-4 w-32 text-xs font-black py-2.5 rounded-full transition active:scale-95 shadow-sm"></button>
 
-                <p id="profile-bio" class="text-gray-400 text-xs mt-3 px-6 font-medium italic">No bio written yet.</p>
+                <p id="profile-bio" class="text-xs mt-3 px-6 font-medium italic opacity-75">No bio written yet.</p>
             </div>
             
             <div class="flex justify-center gap-4 mt-8 border-b border-gray-100 pb-3 text-sm font-bold">
-                <span id="lang-my-uploads" class="text-gray-900 border-b-2 border-gray-900 pb-3 tracking-wide">Upload Records</span>
+                <span id="lang-my-uploads" class="pb-3 tracking-wide border-b-2 border-current">Upload Records</span>
             </div>
             <div id="profile-pin-container" class="pin-grid mt-5"></div>
         </section>
     </div>
 
     <div id="settings-modal" class="fixed inset-0 bg-black/50 z-[160] hidden items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl w-full max-w-sm p-6 relative shadow-2xl border overflow-hidden max-h-[85vh] flex flex-col">
+        <div class="bg-white rounded-3xl w-full max-w-sm p-6 relative shadow-2xl border overflow-hidden max-h-[85vh] flex flex-col text-gray-900">
             
-            <div id="settings-main-screen" class="space-y-4 flex-1">
-                <h3 id="lang-settings-title" class="text-lg font-black text-gray-900 tracking-tight border-b pb-2 mb-4">Settings</h3>
+            <div id="settings-main-screen" class="space-y-4 flex-1 overflow-y-auto pr-1">
+                <h3 id="lang-settings-title" class="text-lg font-black tracking-tight border-b pb-2 mb-4">Settings</h3>
+                
+                <div id="nitro-promo-card" class="bg-gradient-to-r from-purple-600 via-pink-600 to-red-500 p-4 rounded-2xl text-white space-y-2 shadow-md">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-black text-sm tracking-wide">STARDUST NITRO PREMIUM</h4>
+                            <p class="text-[10px] opacity-90">Unlock Colors, Animations, Premium Fonts & Custom Backgrounds!</p>
+                        </div>
+                        <span class="bg-white/20 text-[9px] font-black px-2 py-0.5 rounded-full">SALE</span>
+                    </div>
+                    <button id="activate-premium-btn" onclick="simulatePremiumPurchase()" class="w-full bg-white text-purple-700 font-black text-xs py-2 rounded-xl active:scale-95 transition shadow">
+                        Activate Membership (Cheap Plan)
+                    </button>
+                </div>
+
+                <div id="premium-settings-section" class="hidden border-2 border-purple-500 bg-purple-50/50 p-3 rounded-2xl space-y-3">
+                    <h4 class="text-xs font-black text-purple-700 tracking-wider uppercase">⭐ Nitro Customization Pad</h4>
+                    
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-500 mb-1">SELECT PROFILE BACKGROUND THEME</label>
+                        <select id="premium-theme-select" onchange="applyPremiumCustomization()" class="w-full bg-white border border-purple-300 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none">
+                            <option value="default">Default White Elegant</option>
+                            <option value="theme-neon">Neon Purple Darkness</option>
+                            <option value="theme-cyber">Cyberpunk Midnight Blue</option>
+                            <option value="theme-gold">Golden Royal Aura</option>
+                            <option value="theme-mint">Emerald Mint Luxury</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-500 mb-1">SELECT PREMIUM PROFILE FONT</label>
+                        <select id="premium-font-select" onchange="applyPremiumCustomization()" class="w-full bg-white border border-purple-300 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none">
+                            <option value="font-modern">Default Modern Sans</option>
+                            <option value="font-serif">Elegant Royal Serif</option>
+                            <option value="font-retro">Retro Hacker Monospace</option>
+                            <option value="font-future">Futuristic Sci-Fi Display</option>
+                        </select>
+                    </div>
+                </div>
                 
                 <div class="space-y-1">
-                    <button onclick="showSettingsPage('page-account')" class="w-full flex items-center justify-between py-3 px-4 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition">
+                    <button onclick="showSettingsPage('page-account')" class="w-full flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition">
                         <span id="lang-opt-account">1. Edit Name, Bio & Handle</span>
                         <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </button>
-
-                    <button onclick="showSettingsPage('page-pfp')" class="w-full flex items-center justify-between py-3 px-4 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition">
+                    <button onclick="showSettingsPage('page-pfp')" class="w-full flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition">
                         <span id="lang-opt-pfp">2. Change Profile Picture</span>
                         <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </button>
-
-                    <button onclick="showSettingsPage('page-lang')" class="w-full flex items-center justify-between py-3 px-4 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition">
+                    <button onclick="showSettingsPage('page-lang')" class="w-full flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition">
                         <span id="lang-opt-lang">3. System Language</span>
                         <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </button>
-
-                    <button onclick="showSettingsPage('page-support')" class="w-full flex items-center justify-between py-3 px-4 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition">
+                    <button onclick="showSettingsPage('page-support')" class="w-full flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition">
                         <span id="lang-opt-support">4. Customer Support</span>
                         <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </button>
                 </div>
 
-                <div class="flex gap-2 pt-6 border-t mt-4">
+                <div class="flex gap-2 pt-4 border-t mt-2">
                     <button onclick="closeSettingsModal()" id="lang-close-settings" class="w-1/2 bg-gray-100 text-gray-800 text-xs font-bold py-3 rounded-full transition">Close</button>
                     <button onclick="handleLogOut()" id="lang-signout-btn" class="w-1/2 bg-red-50 text-red-600 text-xs font-bold py-3 rounded-full hover:bg-red-100 transition">Sign Out</button>
                 </div>
@@ -156,12 +220,12 @@
             <div id="page-account" class="settings-sub-page hidden space-y-4 flex-1">
                 <div class="flex items-center gap-2 border-b pb-2 mb-2">
                     <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
-                    <h4 class="font-black text-sm text-gray-900 uppercase tracking-wider">Identity Management</h4>
+                    <h4 class="font-black text-sm uppercase tracking-wider">Identity Management</h4>
                 </div>
                 <div class="space-y-3">
                     <div>
                         <label class="block text-[10px] font-bold text-gray-400 mb-1">STARDUST UNIQUE HANDLE (@)</label>
-                        <input type="text" id="edit-username-input" placeholder="e.g. creativemind" class="w-full bg-gray-50 text-gray-800 border rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-red-500">
+                        <input type="text" id="edit-username-input" class="w-full bg-gray-50 text-gray-800 border rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none">
                     </div>
                     <div>
                         <label class="block text-[10px] font-bold text-gray-400 mb-1">DISPLAY NAME</label>
@@ -178,48 +242,39 @@
             <div id="page-pfp" class="settings-sub-page hidden space-y-4 flex-1">
                 <div class="flex items-center gap-2 border-b pb-2 mb-2">
                     <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
-                    <h4 class="font-black text-sm text-gray-900 uppercase tracking-wider">Profile Picture</h4>
+                    <h4 class="font-black text-sm uppercase tracking-wider">Profile Picture</h4>
                 </div>
                 <div class="text-center py-4 space-y-4">
-                    <p class="text-xs text-gray-500 font-medium px-2">No need for online links. Tap below to choose any photo directly from your native device gallery.</p>
-                    <button onclick="document.getElementById('pfp-file-input').click()" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-3 px-6 rounded-full transition shadow-md inline-block">
-                        Open Local Gallery
-                    </button>
+                    <button onclick="document.getElementById('pfp-file-input').click()" class="bg-red-600 text-white font-bold text-xs py-3 px-6 rounded-full transition shadow-md">Open Local Gallery</button>
                 </div>
             </div>
 
             <div id="page-lang" class="settings-sub-page hidden space-y-4 flex-1">
                 <div class="flex items-center gap-2 border-b pb-2 mb-2">
                     <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
-                    <h4 class="font-black text-sm text-gray-900 uppercase tracking-wider">Language Engine</h4>
+                    <h4 class="font-black text-sm uppercase tracking-wider">Language Engine</h4>
                 </div>
-                <div class="space-y-2">
-                    <label class="block text-[10px] font-bold text-gray-400">SELECT APP LANGUAGE</label>
-                    <select id="lang-select" onchange="changeSystemLanguage(this.value)" class="w-full bg-gray-50 text-gray-800 border rounded-xl px-3 py-2.5 text-sm font-semibold focus:outline-none">
-                        <option value="en">English (Default)</option>
-                        <option value="hi">Hindi (हिन्दी)</option>
-                    </select>
-                </div>
+                <select id="lang-select" onchange="changeSystemLanguage(this.value)" class="w-full bg-gray-50 border rounded-xl px-3 py-2 text-sm font-semibold">
+                    <option value="en">English</option>
+                    <option value="hi">Hindi (हिन्दी)</option>
+                </select>
             </div>
 
             <div id="page-support" class="settings-sub-page hidden space-y-4 flex-1">
                 <div class="flex items-center gap-2 border-b pb-2 mb-2">
                     <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
-                    <h4 class="font-black text-sm text-gray-900 uppercase tracking-wider">Support Portal</h4>
+                    <h4 class="font-black text-sm uppercase tracking-wider">Support Portal</h4>
                 </div>
-                <div class="space-y-2">
-                    <label class="block text-[10px] font-bold text-gray-400">DESCRIBE ERROR OR FEEDBACK</label>
-                    <textarea id="support-text-input" rows="4" placeholder="Write your context here..." class="w-full bg-gray-50 text-gray-800 border rounded-xl px-3 py-2 text-xs font-medium focus:outline-none resize-none"></textarea>
-                    <button onclick="submitSupportTicket()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-2.5 rounded-xl transition">Submit Ticket</button>
-                </div>
+                <textarea id="support-text-input" rows="4" placeholder="Write context here..." class="w-full bg-gray-50 border rounded-xl px-3 py-2 text-xs resize-none"></textarea>
+                <button onclick="submitSupportTicket()" class="w-full bg-red-600 text-white font-bold text-xs py-2.5 rounded-xl">Submit Ticket</button>
             </div>
         </div>
     </div>
 
     <div id="comment-modal" class="fixed inset-0 bg-black/60 z-[160] hidden items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl w-full max-w-sm p-5 flex flex-col max-h-[80vh]">
+        <div class="bg-white rounded-3xl w-full max-w-sm p-5 flex flex-col max-h-[80vh] text-gray-900">
             <div class="flex items-center justify-between border-b pb-3 mb-3">
-                <h3 class="font-bold text-lg text-gray-900">Comments</h3>
+                <h3 class="font-bold text-lg">Comments</h3>
                 <button onclick="closeCommentModal()" class="text-gray-500 font-bold p-1">✕</button>
             </div>
             <div id="comments-list-container" class="flex-1 overflow-y-auto space-y-3 pr-1 text-sm my-2 min-h-[160px]"></div>
@@ -244,12 +299,11 @@
             <span id="modal-author" class="text-red-500 text-[10px] mt-1 font-black tracking-wider uppercase cursor-pointer hover:underline"></span>
             
             <div class="flex items-center justify-center gap-6 mt-4 w-full bg-white/5 py-2.5 px-4 rounded-full max-w-xs border border-white/10">
-                <button id="modal-like-trigger-btn" class="flex items-center gap-1.5 focus:outline-none text-white text-xs font-bold transition active:scale-125">
+                <button id="modal-like-trigger-btn" class="flex items-center gap-1.5 text-white text-xs font-bold transition active:scale-125">
                     <svg id="modal-like-svg" class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
                     <span id="modal-like-counter-text">0 likes</span>
                 </button>
-                
-                <button id="modal-comment-trigger-btn" class="flex items-center gap-1.5 focus:outline-none text-white text-xs font-bold transition active:scale-110">
+                <button id="modal-comment-trigger-btn" class="flex items-center gap-1.5 text-white text-xs font-bold transition active:scale-110">
                     <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
                     <span>Comments</span>
                 </button>
@@ -257,9 +311,7 @@
         </div>
 
         <div class="w-full max-w-sm mx-auto pb-8">
-            <button id="modal-download-btn" onclick="downloadImage()" class="w-full bg-white text-black text-sm font-black py-4 px-6 rounded-full flex items-center justify-center gap-2 shadow-xl hover:bg-gray-100 transition">
-                Download to Gallery
-            </button>
+            <button id="modal-download-btn" onclick="downloadImage()" class="w-full bg-white text-black text-sm font-black py-4 px-6 rounded-full flex items-center justify-center gap-2 shadow-xl hover:bg-gray-100 transition">Download to Gallery</button>
         </div>
     </div>
 
@@ -298,48 +350,16 @@
         let currentUserData = null;
         let currentModalImgData = ""; 
         let currentModalTitle = "";
-        let customProfileCache = { name: "", pfp: "", bio: "", username: "" };
+        let customProfileCache = { name: "", pfp: "", bio: "", username: "", isPremium: false, theme: "default", font: "font-modern" };
         let activeLanguage = "en";
         
         let activeChatTargetUid = "bot"; 
         let activeCommentPinId = null;
-        let selectedProfileUid = "me"; // Space context view manager
+        let selectedProfileUid = "me";
 
         const langPack = {
-            en: {
-                tagline: "Discover, track and share premium visual ideas with your cloud sync profile instantly.",
-                loginBtn: "Continue with Google",
-                searchPlaceholder: "Search inspired ideas...",
-                controlRoom: "Stardust Control Room",
-                welcomeMsg: "Welcome to STARDUST Core System! Click any dynamic active user on the left to start a private encrypted real-time chat, or talk to the Bot stream directly.",
-                sendBtn: "Send",
-                myUploads: "My Upload Records",
-                settingsTitle: "Settings",
-                optAccount: "1. Edit Name, Bio & Handle",
-                optPfp: "2. Change Profile Picture",
-                optLang: "3. System Language",
-                optSupport: "4. Customer Support",
-                closeSettings: "Close",
-                signOut: "Sign Out",
-                noBio: "No bio written yet."
-            },
-            hi: {
-                tagline: "क्लाउड सिंक प्रोफ़ाइल के साथ प्रीमियम विज़ुअल आइडियाज़ खोजें और तुरंत साझा करें।",
-                loginBtn: "गूगल के साथ आगे बढ़ें",
-                searchPlaceholder: "आइडियाज़ खोजें...",
-                controlRoom: "स्टारडस्ट कंट्रोल रूम",
-                welcomeMsg: "स्टारडस्ट कोर सिस्टम में आपका स्वागत है! किसी भी यूज़र पर क्लिक करके चैट शुरू करें या बोट से बात करें।",
-                sendBtn: "भेjें",
-                myUploads: "मेरे अपलोड रिकॉर्ड्स",
-                settingsTitle: "सेटिंग्स",
-                optAccount: "1. नाम, बायो और हैंडल बदलें",
-                optPfp: "2. प्रोफाइल फोटो अपलोड करें",
-                optLang: "3. सिस्टम की भाषा",
-                optSupport: "4. कस्टमर सपोर्ट डेस्क",
-                closeSettings: "बंद करें",
-                signOut: "लॉग आउट",
-                noBio: "अभी तक कोई बायो नहीं लिखा गया है।"
-            }
+            en: { tagline: "Discover, track and share premium visual ideas with your cloud sync profile instantly.", loginBtn: "Continue with Google", searchPlaceholder: "Search inspired ideas...", sendBtn: "Send", myUploads: "Upload Records", settingsTitle: "Settings" },
+            hi: { tagline: "क्लाउड सिंक प्रोफ़ाइल के साथ प्रीमियम विज़ुअल आइडियाज़ खोजें और तुरंत साझा करें।", loginBtn: "गूगल के साथ आगे बढ़ें", searchPlaceholder: "आइडियाज़ खोजें...", sendBtn: "भेजें", myUploads: "मेरे अपलोड", settingsTitle: "सेटिंग्स" }
         };
 
         auth.onAuthStateChanged((user) => {
@@ -347,27 +367,24 @@
                 currentUserData = user;
                 document.getElementById('auth-wall').classList.add('hidden');
                 
-                // Track dynamic node for self session details
                 database.ref('users/' + user.uid).on('value', (snapshot) => {
-                    const cloudData = snapshot.val();
-                    if(cloudData) {
-                        customProfileCache.name = cloudData.name || user.displayName;
-                        customProfileCache.pfp = cloudData.pfp || user.photoURL;
-                        customProfileCache.bio = cloudData.bio || "No bio written yet.";
-                        customProfileCache.username = cloudData.username || user.email.split('@')[0];
-                    } else {
-                        customProfileCache.name = user.displayName;
-                        customProfileCache.pfp = user.photoURL || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150";
-                        customProfileCache.bio = "Inspired via Stardust Core.";
-                        customProfileCache.username = user.email.split('@')[0];
-                        
+                    const cloudData = snapshot.val() || {};
+                    customProfileCache.name = cloudData.name || user.displayName;
+                    customProfileCache.pfp = cloudData.pfp || user.photoURL;
+                    customProfileCache.bio = cloudData.bio || "No bio written yet.";
+                    customProfileCache.username = cloudData.username || user.email.split('@')[0];
+                    customProfileCache.isPremium = cloudData.isPremium || false;
+                    customProfileCache.theme = cloudData.theme || "default";
+                    customProfileCache.font = cloudData.font || "font-modern";
+
+                    if(!cloudData.username) {
                         database.ref('users/' + user.uid).set({
-                            name: customProfileCache.name,
-                            pfp: customProfileCache.pfp,
-                            bio: customProfileCache.bio,
-                            username: customProfileCache.username
+                            name: customProfileCache.name, pfp: customProfileCache.pfp, bio: customProfileCache.bio, username: customProfileCache.username, isPremium: false, theme: "default", font: "font-modern"
                         });
                     }
+
+                    // Render custom UI according to Premium values
+                    setupPremiumUIElements(customProfileCache.isPremium);
 
                     if(selectedProfileUid === "me") {
                         loadUserIdentitySpace("me");
@@ -383,15 +400,48 @@
             }
         });
 
-        function handleGoogleLogin() {
-            auth.signInWithPopup(googleProvider).catch((err) => { alert("Auth Error: " + err.message); });
+        function handleGoogleLogin() { auth.signInWithPopup(googleProvider).catch((err) => { alert("Auth Error: " + err.message); }); }
+        function handleLogOut() { auth.signOut().then(() => { location.reload(); }); }
+
+        // SUBSCRIPTION NITRO ENGINE SIMULATION
+        function simulatePremiumPurchase() {
+            if(!currentUserData) return;
+            const confirmBuy = confirm("Bhai, kya aap Cheap Nitro Subscription Plan activate karke saare Profile Theme aur Custom Fonts unlock karna chahte hain?");
+            if(confirmBuy) {
+                database.ref('users/' + currentUserData.uid).update({ isPremium: true }).then(() => {
+                    alert("🎉 Badhai Ho! Aapka STARDUST NITRO PREMIUM active ho gaya hai. Ab aap Colors aur Fonts change kar sakte hain!");
+                });
+            }
         }
 
-        function handleLogOut() {
-            auth.signOut().then(() => { location.reload(); });
+        function setupPremiumUIElements(isPremium) {
+            const promoCard = document.getElementById('nitro-promo-card');
+            const premiumSec = document.getElementById('premium-settings-section');
+            if(isPremium) {
+                promoCard.innerHTML = `<div class='text-center font-black text-xs py-1 tracking-widest'>⭐ YOU ARE A NITRO PREMIUM MEMBER</div>`;
+                promoCard.className = "bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 p-3 rounded-2xl text-white shadow-inner";
+                premiumSec.classList.remove('hidden');
+                
+                // Set current values in dropdown selectors
+                document.getElementById('premium-theme-select').value = customProfileCache.theme;
+                document.getElementById('premium-font-select').value = customProfileCache.font;
+            } else {
+                premiumSec.classList.add('hidden');
+            }
         }
 
-        // PROFILE SPACE ARCHITECTURE WITH INTEGRATED LIVE TRAFFIC LOADER (FOLLOWERS / UNFOLLOWERS INDEX)
+        function applyPremiumCustomization() {
+            if(!currentUserData || !customProfileCache.isPremium) return;
+            const chosenTheme = document.getElementById('premium-theme-select').value;
+            const chosenFont = document.getElementById('premium-font-select').value;
+
+            database.ref('users/' + currentUserData.uid).update({
+                theme: chosenTheme,
+                font: chosenFont
+            });
+        }
+
+        // LOADER PROFILE HUB WITH DYNAMIC CLASS WRAPPERS
         function loadUserIdentitySpace(targetUid) {
             if(!currentUserData) return;
             selectedProfileUid = targetUid;
@@ -399,242 +449,168 @@
             const isMe = (targetUid === "me" || targetUid === currentUserData.uid);
             const finalUid = isMe ? currentUserData.uid : targetUid;
             
-            // UI Component state resets
             document.getElementById('profile-back-to-my-btn').style.display = isMe ? "none" : "block";
             document.getElementById('profile-settings-trigger-btn').style.display = isMe ? "block" : "none";
             document.getElementById('profile-follow-action-btn').style.display = isMe ? "none" : "block";
 
             database.ref('users/' + finalUid).once('value', (snapshot) => {
                 const uData = snapshot.val() || {};
+                
+                const profSection = document.getElementById('tab-profile');
+                const pfpImgContainer = document.getElementById('pfp-wrapper');
+                const premBadge = document.getElementById('premium-badge');
+
+                // Clear older Nitro CSS bindings completely
+                profSection.className = "tab-content text-center mt-2 max-w-md mx-auto p-6 rounded-3xl transition-all duration-300 relative border";
+                pfpImgContainer.className = "w-28 h-28 mx-auto flex items-center justify-center";
+                premBadge.classList.add('hidden');
+
+                // Bind fresh dynamic subscription rules if present
+                if(uData.isPremium) {
+                    premBadge.classList.remove('hidden');
+                    pfpImgContainer.classList.add('premium-avatar-container');
+                    if(uData.theme && uData.theme !== 'default') profSection.classList.add(uData.theme);
+                    if(uData.font) profSection.classList.add(uData.font);
+                }
+
                 document.getElementById('profile-name').innerText = uData.name || "Stardust Member";
                 document.getElementById('profile-username').innerText = '@' + (uData.username || "creator");
                 document.getElementById('profile-img').src = uData.pfp || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150";
                 document.getElementById('profile-bio').innerText = uData.bio || "No bio written yet.";
                 
-                // Fetch Social Network Counts
                 syncSocialNetworkCounters(finalUid);
                 switchTab('profile');
             });
         }
 
-        // SYSTEM NETWORKING SUITE: LIVE FOLLOW LOGIC WITH FIREBASE MAPS
         function syncSocialNetworkCounters(uid) {
-            // Followers node tracking
             database.ref('network/followers/' + uid).on('value', (snap) => {
                 const data = snap.val() || {};
                 document.getElementById('profile-followers-count').innerText = Object.keys(data).length;
-                
                 if(uid !== currentUserData.uid) {
                     const btn = document.getElementById('profile-follow-action-btn');
                     if(data[currentUserData.uid]) {
-                        btn.innerText = "Unfollow";
-                        btn.className = "mt-4 w-32 text-xs font-black py-2.5 rounded-full bg-gray-100 text-gray-800 transition active:scale-95 shadow-sm";
+                        btn.innerText = "Unfollow"; btn.className = "mt-4 w-32 text-xs font-black py-2.5 rounded-full bg-gray-100 text-gray-800 transition shadow-sm";
                     } else {
-                        btn.innerText = "Follow";
-                        btn.className = "mt-4 w-32 text-xs font-black py-2.5 rounded-full bg-red-600 text-white transition active:scale-95 shadow-sm";
+                        btn.innerText = "Follow"; btn.className = "mt-4 w-32 text-xs font-black py-2.5 rounded-full bg-red-600 text-white transition shadow-sm";
                     }
                 }
             });
 
-            // Following node tracking
             database.ref('network/following/' + uid).on('value', (snap) => {
-                const data = snap.val() || {};
-                document.getElementById('profile-following-count').innerText = Object.keys(data).length;
+                document.getElementById('profile-following-count').innerText = Object.keys(snap.val() || {}).length;
             });
 
-            // Stream user record posts filter
             database.ref('pins').once('value', (snapshot) => {
                 const profileContainer = document.getElementById('profile-pin-container');
-                profileContainer.innerHTML = '';
-                const data = snapshot.val();
-                let totalPinsUploaded = 0;
-
+                profileContainer.innerHTML = ''; const data = snapshot.val(); let totalPins = 0;
                 if(data) {
                     Object.keys(data).reverse().forEach(key => {
                         const pin = data[key];
                         if(pin.uploaderUid === uid) {
-                            totalPinsUploaded++;
-                            const element = document.createElement('div');
-                            element.className = "pin-item bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:opacity-95 transition relative flex flex-col cursor-zoom-in";
+                            totalPins++; const element = document.createElement('div');
+                            element.className = "pin-item bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:opacity-95 text-gray-900 cursor-zoom-in";
                             element.onclick = () => openPhotoModal(pin.img, pin.title || "Stardust Card", pin.desc || "", pin.uploaderName || "Anonymous", key, pin.uploaderUid);
-                            element.innerHTML = `<img src="${pin.img}" class="w-full h-auto object-cover"><div class="p-2 text-[11px] font-bold truncate">${pin.title || 'Stardust Idea'}</div>`;
+                            element.innerHTML = `<img src="${pin.img}" class="w-full h-auto object-cover"><div class="p-2 text-[11px] font-bold truncate">${pin.title || 'Idea'}</div>`;
                             profileContainer.appendChild(element);
                         }
                     });
                 }
-                if(totalPinsUploaded === 0) profileContainer.innerHTML = '<div class="text-center text-gray-400 text-xs py-10 col-span-2">No uploads shared.</div>';
+                if(totalPins === 0) profileContainer.innerHTML = '<div class="text-center text-gray-400 text-xs py-10 col-span-2">No uploads shared.</div>';
             });
         }
 
         function handleNetworkFollowToggle() {
             if(selectedProfileUid === "me" || selectedProfileUid === currentUserData.uid) return;
             const targetUid = selectedProfileUid;
-            
             const followerRef = database.ref('network/followers/' + targetUid + '/' + currentUserData.uid);
             const followingRef = database.ref('network/following/' + currentUserData.uid + '/' + targetUid);
-
             followerRef.once('value', (snap) => {
-                if(snap.exists()) {
-                    followerRef.remove();
-                    followingRef.remove();
-                } else {
-                    followerRef.set(true);
-                    followingRef.set(true);
-                }
+                if(snap.exists()) { followerRef.remove(); followingRef.remove(); } else { followerRef.set(true); followingRef.set(true); }
             });
         }
 
-        // ADVANCED REALTIME USER HANDLE SEARCH ENGINE DISCOVERY TRAY
+        // USERNAME FILTER ENGINE
         function filterPinsAndUsers() {
             const query = document.getElementById('search-bar').value.toLowerCase().trim();
             const userTray = document.getElementById('user-search-results-tray');
-            
-            if(!query) {
-                userTray.classList.add('hidden');
-                userTray.innerHTML = '';
-                // Fallback normal card filter loop
-                document.querySelectorAll('#pin-container .pin-item').forEach(item => item.style.display = "block");
-                return;
-            }
+            if(!query) { userTray.classList.add('hidden'); userTray.innerHTML = ''; document.querySelectorAll('#pin-container .pin-item').forEach(item => item.style.display = "block"); return; }
+            document.querySelectorAll('#pin-container .pin-item').forEach(item => { item.style.display = item.innerText.toLowerCase().includes(query) ? "block" : "none"; });
 
-            // 1. Filtering local DOM layout visual posts matching context text
-            document.querySelectorAll('#pin-container .pin-item').forEach(item => {
-                item.style.display = item.innerText.toLowerCase().includes(query) ? "block" : "none";
-            });
-
-            // 2. Fetching remote dynamic unique usernames mapped in core space
             database.ref('users').orderByChild('username').startAt(query).endAt(query + "\uf8ff").once('value', (snapshot) => {
-                userTray.innerHTML = '';
-                const users = snapshot.val();
-                let countFound = 0;
-
+                userTray.innerHTML = ''; const users = snapshot.val(); let count = 0;
                 if(users) {
                     Object.keys(users).forEach(uid => {
-                        countFound++;
-                        const u = users[uid];
-                        const div = document.createElement('div');
-                        div.className = "flex items-center justify-between bg-white p-2 rounded-xl border border-gray-100 shadow-sm cursor-pointer hover:bg-red-50 transition";
-                        div.onclick = () => {
-                            userTray.classList.add('hidden');
-                            document.getElementById('search-bar').value = '';
-                            loadUserIdentitySpace(uid);
-                        };
-                        div.innerHTML = `
-                            <div class="flex items-center gap-2">
-                                <img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" class="w-6 h-6 rounded-full object-cover">
-                                <div class="text-xs">
-                                    <p class="font-black text-gray-800">${u.name || 'Stardust Creator'}</p>
-                                    <p class="text-gray-400 text-[10px]">@${u.username || 'creator'}</p>
-                                </div>
-                            </div>
-                            <span class="text-[10px] bg-red-600 text-white font-bold py-1 px-2.5 rounded-full">View Hub</span>
-                        `;
+                        count++; const u = users[uid]; const div = document.createElement('div');
+                        div.className = "flex items-center justify-between bg-white p-2 rounded-xl border cursor-pointer hover:bg-red-50 text-gray-900";
+                        div.onclick = () => { userTray.classList.add('hidden'); document.getElementById('search-bar').value = ''; loadUserIdentitySpace(uid); };
+                        div.innerHTML = `<div class="flex items-center gap-2"><img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" class="w-6 h-6 rounded-full object-cover"><div class="text-xs"><p class="font-black">${u.name || 'Member'}</p><p class="text-gray-400 text-[10px]">@${u.username}</p></div></div><span class="text-[10px] bg-red-600 text-white font-bold py-1 px-2.5 rounded-full">View Hub</span>`;
                         userTray.appendChild(div);
                     });
                 }
-
-                if(countFound > 0) userTray.classList.remove('hidden');
-                else userTray.classList.add('hidden');
+                if(count > 0) userTray.classList.remove('hidden'); else userTray.classList.add('hidden');
             });
         }
 
-        // MAIN FEEDS RENDERING MATRIX PIPELINES
+        // GLOBAL FEED STREAM
         function listenToCloudDataStream() {
             database.ref('pins').on('value', (snapshot) => {
                 const globalContainer = document.getElementById('pin-container');
-                globalContainer.innerHTML = '';
-                const data = snapshot.val();
-                
+                globalContainer.innerHTML = ''; const data = snapshot.val();
                 if(data) {
                     Object.keys(data).reverse().forEach(key => {
-                        const pin = data[key];
-                        const displayTitle = pin.title ? pin.title : "Stardust Idea";
-                        const likesObj = pin.likes || {};
-                        const totalLikes = Object.keys(likesObj).length;
+                        const pin = data[key]; const likesObj = pin.likes || {}; const totalLikes = Object.keys(likesObj).length;
                         const likedByMe = currentUserData ? !!likesObj[currentUserData.uid] : false;
-                        
                         const pinElement = document.createElement('div');
                         pinElement.className = "pin-item bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm transition relative flex flex-col";
-                        
                         pinElement.innerHTML = `
-                            <div class="relative overflow-hidden cursor-zoom-in" id="img-wrapper-${key}">
-                                <img src="${pin.img}" class="w-full h-auto object-cover">
-                            </div>
+                            <div class="relative overflow-hidden cursor-zoom-in" id="img-wrapper-${key}"><img src="${pin.img}" class="w-full h-auto object-cover"></div>
                             <div class="p-3 flex flex-col justify-between flex-1">
                                 <div id="text-click-hook-${key}">
-                                    <h3 class="font-bold text-xs text-gray-800 tracking-tight truncate">${displayTitle}</h3>
+                                    <h3 class="font-bold text-xs text-gray-800 truncate">${pin.title || 'Stardust Idea'}</h3>
                                     <p class="text-[11px] text-gray-400 truncate mt-0.5">${pin.desc || ''}</p>
                                 </div>
                                 <div class="flex items-center justify-between mt-3 pt-2 border-t border-gray-50">
                                     <span class="text-[10px] font-bold text-gray-400">${totalLikes} likes</span>
                                     <div class="flex items-center gap-2.5">
-                                        <button onclick="openCommentModal('${key}')" class="focus:outline-none transition active:scale-110">
-                                            <svg class="w-4 h-4 text-gray-500 hover:text-black" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                                        </button>
-                                        <button onclick="toggleLikePost('${key}')" class="focus:outline-none transition active:scale-125">
-                                            <svg class="w-4 h-4 ${likedByMe ? 'text-red-500 fill-current' : 'text-gray-500'}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                                        </button>
+                                        <button onclick="openCommentModal('${key}')"><svg class="w-4 h-4 text-gray-500 hover:text-black" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg></button>
+                                        <button onclick="toggleLikePost('${key}')"><svg class="w-4 h-4 ${likedByMe ? 'text-red-500 fill-current' : 'text-gray-500'}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg></button>
                                     </div>
                                 </div>
                             </div>
                         `;
-                        
                         globalContainer.appendChild(pinElement);
-                        
-                        // Bind detailed view triggers on card items click
-                        const setupTriggers = () => {
-                            openPhotoModal(pin.img, displayTitle, pin.desc || "", pin.uploaderName || "Anonymous", key, pin.uploaderUid);
-                        };
+                        const setupTriggers = () => { openPhotoModal(pin.img, pin.title || "Stardust Card", pin.desc || "", pin.uploaderName || "Anonymous", key, pin.uploaderUid); };
                         pinElement.querySelector(`#img-wrapper-${key}`).onclick = setupTriggers;
                         pinElement.querySelector(`#text-click-hook-${key}`).onclick = setupTriggers;
-
-                        // Double tap gesture setup
-                        pinElement.querySelector(`#img-wrapper-${key}`).addEventListener('dblclick', (e) => {
-                            handleDoubleTapLikeAnimation(e, key);
-                        });
+                        pinElement.querySelector(`#img-wrapper-${key}`).addEventListener('dblclick', (e) => { handleDoubleTapLikeAnimation(e, key); });
                     });
                 }
-                if(!globalContainer.innerHTML) globalContainer.innerHTML = '<div class="text-center text-gray-400 py-16 col-span-2 font-medium">No ideas shared yet.</div>';
+                if(!globalContainer.innerHTML) globalContainer.innerHTML = '<div class="text-center text-gray-400 py-16 col-span-2">No cards shared.</div>';
             });
         }
 
-        // LIKES CORE MANAGEMENT SYNC ROUTERS
         function toggleLikePost(pinId) {
             if(!currentUserData) return;
             const likeRef = database.ref('pins/' + pinId + '/likes/' + currentUserData.uid);
-            likeRef.once('value', (snap) => {
-                if(snap.exists()) likeRef.remove();
-                else likeRef.set(true);
-            });
+            likeRef.once('value', (snap) => { if(snap.exists()) likeRef.remove(); else likeRef.set(true); });
         }
 
         function handleDoubleTapLikeAnimation(event, pinId) {
-            toggleLikePost(pinId);
-            const container = event.currentTarget;
-            const heart = document.createElement('div');
+            toggleLikePost(pinId); const container = event.currentTarget; const heart = document.createElement('div');
             heart.className = "absolute inset-0 flex items-center justify-center pointer-events-none animate-ping";
             heart.innerHTML = `<svg class="w-16 h-16 text-red-500 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
-            container.appendChild(heart);
-            setTimeout(() => heart.remove(), 600);
+            container.appendChild(heart); setTimeout(() => heart.remove(), 600);
         }
 
-        // STARDUST REALTIME POST DISCUSSION PACK
         function openCommentModal(pinId) {
-            activeCommentPinId = pinId;
-            document.getElementById('comment-modal').style.display = 'flex';
-            
+            activeCommentPinId = pinId; document.getElementById('comment-modal').style.display = 'flex';
             database.ref('pins/' + pinId + '/comments').on('value', (snapshot) => {
-                const container = document.getElementById('comments-list-container');
-                container.innerHTML = '';
-                const list = snapshot.val();
-                if(!list) {
-                    container.innerHTML = `<p class="text-gray-400 text-center text-xs py-6">Be the first to comment!</p>`;
-                    return;
-                }
+                const container = document.getElementById('comments-list-container'); container.innerHTML = ''; const list = snapshot.val();
+                if(!list) { container.innerHTML = `<p class="text-gray-400 text-center text-xs py-6">No comments yet.</p>`; return; }
                 Object.keys(list).forEach(cKey => {
-                    const comment = list[cKey];
-                    const row = document.createElement('div');
-                    row.className = "bg-gray-50 rounded-2xl p-2.5 border border-gray-100 text-xs text-left";
+                    const comment = list[cKey]; const row = document.createElement('div');
+                    row.className = "bg-gray-50 rounded-2xl p-2.5 border text-xs text-left";
                     row.innerHTML = `<p class="font-black text-gray-700">@${comment.username || 'member'}</p><p class="text-gray-600 mt-0.5">${comment.text}</p>`;
                     container.appendChild(row);
                 });
@@ -642,179 +618,91 @@
             });
 
             document.getElementById('submit-comment-btn').onclick = () => {
-                const input = document.getElementById('comment-input-field');
-                const val = input.value.trim();
-                if(!val || !currentUserData) return;
-                
-                database.ref('pins/' + pinId + '/comments').push({
-                    userId: currentUserData.uid,
-                    username: customProfileCache.username,
-                    text: val,
-                    timestamp: Date.now()
-                }).then(() => { input.value = ''; });
+                const input = document.getElementById('comment-input-field'); const val = input.value.trim(); if(!val || !currentUserData) return;
+                database.ref('pins/' + pinId + '/comments').push({ userId: currentUserData.uid, username: customProfileCache.username, text: val, timestamp: Date.now() }).then(() => { input.value = ''; });
             };
         }
 
-        function closeCommentModal() {
-            if(activeCommentPinId) database.ref('pins/' + activeCommentPinId + '/comments').off();
-            document.getElementById('comment-modal').style.display = 'none';
-        }
+        function closeCommentModal() { if(activeCommentPinId) database.ref('pins/' + activeCommentPinId + '/comments').off(); document.getElementById('comment-modal').style.display = 'none'; }
 
-        // PREMIUM PHOTO PREVIEW HOOK INTEGRATION FOR DETAILED SCREEN
         function openPhotoModal(imgSrc, titleText, descText, author, pinKey, uploaderUid) {
             currentModalImgData = imgSrc; currentModalTitle = titleText;
             document.getElementById('modal-img').src = imgSrc;
             document.getElementById('modal-title').innerText = titleText;
             document.getElementById('modal-desc').innerText = descText;
-            
-            const authorEl = document.getElementById('modal-author');
-            authorEl.innerText = "BY: " + author.toUpperCase();
-            
-            // Dynamic Author Profile Redirection Setup
-            authorEl.onclick = () => {
-                closePhotoModal();
-                loadUserIdentitySpace(uploaderUid);
-            };
+            const authorEl = document.getElementById('modal-author'); authorEl.innerText = "BY: " + author.toUpperCase();
+            authorEl.onclick = () => { closePhotoModal(); loadUserIdentitySpace(uploaderUid); };
 
-            // Dynamic Action Listeners Attachment inside Modal Wrapper View Screen
-            const likeSvg = document.getElementById('modal-like-svg');
-            const likeTxt = document.getElementById('modal-like-counter-text');
-            const likeBtn = document.getElementById('modal-like-trigger-btn');
-            const commBtn = document.getElementById('modal-comment-trigger-btn');
-
-            // Listen Live to specific post counters
+            const likeSvg = document.getElementById('modal-like-svg'); const likeTxt = document.getElementById('modal-like-counter-text');
             database.ref('pins/' + pinKey + '/likes').on('value', (snapshot) => {
-                const likes = snapshot.val() || {};
-                const total = Object.keys(likes).length;
-                likeTxt.innerText = `${total} likes`;
-                
-                if(currentUserData && likes[currentUserData.uid]) {
-                    likeSvg.className = "w-5 h-5 text-red-500 fill-current";
-                } else {
-                    likeSvg.className = "w-5 h-5 text-gray-400";
-                }
+                const likes = snapshot.val() || {}; const total = Object.keys(likes).length; likeTxt.innerText = `${total} likes`;
+                if(currentUserData && likes[currentUserData.uid]) likeSvg.className = "w-5 h-5 text-red-500 fill-current"; else likeSvg.className = "w-5 h-5 text-gray-400";
             });
 
-            likeBtn.onclick = () => toggleLikePost(pinKey);
-            commBtn.onclick = () => openCommentModal(pinKey);
-
-            document.getElementById('photo-modal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            
-            // Cleanup on dismiss
-            window.activeModalPinRefKey = pinKey;
+            document.getElementById('modal-like-trigger-btn').onclick = () => toggleLikePost(pinKey);
+            document.getElementById('modal-comment-trigger-btn').onclick = () => openCommentModal(pinKey);
+            document.getElementById('photo-modal').style.display = 'flex'; window.activeModalPinRefKey = pinKey;
         }
         
-        function closePhotoModal() { 
-            if(window.activeModalPinRefKey) {
-                database.ref('pins/' + window.activeModalPinRefKey + '/likes').off();
-            }
-            document.getElementById('photo-modal').style.display = 'none'; 
-            document.body.style.overflow = ''; 
-        }
+        function closePhotoModal() { if(window.activeModalPinRefKey) database.ref('pins/' + window.activeModalPinRefKey + '/likes').off(); document.getElementById('photo-modal').style.display = 'none'; }
 
-        // REAL-TIME INSTANT ENCRYPTED INTERACTIVE PRIVATE CHATS ENGINE
+        // INBOX RE-ROUTING
         function syncActiveInboxMembers() {
             database.ref('users').on('value', (snapshot) => {
-                const listEl = document.getElementById('inbox-users-list');
-                listEl.innerHTML = '';
-                const users = snapshot.val();
-                
+                const listEl = document.getElementById('inbox-users-list'); listEl.innerHTML = ''; const users = snapshot.val();
                 const botRow = document.createElement('div');
-                botRow.className = "p-2 hover:bg-gray-100 rounded-xl cursor-pointer text-xs font-bold text-red-600 border border-red-50 flex items-center gap-1.5 transition";
-                botRow.onclick = () => selectActiveChatTarget('bot', 'Stardust Broadcast Bot');
-                botRow.innerHTML = `🤖 <span>System Core Bot</span>`;
-                listEl.appendChild(botRow);
+                botRow.className = "p-2 hover:bg-gray-100 rounded-xl cursor-pointer text-xs font-bold text-red-600 border flex items-center gap-1.5 transition";
+                botRow.onclick = () => selectActiveChatTarget('bot', 'System Bot');
+                botRow.innerHTML = `🤖 <span>Broadcast Bot</span>`; listEl.appendChild(botRow);
 
                 if(users && currentUserData) {
                     Object.keys(users).forEach(uid => {
-                        if(uid === currentUserData.uid) return; 
-                        const u = users[uid];
-                        const row = document.createElement('div');
-                        row.className = "p-2 hover:bg-gray-100 rounded-xl cursor-pointer text-xs font-semibold text-gray-700 truncate transition flex items-center gap-2";
-                        row.onclick = () => selectActiveChatTarget(uid, u.name || 'User Handle');
-                        row.innerHTML = `<img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" class="w-4 h-4 rounded-full object-cover"> <span>@${u.username || 'creator'}</span>`;
+                        if(uid === currentUserData.uid) return; const u = users[uid]; const row = document.createElement('div');
+                        row.className = "p-2 hover:bg-gray-100 rounded-xl cursor-pointer text-xs font-semibold text-gray-700 truncate flex items-center gap-2";
+                        row.onclick = () => selectActiveChatTarget(uid, u.name || 'User');
+                        row.innerHTML = `<img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" class="w-4 h-4 rounded-full object-cover"> <span>@${u.username}</span>`;
                         listEl.appendChild(row);
                     });
                 }
             });
         }
 
-        function selectActiveChatTarget(uid, nameText) {
-            activeChatTargetUid = uid;
-            document.getElementById('chat-window-header-title').innerText = (uid === 'bot') ? 'Stardust Broadcast Bot' : `Chat: @${nameText}`;
-            listenToPrivateChatEngine();
-        }
+        function selectActiveChatTarget(uid, nameText) { activeChatTargetUid = uid; document.getElementById('chat-window-header-title').innerText = (uid === 'bot') ? 'Broadcast Bot' : `Chat: @${nameText}`; listenToPrivateChatEngine(); }
 
         function listenToPrivateChatEngine() {
-            const chatBox = document.getElementById('chat-box');
-            chatBox.innerHTML = '';
-            
-            if(activeChatTargetUid === 'bot') {
-                chatBox.innerHTML = `<div id="lang-welcome-msg" class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">Welcome to STARDUST Core System! Click any dynamic active user on the left to start a private encrypted real-time chat, or talk to the Bot stream directly.</div>`;
-                return;
-            }
-
-            const chatNodeRef = currentUserData.uid < activeChatTargetUid 
-                ? `${currentUserData.uid}_${activeChatTargetUid}` 
-                : `${activeChatTargetUid}_${currentUserData.uid}`;
-
-            database.ref('chats/' + chatNodeRef).off(); 
+            const chatBox = document.getElementById('chat-box'); chatBox.innerHTML = '';
+            if(activeChatTargetUid === 'bot') { chatBox.innerHTML = `<div class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">Welcome to STARDUST Core System! Click any dynamic active user on the left to start a private chat.</div>`; return; }
+            const chatNodeRef = currentUserData.uid < activeChatTargetUid ? `${currentUserData.uid}_${activeChatTargetUid}` : `${activeChatTargetUid}_${currentUserData.uid}`;
+            database.ref('chats/' + chatNodeRef).off();
             database.ref('chats/' + chatNodeRef).on('value', (snapshot) => {
-                chatBox.innerHTML = '';
-                const logs = snapshot.val();
-                if(!logs) {
-                    chatBox.innerHTML = `<p class="text-center text-xs text-gray-400 py-10">No logs on encryption stack. Say hello! 👋</p>`;
-                    return;
-                }
+                chatBox.innerHTML = ''; const logs = snapshot.val();
+                if(!logs) { chatBox.innerHTML = `<p class="text-center text-xs text-gray-400 py-10">No messages. Say hello! 👋</p>`; return; }
                 Object.keys(logs).forEach(mId => {
-                    const msg = logs[mId];
-                    const bubble = document.createElement('div');
-                    if(msg.sender === currentUserData.uid) {
-                        bubble.className = "bg-black text-white p-3.5 rounded-2xl rounded-tr-none text-sm max-w-[85%] ml-auto text-right font-medium";
-                    } else {
-                        bubble.className = "bg-gray-100 text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium";
-                    }
-                    bubble.innerText = msg.text;
-                    chatBox.appendChild(bubble);
+                    const msg = logs[mId]; const bubble = document.createElement('div');
+                    bubble.className = msg.sender === currentUserData.uid ? "bg-black text-white p-3.5 rounded-2xl rounded-tr-none text-sm max-w-[85%] ml-auto text-right font-medium" : "bg-gray-100 text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium";
+                    bubble.innerText = msg.text; chatBox.appendChild(bubble);
                 });
                 chatBox.scrollTop = chatBox.scrollHeight;
             });
         }
 
         function sendChatMessage() {
-            const input = document.getElementById('chat-input');
-            const msgVal = input.value.trim();
-            if(!msgVal) return;
-
+            const input = document.getElementById('chat-input'); const msgVal = input.value.trim(); if(!msgVal) return;
             if(activeChatTargetUid === 'bot') {
-                const chatBox = document.getElementById('chat-box');
-                chatBox.innerHTML += `<div class="bg-black text-white p-3.5 rounded-2xl rounded-tr-none text-sm max-w-[85%] ml-auto text-right font-medium">${msgVal}</div>`;
+                const chatBox = document.getElementById('chat-box'); chatBox.innerHTML += `<div class="bg-black text-white p-3.5 rounded-2xl rounded-tr-none text-sm max-w-[85%] ml-auto text-right font-medium">${msgVal}</div>`;
                 input.value = ''; chatBox.scrollTop = chatBox.scrollHeight;
-                setTimeout(() => {
-                    chatBox.innerHTML += `<div class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">🤖 SYSTEM NOTICE: For dynamic private chats, click any active member handle from the left column listing tray!</div>`;
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                }, 900);
+                setTimeout(() => { chatBox.innerHTML += `<div class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">🤖 SYSTEM NOTICE: Click any active member from the left to start a real chat!</div>`; chatBox.scrollTop = chatBox.scrollHeight; }, 900);
                 return;
             }
-
-            const chatNodeRef = currentUserData.uid < activeChatTargetUid 
-                ? `${currentUserData.uid}_${activeChatTargetUid}` 
-                : `${activeChatTargetUid}_${currentUserData.uid}`;
-
-            database.ref('chats/' + chatNodeRef).push({
-                sender: currentUserData.uid,
-                text: msgVal,
-                timestamp: Date.now()
-            }).then(() => { input.value = ''; });
+            const chatNodeRef = currentUserData.uid < activeChatTargetUid ? `${currentUserData.uid}_${activeChatTargetUid}` : `${activeChatTargetUid}_${currentUserData.uid}`;
+            database.ref('chats/' + chatNodeRef).push({ sender: currentUserData.uid, text: msgVal, timestamp: Date.now() }).then(() => { input.value = ''; });
         }
 
-        // ACCOUNT UTILS SETTINGS REGISTRATION RULES
+        // ACCOUNT MODAL INTERACTIVE CONTROLLER
         function showSettingsPage(pageId) {
             document.getElementById('settings-main-screen').classList.add('hidden');
             document.querySelectorAll('.settings-sub-page').forEach(page => page.classList.add('hidden'));
             document.getElementById(pageId).classList.remove('hidden');
-            
             if(pageId === 'page-account') {
                 document.getElementById('edit-name-input').value = customProfileCache.name;
                 document.getElementById('edit-bio-input').value = customProfileCache.bio === "No bio written yet." ? "" : customProfileCache.bio;
@@ -822,11 +710,7 @@
             }
         }
 
-        function backToSettingsMain() {
-            document.querySelectorAll('.settings-sub-page').forEach(page => page.classList.add('hidden'));
-            document.getElementById('settings-main-screen').classList.remove('hidden');
-        }
-
+        function backToSettingsMain() { document.querySelectorAll('.settings-sub-page').forEach(page => page.classList.add('hidden')); document.getElementById('settings-main-screen').classList.remove('hidden'); }
         function openSettingsModal() { backToSettingsMain(); document.getElementById('settings-modal').style.display = 'flex'; }
         function closeSettingsModal() { document.getElementById('settings-modal').style.display = 'none'; }
 
@@ -836,73 +720,45 @@
             const inputBio = document.getElementById('edit-bio-input').value.trim();
             const inputUsername = document.getElementById('edit-username-input').value.trim().toLowerCase().replace(/\s+/g, '');
 
-            if(!inputName || !inputUsername) { alert("Name and Handle cannot be blank references!"); return; }
+            if(!inputName || !inputUsername) { alert("Fields cannot be blank references!"); return; }
 
             database.ref('users').orderByChild('username').equalTo(inputUsername).once('value', (snapshot) => {
                 if(snapshot.exists()) {
-                    const matches = snapshot.val();
-                    const ownerId = Object.keys(matches)[0];
-                    if(ownerId !== currentUserData.uid) {
-                        alert("Bhai, ye username pehle se koi aur use kar raha hai! Please change custom handle.");
-                        return;
-                    }
+                    const ownerId = Object.keys(snapshot.val())[0];
+                    if(ownerId !== currentUserData.uid) { alert("Username already taken!"); return; }
                 }
-
-                database.ref('users/' + currentUserData.uid).update({
-                    name: inputName, bio: inputBio || "No bio written yet.", username: inputUsername
-                }).then(() => { 
-                    alert("Identity synchronization complete!"); 
-                    closeSettingsModal(); 
-                });
+                database.ref('users/' + currentUserData.uid).update({ name: inputName, bio: inputBio || "No bio written yet.", username: inputUsername }).then(() => { alert("Identity updated!"); closeSettingsModal(); });
             });
         }
 
         function handlePfpUpload(event) {
             const file = event.target.files[0]; if (!file || !currentUserData) return;
             const reader = new FileReader();
-            reader.onload = function(e) {
-                database.ref('users/' + currentUserData.uid).update({ pfp: e.target.result }).then(() => { alert("PFP Synced!"); closeSettingsModal(); });
-            };
+            reader.onload = function(e) { database.ref('users/' + currentUserData.uid).update({ pfp: e.target.result }).then(() => { alert("PFP Synced!"); closeSettingsModal(); }); };
             reader.readAsDataURL(file);
         }
 
         function changeSystemLanguage(langKey) {
-            activeLanguage = langKey;
-            const dict = langPack[langKey] || langPack['en'];
-            document.getElementById('lang-tagline').innerText = dict.tagline;
-            document.getElementById('lang-login-btn').innerText = dict.loginBtn;
-            document.getElementById('search-bar').placeholder = dict.searchPlaceholder;
-            document.getElementById('lang-send-btn').innerText = dict.sendBtn;
-            document.getElementById('lang-my-uploads').innerText = dict.myUploads;
-            document.getElementById('lang-settings-title').innerText = dict.settingsTitle;
+            activeLanguage = langKey; const dict = langPack[langKey] || langPack['en'];
+            document.getElementById('lang-tagline').innerText = dict.tagline; document.getElementById('lang-login-btn').innerText = dict.loginBtn;
+            document.getElementById('search-bar').placeholder = dict.searchPlaceholder; document.getElementById('lang-send-btn').innerText = dict.sendBtn;
+            document.getElementById('lang-my-uploads').innerText = dict.myUploads; document.getElementById('lang-settings-title').innerText = dict.settingsTitle;
         }
 
         function submitSupportTicket() {
-            const input = document.getElementById('support-text-input');
-            const val = input.value.trim(); if(!val) return;
-            database.ref('support_tickets').push({ uid: currentUserData.uid, text: val, timestamp: Date.now() }).then(() => { alert("Ticket Sent!"); input.value = ''; closeSettingsModal(); });
+            const input = document.getElementById('support-text-input'); if(!input.value.trim()) return;
+            database.ref('support_tickets').push({ uid: currentUserData.uid, text: input.value.trim(), timestamp: Date.now() }).then(() => { alert("Ticket Sent!"); input.value = ''; closeSettingsModal(); });
         }
 
-        function downloadImage() {
-            if(!currentModalImgData) return;
-            const link = document.createElement("a"); link.href = currentModalImgData;
-            link.download = currentModalTitle.replace(/\s+/g, '_') + ".jpg";
-            document.body.appendChild(link); link.click(); document.body.removeChild(link);
-        }
+        function downloadImage() { if(!currentModalImgData) return; const link = document.createElement("a"); link.href = currentModalImgData; link.download = currentModalTitle.replace(/\s+/g, '_') + ".jpg"; document.body.appendChild(link); link.click(); document.body.removeChild(link); }
 
         function handleUpload(event) {
             const file = event.target.files[0]; if (!file || !currentUserData) return;
-            let userTitle = prompt("Enter a Title for this Photo:", file.name.split('.')[0]); if (userTitle === null) return;
+            let userTitle = prompt("Enter a Title:", file.name.split('.')[0]); if (userTitle === null) return;
             if (userTitle.trim() === "") userTitle = "Stardust Inspiration";
-            let userDesc = prompt("Enter Description (Optional):", "Inspired via Stardust Hub.");
-            
+            let userDesc = prompt("Enter Description (Optional):", "Inspired via Stardust.");
             const reader = new FileReader();
-            reader.onload = function(e) {
-                database.ref('pins').push({
-                    title: userTitle.trim(), desc: userDesc.trim(), img: e.target.result,
-                    uploaderUid: currentUserData.uid, uploaderName: customProfileCache.name || "Stardust Member"
-                }).then(() => { switchTab('home'); });
-            };
+            reader.onload = function(e) { database.ref('pins').push({ title: userTitle.trim(), desc: userDesc.trim(), img: e.target.result, uploaderUid: currentUserData.uid, uploaderName: customProfileCache.name || "Stardust Member" }).then(() => { switchTab('home'); }); };
             reader.readAsDataURL(file);
         }
 
