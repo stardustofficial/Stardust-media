@@ -4,17 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="zh5BJ-Ey5wYrIasM5nubqNjBvucgHB9jqf1d0zfxleg" />
-    <title>STARDUST - Premium Media Hub</title>
+    <title>Stardust canvas</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Fira+Code:wght@600&family=Orbitron:wght@800&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        .pin-grid { columns: 2; column-gap: 16px; }
-        .pin-item { break-inside: avoid; margin-bottom: 16px; }
-        body { -webkit-tap-highlight-color: transparent; }
+        .pin-grid {
+            columns: 2;
+            column-gap: 16px;
+        }
+        .pin-item {
+            break-inside: avoid;
+            margin-bottom: 16px;
+        }
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
         
+        /* DYNAMIC PREMIUM THEMES */
         .theme-neon { background: linear-gradient(135deg, #1e1b4b, #311042) !important; color: #f3e8ff !important; }
         .theme-cyber { background: linear-gradient(135deg, #0f172a, #020617) !important; color: #38bdf8 !important; }
         .theme-gold { background: linear-gradient(135deg, #1c1917, #443c31) !important; color: #fef08a !important; }
@@ -25,11 +34,13 @@
             box-shadow: inset 0 0 50px rgba(251, 191, 36, 0.25) !important;
         }
         
+        /* FONTS MAPPING */
         .font-modern { font-family: 'Inter', sans-serif !important; }
         .font-serif { font-family: 'Cinzel', serif !important; }
         .font-retro { font-family: 'Fira Code', monospace !important; }
         .font-future { font-family: 'Orbitron', sans-serif !important; }
 
+        /* PREMIUM FRAMES (STEADY) */
         .frame-none { border: 2px solid #e5e7eb; padding: 2px; }
         .frame-neon { border: 4px solid #d946ef; box-shadow: 0 0 15px #d946ef; padding: 3px; }
         .frame-gold { border: 4px solid #fbbf24; box-shadow: 0 0 15px #fbbf24; padding: 3px; }
@@ -41,206 +52,381 @@
             0%, 100% { filter: drop-shadow(0 0 2px #fbbf24); }
             50% { filter: drop-shadow(0 0 8px #f59e0b); }
         }
-        .nitro-badge-glow { animation: badgeGlow 2s infinite ease-in-out; }
+        .nitro-badge-glow {
+            animation: badgeGlow 2s infinite ease-in-out;
+        }
 
-        /* loading screen */
-        #loading-screen {
-            position: fixed;
-            inset: 0;
-            z-index: 999;
-            background: #0b0b10;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-family: 'Inter', sans-serif;
-            transition: opacity 0.5s ease;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-        #loading-screen .loader {
-            width: 48px;
-            height: 48px;
-            border: 4px solid rgba(255,255,255,0.1);
-            border-top-color: #ef4444;
+        .spinner {
+            border: 3px solid rgba(220, 38, 38, 0.1);
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
-            animation: spin 0.9s linear infinite;
+            border-left-color: #dc2626;
+            animation: spin 0.8s linear infinite;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        #loading-screen p {
-            margin-top: 18px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            font-size: 14px;
-            opacity: 0.7;
-        }
-        .hidden { display: none !important; }
     </style>
 </head>
 <body id="app-body" class="bg-white text-gray-950 font-sans antialiased pb-24">
 
-    <!-- PROFESSIONAL LOADING SCREEN (for returning users) -->
-    <div id="loading-screen">
-        <div class="loader"></div>
-        <p>LOADING STARDUST</p>
+    <!-- PROFESSIONAL LOADING SCREEN FOR PRE-LOGGED USERS -->
+    <div id="loading-screen" class="fixed inset-0 bg-white z-[250] flex flex-col items-center justify-center p-6 text-center transition-opacity duration-300">
+        <h1 class="text-red-600 font-black text-5xl tracking-tighter select-none mb-6 animate-pulse">STARDUST</h1>
+        <div class="spinner"></div>
+        <p class="text-xs font-bold text-gray-400 mt-4 tracking-widest uppercase">Initializing Core System...</p>
     </div>
 
-    <!-- AUTH WALL (Email/Password) -->
-    <div id="auth-wall" class="fixed inset-0 bg-white z-[200] flex flex-col items-center justify-center p-6 text-center transition-opacity duration-300">
-        <div class="max-w-sm w-full space-y-6">
-            <h1 class="text-red-600 font-black text-5xl tracking-tighter select-none mb-2">STARDUST</h1>
-            <p id="lang-tagline" class="text-gray-500 text-sm font-medium leading-relaxed px-4">Discover, track and share premium visual ideas with your cloud sync profile instantly.</p>
-            
-            <!-- Login form -->
-            <div id="login-form" class="space-y-4 pt-2 text-left">
-                <input type="email" id="login-email" placeholder="Email address" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-200 transition">
-                <input type="password" id="login-password" placeholder="Password" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-200 transition">
-                <button onclick="handleEmailLogin()" class="w-full bg-black hover:opacity-90 text-white font-bold text-sm py-3.5 px-6 rounded-full transition shadow-lg active:scale-95">Sign In</button>
-                <p class="text-center text-xs text-gray-400 mt-2">Don't have an account? <span class="text-red-600 font-bold cursor-pointer hover:underline" onclick="toggleAuthMode('signup')">Create one</span></p>
+    <!-- AUTHENTICATION CONTAINER -->
+    <div id="auth-wall" class="fixed inset-0 bg-white z-[200] hidden flex flex-col items-center justify-center p-6 text-center overflow-y-auto">
+        <div class="max-w-sm w-full space-y-5 my-auto">
+            <h1 class="text-red-600 font-black text-5xl tracking-tighter select-none mb-1">STARDUST</h1>
+            <p id="lang-tagline" class="text-gray-500 text-sm font-medium leading-relaxed px-2">Discover, track and share premium visual ideas with your cloud sync profile instantly.</p>
+
+            <!-- LOGIN FORM -->
+            <div id="auth-login-view" class="space-y-3 pt-2 text-left">
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Email Address</label>
+                    <input type="email" id="login-email" placeholder="name@domain.com" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-red-600 transition">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Password</label>
+                    <input type="password" id="login-password" placeholder="••••••••" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-red-600 transition">
+                </div>
+                <button onclick="handleEmailLogin()" class="w-full bg-black hover:opacity-90 text-white font-bold text-sm py-4 px-6 rounded-full flex items-center justify-center gap-2 transition shadow-lg active:scale-95 mt-4">
+                    <span>Sign In</span>
+                </button>
+                <div class="text-center pt-3">
+                    <p class="text-xs text-gray-500 font-medium">Don't have an account? <button onclick="toggleAuthView('signup')" class="text-red-600 font-bold hover:underline">Create New Account</button></p>
+                </div>
             </div>
 
-            <!-- Signup form (hidden by default) -->
-            <div id="signup-form" class="space-y-4 pt-2 text-left hidden">
-                <input type="text" id="signup-name" placeholder="Your name" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-200 transition">
-                <input type="email" id="signup-email" placeholder="Email address" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-200 transition">
-                <input type="password" id="signup-password" placeholder="Password (min 6 chars)" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-200 transition">
-                <textarea id="signup-bio" rows="2" placeholder="Short bio (optional)" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-200 transition resize-none"></textarea>
-                <div class="flex items-center gap-3">
-                    <button onclick="document.getElementById('signup-pfp-input').click()" class="bg-gray-100 text-gray-700 text-xs font-bold py-2 px-4 rounded-full border">Upload Profile Picture</button>
-                    <span id="signup-pfp-label" class="text-xs text-gray-400 truncate">No image</span>
-                    <input type="file" id="signup-pfp-input" accept="image/*" class="hidden" onchange="handleSignupPfp(event)">
+            <!-- CREATE NEW ACCOUNT FORM -->
+            <div id="auth-signup-view" class="space-y-3 pt-1 text-left hidden">
+                <div class="flex flex-col items-center justify-center mb-2">
+                    <div onclick="document.getElementById('signup-pfp-input').click()" class="w-20 h-20 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 cursor-pointer overflow-hidden relative group">
+                        <img id="signup-pfp-preview" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
+                        </div>
+                    </div>
+                    <span class="text-[10px] font-bold text-gray-400 mt-1">Upload PFP from Gallery</span>
+                    <input type="file" id="signup-pfp-input" accept="image/*" class="hidden" onchange="previewSignupPfp(event)">
                 </div>
-                <button onclick="handleEmailSignup()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-sm py-3.5 px-6 rounded-full transition shadow-lg active:scale-95">Create Account</button>
-                <p class="text-center text-xs text-gray-400 mt-2">Already have an account? <span class="text-red-600 font-bold cursor-pointer hover:underline" onclick="toggleAuthMode('login')">Sign in</span></p>
+
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Full Name</label>
+                    <input type="text" id="signup-name" placeholder="John Doe" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:border-red-600 transition">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Username (@)</label>
+                    <input type="text" id="signup-username" placeholder="johndoe" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:border-red-600 transition">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Bio</label>
+                    <input type="text" id="signup-bio" placeholder="Digital Creator & Visual Explorer" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:border-red-600 transition">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Email Address</label>
+                    <input type="email" id="signup-email" placeholder="name@domain.com" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:border-red-600 transition">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Password</label>
+                    <input type="password" id="signup-password" placeholder="••••••••" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:border-red-600 transition">
+                </div>
+
+                <button onclick="handleEmailSignUp()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-sm py-3.5 px-6 rounded-full flex items-center justify-center gap-2 transition shadow-lg active:scale-95 mt-3">
+                    <span>Create Account</span>
+                </button>
+                <div class="text-center pt-2">
+                    <p class="text-xs text-gray-500 font-medium">Already registered? <button onclick="toggleAuthView('login')" class="text-black font-bold hover:underline">Sign In</button></p>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- MAIN APP (hidden until auth) -->
-    <div id="app-main" class="hidden">
-        <nav id="app-nav" class="sticky top-0 bg-white/95 backdrop-blur-md px-5 py-4 flex flex-col gap-2 z-40 border-b border-gray-100 shadow-sm transition-all duration-300">
-            <div class="flex items-center justify-between gap-4 w-full">
-                <div onclick="switchTab('home')" class="text-red-600 font-black text-2xl tracking-tighter cursor-pointer select-none">STARDUST</div>
-                <div class="flex-1 relative">
-                    <svg class="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    <input type="text" id="search-bar" onkeyup="filterPinsAndUsers()" placeholder="Search ideas or usernames..." class="w-full bg-[#E9E9E9] pl-10 pr-4 py-2.5 rounded-full text-sm font-medium focus:outline-none transition">
+    <nav id="app-nav" class="sticky top-0 bg-white/95 backdrop-blur-md px-5 py-4 flex flex-col gap-2 z-40 border-b border-gray-100 shadow-sm transition-all duration-300">
+        <div class="flex items-center justify-between gap-4 w-full">
+            <div onclick="switchTab('home')" class="text-red-600 font-black text-2xl tracking-tighter cursor-pointer select-none">STARDUST</div>
+            <div class="flex-1 relative">
+                <svg class="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <input type="text" id="search-bar" onkeyup="filterPinsAndUsers()" placeholder="Search ideas or usernames..." class="w-full bg-[#E9E9E9] pl-10 pr-4 py-2.5 rounded-full text-sm font-medium focus:outline-none transition">
+            </div>
+        </div>
+        <div id="user-search-results-tray" class="hidden w-full bg-gray-50 rounded-2xl p-3 border border-gray-100 space-y-2 max-h-[160px] overflow-y-auto"></div>
+    </nav>
+
+    <input type="file" id="file-input" accept="image/*" class="hidden" onchange="handleUpload(event)">
+    <input type="file" id="pfp-file-input" accept="image/*" class="hidden" onchange="handlePfpUpload(event)">
+
+    <div class="p-4 max-w-7xl mx-auto">
+
+        <section id="tab-home" class="tab-content">
+            <div id="pin-container" class="pin-grid"></div>
+        </section>
+
+        <section id="tab-messages" class="tab-content hidden max-w-lg mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 border border-gray-200/60 rounded-3xl p-4 shadow-sm min-h-[480px]">
+            <div class="md:col-span-1 border-r pr-2 flex flex-col">
+                <h3 class="text-[10px] font-black uppercase tracking-wider text-gray-400 mb-2 px-1">Active Chat Members</h3>
+                <div id="inbox-users-list" class="flex-1 overflow-y-auto space-y-1 max-h-[110px] md:max-h-[400px]">
+                    <p class="text-[11px] text-gray-400 text-center py-2">Loading users...</p>
                 </div>
             </div>
-            <div id="user-search-results-tray" class="hidden w-full bg-gray-50 rounded-2xl p-3 border border-gray-100 space-y-2 max-h-[160px] overflow-y-auto"></div>
-        </nav>
-
-        <input type="file" id="file-input" accept="image/*" class="hidden" onchange="handleUpload(event)">
-        <input type="file" id="pfp-file-input" accept="image/*" class="hidden" onchange="handlePfpUpload(event)">
-
-        <div class="p-4 max-w-7xl mx-auto">
-            <section id="tab-home" class="tab-content"><div id="pin-container" class="pin-grid"></div></section>
-
-            <section id="tab-messages" class="tab-content hidden max-w-lg mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 border border-gray-200/60 rounded-3xl p-4 shadow-sm min-h-[480px]">
-                <div class="md:col-span-1 border-r pr-2 flex flex-col">
-                    <h3 class="text-[10px] font-black uppercase tracking-wider text-gray-400 mb-2 px-1">Active Chat Members</h3>
-                    <div id="inbox-users-list" class="flex-1 overflow-y-auto space-y-1 max-h-[110px] md:max-h-[400px]"><p class="text-[11px] text-gray-400 text-center py-2">Loading users...</p></div>
+            
+            <div class="md:col-span-2 flex flex-col justify-between">
+                <div class="flex items-center gap-2 border-b pb-2 mb-2">
+                    <span id="chat-window-header-title" class="text-sm font-black text-gray-800">Stardust Core Bot</span>
                 </div>
-                <div class="md:col-span-2 flex flex-col justify-between">
-                    <div class="flex items-center gap-2 border-b pb-2 mb-2">
-                        <span id="chat-window-header-title" class="text-sm font-black text-gray-800">Stardust Core Bot</span>
-                    </div>
-                    <div class="space-y-3 h-64 overflow-y-auto p-3 bg-white rounded-2xl border border-gray-100 mb-3" id="chat-box">
-                        <div id="lang-welcome-msg" class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">Welcome to STARDUST Core System! Click any dynamic active user on the left to start a private encrypted real-time chat.</div>
-                    </div>
-                    <div class="flex gap-2 items-center bg-white p-1 rounded-full border border-gray-200">
-                        <input type="text" id="chat-input" placeholder="Ask Stardust..." class="flex-1 pl-4 pr-2 py-2 text-sm font-medium focus:outline-none bg-transparent">
-                        <button onclick="sendChatMessage()" id="lang-send-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-2.5 px-4 rounded-full transition active:scale-95">Send</button>
+                
+                <div class="space-y-3 h-64 overflow-y-auto p-3 bg-white rounded-2xl border border-gray-100 mb-3" id="chat-box">
+                    <div id="lang-welcome-msg" class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">
+                        Welcome to STARDUST Core System! Click any dynamic active user on the left to start a private encrypted real-time chat.
                     </div>
                 </div>
-            </section>
+                
+                <div class="flex gap-2 items-center bg-white p-1 rounded-full border border-gray-200">
+                    <input type="text" id="chat-input" placeholder="Ask Stardust..." class="flex-1 pl-4 pr-2 py-2 text-sm font-medium focus:outline-none bg-transparent">
+                    <button onclick="sendChatMessage()" id="lang-send-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-2.5 px-4 rounded-full transition active:scale-95">Send</button>
+                </div>
+            </div>
+        </section>
 
-            <section id="tab-profile" class="tab-content hidden text-center mt-4 max-w-xl mx-auto p-8 rounded-3xl transition-all duration-300 relative border border-transparent shadow-xl min-h-[70vh]">
-                <div class="w-full flex justify-between items-center px-2 mb-6">
-                    <button id="profile-back-to-my-btn" onclick="loadUserIdentitySpace('me')" class="hidden flex items-center gap-1 text-xs font-black text-red-600 bg-red-50/80 backdrop-blur py-2 px-4 rounded-full transition active:scale-95 shadow-sm">← Back to My Space</button>
-                    <div class="flex-1"></div>
-                    <button onclick="openSettingsModal()" id="profile-settings-trigger-btn" class="p-2.5 text-gray-700 hover:bg-gray-100 rounded-full bg-white/90 backdrop-blur transition shadow-md">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        <section id="tab-profile" class="tab-content hidden text-center mt-4 max-w-xl mx-auto p-8 rounded-3xl transition-all duration-300 relative border border-transparent shadow-xl min-h-[70vh]">
+            <div class="w-full flex justify-between items-center px-2 mb-6">
+                <button id="profile-back-to-my-btn" onclick="loadUserIdentitySpace('me')" class="hidden flex items-center gap-1 text-xs font-black text-red-600 bg-red-50/80 backdrop-blur py-2 px-4 rounded-full transition active:scale-95 shadow-sm">
+                    Back to My Space
+                </button>
+                <div class="flex-1"></div>
+                <button onclick="openSettingsModal()" id="profile-settings-trigger-btn" class="p-2.5 text-gray-700 hover:bg-gray-100 rounded-full bg-white/90 backdrop-blur transition shadow-md">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+
+            <div id="pfp-wrapper" class="w-36 h-36 mx-auto flex items-center justify-center drop-shadow-xl">
+                <img id="profile-img" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150" class="w-36 h-36 rounded-full object-cover bg-white frame-none transition-all duration-200">
+            </div>
+            
+            <div class="mt-6 px-4 flex flex-col items-center">
+                <h1 class="text-3xl font-black tracking-tight flex items-center justify-center gap-2">
+                    <span id="profile-name">STARDUST User</span>
+                    <span id="premium-badge" class="hidden text-amber-500 w-6 h-6 nitro-badge-glow" title="Verified Premium Member">
+                        <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.98 20.53a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.562.562 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>
+                    </span>
+                </h1>
+                <p id="profile-username" class="text-gray-500 text-base font-bold mt-1 tracking-wide">@stardust_creator</p>
+                
+                <div class="flex items-center gap-6 mt-4 text-sm font-black opacity-90 bg-black/5 px-5 py-2 rounded-full">
+                    <div><span id="profile-followers-count">0</span> Followers</div>
+                    <div><span id="profile-following-count">0</span> Following</div>
+                </div>
+                
+                <button id="profile-follow-action-btn" onclick="handleNetworkFollowToggle()" class="hidden mt-5 w-40 text-xs font-black py-3 rounded-full transition active:scale-95 shadow-md"></button>
+
+                <p id="profile-bio" class="text-sm mt-4 px-8 font-medium italic opacity-85 max-w-md leading-relaxed">No bio written yet.</p>
+            </div>
+            
+            <div class="flex justify-center gap-4 mt-10 border-b border-gray-100 pb-3 text-sm font-bold">
+                <span id="lang-my-uploads" class="pb-3 tracking-wide border-b-2 border-current uppercase">Upload Records</span>
+            </div>
+            <div id="profile-pin-container" class="pin-grid mt-6"></div>
+        </section>
+    </div>
+
+    <div id="settings-modal" class="fixed inset-0 bg-black/50 z-[160] hidden items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl w-full max-w-sm p-6 relative shadow-2xl border overflow-hidden max-h-[85vh] flex flex-col text-gray-900">
+            
+            <div id="settings-main-screen" class="space-y-4 flex-1 overflow-y-auto pr-1">
+                <h3 id="lang-settings-title" class="text-lg font-black tracking-tight border-b pb-2 mb-4">Settings</h3>
+                
+                <div id="nitro-promo-card" class="bg-gradient-to-r from-purple-600 via-pink-600 to-red-500 p-4 rounded-2xl text-white space-y-2 shadow-md">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-black text-sm tracking-wide">STARDUST NITRO PREMIUM</h4>
+                            <p class="text-[10px] opacity-90">Unlock Colors, Animations, Premium Fonts & Custom Backgrounds!</p>
+                        </div>
+                        <span class="bg-white/20 text-[9px] font-black px-2 py-0.5 rounded-full">SALE</span>
+                    </div>
+                    <button id="activate-premium-btn" onclick="simulatePremiumPurchase()" class="w-full bg-white text-purple-700 font-black text-xs py-2 rounded-xl active:scale-95 transition shadow">
+                        Activate Membership
                     </button>
                 </div>
-                <div id="pfp-wrapper" class="w-36 h-36 mx-auto flex items-center justify-center drop-shadow-xl">
-                    <img id="profile-img" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150" class="w-36 h-36 rounded-full object-cover bg-white frame-none transition-all duration-200">
-                </div>
-                <div class="mt-6 px-4 flex flex-col items-center">
-                    <h1 class="text-3xl font-black tracking-tight flex items-center justify-center gap-2">
-                        <span id="profile-name">STARDUST User</span>
-                        <span id="premium-badge" class="hidden text-amber-500 w-6 h-6 nitro-badge-glow" title="Verified Premium Member">
-                            <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.98 20.53a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.562.562 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>
-                        </span>
-                    </h1>
-                    <p id="profile-username" class="text-gray-500 text-base font-bold mt-1 tracking-wide">@stardust_creator</p>
-                    <div class="flex items-center gap-6 mt-4 text-sm font-black opacity-90 bg-black/5 px-5 py-2 rounded-full">
-                        <div><span id="profile-followers-count">0</span> Followers</div>
-                        <div><span id="profile-following-count">0</span> Following</div>
-                    </div>
-                    <button id="profile-follow-action-btn" onclick="handleNetworkFollowToggle()" class="hidden mt-5 w-40 text-xs font-black py-3 rounded-full transition active:scale-95 shadow-md"></button>
-                    <p id="profile-bio" class="text-sm mt-4 px-8 font-medium italic opacity-85 max-w-md leading-relaxed">No bio written yet.</p>
-                </div>
-                <div class="flex justify-center gap-4 mt-10 border-b border-gray-100 pb-3 text-sm font-bold">
-                    <span id="lang-my-uploads" class="pb-3 tracking-wide border-b-2 border-current uppercase">Upload Records</span>
-                </div>
-                <div id="profile-pin-container" class="pin-grid mt-6"></div>
-            </section>
-        </div>
 
-        <div id="settings-modal" class="fixed inset-0 bg-black/50 z-[160] hidden items-center justify-center p-4 backdrop-blur-sm">
-            <div class="bg-white rounded-3xl w-full max-w-sm p-6 relative shadow-2xl border overflow-hidden max-h-[85vh] flex flex-col text-gray-900">
-                <div id="settings-main-screen" class="space-y-4 flex-1 overflow-y-auto pr-1">
-                    <h3 id="lang-settings-title" class="text-lg font-black tracking-tight border-b pb-2 mb-4">Settings</h3>
-                    <div id="nitro-promo-card" class="bg-gradient-to-r from-purple-600 via-pink-600 to-red-500 p-4 rounded-2xl text-white space-y-2 shadow-md">
-                        <div class="flex justify-between items-start">
-                            <div><h4 class="font-black text-sm tracking-wide">STARDUST NITRO PREMIUM</h4><p class="text-[10px] opacity-90">Unlock Colors, Animations, Premium Fonts & Custom Backgrounds!</p></div>
-                            <span class="bg-white/20 text-[9px] font-black px-2 py-0.5 rounded-full">SALE</span>
-                        </div>
-                        <button id="activate-premium-btn" onclick="simulatePremiumPurchase()" class="w-full bg-white text-purple-700 font-black text-xs py-2 rounded-xl active:scale-95 transition shadow">Activate Membership</button>
+                <div id="premium-settings-section" class="hidden border-2 border-purple-500 bg-purple-50/50 p-3 rounded-2xl space-y-3">
+                    <h4 class="text-xs font-black text-purple-700 tracking-wider uppercase">Nitro Customization Pad</h4>
+                    
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-500 mb-1">SELECT PROFILE BACKGROUND THEME</label>
+                        <select id="premium-theme-select" onchange="applyPremiumCustomization()" class="w-full bg-white border border-purple-300 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none">
+                            <option value="default">Default White Elegant</option>
+                            <option value="theme-almond">Almond Gold Glow</option>
+                            <option value="theme-neon">Neon Purple Darkness</option>
+                            <option value="theme-cyber">Cyberpunk Midnight Blue</option>
+                            <option value="theme-gold">Golden Royal Aura</option>
+                            <option value="theme-mint">Emerald Mint Luxury</option>
+                        </select>
                     </div>
-                    <div id="premium-settings-section" class="hidden border-2 border-purple-500 bg-purple-50/50 p-3 rounded-2xl space-y-3">
-                        <h4 class="text-xs font-black text-purple-700 tracking-wider uppercase">⭐ Nitro Customization Pad</h4>
-                        <div><label class="block text-[10px] font-bold text-gray-500 mb-1">SELECT PROFILE BACKGROUND THEME</label><select id="premium-theme-select" onchange="applyPremiumCustomization()" class="w-full bg-white border border-purple-300 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none"><option value="default">Default White Elegant</option><option value="theme-almond">Almond Gold Glow (Ultra Cute ✨)</option><option value="theme-neon">Neon Purple Darkness</option><option value="theme-cyber">Cyberpunk Midnight Blue</option><option value="theme-gold">Golden Royal Aura</option><option value="theme-mint">Emerald Mint Luxury</option></select></div>
-                        <div><label class="block text-[10px] font-bold text-gray-500 mb-1">SELECT PREMIUM PFP FRAME</label><select id="premium-frame-select" onchange="applyPremiumCustomization()" class="w-full bg-white border border-purple-300 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none"><option value="frame-none">Standard Minimal Clean</option><option value="frame-almond">Cute Almond Golden Glow ✨</option><option value="frame-neon">Neon Magic Aura 🌸</option><option value="frame-gold">Royal Gold Border 👑</option><option value="frame-cyber">Cyber Electric Pulse ⚡</option><option value="frame-diamond">Diamond Sparkle Cut 💎</option></select></div>
-                        <div><label class="block text-[10px] font-bold text-gray-500 mb-1">SELECT PREMIUM PROFILE FONT</label><select id="premium-font-select" onchange="applyPremiumCustomization()" class="w-full bg-white border border-purple-300 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none"><option value="font-modern">Default Modern Sans</option><option value="font-serif">Elegant Royal Serif</option><option value="font-retro">Retro Hacker Monospace</option><option value="font-future">Futuristic Sci-Fi Display</option></select></div>
+
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-500 mb-1">SELECT PREMIUM PFP FRAME</label>
+                        <select id="premium-frame-select" onchange="applyPremiumCustomization()" class="w-full bg-white border border-purple-300 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none">
+                            <option value="frame-none">Standard Minimal Clean</option>
+                            <option value="frame-almond">Cute Almond Golden Glow</option>
+                            <option value="frame-neon">Neon Magic Aura</option>
+                            <option value="frame-gold">Royal Gold Border</option>
+                            <option value="frame-cyber">Cyber Electric Pulse</option>
+                            <option value="frame-diamond">Diamond Sparkle Cut</option>
+                        </select>
                     </div>
-                    <div class="space-y-1">
-                        <button onclick="showSettingsPage('page-account')" class="w-full flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition"><span id="lang-opt-account">1. Edit Name, Bio & Handle</span><svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
-                        <button onclick="showSettingsPage('page-pfp')" class="w-full flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition"><span id="lang-opt-pfp">2. Change Profile Picture</span><svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
-                        <button onclick="showSettingsPage('page-lang')" class="w-full flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition"><span id="lang-opt-lang">3. System Language</span><svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
-                        <button onclick="showSettingsPage('page-support')" class="w-full flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition"><span id="lang-opt-support">4. Customer Support</span><svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
-                    </div>
-                    <div class="flex gap-2 pt-4 border-t mt-2">
-                        <button onclick="closeSettingsModal()" id="lang-close-settings" class="w-1/2 bg-gray-100 text-gray-800 text-xs font-bold py-3 rounded-full transition">Close</button>
-                        <button onclick="handleLogOut()" id="lang-signout-btn" class="w-1/2 bg-red-50 text-red-600 text-xs font-bold py-3 rounded-full hover:bg-red-100 transition">Sign Out</button>
+
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-500 mb-1">SELECT PREMIUM PROFILE FONT</label>
+                        <select id="premium-font-select" onchange="applyPremiumCustomization()" class="w-full bg-white border border-purple-300 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none">
+                            <option value="font-modern">Default Modern Sans</option>
+                            <option value="font-serif">Elegant Royal Serif</option>
+                            <option value="font-retro">Retro Hacker Monospace</option>
+                            <option value="font-future">Futuristic Sci-Fi Display</option>
+                        </select>
                     </div>
                 </div>
-                <div id="page-account" class="settings-sub-page hidden space-y-4 flex-1"><div class="flex items-center gap-2 border-b pb-2 mb-2"><button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button><h4 class="font-black text-sm uppercase tracking-wider">Identity Management</h4></div><div class="space-y-3"><div><label class="block text-[10px] font-bold text-gray-400 mb-1">STARDUST UNIQUE HANDLE (@)</label><input type="text" id="edit-username-input" class="w-full bg-gray-50 text-gray-800 border rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none"></div><div><label class="block text-[10px] font-bold text-gray-400 mb-1">DISPLAY NAME</label><input type="text" id="edit-name-input" class="w-full bg-gray-50 text-gray-800 border rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none"></div><div><label class="block text-[10px] font-bold text-gray-400 mb-1">CUSTOM BIO</label><textarea id="edit-bio-input" rows="3" class="w-full bg-gray-50 text-gray-800 border rounded-xl px-3 py-2 text-sm font-medium focus:outline-none resize-none"></textarea></div><button onclick="saveProfileCustomizations()" class="w-full bg-black text-white text-xs font-bold py-3 rounded-xl transition">Save Identity</button></div></div>
-                <div id="page-pfp" class="settings-sub-page hidden space-y-4 flex-1"><div class="flex items-center gap-2 border-b pb-2 mb-2"><button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button><h4 class="font-black text-sm uppercase tracking-wider">Profile Picture</h4></div><div class="text-center py-4 space-y-4"><button onclick="document.getElementById('pfp-file-input').click()" class="bg-red-600 text-white font-bold text-xs py-3 px-6 rounded-full transition shadow-md">Open Local Gallery</button></div></div>
-                <div id="page-lang" class="settings-sub-page hidden space-y-4 flex-1"><div class="flex items-center gap-2 border-b pb-2 mb-2"><button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button><h4 class="font-black text-sm uppercase tracking-wider">Language Engine</h4></div><select id="lang-select" onchange="changeSystemLanguage(this.value)" class="w-full bg-gray-50 border rounded-xl px-3 py-2 text-sm font-semibold"><option value="en">English</option><option value="hi">Hindi (हिन्दी)</option></select></div>
-                <div id="page-support" class="settings-sub-page hidden space-y-4 flex-1"><div class="flex items-center gap-2 border-b pb-2 mb-2"><button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button><h4 class="font-black text-sm uppercase tracking-wider">Support Portal</h4></div><textarea id="support-text-input" rows="4" placeholder="Write context here..." class="w-full bg-gray-50 border rounded-xl px-3 py-2 text-xs resize-none"></textarea><button onclick="submitSupportTicket()" class="w-full bg-red-600 text-white font-bold text-xs py-2.5 rounded-xl">Submit Ticket</button></div>
+                
+                <div class="space-y-1">
+                    <button onclick="showSettingsPage('page-account')" class="w-full flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition">
+                        <span id="lang-opt-account">1. Edit Name, Bio & Handle</span>
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                    <button onclick="showSettingsPage('page-pfp')" class="w-full flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition">
+                        <span id="lang-opt-pfp">2. Change Profile Picture</span>
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                    <button onclick="showSettingsPage('page-lang')" class="w-full flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition">
+                        <span id="lang-opt-lang">3. System Language</span>
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                    <button onclick="showSettingsPage('page-support')" class="w-full flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition">
+                        <span id="lang-opt-support">4. Customer Support</span>
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+
+                <div class="flex gap-2 pt-4 border-t mt-2">
+                    <button onclick="closeSettingsModal()" id="lang-close-settings" class="w-1/2 bg-gray-100 text-gray-800 text-xs font-bold py-3 rounded-full transition">Close</button>
+                    <button onclick="handleLogOut()" id="lang-signout-btn" class="w-1/2 bg-red-50 text-red-600 text-xs font-bold py-3 rounded-full hover:bg-red-100 transition">Sign Out</button>
+                </div>
+            </div>
+
+            <div id="page-account" class="settings-sub-page hidden space-y-4 flex-1">
+                <div class="flex items-center gap-2 border-b pb-2 mb-2">
+                    <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                    <h4 class="font-black text-sm uppercase tracking-wider">Identity Management</h4>
+                </div>
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-400 mb-1">STARDUST UNIQUE HANDLE (@)</label>
+                        <input type="text" id="edit-username-input" class="w-full bg-gray-50 text-gray-800 border rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-400 mb-1">DISPLAY NAME</label>
+                        <input type="text" id="edit-name-input" class="w-full bg-gray-50 text-gray-800 border rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-400 mb-1">CUSTOM BIO</label>
+                        <textarea id="edit-bio-input" rows="3" class="w-full bg-gray-50 text-gray-800 border rounded-xl px-3 py-2 text-sm font-medium focus:outline-none resize-none"></textarea>
+                    </div>
+                    <button onclick="saveProfileCustomizations()" class="w-full bg-black text-white text-xs font-bold py-3 rounded-xl transition">Save Identity</button>
+                </div>
+            </div>
+
+            <div id="page-pfp" class="settings-sub-page hidden space-y-4 flex-1">
+                <div class="flex items-center gap-2 border-b pb-2 mb-2">
+                    <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                    <h4 class="font-black text-sm uppercase tracking-wider">Profile Picture</h4>
+                </div>
+                <div class="text-center py-4 space-y-4">
+                    <button onclick="document.getElementById('pfp-file-input').click()" class="bg-red-600 text-white font-bold text-xs py-3 px-6 rounded-full transition shadow-md">Open Local Gallery</button>
+                </div>
+            </div>
+
+            <div id="page-lang" class="settings-sub-page hidden space-y-4 flex-1">
+                <div class="flex items-center gap-2 border-b pb-2 mb-2">
+                    <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                    <h4 class="font-black text-sm uppercase tracking-wider">Language Engine</h4>
+                </div>
+                <select id="lang-select" onchange="changeSystemLanguage(this.value)" class="w-full bg-gray-50 border rounded-xl px-3 py-2 text-sm font-semibold">
+                    <option value="en">English</option>
+                    <option value="hi">Hindi (हिन्दी)</option>
+                </select>
+            </div>
+
+            <div id="page-support" class="settings-sub-page hidden space-y-4 flex-1">
+                <div class="flex items-center gap-2 border-b pb-2 mb-2">
+                    <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                    <h4 class="font-black text-sm uppercase tracking-wider">Support Portal</h4>
+                </div>
+                <textarea id="support-text-input" rows="4" placeholder="Write context here..." class="w-full bg-gray-50 border rounded-xl px-3 py-2 text-xs resize-none"></textarea>
+                <button onclick="submitSupportTicket()" class="w-full bg-red-600 text-white font-bold text-xs py-2.5 rounded-xl">Submit Ticket</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="comment-modal" class="fixed inset-0 bg-black/60 z-[160] hidden items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl w-full max-w-sm p-5 flex flex-col max-h-[80vh] text-gray-900">
+            <div class="flex items-center justify-between border-b pb-3 mb-3">
+                <h3 class="font-bold text-lg">Comments</h3>
+                <button onclick="closeCommentModal()" class="text-gray-500 font-bold p-1">✕</button>
+            </div>
+            <div id="comments-list-container" class="flex-1 overflow-y-auto space-y-3 pr-1 text-sm my-2 min-h-[160px]"></div>
+            <div class="flex gap-2 pt-3 border-t">
+                <input type="text" id="comment-input-field" class="flex-1 bg-gray-100 border rounded-xl p-2.5 text-sm focus:outline-none" placeholder="Write feedback...">
+                <button id="submit-comment-btn" class="bg-black text-white px-4 rounded-xl text-sm font-bold">Post</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="photo-modal" class="fixed inset-0 bg-black/95 z-[100] hidden flex flex-col justify-between p-4 backdrop-blur-md">
+        <div class="flex justify-between items-center w-full max-w-md mx-auto pt-2">
+            <h3 id="modal-title" class="text-white text-base font-bold tracking-wide truncate max-w-[70%]">Stardust Image</h3>
+            <button onclick="closePhotoModal()" class="bg-white/10 text-white rounded-full p-2 hover:bg-white/20 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        
+        <div class="flex-1 flex flex-col items-center justify-center max-w-lg mx-auto my-1 overflow-hidden w-full relative">
+            <img id="modal-img" src="" class="max-w-full max-h-[40vh] object-contain rounded-2xl shadow-2xl border border-white/10">
+            <p id="modal-desc" class="text-gray-400 text-xs mt-3 text-center px-6 max-h-[8vh] overflow-y-auto leading-relaxed font-medium"></p>
+            <span id="modal-author" class="text-red-500 text-[10px] mt-1 font-black tracking-wider uppercase cursor-pointer hover:underline"></span>
+            
+            <div class="flex items-center justify-center gap-6 mt-4 w-full bg-white/5 py-2.5 px-4 rounded-full max-w-xs border border-white/10">
+                <button id="modal-like-trigger-btn" class="flex items-center gap-1.5 text-white text-xs font-bold transition active:scale-125">
+                    <svg id="modal-like-svg" class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                    <span id="modal-like-counter-text">0 likes</span>
+                </button>
+                <button id="modal-comment-trigger-btn" class="flex items-center gap-1.5 text-white text-xs font-bold transition active:scale-110">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                    <span>Comments</span>
+                </button>
             </div>
         </div>
 
-        <div id="comment-modal" class="fixed inset-0 bg-black/60 z-[160] hidden items-center justify-center p-4 backdrop-blur-sm">
-            <div class="bg-white rounded-3xl w-full max-w-sm p-5 flex flex-col max-h-[80vh] text-gray-900">
-                <div class="flex items-center justify-between border-b pb-3 mb-3"><h3 class="font-bold text-lg">Comments</h3><button onclick="closeCommentModal()" class="text-gray-500 font-bold p-1">✕</button></div>
-                <div id="comments-list-container" class="flex-1 overflow-y-auto space-y-3 pr-1 text-sm my-2 min-h-[160px]"></div>
-                <div class="flex gap-2 pt-3 border-t"><input type="text" id="comment-input-field" class="flex-1 bg-gray-100 border rounded-xl p-2.5 text-sm focus:outline-none" placeholder="Write feedback..."><button id="submit-comment-btn" class="bg-black text-white px-4 rounded-xl text-sm font-bold">Post</button></div>
-            </div>
+        <div class="w-full max-w-sm mx-auto pb-8">
+            <button id="modal-download-btn" onclick="downloadImage()" class="w-full bg-white text-black text-sm font-black py-4 px-6 rounded-full flex items-center justify-center gap-2 shadow-xl hover:bg-gray-100 transition">Download to Gallery</button>
         </div>
+    </div>
 
-        <div id="photo-modal" class="fixed inset-0 bg-black/95 z-[100] hidden flex flex-col justify-between p-4 backdrop-blur-md">
-            <div class="flex justify-between items-center w-full max-w-md mx-auto pt-2"><h3 id="modal-title" class="text-white text-base font-bold tracking-wide truncate max-w-[70%]">Stardust Image</h3><button onclick="closePhotoModal()" class="bg-white/10 text-white rounded-full p-2 hover:bg-white/20 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button></div>
-            <div class="flex-1 flex flex-col items-center justify-center max-w-lg mx-auto my-1 overflow-hidden w-full relative"><img id="modal-img" src="" class="max-w-full max-h-[40vh] object-contain rounded-2xl shadow-2xl border border-white/10"><p id="modal-desc" class="text-gray-400 text-xs mt-3 text-center px-6 max-h-[8vh] overflow-y-auto leading-relaxed font-medium"></p><span id="modal-author" class="text-red-500 text-[10px] mt-1 font-black tracking-wider uppercase cursor-pointer hover:underline"></span><div class="flex items-center justify-center gap-6 mt-4 w-full bg-white/5 py-2.5 px-4 rounded-full max-w-xs border border-white/10"><button id="modal-like-trigger-btn" class="flex items-center gap-1.5 text-white text-xs font-bold transition active:scale-125"><svg id="modal-like-svg" class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg><span id="modal-like-counter-text">0 likes</span></button><button id="modal-comment-trigger-btn" class="flex items-center gap-1.5 text-white text-xs font-bold transition active:scale-110"><svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg><span>Comments</span></button></div></div>
-            <div class="w-full max-w-sm mx-auto pb-8"><button id="modal-download-btn" onclick="downloadImage()" class="w-full bg-white text-black text-sm font-black py-4 px-6 rounded-full flex items-center justify-center gap-2 shadow-xl hover:bg-gray-100 transition">Download to Gallery</button></div>
-        </div>
-
-        <div class="fixed bottom-4 left-1/2 -translate-x-1/2 max-w-sm w-[90%] bg-white/95 backdrop-blur-md py-3 px-6 flex justify-between items-center z-30 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100/80">
-            <button onclick="switchTab('home')" id="nav-home" class="flex items-center justify-center p-2.5 rounded-full bg-black text-white transition-all duration-200"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg></button>
-            <button onclick="document.getElementById('file-input').click()" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg></button>
-            <button onclick="switchTab('messages')" id="nav-messages" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg></button>
-            <button onclick="switchTab('profile')" id="nav-profile" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg></button>
-        </div>
+    <div class="fixed bottom-4 left-1/2 -translate-x-1/2 max-w-sm w-[90%] bg-white/95 backdrop-blur-md py-3 px-6 flex justify-between items-center z-30 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100/80">
+        <button onclick="switchTab('home')" id="nav-home" class="flex items-center justify-center p-2.5 rounded-full bg-black text-white transition-all duration-200">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg>
+        </button>
+        <button onclick="document.getElementById('file-input').click()" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+        </button>
+        <button onclick="switchTab('messages')" id="nav-messages" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+        </button>
+        <button onclick="switchTab('profile')" id="nav-profile" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+        </button>
     </div>
 
     <script>
@@ -254,6 +440,7 @@
             appId: "1:323937105300:web:290560ce7e0d620c3dcb81",
             measurementId: "G-ZRRV7S95HT"
         };
+        
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         const auth = firebase.auth();
@@ -263,170 +450,518 @@
         let currentModalTitle = "";
         let customProfileCache = { name: "", pfp: "", bio: "", username: "", isPremium: false, theme: "default", font: "font-modern", frame: "frame-none" };
         let activeLanguage = "en";
+        let signupPfpBase64 = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150";
+        
         let activeChatTargetUid = "bot"; 
         let activeCommentPinId = null;
         let selectedProfileUid = "me";
-        let signupPfpData = null;
 
         const langPack = {
-            en: { tagline: "Discover, track and share premium visual ideas with your cloud sync profile instantly.", loginBtn: "Continue with Google", searchPlaceholder: "Search inspired ideas...", sendBtn: "Send", myUploads: "Upload Records", settingsTitle: "Settings" },
-            hi: { tagline: "क्लाउड सिंक प्रोफ़ाइल के साथ प्रीमियम विज़ुअल आइडियाज़ खोजें और तुरंत साझा करें।", loginBtn: "गूगल के साथ आगे बढ़ें", searchPlaceholder: "आइडियाज़ खोजें...", sendBtn: "भेजें", myUploads: "मेरे अपलोड", settingsTitle: "सेटिंग्स" }
+            en: { tagline: "Discover, track and share premium visual ideas with your cloud sync profile instantly.", loginBtn: "Sign In", searchPlaceholder: "Search inspired ideas...", sendBtn: "Send", myUploads: "Upload Records", settingsTitle: "Settings" },
+            hi: { tagline: "क्लाउड सिंक प्रोफ़ाइल के साथ प्रीमियम विज़ुअल आइडियाज़ खोजें और तुरंत साझा करें।", loginBtn: "साइन इन करें", searchPlaceholder: "आइडियाज़ खोजें...", sendBtn: "भेजें", myUploads: "मेरे अपलोड", settingsTitle: "सेटिंग्स" }
         };
 
-        // ─── LOADING SCREEN CONTROL ───
         function hideLoadingScreen() {
-            const el = document.getElementById('loading-screen');
-            if (el) el.style.opacity = '0';
-            setTimeout(() => { if (el) el.style.display = 'none'; }, 500);
+            const loader = document.getElementById('loading-screen');
+            if (loader) {
+                loader.style.opacity = '0';
+                setTimeout(() => { loader.style.display = 'none'; }, 300);
+            }
         }
 
-        // ─── AUTH STATE ───
         auth.onAuthStateChanged((user) => {
-            const loading = document.getElementById('loading-screen');
-            const authWall = document.getElementById('auth-wall');
-            const appMain = document.getElementById('app-main');
-
             if (user) {
-                // user logged in → hide loading, show app
-                if (loading) loading.style.display = 'none';
-                authWall.style.display = 'none';
-                appMain.classList.remove('hidden');
                 currentUserData = user;
-                initApp(user);
+                document.getElementById('auth-wall').classList.add('hidden');
+                
+                database.ref('users/' + user.uid).on('value', (snapshot) => {
+                    const cloudData = snapshot.val() || {};
+                    customProfileCache.name = cloudData.name || user.displayName || "Stardust User";
+                    customProfileCache.pfp = cloudData.pfp || user.photoURL || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150";
+                    customProfileCache.bio = cloudData.bio || "No bio written yet.";
+                    customProfileCache.username = cloudData.username || (user.email ? user.email.split('@')[0] : "stardust_member");
+                    customProfileCache.isPremium = cloudData.isPremium || false;
+                    customProfileCache.theme = cloudData.theme || "default";
+                    customProfileCache.font = cloudData.font || "font-modern";
+                    customProfileCache.frame = cloudData.frame || "frame-none";
+
+                    if(!cloudData.username) {
+                        database.ref('users/' + user.uid).set({
+                            name: customProfileCache.name, pfp: customProfileCache.pfp, bio: customProfileCache.bio, username: customProfileCache.username, isPremium: false, theme: "default", font: "font-modern", frame: "frame-none"
+                        });
+                    }
+
+                    setupPremiumUIElements(customProfileCache.isPremium);
+
+                    if(selectedProfileUid === "me") {
+                        loadUserIdentitySpace("me");
+                    }
+                });
+                
+                listenToCloudDataStream();
+                syncActiveInboxMembers();
             } else {
-                // no user → show auth wall, hide loading
-                if (loading) loading.style.display = 'none';
-                authWall.style.display = 'flex';
-                appMain.classList.add('hidden');
                 currentUserData = null;
+                document.getElementById('auth-wall').classList.remove('hidden');
+                hideLoadingScreen();
             }
         });
 
-        function initApp(user) {
-            database.ref('users/' + user.uid).on('value', (snapshot) => {
-                const cloudData = snapshot.val() || {};
-                customProfileCache.name = cloudData.name || user.displayName || 'Stardust User';
-                customProfileCache.pfp = cloudData.pfp || user.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150';
-                customProfileCache.bio = cloudData.bio || 'No bio written yet.';
-                customProfileCache.username = cloudData.username || user.email.split('@')[0];
-                customProfileCache.isPremium = cloudData.isPremium || false;
-                customProfileCache.theme = cloudData.theme || 'default';
-                customProfileCache.font = cloudData.font || 'font-modern';
-                customProfileCache.frame = cloudData.frame || 'frame-none';
-
-                if(!cloudData.username) {
-                    database.ref('users/' + user.uid).set({
-                        name: customProfileCache.name, pfp: customProfileCache.pfp, bio: customProfileCache.bio,
-                        username: customProfileCache.username, isPremium: false, theme: 'default', font: 'font-modern', frame: 'frame-none'
-                    });
-                }
-                setupPremiumUIElements(customProfileCache.isPremium);
-                if(selectedProfileUid === 'me') loadUserIdentitySpace('me');
-            });
-            listenToCloudDataStream();
-            syncActiveInboxMembers();
-            // ensure loading hidden
-            hideLoadingScreen();
+        function toggleAuthView(view) {
+            if(view === 'signup') {
+                document.getElementById('auth-login-view').classList.add('hidden');
+                document.getElementById('auth-signup-view').classList.remove('hidden');
+            } else {
+                document.getElementById('auth-signup-view').classList.add('hidden');
+                document.getElementById('auth-login-view').classList.remove('hidden');
+            }
         }
 
-        // ─── AUTH UI TOGGLE ───
-        function toggleAuthMode(mode) {
-            const login = document.getElementById('login-form');
-            const signup = document.getElementById('signup-form');
-            if (mode === 'signup') { login.classList.add('hidden'); signup.classList.remove('hidden'); }
-            else { login.classList.remove('hidden'); signup.classList.add('hidden'); }
-        }
-
-        // ─── EMAIL LOGIN ───
-        function handleEmailLogin() {
-            const email = document.getElementById('login-email').value.trim();
-            const password = document.getElementById('login-password').value.trim();
-            if (!email || !password) { alert('Please fill in all fields.'); return; }
-            auth.signInWithEmailAndPassword(email, password).catch(err => alert('Login error: ' + err.message));
-        }
-
-        // ─── EMAIL SIGNUP ───
-        function handleEmailSignup() {
-            const name = document.getElementById('signup-name').value.trim();
-            const email = document.getElementById('signup-email').value.trim();
-            const password = document.getElementById('signup-password').value.trim();
-            const bio = document.getElementById('signup-bio').value.trim();
-            if (!name || !email || !password) { alert('Please fill in name, email and password.'); return; }
-            if (password.length < 6) { alert('Password must be at least 6 characters.'); return; }
-
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((cred) => {
-                    const uid = cred.user.uid;
-                    const finalPfp = signupPfpData || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150';
-                    return database.ref('users/' + uid).set({
-                        name: name,
-                        pfp: finalPfp,
-                        bio: bio || 'No bio written yet.',
-                        username: email.split('@')[0],
-                        isPremium: false,
-                        theme: 'default',
-                        font: 'font-modern',
-                        frame: 'frame-none'
-                    }).then(() => {
-                        // update profile
-                        return cred.user.updateProfile({ displayName: name, photoURL: finalPfp });
-                    });
-                })
-                .catch(err => alert('Signup error: ' + err.message));
-        }
-
-        function handleSignupPfp(e) {
-            const file = e.target.files[0];
+        function previewSignupPfp(event) {
+            const file = event.target.files[0];
             if (!file) return;
             const reader = new FileReader();
-            reader.onload = function(ev) {
-                signupPfpData = ev.target.result;
-                document.getElementById('signup-pfp-label').innerText = file.name;
+            reader.onload = function(e) {
+                signupPfpBase64 = e.target.result;
+                document.getElementById('signup-pfp-preview').src = signupPfpBase64;
             };
             reader.readAsDataURL(file);
         }
 
-        // ─── LOGOUT ───
-        function handleLogOut() {
-            auth.signOut().then(() => { location.reload(); });
+        function handleEmailLogin() {
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value.trim();
+
+            if(!email || !password) {
+                alert("Please enter both email and password!");
+                return;
+            }
+
+            auth.signInWithEmailAndPassword(email, password)
+                .catch((err) => { alert("Login Failed: " + err.message); });
         }
 
-        // ─── REMAINING ORIGINAL CODE (unchanged) ───
-        function simulatePremiumPurchase() { if(!currentUserData) return; if(confirm('Activate STARDUST NITRO PREMIUM membership?')) { database.ref('users/' + currentUserData.uid).update({ isPremium: true }).then(() => alert('🎉 Success! STARDUST NITRO PREMIUM is now active!')); } }
-        function setupPremiumUIElements(isPremium) { const promoCard = document.getElementById('nitro-promo-card'); const premiumSec = document.getElementById('premium-settings-section'); if(isPremium) { promoCard.innerHTML = `<div class='text-center font-black text-xs py-1 tracking-widest'>⭐ YOU ARE A NITRO PREMIUM MEMBER</div>`; promoCard.className = "bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 p-3 rounded-2xl text-white shadow-inner"; premiumSec.classList.remove('hidden'); document.getElementById('premium-theme-select').value = customProfileCache.theme; document.getElementById('premium-font-select').value = customProfileCache.font; document.getElementById('premium-frame-select').value = customProfileCache.frame; } else { premiumSec.classList.add('hidden'); } }
-        function applyPremiumCustomization() { if(!currentUserData || !customProfileCache.isPremium) return; database.ref('users/' + currentUserData.uid).update({ theme: document.getElementById('premium-theme-select').value, font: document.getElementById('premium-font-select').value, frame: document.getElementById('premium-frame-select').value }); }
-        function loadUserIdentitySpace(targetUid) { if(!currentUserData) return; selectedProfileUid = targetUid; const isMe = (targetUid === "me" || targetUid === currentUserData.uid); const finalUid = isMe ? currentUserData.uid : targetUid; document.getElementById('profile-back-to-my-btn').style.display = isMe ? "none" : "block"; document.getElementById('profile-settings-trigger-btn').style.display = isMe ? "block" : "none"; document.getElementById('profile-follow-action-btn').style.display = isMe ? "none" : "block"; database.ref('users/' + finalUid).once('value', (snapshot) => { const uData = snapshot.val() || {}; const profSection = document.getElementById('tab-profile'); const pfpImg = document.getElementById('profile-img'); const premBadge = document.getElementById('premium-badge'); profSection.className = "tab-content text-center mt-4 max-w-xl mx-auto p-8 rounded-3xl transition-all duration-300 relative border shadow-xl min-h-[70vh]"; pfpImg.className = "w-36 h-36 rounded-full object-cover bg-white frame-none"; premBadge.classList.add('hidden'); if(uData.isPremium) { premBadge.classList.remove('hidden'); if(uData.frame) { pfpImg.classList.remove('frame-none'); pfpImg.classList.add(uData.frame); } if(uData.theme && uData.theme !== 'default') profSection.classList.add(uData.theme); if(uData.font) profSection.classList.add(uData.font); } document.getElementById('profile-name').innerText = uData.name || "Stardust Member"; document.getElementById('profile-username').innerText = '@' + (uData.username || "creator"); document.getElementById('profile-img').src = uData.pfp || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150"; document.getElementById('profile-bio').innerText = uData.bio || "No bio written yet."; syncSocialNetworkCounters(finalUid); switchTab('profile'); }); }
-        function syncSocialNetworkCounters(uid) { database.ref('network/followers/' + uid).on('value', (snap) => { const data = snap.val() || {}; document.getElementById('profile-followers-count').innerText = Object.keys(data).length; if(uid !== currentUserData.uid) { const btn = document.getElementById('profile-follow-action-btn'); if(data[currentUserData.uid]) { btn.innerText = "Unfollow"; btn.className = "mt-5 w-40 text-xs font-black py-3 rounded-full bg-gray-100 text-gray-800 transition shadow-md"; } else { btn.innerText = "Follow"; btn.className = "mt-5 w-40 text-xs font-black py-3 rounded-full bg-red-600 text-white transition shadow-md"; } } }); database.ref('network/following/' + uid).on('value', (snap) => { document.getElementById('profile-following-count').innerText = Object.keys(snap.val() || {}).length; }); database.ref('pins').once('value', (snapshot) => { const profileContainer = document.getElementById('profile-pin-container'); profileContainer.innerHTML = ''; const data = snapshot.val(); let totalPins = 0; if(data) { Object.keys(data).reverse().forEach(key => { const pin = data[key]; if(pin.uploaderUid === uid) { totalPins++; const element = document.createElement('div'); element.className = "pin-item bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:opacity-95 text-gray-900 cursor-zoom-in"; element.onclick = () => openPhotoModal(pin.img, pin.title || "Stardust Card", pin.desc || "", pin.uploaderName || "Anonymous", key, pin.uploaderUid); element.innerHTML = `<img src="${pin.img}" class="w-full h-auto object-cover"><div class="p-2 text-[11px] font-bold truncate">${pin.title || 'Idea'}</div>`; profileContainer.appendChild(element); } }); } if(totalPins === 0) profileContainer.innerHTML = '<div class="text-center text-gray-400 text-xs py-10 col-span-2">No uploads shared.</div>'; }); }
-        function handleNetworkFollowToggle() { if(selectedProfileUid === "me" || selectedProfileUid === currentUserData.uid) return; const targetUid = selectedProfileUid; const followerRef = database.ref('network/followers/' + targetUid + '/' + currentUserData.uid); const followingRef = database.ref('network/following/' + currentUserData.uid + '/' + targetUid); followerRef.once('value', (snap) => { if(snap.exists()) { followerRef.remove(); followingRef.remove(); } else { followerRef.set(true); followingRef.set(true); } }); }
-        function filterPinsAndUsers() { const query = document.getElementById('search-bar').value.toLowerCase().trim(); const userTray = document.getElementById('user-search-results-tray'); if(!query) { userTray.classList.add('hidden'); userTray.innerHTML = ''; document.querySelectorAll('#pin-container .pin-item').forEach(item => item.style.display = "block"); return; } document.querySelectorAll('#pin-container .pin-item').forEach(item => { item.style.display = item.innerText.toLowerCase().includes(query) ? "block" : "none"; }); database.ref('users').once('value', (snapshot) => { userTray.innerHTML = ''; const users = snapshot.val(); let count = 0; if(users) { Object.keys(users).forEach(uid => { const u = users[uid]; const nameMatch = u.name && u.name.toLowerCase().includes(query); const userMatch = u.username && u.username.toLowerCase().includes(query); if(nameMatch || userMatch) { count++; const div = document.createElement('div'); div.className = "flex items-center justify-between bg-white p-2 rounded-xl border cursor-pointer hover:bg-red-50 text-gray-900"; div.onclick = () => { userTray.classList.add('hidden'); document.getElementById('search-bar').value = ''; loadUserIdentitySpace(uid); }; div.innerHTML = `<div class="flex items-center gap-2"><img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" class="w-6 h-6 rounded-full object-cover"><div class="text-xs"><p class="font-black">${u.name || 'Member'}</p><p class="text-gray-400 text-[10px]">@${u.username || ''}</p></div></div><span class="text-[10px] bg-red-600 text-white font-bold py-1 px-2.5 rounded-full">View Hub</span>`; userTray.appendChild(div); } }); } if(count > 0) userTray.classList.remove('hidden'); else userTray.classList.add('hidden'); }); }
-        function listenToCloudDataStream() { database.ref('pins').on('value', (snapshot) => { const globalContainer = document.getElementById('pin-container'); globalContainer.innerHTML = ''; const data = snapshot.val(); if(data) { Object.keys(data).reverse().forEach(key => { const pin = data[key]; const likesObj = pin.likes || {}; const totalLikes = Object.keys(likesObj).length; const likedByMe = currentUserData ? !!likesObj[currentUserData.uid] : false; const pinElement = document.createElement('div'); pinElement.className = "pin-item bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm transition relative flex flex-col"; pinElement.innerHTML = `<div class="relative overflow-hidden cursor-zoom-in" id="img-wrapper-${key}"><img src="${pin.img}" class="w-full h-auto object-cover"></div><div class="p-3 flex flex-col justify-between flex-1"><div id="text-click-hook-${key}"><h3 class="font-bold text-xs text-gray-800 truncate">${pin.title || 'Stardust Idea'}</h3><p class="text-[11px] text-gray-400 truncate mt-0.5">${pin.desc || ''}</p></div><div class="flex items-center justify-between mt-3 pt-2 border-t border-gray-50"><span class="text-[10px] font-bold text-gray-400">${totalLikes} likes</span><div class="flex items-center gap-2.5"><button onclick="openCommentModal('${key}')"><svg class="w-4 h-4 text-gray-500 hover:text-black" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg></button><button onclick="toggleLikePost('${key}')"><svg class="w-4 h-4 ${likedByMe ? 'text-red-500 fill-current' : 'text-gray-500'}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg></button></div></div></div>`; globalContainer.appendChild(pinElement); const setupTriggers = () => { openPhotoModal(pin.img, pin.title || "Stardust Card", pin.desc || "", pin.uploaderName || "Anonymous", key, pin.uploaderUid); }; pinElement.querySelector(`#img-wrapper-${key}`).onclick = setupTriggers; pinElement.querySelector(`#text-click-hook-${key}`).onclick = setupTriggers; pinElement.querySelector(`#img-wrapper-${key}`).addEventListener('dblclick', (e) => { handleDoubleTapLikeAnimation(e, key); }); }); } if(!globalContainer.innerHTML) globalContainer.innerHTML = '<div class="text-center text-gray-400 py-16 col-span-2">No cards shared.</div>'; }); }
-        function toggleLikePost(pinId) { if(!currentUserData) return; const likeRef = database.ref('pins/' + pinId + '/likes/' + currentUserData.uid); likeRef.once('value', (snap) => { if(snap.exists()) likeRef.remove(); else likeRef.set(true); }); }
-        function handleDoubleTapLikeAnimation(event, pinId) { toggleLikePost(pinId); const container = event.currentTarget; const heart = document.createElement('div'); heart.className = "absolute inset-0 flex items-center justify-center pointer-events-none animate-ping"; heart.innerHTML = `<svg class="w-16 h-16 text-red-500 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`; container.appendChild(heart); setTimeout(() => heart.remove(), 600); }
-        function openCommentModal(pinId) { activeCommentPinId = pinId; document.getElementById('comment-modal').style.display = 'flex'; database.ref('pins/' + pinId + '/comments').on('value', (snapshot) => { const container = document.getElementById('comments-list-container'); container.innerHTML = ''; const list = snapshot.val(); if(!list) { container.innerHTML = `<p class="text-gray-400 text-center text-xs py-6">No comments yet.</p>`; return; } Object.keys(list).forEach(cKey => { const comment = list[cKey]; const row = document.createElement('div'); row.className = "bg-gray-50 rounded-2xl p-2.5 border text-xs text-left"; row.innerHTML = `<p class="font-black text-gray-700">@${comment.username || 'member'}</p><p class="text-gray-600 mt-0.5">${comment.text}</p>`; container.appendChild(row); }); container.scrollTop = container.scrollHeight; }); document.getElementById('submit-comment-btn').onclick = () => { const input = document.getElementById('comment-input-field'); const val = input.value.trim(); if(!val || !currentUserData) return; database.ref('pins/' + pinId + '/comments').push({ userId: currentUserData.uid, username: customProfileCache.username, text: val, timestamp: Date.now() }).then(() => { input.value = ''; }); }; }
+        function handleEmailSignUp() {
+            const name = document.getElementById('signup-name').value.trim();
+            const username = document.getElementById('signup-username').value.trim().toLowerCase().replace(/\s+/g, '');
+            const bio = document.getElementById('signup-bio').value.trim();
+            const email = document.getElementById('signup-email').value.trim();
+            const password = document.getElementById('signup-password').value.trim();
+
+            if(!name || !username || !email || !password) {
+                alert("Please fill in all required fields!");
+                return;
+            }
+
+            database.ref('users').orderByChild('username').equalTo(username).once('value', (snapshot) => {
+                if(snapshot.exists()) {
+                    alert("Username already taken! Please choose another one.");
+                    return;
+                }
+
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        const uid = userCredential.user.uid;
+                        database.ref('users/' + uid).set({
+                            name: name,
+                            username: username,
+                            bio: bio || "No bio written yet.",
+                            pfp: signupPfpBase64,
+                            isPremium: false,
+                            theme: "default",
+                            font: "font-modern",
+                            frame: "frame-none"
+                        }).then(() => {
+                            location.reload();
+                        });
+                    })
+                    .catch((err) => {
+                        alert("Sign Up Error: " + err.message);
+                    });
+            });
+        }
+
+        function handleLogOut() { auth.signOut().then(() => { location.reload(); }); }
+
+        function simulatePremiumPurchase() {
+            if(!currentUserData) return;
+            const confirmBuy = confirm("Activate STARDUST NITRO PREMIUM membership?");
+            if(confirmBuy) {
+                database.ref('users/' + currentUserData.uid).update({ isPremium: true }).then(() => {
+                    alert("Success! STARDUST NITRO PREMIUM is now active!");
+                });
+            }
+        }
+
+        function setupPremiumUIElements(isPremium) {
+            const promoCard = document.getElementById('nitro-promo-card');
+            const premiumSec = document.getElementById('premium-settings-section');
+            if(isPremium) {
+                promoCard.innerHTML = `<div class='text-center font-black text-xs py-1 tracking-widest'>YOU ARE A NITRO PREMIUM MEMBER</div>`;
+                promoCard.className = "bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 p-3 rounded-2xl text-white shadow-inner";
+                premiumSec.classList.remove('hidden');
+                
+                document.getElementById('premium-theme-select').value = customProfileCache.theme;
+                document.getElementById('premium-font-select').value = customProfileCache.font;
+                document.getElementById('premium-frame-select').value = customProfileCache.frame;
+            } else {
+                premiumSec.classList.add('hidden');
+            }
+        }
+
+        function applyPremiumCustomization() {
+            if(!currentUserData || !customProfileCache.isPremium) return;
+            database.ref('users/' + currentUserData.uid).update({
+                theme: document.getElementById('premium-theme-select').value,
+                font: document.getElementById('premium-font-select').value,
+                frame: document.getElementById('premium-frame-select').value
+            });
+        }
+
+        function loadUserIdentitySpace(targetUid) {
+            if(!currentUserData) return;
+            selectedProfileUid = targetUid;
+            
+            const isMe = (targetUid === "me" || targetUid === currentUserData.uid);
+            const finalUid = isMe ? currentUserData.uid : targetUid;
+            
+            document.getElementById('profile-back-to-my-btn').style.display = isMe ? "none" : "block";
+            document.getElementById('profile-settings-trigger-btn').style.display = isMe ? "block" : "none";
+            document.getElementById('profile-follow-action-btn').style.display = isMe ? "none" : "block";
+
+            database.ref('users/' + finalUid).once('value', (snapshot) => {
+                const uData = snapshot.val() || {};
+                const profSection = document.getElementById('tab-profile');
+                const pfpImg = document.getElementById('profile-img');
+                const premBadge = document.getElementById('premium-badge');
+
+                profSection.className = "tab-content text-center mt-4 max-w-xl mx-auto p-8 rounded-3xl transition-all duration-300 relative border shadow-xl min-h-[70vh]";
+                pfpImg.className = "w-36 h-36 rounded-full object-cover bg-white frame-none";
+                premBadge.classList.add('hidden');
+
+                if(uData.isPremium) {
+                    premBadge.classList.remove('hidden');
+                    if(uData.frame) {
+                        pfpImg.classList.remove('frame-none');
+                        pfpImg.classList.add(uData.frame);
+                    }
+                    if(uData.theme && uData.theme !== 'default') profSection.classList.add(uData.theme);
+                    if(uData.font) profSection.classList.add(uData.font);
+                }
+
+                document.getElementById('profile-name').innerText = uData.name || "Stardust Member";
+                document.getElementById('profile-username').innerText = '@' + (uData.username || "creator");
+                document.getElementById('profile-img').src = uData.pfp || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150";
+                document.getElementById('profile-bio').innerText = uData.bio || "No bio written yet.";
+                
+                syncSocialNetworkCounters(finalUid);
+                switchTab('profile');
+            });
+        }
+
+        function syncSocialNetworkCounters(uid) {
+            database.ref('network/followers/' + uid).on('value', (snap) => {
+                const data = snap.val() || {};
+                document.getElementById('profile-followers-count').innerText = Object.keys(data).length;
+                if(uid !== currentUserData.uid) {
+                    const btn = document.getElementById('profile-follow-action-btn');
+                    if(data[currentUserData.uid]) {
+                        btn.innerText = "Unfollow"; btn.className = "mt-5 w-40 text-xs font-black py-3 rounded-full bg-gray-100 text-gray-800 transition shadow-md";
+                    } else {
+                        btn.innerText = "Follow"; btn.className = "mt-5 w-40 text-xs font-black py-3 rounded-full bg-red-600 text-white transition shadow-md";
+                    }
+                }
+            });
+
+            database.ref('network/following/' + uid).on('value', (snap) => {
+                document.getElementById('profile-following-count').innerText = Object.keys(snap.val() || {}).length;
+            });
+
+            database.ref('pins').once('value', (snapshot) => {
+                const profileContainer = document.getElementById('profile-pin-container');
+                profileContainer.innerHTML = ''; const data = snapshot.val(); let totalPins = 0;
+                if(data) {
+                    Object.keys(data).reverse().forEach(key => {
+                        const pin = data[key];
+                        if(pin.uploaderUid === uid) {
+                            totalPins++; const element = document.createElement('div');
+                            element.className = "pin-item bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:opacity-95 text-gray-900 cursor-zoom-in";
+                            element.setAttribute('itemscope', '');
+                            element.setAttribute('itemtype', 'https://schema.org/ImageObject');
+                            element.onclick = () => openPhotoModal(pin.img, pin.title || "Stardust Card", pin.desc || "", pin.uploaderName || "Anonymous", key, pin.uploaderUid);
+                            element.innerHTML = `<img src="${pin.img}" itemprop="contentUrl" alt="${pin.title || 'Stardust Pin'}" class="w-full h-auto object-cover"><div class="p-2 text-[11px] font-bold truncate" itemprop="caption">${pin.title || 'Idea'}</div>`;
+                            profileContainer.appendChild(element);
+                        }
+                    });
+                }
+                if(totalPins === 0) profileContainer.innerHTML = '<div class="text-center text-gray-400 text-xs py-10 col-span-2">No uploads shared.</div>';
+            });
+        }
+
+        function handleNetworkFollowToggle() {
+            if(selectedProfileUid === "me" || selectedProfileUid === currentUserData.uid) return;
+            const targetUid = selectedProfileUid;
+            const followerRef = database.ref('network/followers/' + targetUid + '/' + currentUserData.uid);
+            const followingRef = database.ref('network/following/' + currentUserData.uid + '/' + targetUid);
+            followerRef.once('value', (snap) => {
+                if(snap.exists()) { followerRef.remove(); followingRef.remove(); } else { followerRef.set(true); followingRef.set(true); }
+            });
+        }
+
+        function filterPinsAndUsers() {
+            const query = document.getElementById('search-bar').value.toLowerCase().trim();
+            const userTray = document.getElementById('user-search-results-tray');
+            if(!query) { userTray.classList.add('hidden'); userTray.innerHTML = ''; document.querySelectorAll('#pin-container .pin-item').forEach(item => item.style.display = "block"); return; }
+            document.querySelectorAll('#pin-container .pin-item').forEach(item => { item.style.display = item.innerText.toLowerCase().includes(query) ? "block" : "none"; });
+
+            database.ref('users').once('value', (snapshot) => {
+                userTray.innerHTML = ''; const users = snapshot.val(); let count = 0;
+                if(users) {
+                    Object.keys(users).forEach(uid => {
+                        const u = users[uid]; 
+                        const nameMatch = u.name && u.name.toLowerCase().includes(query);
+                        const userMatch = u.username && u.username.toLowerCase().includes(query);
+                        if(nameMatch || userMatch) {
+                            count++; const div = document.createElement('div');
+                            div.className = "flex items-center justify-between bg-white p-2 rounded-xl border cursor-pointer hover:bg-red-50 text-gray-900";
+                            div.onclick = () => { userTray.classList.add('hidden'); document.getElementById('search-bar').value = ''; loadUserIdentitySpace(uid); };
+                            div.innerHTML = `<div class="flex items-center gap-2"><img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" class="w-6 h-6 rounded-full object-cover"><div class="text-xs"><p class="font-black">${u.name || 'Member'}</p><p class="text-gray-400 text-[10px]">@${u.username || ''}</p></div></div><span class="text-[10px] bg-red-600 text-white font-bold py-1 px-2.5 rounded-full">View Hub</span>`;
+                            userTray.appendChild(div);
+                        }
+                    });
+                }
+                if(count > 0) userTray.classList.remove('hidden'); else userTray.classList.add('hidden');
+            });
+        }
+
+        function listenToCloudDataStream() {
+            database.ref('pins').on('value', (snapshot) => {
+                const globalContainer = document.getElementById('pin-container');
+                globalContainer.innerHTML = ''; const data = snapshot.val();
+                if(data) {
+                    Object.keys(data).reverse().forEach(key => {
+                        const pin = data[key]; const likesObj = pin.likes || {}; const totalLikes = Object.keys(likesObj).length;
+                        const likedByMe = currentUserData ? !!likesObj[currentUserData.uid] : false;
+                        const pinElement = document.createElement('div');
+                        pinElement.className = "pin-item bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm transition relative flex flex-col";
+                        pinElement.setAttribute('itemscope', '');
+                        pinElement.setAttribute('itemtype', 'https://schema.org/ImageObject');
+                        pinElement.innerHTML = `
+                            <div class="relative overflow-hidden cursor-zoom-in" id="img-wrapper-${key}">
+                                <img src="${pin.img}" itemprop="contentUrl" alt="${pin.title || 'Stardust Idea Image'}" class="w-full h-auto object-cover">
+                            </div>
+                            <div class="p-3 flex flex-col justify-between flex-1">
+                                <div id="text-click-hook-${key}">
+                                    <h3 class="font-bold text-xs text-gray-800 truncate" itemprop="caption">${pin.title || 'Stardust Idea'}</h3>
+                                    <p class="text-[11px] text-gray-400 truncate mt-0.5" itemprop="description">${pin.desc || ''}</p>
+                                </div>
+                                <div class="flex items-center justify-between mt-3 pt-2 border-t border-gray-50">
+                                    <span class="text-[10px] font-bold text-gray-400">${totalLikes} likes</span>
+                                    <div class="flex items-center gap-2.5">
+                                        <button onclick="openCommentModal('${key}')"><svg class="w-4 h-4 text-gray-500 hover:text-black" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg></button>
+                                        <button onclick="toggleLikePost('${key}')"><svg class="w-4 h-4 ${likedByMe ? 'text-red-500 fill-current' : 'text-gray-500'}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg></button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        globalContainer.appendChild(pinElement);
+                        const setupTriggers = () => { openPhotoModal(pin.img, pin.title || "Stardust Card", pin.desc || "", pin.uploaderName || "Anonymous", key, pin.uploaderUid); };
+                        pinElement.querySelector(`#img-wrapper-${key}`).onclick = setupTriggers;
+                        pinElement.querySelector(`#text-click-hook-${key}`).onclick = setupTriggers;
+                        pinElement.querySelector(`#img-wrapper-${key}`).addEventListener('dblclick', (e) => { handleDoubleTapLikeAnimation(e, key); });
+                    });
+                }
+                if(!globalContainer.innerHTML) globalContainer.innerHTML = '<div class="text-center text-gray-400 py-16 col-span-2">No cards shared.</div>';
+                
+                hideLoadingScreen();
+            });
+        }
+
+        function toggleLikePost(pinId) {
+            if(!currentUserData) return;
+            const likeRef = database.ref('pins/' + pinId + '/likes/' + currentUserData.uid);
+            likeRef.once('value', (snap) => { if(snap.exists()) likeRef.remove(); else likeRef.set(true); });
+        }
+
+        function handleDoubleTapLikeAnimation(event, pinId) {
+            toggleLikePost(pinId); const container = event.currentTarget; const heart = document.createElement('div');
+            heart.className = "absolute inset-0 flex items-center justify-center pointer-events-none animate-ping";
+            heart.innerHTML = `<svg class="w-16 h-16 text-red-500 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
+            container.appendChild(heart); setTimeout(() => heart.remove(), 600);
+        }
+
+        function openCommentModal(pinId) {
+            activeCommentPinId = pinId; document.getElementById('comment-modal').style.display = 'flex';
+            database.ref('pins/' + pinId + '/comments').on('value', (snapshot) => {
+                const container = document.getElementById('comments-list-container'); container.innerHTML = ''; const list = snapshot.val();
+                if(!list) { container.innerHTML = `<p class="text-gray-400 text-center text-xs py-6">No comments yet.</p>`; return; }
+                Object.keys(list).forEach(cKey => {
+                    const comment = list[cKey]; const row = document.createElement('div');
+                    row.className = "bg-gray-50 rounded-2xl p-2.5 border text-xs text-left";
+                    row.innerHTML = `<p class="font-black text-gray-700">@${comment.username || 'member'}</p><p class="text-gray-600 mt-0.5">${comment.text}</p>`;
+                    container.appendChild(row);
+                });
+                container.scrollTop = container.scrollHeight;
+            });
+
+            document.getElementById('submit-comment-btn').onclick = () => {
+                const input = document.getElementById('comment-input-field'); const val = input.value.trim(); if(!val || !currentUserData) return;
+                database.ref('pins/' + pinId + '/comments').push({ userId: currentUserData.uid, username: customProfileCache.username, text: val, timestamp: Date.now() }).then(() => { input.value = ''; });
+            };
+        }
+
         function closeCommentModal() { if(activeCommentPinId) database.ref('pins/' + activeCommentPinId + '/comments').off(); document.getElementById('comment-modal').style.display = 'none'; }
-        function openPhotoModal(imgSrc, titleText, descText, author, pinKey, uploaderUid) { currentModalImgData = imgSrc; currentModalTitle = titleText; document.getElementById('modal-img').src = imgSrc; document.getElementById('modal-title').innerText = titleText; document.getElementById('modal-desc').innerText = descText; const authorEl = document.getElementById('modal-author'); authorEl.innerText = "BY: " + author.toUpperCase(); authorEl.onclick = () => { closePhotoModal(); loadUserIdentitySpace(uploaderUid); }; const likeSvg = document.getElementById('modal-like-svg'); const likeTxt = document.getElementById('modal-like-counter-text'); database.ref('pins/' + pinKey + '/likes').on('value', (snapshot) => { const likes = snapshot.val() || {}; const total = Object.keys(likes).length; likeTxt.innerText = `${total} likes`; if(currentUserData && likes[currentUserData.uid]) likeSvg.className = "w-5 h-5 text-red-500 fill-current"; else likeSvg.className = "w-5 h-5 text-gray-400"; }); document.getElementById('modal-like-trigger-btn').onclick = () => toggleLikePost(pinKey); document.getElementById('modal-comment-trigger-btn').onclick = () => openCommentModal(pinKey); document.getElementById('photo-modal').style.display = 'flex'; window.activeModalPinRefKey = pinKey; }
+
+        function openPhotoModal(imgSrc, titleText, descText, author, pinKey, uploaderUid) {
+            currentModalImgData = imgSrc; currentModalTitle = titleText;
+            document.getElementById('modal-img').src = imgSrc;
+            document.getElementById('modal-title').innerText = titleText;
+            document.getElementById('modal-desc').innerText = descText;
+            const authorEl = document.getElementById('modal-author'); authorEl.innerText = "BY: " + author.toUpperCase();
+            authorEl.onclick = () => { closePhotoModal(); loadUserIdentitySpace(uploaderUid); };
+
+            const likeSvg = document.getElementById('modal-like-svg'); const likeTxt = document.getElementById('modal-like-counter-text');
+            database.ref('pins/' + pinKey + '/likes').on('value', (snapshot) => {
+                const likes = snapshot.val() || {}; const total = Object.keys(likes).length; likeTxt.innerText = `${total} likes`;
+                if(currentUserData && likes[currentUserData.uid]) likeSvg.className = "w-5 h-5 text-red-500 fill-current"; else likeSvg.className = "w-5 h-5 text-gray-400";
+            });
+
+            document.getElementById('modal-like-trigger-btn').onclick = () => toggleLikePost(pinKey);
+            document.getElementById('modal-comment-trigger-btn').onclick = () => openCommentModal(pinKey);
+            document.getElementById('photo-modal').style.display = 'flex'; window.activeModalPinRefKey = pinKey;
+        }
+        
         function closePhotoModal() { if(window.activeModalPinRefKey) database.ref('pins/' + window.activeModalPinRefKey + '/likes').off(); document.getElementById('photo-modal').style.display = 'none'; }
-        function syncActiveInboxMembers() { database.ref('users').on('value', (snapshot) => { const listEl = document.getElementById('inbox-users-list'); listEl.innerHTML = ''; const users = snapshot.val(); const botRow = document.createElement('div'); botRow.className = "p-2 hover:bg-gray-100 rounded-xl cursor-pointer text-xs font-bold text-red-600 border flex items-center gap-1.5 transition"; botRow.onclick = () => selectActiveChatTarget('bot', 'System Bot'); botRow.innerHTML = `🤖 <span>Broadcast Bot</span>`; listEl.appendChild(botRow); if(users && currentUserData) { Object.keys(users).forEach(uid => { if(uid === currentUserData.uid) return; const u = users[uid]; const row = document.createElement('div'); row.className = "p-2 hover:bg-gray-100 rounded-xl cursor-pointer text-xs font-semibold text-gray-700 truncate flex items-center gap-2"; row.onclick = () => selectActiveChatTarget(uid, u.name || 'User'); row.innerHTML = `<img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" class="w-4 h-4 rounded-full object-cover"> <span>@${u.username}</span>`; listEl.appendChild(row); }); } }); }
+
+        function syncActiveInboxMembers() {
+            database.ref('users').on('value', (snapshot) => {
+                const listEl = document.getElementById('inbox-users-list'); listEl.innerHTML = ''; const users = snapshot.val();
+                const botRow = document.createElement('div');
+                botRow.className = "p-2 hover:bg-gray-100 rounded-xl cursor-pointer text-xs font-bold text-red-600 border flex items-center gap-1.5 transition";
+                botRow.onclick = () => selectActiveChatTarget('bot', 'System Bot');
+                botRow.innerHTML = `<svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg> <span>Broadcast Bot</span>`; listEl.appendChild(botRow);
+
+                if(users && currentUserData) {
+                    Object.keys(users).forEach(uid => {
+                        if(uid === currentUserData.uid) return; const u = users[uid]; const row = document.createElement('div');
+                        row.className = "p-2 hover:bg-gray-100 rounded-xl cursor-pointer text-xs font-semibold text-gray-700 truncate flex items-center gap-2";
+                        row.onclick = () => selectActiveChatTarget(uid, u.name || 'User');
+                        row.innerHTML = `<img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" class="w-4 h-4 rounded-full object-cover"> <span>@${u.username}</span>`;
+                        listEl.appendChild(row);
+                    });
+                }
+            });
+        }
+
         function selectActiveChatTarget(uid, nameText) { activeChatTargetUid = uid; document.getElementById('chat-window-header-title').innerText = (uid === 'bot') ? 'Broadcast Bot' : `Chat: @${nameText}`; listenToPrivateChatEngine(); }
-        function listenToPrivateChatEngine() { const chatBox = document.getElementById('chat-box'); chatBox.innerHTML = ''; if(activeChatTargetUid === 'bot') { chatBox.innerHTML = `<div class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">Welcome to STARDUST Core System! Click any dynamic active user on the left to start a private chat.</div>`; return; } const chatNodeRef = currentUserData.uid < activeChatTargetUid ? `${currentUserData.uid}_${activeChatTargetUid}` : `${activeChatTargetUid}_${currentUserData.uid}`; database.ref('chats/' + chatNodeRef).off(); database.ref('chats/' + chatNodeRef).on('value', (snapshot) => { chatBox.innerHTML = ''; const logs = snapshot.val(); if(!logs) { chatBox.innerHTML = `<p class="text-center text-xs text-gray-400 py-10">No messages. Say hello! 👋</p>`; return; } Object.keys(logs).forEach(mId => { const msg = logs[mId]; const bubble = document.createElement('div'); bubble.className = msg.sender === currentUserData.uid ? "bg-black text-white p-3.5 rounded-2xl rounded-tr-none text-sm max-w-[85%] ml-auto text-right font-medium" : "bg-gray-100 text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium"; bubble.innerText = msg.text; chatBox.appendChild(bubble); }); chatBox.scrollTop = chatBox.scrollHeight; }); }
-        function sendChatMessage() { const input = document.getElementById('chat-input'); const msgVal = input.value.trim(); if(!msgVal) return; if(activeChatTargetUid === 'bot') { const chatBox = document.getElementById('chat-box'); chatBox.innerHTML += `<div class="bg-black text-white p-3.5 rounded-2xl rounded-tr-none text-sm max-w-[85%] ml-auto text-right font-medium">${msgVal}</div>`; input.value = ''; chatBox.scrollTop = chatBox.scrollHeight; setTimeout(() => { chatBox.innerHTML += `<div class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">🤖 SYSTEM NOTICE: Click any active member from the left to start a real chat!</div>`; chatBox.scrollTop = chatBox.scrollHeight; }, 900); return; } const chatNodeRef = currentUserData.uid < activeChatTargetUid ? `${currentUserData.uid}_${activeChatTargetUid}` : `${activeChatTargetUid}_${currentUserData.uid}`; database.ref('chats/' + chatNodeRef).push({ sender: currentUserData.uid, text: msgVal, timestamp: Date.now() }).then(() => { input.value = ''; }); }
-        function showSettingsPage(pageId) { document.getElementById('settings-main-screen').classList.add('hidden'); document.querySelectorAll('.settings-sub-page').forEach(page => page.classList.add('hidden')); document.getElementById(pageId).classList.remove('hidden'); if(pageId === 'page-account') { document.getElementById('edit-name-input').value = customProfileCache.name; document.getElementById('edit-bio-input').value = customProfileCache.bio === "No bio written yet." ? "" : customProfileCache.bio; document.getElementById('edit-username-input').value = customProfileCache.username; } }
+
+        function listenToPrivateChatEngine() {
+            const chatBox = document.getElementById('chat-box'); chatBox.innerHTML = '';
+            if(activeChatTargetUid === 'bot') { chatBox.innerHTML = `<div class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">Welcome to STARDUST Core System! Click any dynamic active user on the left to start a private chat.</div>`; return; }
+            const chatNodeRef = currentUserData.uid < activeChatTargetUid ? `${currentUserData.uid}_${activeChatTargetUid}` : `${activeChatTargetUid}_${currentUserData.uid}`;
+            database.ref('chats/' + chatNodeRef).off();
+            database.ref('chats/' + chatNodeRef).on('value', (snapshot) => {
+                chatBox.innerHTML = ''; const logs = snapshot.val();
+                if(!logs) { chatBox.innerHTML = `<p class="text-center text-xs text-gray-400 py-10">No messages. Say hello!</p>`; return; }
+                Object.keys(logs).forEach(mId => {
+                    const msg = logs[mId]; const bubble = document.createElement('div');
+                    bubble.className = msg.sender === currentUserData.uid ? "bg-black text-white p-3.5 rounded-2xl rounded-tr-none text-sm max-w-[85%] ml-auto text-right font-medium" : "bg-gray-100 text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium";
+                    bubble.innerText = msg.text; chatBox.appendChild(bubble);
+                });
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chat-input'); const msgVal = input.value.trim(); if(!msgVal) return;
+            if(activeChatTargetUid === 'bot') {
+                const chatBox = document.getElementById('chat-box'); chatBox.innerHTML += `<div class="bg-black text-white p-3.5 rounded-2xl rounded-tr-none text-sm max-w-[85%] ml-auto text-right font-medium">${msgVal}</div>`;
+                input.value = ''; chatBox.scrollTop = chatBox.scrollHeight;
+                setTimeout(() => { chatBox.innerHTML += `<div class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">SYSTEM NOTICE: Click any active member from the left to start a real chat!</div>`; chatBox.scrollTop = chatBox.scrollHeight; }, 900);
+                return;
+            }
+            const chatNodeRef = currentUserData.uid < activeChatTargetUid ? `${currentUserData.uid}_${activeChatTargetUid}` : `${activeChatTargetUid}_${currentUserData.uid}`;
+            database.ref('chats/' + chatNodeRef).push({ sender: currentUserData.uid, text: msgVal, timestamp: Date.now() }).then(() => { input.value = ''; });
+        }
+
+        function showSettingsPage(pageId) {
+            document.getElementById('settings-main-screen').classList.add('hidden');
+            document.querySelectorAll('.settings-sub-page').forEach(page => page.classList.add('hidden'));
+            document.getElementById(pageId).classList.remove('hidden');
+            if(pageId === 'page-account') {
+                document.getElementById('edit-name-input').value = customProfileCache.name;
+                document.getElementById('edit-bio-input').value = customProfileCache.bio === "No bio written yet." ? "" : customProfileCache.bio;
+                document.getElementById('edit-username-input').value = customProfileCache.username;
+            }
+        }
+
         function backToSettingsMain() { document.querySelectorAll('.settings-sub-page').forEach(page => page.classList.add('hidden')); document.getElementById('settings-main-screen').classList.remove('hidden'); }
         function openSettingsModal() { backToSettingsMain(); document.getElementById('settings-modal').style.display = 'flex'; }
         function closeSettingsModal() { document.getElementById('settings-modal').style.display = 'none'; }
-        function saveProfileCustomizations() { if(!currentUserData) return; const inputName = document.getElementById('edit-name-input').value.trim(); const inputBio = document.getElementById('edit-bio-input').value.trim(); const inputUsername = document.getElementById('edit-username-input').value.trim().toLowerCase().replace(/\s+/g, ''); if(!inputName || !inputUsername) { alert("Fields cannot be blank references!"); return; } database.ref('users').orderByChild('username').equalTo(inputUsername).once('value', (snapshot) => { if(snapshot.exists()) { const ownerId = Object.keys(snapshot.val())[0]; if(ownerId !== currentUserData.uid) { alert("Username already taken!"); return; } } database.ref('users/' + currentUserData.uid).update({ name: inputName, bio: inputBio || "No bio written yet.", username: inputUsername }).then(() => { alert("Identity updated!"); closeSettingsModal(); }); }); }
-        function handlePfpUpload(event) { const file = event.target.files[0]; if (!file || !currentUserData) return; const reader = new FileReader(); reader.onload = function(e) { database.ref('users/' + currentUserData.uid).update({ pfp: e.target.result }).then(() => { alert("PFP Synced!"); closeSettingsModal(); }); }; reader.readAsDataURL(file); }
-        function changeSystemLanguage(langKey) { activeLanguage = langKey; const dict = langPack[langKey] || langPack['en']; document.getElementById('lang-tagline').innerText = dict.tagline; document.getElementById('search-bar').placeholder = dict.searchPlaceholder; document.getElementById('lang-send-btn').innerText = dict.sendBtn; document.getElementById('lang-my-uploads').innerText = dict.myUploads; document.getElementById('lang-settings-title').innerText = dict.settingsTitle; }
-        function submitSupportTicket() { const input = document.getElementById('support-text-input'); if(!input.value.trim()) return; database.ref('support_tickets').push({ uid: currentUserData.uid, text: input.value.trim(), timestamp: Date.now() }).then(() => { alert("Ticket Sent!"); input.value = ''; closeSettingsModal(); }); }
-        function downloadImage() { if(!currentModalImgData) return; const link = document.createElement("a"); link.href = currentModalImgData; link.download = currentModalTitle.replace(/\s+/g, '_') + ".jpg"; document.body.appendChild(link); link.click(); document.body.removeChild(link); }
-        function handleUpload(event) { const file = event.target.files[0]; if (!file || !currentUserData) return; let userTitle = prompt("Enter a Title:", file.name.split('.')[0]); if (userTitle === null) return; if (userTitle.trim() === "") userTitle = "Stardust Inspiration"; let userDesc = prompt("Enter Description (Optional):", "Inspired via Stardust."); const reader = new FileReader(); reader.onload = function(e) { database.ref('pins').push({ title: userTitle.trim(), desc: userDesc.trim(), img: e.target.result, uploaderUid: currentUserData.uid, uploaderName: customProfileCache.name || "Stardust Member" }).then(() => { switchTab('home'); }); }; reader.readAsDataURL(file); }
-        function switchTab(tabName) { const navBar = document.getElementById('app-nav'); if(tabName === 'profile') { navBar.classList.add('hidden'); } else { navBar.classList.remove('hidden'); } document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden')); document.getElementById(`tab-${tabName}`).classList.remove('hidden'); ['home', 'messages', 'profile'].forEach(t => { const btn = document.getElementById(`nav-${t}`); if(btn) btn.className = (t === tabName) ? "flex items-center justify-center p-2.5 rounded-full bg-black text-white transition-all" : "flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all"; }); }
 
-        // on load, ensure loading shows until auth resolves
-        window.addEventListener('load', () => {
-            // if user already signed in, loading will be hidden by onAuthStateChanged
-            // otherwise, loading hides after auth check (already in onAuthStateChanged)
-        });
+        function saveProfileCustomizations() {
+            if(!currentUserData) return;
+            const inputName = document.getElementById('edit-name-input').value.trim();
+            const inputBio = document.getElementById('edit-bio-input').value.trim();
+            const inputUsername = document.getElementById('edit-username-input').value.trim().toLowerCase().replace(/\s+/g, '');
+
+            if(!inputName || !inputUsername) { alert("Fields cannot be blank references!"); return; }
+
+            database.ref('users').orderByChild('username').equalTo(inputUsername).once('value', (snapshot) => {
+                if(snapshot.exists()) {
+                    const ownerId = Object.keys(snapshot.val())[0];
+                    if(ownerId !== currentUserData.uid) { alert("Username already taken!"); return; }
+                }
+                database.ref('users/' + currentUserData.uid).update({ name: inputName, bio: inputBio || "No bio written yet.", username: inputUsername }).then(() => { alert("Identity updated!"); closeSettingsModal(); });
+            });
+        }
+
+        function handlePfpUpload(event) {
+            const file = event.target.files[0]; if (!file || !currentUserData) return;
+            const reader = new FileReader();
+            reader.onload = function(e) { database.ref('users/' + currentUserData.uid).update({ pfp: e.target.result }).then(() => { alert("PFP Synced!"); closeSettingsModal(); }); };
+            reader.readAsDataURL(file);
+        }
+
+        function changeSystemLanguage(langKey) {
+            activeLanguage = langKey; const dict = langPack[langKey] || langPack['en'];
+            document.getElementById('lang-tagline').innerText = dict.tagline;
+            document.getElementById('search-bar').placeholder = dict.searchPlaceholder; document.getElementById('lang-send-btn').innerText = dict.sendBtn;
+            document.getElementById('lang-my-uploads').innerText = dict.myUploads; document.getElementById('lang-settings-title').innerText = dict.settingsTitle;
+        }
+
+        function submitSupportTicket() {
+            const input = document.getElementById('support-text-input'); if(!input.value.trim()) return;
+            database.ref('support_tickets').push({ uid: currentUserData.uid, text: input.value.trim(), timestamp: Date.now() }).then(() => { alert("Ticket Sent!"); input.value = ''; closeSettingsModal(); });
+        }
+
+        function downloadImage() { if(!currentModalImgData) return; const link = document.createElement("a"); link.href = currentModalImgData; link.download = currentModalTitle.replace(/\s+/g, '_') + ".jpg"; document.body.appendChild(link); link.click(); document.body.removeChild(link); }
+
+        function handleUpload(event) {
+            const file = event.target.files[0]; if (!file || !currentUserData) return;
+            let userTitle = prompt("Enter a Title:", file.name.split('.')[0]); if (userTitle === null) return;
+            if (userTitle.trim() === "") userTitle = "Stardust Inspiration";
+            let userDesc = prompt("Enter Description (Optional):", "Inspired via Stardust.");
+            const reader = new FileReader();
+            reader.onload = function(e) { database.ref('pins').push({ title: userTitle.trim(), desc: userDesc.trim(), img: e.target.result, uploaderUid: currentUserData.uid, uploaderName: customProfileCache.name || "Stardust Member" }).then(() => { switchTab('home'); }); };
+            reader.readAsDataURL(file);
+        }
+
+        function switchTab(tabName) {
+            const navBar = document.getElementById('app-nav');
+            if(tabName === 'profile') {
+                navBar.classList.add('hidden');
+            } else {
+                navBar.classList.remove('hidden');
+            }
+
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            ['home', 'messages', 'profile'].forEach(t => {
+                const btn = document.getElementById(`nav-${t}`);
+                if(btn) btn.className = (t === tabName) ? "flex items-center justify-center p-2.5 rounded-full bg-black text-white transition-all" : "flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all";
+            });
+        }
     </script>
 </body>
 </html>
