@@ -535,6 +535,7 @@
 
                     setupPremiumUIElements(customProfileCache.isPremium);
 
+                    // ✅ Profile data load karo but tab switch mat karo - sirf data cache ke liye
                     if(selectedProfileUid === "me") {
                         loadUserIdentitySpace("me");
                     }
@@ -543,7 +544,7 @@
                 listenToCloudDataStream();
                 syncActiveInboxMembers();
 
-                // ENSURE DEFAULT LANDING PAGE IS HOME TAB
+                // ✅ ENSURE DEFAULT LANDING PAGE IS HOME TAB - startup par home screen dikhe
                 switchTab('home');
             } else {
                 currentUserData = null;
@@ -663,6 +664,7 @@
             });
         }
 
+        // ✅ FIXED: loadUserIdentitySpace() ab profile tab switch nahi karega - sirf data load karega
         function loadUserIdentitySpace(targetUid) {
             if(!currentUserData) return;
             selectedProfileUid = targetUid;
@@ -700,7 +702,7 @@
                 document.getElementById('profile-bio').innerText = uData.bio || "No bio written yet.";
                 
                 syncSocialNetworkCounters(finalUid);
-                switchTab('profile');
+                // ✅ switchTab('profile') HATAYA - ab ye function sirf data load karega, tab switch nahi karega
             });
         }
 
