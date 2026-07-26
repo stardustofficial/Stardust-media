@@ -234,6 +234,47 @@
         </section>
     </div>
 
+    <!-- CUSTOM PROFESSIONAL UPLOAD MODAL -->
+    <div id="upload-modal" class="fixed inset-0 bg-black/60 z-[180] hidden items-center justify-center p-4 backdrop-blur-md transition-opacity">
+        <div class="bg-white rounded-3xl w-full max-w-sm p-6 relative shadow-2xl border border-gray-100 flex flex-col gap-4 text-gray-900">
+            <div class="flex items-center justify-between border-b pb-3">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 bg-red-600 rounded-full animate-ping"></span>
+                    <h3 class="font-black text-base tracking-wide text-gray-900">Create New Post</h3>
+                </div>
+                <button onclick="closeUploadModal()" class="text-gray-400 hover:text-black font-bold p-1 transition">✕</button>
+            </div>
+
+            <div class="w-full h-40 rounded-2xl bg-gray-50 border border-gray-100 overflow-hidden flex items-center justify-center relative">
+                <img id="upload-preview-img" src="" class="w-full h-full object-cover">
+            </div>
+
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Post Title</label>
+                    <input type="text" id="upload-title-input" placeholder="Give your visual a title..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-red-600 transition">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Description (Optional)</label>
+                    <textarea id="upload-desc-input" rows="2" placeholder="Write a short description..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-red-600 transition resize-none"></textarea>
+                </div>
+            </div>
+
+            <div class="flex gap-2 pt-2">
+                <button onclick="closeUploadModal()" class="w-1/3 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold py-3 rounded-full transition">Cancel</button>
+                <button onclick="confirmAndPublishUpload()" class="w-2/3 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-3 rounded-full transition shadow-lg active:scale-95 flex items-center justify-center gap-1.5">
+                    <span>Publish Post</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUCCESS POPUP NOTICE -->
+    <div id="upload-success-toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-[220] hidden items-center gap-2.5 bg-gray-900 text-white px-5 py-3 rounded-full shadow-2xl border border-white/20 transition-all duration-300">
+        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+        <span class="text-xs font-bold tracking-wide">Post Published Successfully!</span>
+    </div>
+
     <div id="settings-modal" class="fixed inset-0 bg-black/50 z-[160] hidden items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl w-full max-w-sm p-6 relative shadow-2xl border overflow-hidden max-h-[85vh] flex flex-col text-gray-900">
             
@@ -455,6 +496,7 @@
         let activeChatTargetUid = "bot"; 
         let activeCommentPinId = null;
         let selectedProfileUid = "me";
+        let pendingUploadData = null;
 
         const langPack = {
             en: { tagline: "Discover, track and share premium visual ideas with your cloud sync profile instantly.", loginBtn: "Sign In", searchPlaceholder: "Search inspired ideas...", sendBtn: "Send", myUploads: "Upload Records", settingsTitle: "Settings" },
@@ -500,6 +542,9 @@
                 
                 listenToCloudDataStream();
                 syncActiveInboxMembers();
+
+                // ENSURE DEFAULT LANDING PAGE IS HOME TAB
+                switchTab('home');
             } else {
                 currentUserData = null;
                 document.getElementById('auth-wall').classList.remove('hidden');
@@ -937,14 +982,60 @@
 
         function downloadImage() { if(!currentModalImgData) return; const link = document.createElement("a"); link.href = currentModalImgData; link.download = currentModalTitle.replace(/\s+/g, '_') + ".jpg"; document.body.appendChild(link); link.click(); document.body.removeChild(link); }
 
+        /* REPLACED DEFAULT PROMPTS WITH CUSTOM MODERN UI MODAL & SUCCESS TOAST */
         function handleUpload(event) {
-            const file = event.target.files[0]; if (!file || !currentUserData) return;
-            let userTitle = prompt("Enter a Title:", file.name.split('.')[0]); if (userTitle === null) return;
-            if (userTitle.trim() === "") userTitle = "Stardust Inspiration";
-            let userDesc = prompt("Enter Description (Optional):", "Inspired via Stardust.");
+            const file = event.target.files[0]; 
+            if (!file || !currentUserData) return;
+            
             const reader = new FileReader();
-            reader.onload = function(e) { database.ref('pins').push({ title: userTitle.trim(), desc: userDesc.trim(), img: e.target.result, uploaderUid: currentUserData.uid, uploaderName: customProfileCache.name || "Stardust Member" }).then(() => { switchTab('home'); }); };
+            reader.onload = function(e) {
+                pendingUploadData = e.target.result;
+                document.getElementById('upload-preview-img').src = pendingUploadData;
+                document.getElementById('upload-title-input').value = file.name.split('.')[0] || '';
+                document.getElementById('upload-desc-input').value = '';
+                
+                const modal = document.getElementById('upload-modal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            };
             reader.readAsDataURL(file);
+            event.target.value = '';
+        }
+
+        function closeUploadModal() {
+            const modal = document.getElementById('upload-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            pendingUploadData = null;
+        }
+
+        function confirmAndPublishUpload() {
+            if (!pendingUploadData || !currentUserData) return;
+            
+            const userTitle = document.getElementById('upload-title-input').value.trim() || "Stardust Inspiration";
+            const userDesc = document.getElementById('upload-desc-input').value.trim() || "Inspired via Stardust.";
+
+            database.ref('pins').push({
+                title: userTitle,
+                desc: userDesc,
+                img: pendingUploadData,
+                uploaderUid: currentUserData.uid,
+                uploaderName: customProfileCache.name || "Stardust Member"
+            }).then(() => {
+                closeUploadModal();
+                showUploadSuccessToast();
+                switchTab('home');
+            });
+        }
+
+        function showUploadSuccessToast() {
+            const toast = document.getElementById('upload-success-toast');
+            toast.classList.remove('hidden');
+            toast.classList.add('flex');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+                toast.classList.remove('flex');
+            }, 3000);
         }
 
         function switchTab(tabName) {
