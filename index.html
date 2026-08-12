@@ -494,59 +494,15 @@
             background: #dc2626;
             border-radius: 10px;
         }
-
-        /* Tab-based search layout */
-        .search-tabs {
-            display: flex;
-            gap: 0;
-            border-bottom: 2px solid #e5e7eb;
-            margin-bottom: 12px;
-            padding: 0 4px;
-        }
-        .search-tab {
-            flex: 1;
-            text-align: center;
-            padding: 8px 4px 10px 4px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-            transition: all 0.2s ease;
+        .search-section-title {
+            font-size: 0.65rem;
+            font-weight: 800;
             color: #9ca3af;
-            background: none;
-            border-top: none;
-            border-left: none;
-            border-right: none;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 8px 4px 4px 4px;
+            border-bottom: 1px solid #f3f4f6;
         }
-        .search-tab.active {
-            color: #dc2626;
-            border-bottom-color: #dc2626;
-        }
-        .search-tab:hover:not(.active) {
-            color: #6b7280;
-        }
-        .search-tab .tab-count {
-            font-size: 0.55rem;
-            background: #f3f4f6;
-            padding: 1px 6px;
-            border-radius: 10px;
-            margin-left: 4px;
-            color: #6b7280;
-        }
-        .search-tab.active .tab-count {
-            background: #fef2f2;
-            color: #dc2626;
-        }
-
-        .search-tab-content {
-            display: none;
-        }
-        .search-tab-content.active {
-            display: block;
-        }
-
         .search-result-item {
             display: flex;
             align-items: center;
@@ -574,14 +530,22 @@
             font-size: 0.65rem;
             color: #9ca3af;
         }
+        .search-result-item .result-type-badge {
+            font-size: 0.5rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .badge-user { background: #dbeafe; color: #1d4ed8; }
+        .badge-post { background: #fce7f3; color: #be185d; }
+        .badge-article { background: #d1fae5; color: #065f46; }
         .search-empty {
             padding: 20px;
             text-align: center;
             color: #9ca3af;
             font-size: 0.8rem;
-        }
-        .search-tab-content .search-empty {
-            padding: 30px 10px;
         }
     </style>
 </head>
@@ -1105,7 +1069,6 @@
         let currentModalType = "photo";
         let editPhotoKey = null;
         let lastTab = "home";
-        let activeSearchTab = "users";
 
         // ============================================================
         // LANGUAGE PACK - ALL 15 LANGUAGES
@@ -1633,7 +1596,6 @@
                     }
 
                     setupPremiumUIElements(customProfileCache.isPremium);
-                    // Load profile only if we're on profile tab or viewing our own profile
                     if(selectedProfileUid === "me") {
                         loadUserIdentitySpace("me");
                     }
@@ -1783,9 +1745,7 @@
         // PROFILE FUNCTIONS
         // ============================================================
         function goBackToHome() {
-            // Reset profile state
             selectedProfileUid = "me";
-            viewingUserProfileUid = null;
             switchTab('home');
             document.getElementById('search-bar').value = '';
             document.getElementById('search-results-container').classList.add('hidden');
@@ -1993,7 +1953,7 @@
         }
 
         // ============================================================
-        // SEARCH - Enhanced with Tab-based 3 sections
+        // SEARCH - Enhanced with 3 sections
         // ============================================================
         function handleSearch() {
             const query = document.getElementById('search-bar').value.toLowerCase().trim();
@@ -2020,57 +1980,21 @@
                         const pins = pinsSnap.val() || {};
                         const articles = articlesSnap.val() || {};
                         
-                        // Collect results by category
+                        let html = '';
+                        
+                        // SECTION 1: USERS
                         let userResults = [];
                         Object.keys(users).forEach(uid => {
                             const u = users[uid];
                             if(u.name && u.name.toLowerCase().includes(query)) {
-                                userResults.push({ uid, ...u });
+                                userResults.push({ uid, ...u, type: 'user' });
                             } else if(u.username && u.username.toLowerCase().includes(query)) {
-                                userResults.push({ uid, ...u });
+                                userResults.push({ uid, ...u, type: 'user' });
                             }
                         });
                         
-                        let postResults = [];
-                        Object.keys(pins).forEach(key => {
-                            const p = pins[key];
-                            if(p.title && p.title.toLowerCase().includes(query)) {
-                                postResults.push({ key, ...p });
-                            } else if(p.desc && p.desc.toLowerCase().includes(query)) {
-                                postResults.push({ key, ...p });
-                            }
-                        });
-                        
-                        let articleResults = [];
-                        Object.keys(articles).forEach(key => {
-                            const a = articles[key];
-                            if(a.title && a.title.toLowerCase().includes(query)) {
-                                articleResults.push({ key, ...a });
-                            } else if(a.content && a.content.toLowerCase().includes(query)) {
-                                articleResults.push({ key, ...a });
-                            }
-                        });
-                        
-                        let html = '';
-                        
-                        // Tabs
-                        html += `
-                            <div class="search-tabs">
-                                <button class="search-tab ${activeSearchTab === 'users' ? 'active' : ''}" onclick="switchSearchTab('users')">
-                                    Users <span class="tab-count">${userResults.length}</span>
-                                </button>
-                                <button class="search-tab ${activeSearchTab === 'posts' ? 'active' : ''}" onclick="switchSearchTab('posts')">
-                                    Posts <span class="tab-count">${postResults.length}</span>
-                                </button>
-                                <button class="search-tab ${activeSearchTab === 'articles' ? 'active' : ''}" onclick="switchSearchTab('articles')">
-                                    Articles <span class="tab-count">${articleResults.length}</span>
-                                </button>
-                            </div>
-                        `;
-                        
-                        // Users tab content
-                        html += `<div class="search-tab-content ${activeSearchTab === 'users' ? 'active' : ''}" id="search-tab-users">`;
                         if(userResults.length > 0) {
+                            html += `<div class="search-section-title">Users (${userResults.length})</div>`;
                             userResults.forEach(u => {
                                 html += `
                                     <div class="search-result-item" onclick="loadUserIdentitySpace('${u.uid}'); document.getElementById('search-results-container').classList.add('hidden'); document.getElementById('search-bar').value = '';">
@@ -2079,17 +2003,25 @@
                                             <div class="result-title">${u.name}</div>
                                             <div class="result-sub">@${u.username}</div>
                                         </div>
+                                        <span class="result-type-badge badge-user" style="margin-left:auto;">User</span>
                                     </div>
                                 `;
                             });
-                        } else {
-                            html += `<div class="search-empty">No users found for "${query}"</div>`;
                         }
-                        html += `</div>`;
                         
-                        // Posts tab content
-                        html += `<div class="search-tab-content ${activeSearchTab === 'posts' ? 'active' : ''}" id="search-tab-posts">`;
+                        // SECTION 2: POSTS (Photos)
+                        let postResults = [];
+                        Object.keys(pins).forEach(key => {
+                            const p = pins[key];
+                            if(p.title && p.title.toLowerCase().includes(query)) {
+                                postResults.push({ key, ...p, type: 'post' });
+                            } else if(p.desc && p.desc.toLowerCase().includes(query)) {
+                                postResults.push({ key, ...p, type: 'post' });
+                            }
+                        });
+                        
                         if(postResults.length > 0) {
+                            html += `<div class="search-section-title">Posts (${postResults.length})</div>`;
                             postResults.forEach(p => {
                                 html += `
                                     <div class="search-result-item" onclick="openPhotoModal('${p.img}', '${p.title || 'Post'}', '${p.desc || ''}', '${p.uploaderName || 'Anonymous'}', '${p.key}', '${p.uploaderUid}', 'photo'); document.getElementById('search-results-container').classList.add('hidden'); document.getElementById('search-bar').value = '';">
@@ -2098,17 +2030,25 @@
                                             <div class="result-title">${p.title || 'Untitled'}</div>
                                             <div class="result-sub">${p.desc ? p.desc.substring(0, 40) + '...' : ''}</div>
                                         </div>
+                                        <span class="result-type-badge badge-post" style="margin-left:auto;">Post</span>
                                     </div>
                                 `;
                             });
-                        } else {
-                            html += `<div class="search-empty">No posts found for "${query}"</div>`;
                         }
-                        html += `</div>`;
                         
-                        // Articles tab content
-                        html += `<div class="search-tab-content ${activeSearchTab === 'articles' ? 'active' : ''}" id="search-tab-articles">`;
+                        // SECTION 3: ARTICLES
+                        let articleResults = [];
+                        Object.keys(articles).forEach(key => {
+                            const a = articles[key];
+                            if(a.title && a.title.toLowerCase().includes(query)) {
+                                articleResults.push({ key, ...a, type: 'article' });
+                            } else if(a.content && a.content.toLowerCase().includes(query)) {
+                                articleResults.push({ key, ...a, type: 'article' });
+                            }
+                        });
+                        
                         if(articleResults.length > 0) {
+                            html += `<div class="search-section-title">Articles (${articleResults.length})</div>`;
                             articleResults.forEach(a => {
                                 const previewImg = a.image || 'https://via.placeholder.com/400x200?text=Article';
                                 html += `
@@ -2118,33 +2058,20 @@
                                             <div class="result-title">${a.title || 'Untitled'}</div>
                                             <div class="result-sub">${a.content ? a.content.substring(0, 40) + '...' : ''}</div>
                                         </div>
+                                        <span class="result-type-badge badge-article" style="margin-left:auto;">Article</span>
                                     </div>
                                 `;
                             });
-                        } else {
-                            html += `<div class="search-empty">No articles found for "${query}"</div>`;
                         }
-                        html += `</div>`;
                         
-                        // Store results for tab switching
-                        window._searchResults = { users: userResults, posts: postResults, articles: articleResults, query: query };
+                        if(!userResults.length && !postResults.length && !articleResults.length) {
+                            html = `<div class="search-empty">No results found for "${query}"</div>`;
+                        }
                         
                         container.innerHTML = html;
                         container.classList.remove('hidden');
                     });
                 });
-            });
-        }
-
-        function switchSearchTab(tab) {
-            activeSearchTab = tab;
-            // Update tab buttons
-            document.querySelectorAll('.search-tab').forEach(btn => {
-                btn.classList.toggle('active', btn.textContent.toLowerCase().includes(tab));
-            });
-            // Update tab content
-            document.querySelectorAll('.search-tab-content').forEach(content => {
-                content.classList.toggle('active', content.id === `search-tab-${tab}`);
             });
         }
 
@@ -2492,20 +2419,12 @@
                 document.querySelectorAll('#pin-container .pin-item').forEach(item => item.style.display = "block");
                 document.querySelectorAll('#articles-container .article-card').forEach(item => item.style.display = "block");
                 
-                // Reset profile to "me" when going to home
-                selectedProfileUid = "me";
-                viewingUserProfileUid = null;
-                activeSearchTab = "users";
-            }
-            if(tabName === 'profile') {
-                // Always load current user's profile when going to profile tab
-                // But if we're viewing someone else's profile and we tap profile nav, switch to our own profile
-                if (selectedProfileUid !== "me" && selectedProfileUid !== currentUserData?.uid) {
+                // Reset profile to "me" when going to home from search
+                if(selectedProfileUid !== "me") {
                     selectedProfileUid = "me";
-                    viewingUserProfileUid = null;
                 }
-                // Load the profile
-                loadUserIdentitySpace("me");
+                // Reset viewing user
+                viewingUserProfileUid = null;
             }
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById(`tab-${tabName}`).classList.remove('hidden');
@@ -2977,14 +2896,15 @@
                 // Only switch to home if we're not on home already and user is logged in
                 if (currentUserData && lastTab !== 'home') {
                     // Reset profile state before switching
-                    selectedProfileUid = "me";
-                    viewingUserProfileUid = null;
+                    if (selectedProfileUid !== "me") {
+                        selectedProfileUid = "me";
+                        viewingUserProfileUid = null;
+                    }
                     switchTab('home');
                     // Clear search bar
                     document.getElementById('search-bar').value = '';
                     document.getElementById('search-results-container').classList.add('hidden');
                     document.getElementById('search-results-container').innerHTML = '';
-                    activeSearchTab = "users";
                 }
             }
         });
