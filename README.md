@@ -61,7 +61,7 @@ Stardust Canvas is a modern social web application built for visual creators and
 
 **License**
 
-*MIT © StardustOfficial*
+*StardustOfficial © 2026. All Rights Reserved.*
 
 ---
 
