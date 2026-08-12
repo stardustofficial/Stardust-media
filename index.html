@@ -103,6 +103,10 @@
         .lang-option.active .lang-check {
             display: block;
         }
+        .lang-option.active .lang-native {
+            opacity: 0.8;
+            color: white;
+        }
         .lang-check {
             display: none;
             color: white;
@@ -118,6 +122,69 @@
         .lang-option.active .lang-native {
             opacity: 0.8;
             color: white;
+        }
+        
+        /* Language modal container scroll fix */
+        #language-options-container {
+            max-height: 55vh;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        #language-options-container::-webkit-scrollbar {
+            width: 3px;
+        }
+        #language-options-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        #language-options-container::-webkit-scrollbar-thumb {
+            background: #dc2626;
+            border-radius: 10px;
+        }
+
+        /* Settings sub-page scroll fix */
+        .settings-sub-page {
+            overflow-y: auto;
+            max-height: 70vh;
+        }
+        .settings-sub-page::-webkit-scrollbar {
+            width: 3px;
+        }
+        .settings-sub-page::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .settings-sub-page::-webkit-scrollbar-thumb {
+            background: #dc2626;
+            border-radius: 10px;
+        }
+
+        /* Legal buttons in settings */
+        .legal-settings-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid #f3f4f6;
+            background: #ffffff;
+            transition: all 0.2s ease;
+            font-weight: 700;
+            font-size: 0.875rem;
+            color: #1f2937;
+            width: 100%;
+            text-decoration: none;
+        }
+        .legal-settings-btn:hover {
+            background: #fef2f2;
+            border-color: #fecaca;
+        }
+        .legal-settings-btn .arrow {
+            color: #9ca3af;
+            transition: color 0.2s ease;
+        }
+        .legal-settings-btn:hover .arrow {
+            color: #dc2626;
         }
     </style>
 </head>
@@ -155,7 +222,7 @@
                 <!-- Privacy & Terms Links on Login -->
                 <div class="text-center pt-2 flex items-center justify-center gap-3 text-[10px]">
                     <a href="privacy.html" target="_blank" class="legal-link">Privacy Policy</a>
-                    <span class="text-gray-300">•</span>
+                    <span class="text-gray-300">|</span>
                     <a href="terms.html" target="_blank" class="legal-link">Terms of Service</a>
                 </div>
             </div>
@@ -203,7 +270,7 @@
                 <!-- Privacy & Terms Links on Signup -->
                 <div class="text-center pt-2 flex items-center justify-center gap-3 text-[10px]">
                     <a href="privacy.html" target="_blank" class="legal-link">Privacy Policy</a>
-                    <span class="text-gray-300">•</span>
+                    <span class="text-gray-300">|</span>
                     <a href="terms.html" target="_blank" class="legal-link">Terms of Service</a>
                 </div>
             </div>
@@ -461,9 +528,10 @@
             </div>
 
             <div id="page-lang" class="settings-sub-page hidden space-y-4 flex-1">
-                <div class="flex items-center gap-2 border-b pb-2 mb-2">
+                <div class="flex items-center justify-between border-b pb-2 mb-2">
                     <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
                     <h4 class="font-black text-sm uppercase tracking-wider">Select Language</h4>
+                    <button onclick="backToSettingsMain()" class="bg-black text-white text-xs font-bold py-1.5 px-4 rounded-full transition hover:opacity-90">Close</button>
                 </div>
                 <div class="space-y-2" id="language-options-container">
                     <!-- Languages will be rendered by JS -->
@@ -485,13 +553,13 @@
                     <h4 class="font-black text-sm uppercase tracking-wider">Legal</h4>
                 </div>
                 <div class="space-y-3">
-                    <a href="privacy.html" target="_blank" class="w-full flex items-center justify-between py-3 px-4 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition border border-gray-100">
-                        <span>Privacy Policy</span>
-                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    <a href="privacy.html" target="_blank" class="legal-settings-btn">
+                        <span id="legal-privacy-text">Privacy Policy</span>
+                        <svg class="w-4 h-4 arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                     </a>
-                    <a href="terms.html" target="_blank" class="w-full flex items-center justify-between py-3 px-4 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition border border-gray-100">
-                        <span>Terms of Service</span>
-                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    <a href="terms.html" target="_blank" class="legal-settings-btn">
+                        <span id="legal-terms-text">Terms of Service</span>
+                        <svg class="w-4 h-4 arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                     </a>
                 </div>
             </div>
@@ -627,7 +695,8 @@
                 deleteAccountWarning: "This action is permanent and cannot be undone. All your data including posts, chats, and profile information will be removed.",
                 deleteAccountBtn: "Permanently Delete My Account",
                 legalPrivacy: "Privacy Policy",
-                legalTerms: "Terms of Service"
+                legalTerms: "Terms of Service",
+                closeLang: "Close"
             },
             hi: {
                 tagline: "क्लाउड सिंक प्रोफ़ाइल के साथ प्रीमियम विज़ुअल आइडियाज़ खोजें और तुरंत साझा करें।",
@@ -656,7 +725,8 @@
                 deleteAccountWarning: "यह कार्रवाई स्थायी है और इसे पूर्ववत नहीं किया जा सकता। आपका सारा डेटा जिसमें पोस्ट, चैट और प्रोफ़ाइल जानकारी शामिल है, हटा दिया जाएगा।",
                 deleteAccountBtn: "मेरा खाता स्थायी रूप से हटाएं",
                 legalPrivacy: "गोपनीयता नीति",
-                legalTerms: "सेवा की शर्तें"
+                legalTerms: "सेवा की शर्तें",
+                closeLang: "बंद करें"
             },
             bn: {
                 tagline: "আপনার ক্লাউড সিঙ্ক প্রোফাইলের সাথে প্রিমিয়াম ভিজ্যুয়াল আইডিয়া আবিষ্কার, ট্র্যাক এবং শেয়ার করুন তাৎক্ষণিকভাবে।",
@@ -685,7 +755,8 @@
                 deleteAccountWarning: "এই কাজটি স্থায়ী এবং পূর্বাবস্থায় ফেরানো যাবে না। আপনার পোস্ট, চ্যাট এবং প্রোফাইলের তথ্য সহ সমস্ত ডেটা মুছে ফেলা হবে।",
                 deleteAccountBtn: "আমার অ্যাকাউন্ট স্থায়ীভাবে মুছুন",
                 legalPrivacy: "গোপনীয়তা নীতি",
-                legalTerms: "সেবার শর্তাবলী"
+                legalTerms: "সেবার শর্তাবলী",
+                closeLang: "বন্ধ করুন"
             },
             gu: {
                 tagline: "તમારા ક્લાઉડ સિંક પ્રોફાઇલ સાથે પ્રીમિયમ વિઝ્યુઅલ આઈડિયાઝ શોધો, ટ્રેક કરો અને તાત્કાલિક શેર કરો.",
@@ -714,7 +785,8 @@
                 deleteAccountWarning: "આ ક્રિયા કાયમી છે અને તેને પૂર્વવત્ કરી શકાતી નથી. તમારા પોસ્ટ્સ, ચેટ્સ અને પ્રોફાઇલ માહિતી સહિતનો તમામ ડેટા દૂર કરવામાં આવશે.",
                 deleteAccountBtn: "મારું ખાતું કાયમી રૂપે કાઢી નાખો",
                 legalPrivacy: "ગોપનીયતા નીતિ",
-                legalTerms: "સેવાની શરતો"
+                legalTerms: "સેવાની શરતો",
+                closeLang: "બંધ કરો"
             },
             ko: {
                 tagline: "클라우드 동기화 프로필로 프리미엄 시각적 아이디어를 즉시 발견, 추적 및 공유하세요.",
@@ -743,7 +815,8 @@
                 deleteAccountWarning: "이 작업은 영구적이며 취소할 수 없습니다. 게시물, 채팅 및 프로필 정보를 포함한 모든 데이터가 삭제됩니다.",
                 deleteAccountBtn: "내 계정 영구 삭제",
                 legalPrivacy: "개인정보 보호정책",
-                legalTerms: "서비스 약관"
+                legalTerms: "서비스 약관",
+                closeLang: "닫기"
             },
             zh: {
                 tagline: "通过云同步个人资料即时发现、跟踪和分享高级视觉创意。",
@@ -772,7 +845,8 @@
                 deleteAccountWarning: "此操作是永久性的，无法撤消。您的所有数据，包括帖子、聊天和个人资料信息都将被删除。",
                 deleteAccountBtn: "永久删除我的帐户",
                 legalPrivacy: "隐私政策",
-                legalTerms: "服务条款"
+                legalTerms: "服务条款",
+                closeLang: "关闭"
             },
             'zh-TW': {
                 tagline: "透過雲端同步個人檔案即時發現、追蹤和分享高級視覺創意。",
@@ -801,7 +875,8 @@
                 deleteAccountWarning: "此操作是永久性的，無法撤消。您的所有數據，包括帖子、聊天和個人資料信息都將被刪除。",
                 deleteAccountBtn: "永久刪除我的帳戶",
                 legalPrivacy: "隱私政策",
-                legalTerms: "服務條款"
+                legalTerms: "服務條款",
+                closeLang: "關閉"
             },
             ru: {
                 tagline: "Открывайте, отслеживайте и делитесь премиальными визуальными идеями с помощью облачного синхронизированного профиля мгновенно.",
@@ -830,7 +905,8 @@
                 deleteAccountWarning: "Это действие является постоянным и не может быть отменено. Все ваши данные, включая посты, чаты и информацию профиля, будут удалены.",
                 deleteAccountBtn: "Навсегда удалить мой аккаунт",
                 legalPrivacy: "Политика конфиденциальности",
-                legalTerms: "Условия использования"
+                legalTerms: "Условия использования",
+                closeLang: "Закрыть"
             },
             vi: {
                 tagline: "Khám phá, theo dõi và chia sẻ ý tưởng hình ảnh cao cấp với hồ sơ đồng bộ đám mây của bạn ngay lập tức.",
@@ -859,7 +935,8 @@
                 deleteAccountWarning: "Hành động này là vĩnh viễn và không thể hoàn tác. Tất cả dữ liệu của bạn bao gồm bài đăng, trò chuyện và thông tin hồ sơ sẽ bị xóa.",
                 deleteAccountBtn: "Xóa vĩnh viễn tài khoản của tôi",
                 legalPrivacy: "Chính sách bảo mật",
-                legalTerms: "Điều khoản dịch vụ"
+                legalTerms: "Điều khoản dịch vụ",
+                closeLang: "Đóng"
             },
             th: {
                 tagline: "ค้นหา ติดตาม และแบ่งปันไอเดียภาพระดับพรีเมียมด้วยโปรไฟล์ที่ซิงค์กับคลาวด์ของคุณได้ทันที",
@@ -888,7 +965,8 @@
                 deleteAccountWarning: "การดำเนินการนี้เป็นแบบถาวรและไม่สามารถยกเลิกได้ ข้อมูลทั้งหมดของคุณรวมถึงโพสต์ แชท และข้อมูลโปรไฟล์จะถูกลบ",
                 deleteAccountBtn: "ลบบัญชีของฉันอย่างถาวร",
                 legalPrivacy: "นโยบายความเป็นส่วนตัว",
-                legalTerms: "ข้อกำหนดการให้บริการ"
+                legalTerms: "ข้อกำหนดการให้บริการ",
+                closeLang: "ปิด"
             },
             ur: {
                 tagline: "اپنے کلاؤڈ سنک پروفائل کے ساتھ پریمیم بصری آئیڈیاز کو فوری طور پر دریافت، ٹریک اور شیئر کریں۔",
@@ -917,7 +995,8 @@
                 deleteAccountWarning: "یہ عمل مستقل ہے اور اسے واپس نہیں لیا جا سکتا۔ آپ کا تمام ڈیٹا بشمول پوسٹس، چیٹس اور پروفائل کی معلومات حذف کر دی جائے گی۔",
                 deleteAccountBtn: "میرا اکاؤنٹ مستقل طور پر حذف کریں",
                 legalPrivacy: "رازداری کی پالیسی",
-                legalTerms: "خدمت کی شرائط"
+                legalTerms: "خدمت کی شرائط",
+                closeLang: "بند کریں"
             },
             ar: {
                 tagline: "اكتشف وتتبع وشارك الأفكار البصرية المتميزة مع ملف التعريف المتزامن مع السحابة الخاص بك على الفور.",
@@ -946,7 +1025,98 @@
                 deleteAccountWarning: "هذا الإجراء دائم ولا يمكن التراجع عنه. سيتم حذف جميع بياناتك بما في ذلك المنشورات والمحادثات ومعلومات الملف الشخصي.",
                 deleteAccountBtn: "حذف حسابي بشكل دائم",
                 legalPrivacy: "سياسة الخصوصية",
-                legalTerms: "شروط الخدمة"
+                legalTerms: "شروط الخدمة",
+                closeLang: "إغلاق"
+            },
+            ja: {
+                tagline: "クラウド同期プロファイルでプレミアムなビジュアルアイデアを瞬時に発見、追跡、共有できます。",
+                loginBtn: "サインイン",
+                signupBtn: "アカウント作成",
+                searchPlaceholder: "アイデアまたはユーザー名を検索...",
+                sendBtn: "送信",
+                myUploads: "アップロード履歴",
+                settingsTitle: "設定",
+                noAccount: "アカウントをお持ちでないですか？",
+                haveAccount: "すでに登録済みですか？",
+                signIn: "サインイン",
+                createNew: "新規アカウント作成",
+                welcomeChat: "Stardust Coreシステムへようこそ！左側のアクティブユーザーをクリックしてプライベートチャットを開始します。",
+                chatPlaceholder: "Stardustに質問...",
+                chatHeader: "Stardust Coreボット",
+                settingsOpt1: "1. 名前、バイオ、ハンドルを編集",
+                settingsOpt2: "2. プロフィール画像を変更",
+                settingsOpt3: "3. システム言語",
+                settingsOpt4: "4. カスタマーサポート",
+                settingsOpt5: "5. プライバシーと利用規約",
+                settingsOpt6: "6. アカウント削除",
+                closeSettings: "閉じる",
+                signOut: "サインアウト",
+                deleteAccountTitle: "アカウント削除",
+                deleteAccountWarning: "この操作は永続的であり、元に戻すことはできません。投稿、チャット、プロフィール情報を含むすべてのデータが削除されます。",
+                deleteAccountBtn: "アカウントを完全に削除",
+                legalPrivacy: "プライバシーポリシー",
+                legalTerms: "利用規約",
+                closeLang: "閉じる"
+            },
+            ro: {
+                tagline: "Descoperiți, urmăriți și partajați idei vizuale premium cu profilul dvs. sincronizat în cloud instantaneu.",
+                loginBtn: "Autentificare",
+                signupBtn: "Creați cont",
+                searchPlaceholder: "Căutați idei sau nume de utilizator...",
+                sendBtn: "Trimiteți",
+                myUploads: "Încărcările mele",
+                settingsTitle: "Setări",
+                noAccount: "Nu aveți cont?",
+                haveAccount: "Deja înregistrat?",
+                signIn: "Autentificare",
+                createNew: "Creați cont nou",
+                welcomeChat: "Bun venit în sistemul Stardust Core! Faceți clic pe orice utilizator activ din stânga pentru a începe un chat privat.",
+                chatPlaceholder: "Întrebați Stardust...",
+                chatHeader: "Bot Stardust Core",
+                settingsOpt1: "1. Editați numele, biografia și numele de utilizator",
+                settingsOpt2: "2. Schimbați poza de profil",
+                settingsOpt3: "3. Limba sistemului",
+                settingsOpt4: "4. Asistență clienți",
+                settingsOpt5: "5. Confidențialitate și termeni",
+                settingsOpt6: "6. Ștergeți contul",
+                closeSettings: "Închideți",
+                signOut: "Deconectare",
+                deleteAccountTitle: "Ștergeți contul",
+                deleteAccountWarning: "Această acțiune este permanentă și nu poate fi anulată. Toate datele dvs., inclusiv postările, chat-urile și informațiile de profil, vor fi șterse.",
+                deleteAccountBtn: "Ștergeți definitiv contul meu",
+                legalPrivacy: "Politica de confidențialitate",
+                legalTerms: "Termeni și condiții",
+                closeLang: "Închideți"
+            },
+            es: {
+                tagline: "Descubra, rastree y comparta ideas visuales premium con su perfil sincronizado en la nube al instante.",
+                loginBtn: "Iniciar sesión",
+                signupBtn: "Crear cuenta",
+                searchPlaceholder: "Buscar ideas o nombres de usuario...",
+                sendBtn: "Enviar",
+                myUploads: "Mis subidas",
+                settingsTitle: "Ajustes",
+                noAccount: "¿No tienes cuenta?",
+                haveAccount: "¿Ya estás registrado?",
+                signIn: "Iniciar sesión",
+                createNew: "Crear nueva cuenta",
+                welcomeChat: "¡Bienvenido al sistema Stardust Core! Haz clic en cualquier usuario activo de la izquierda para iniciar un chat privado.",
+                chatPlaceholder: "Preguntar a Stardust...",
+                chatHeader: "Bot Stardust Core",
+                settingsOpt1: "1. Editar nombre, biografía y usuario",
+                settingsOpt2: "2. Cambiar foto de perfil",
+                settingsOpt3: "3. Idioma del sistema",
+                settingsOpt4: "4. Atención al cliente",
+                settingsOpt5: "5. Privacidad y términos",
+                settingsOpt6: "6. Eliminar cuenta",
+                closeSettings: "Cerrar",
+                signOut: "Cerrar sesión",
+                deleteAccountTitle: "Eliminar cuenta",
+                deleteAccountWarning: "Esta acción es permanente y no se puede deshacer. Se eliminarán todos sus datos, incluidas publicaciones, chats e información de perfil.",
+                deleteAccountBtn: "Eliminar mi cuenta permanentemente",
+                legalPrivacy: "Política de privacidad",
+                legalTerms: "Términos de servicio",
+                closeLang: "Cerrar"
             }
         };
 
@@ -963,7 +1133,10 @@
             { code: 'vi', name: 'Vietnamese', native: 'Tiếng Việt' },
             { code: 'th', name: 'Thai', native: 'ไทย' },
             { code: 'ur', name: 'Urdu', native: 'اردو' },
-            { code: 'ar', name: 'Arabic', native: 'العربية' }
+            { code: 'ar', name: 'Arabic', native: 'العربية' },
+            { code: 'ja', name: 'Japanese', native: '日本語' },
+            { code: 'ro', name: 'Romanian', native: 'Română' },
+            { code: 'es', name: 'Spanish', native: 'Español' }
         ];
 
         function hideLoadingScreen() {
@@ -1005,12 +1178,24 @@
                 
                 listenToCloudDataStream();
                 syncActiveInboxMembers();
-                renderLanguageOptions();
+                
+                // Load saved language preference
+                database.ref('users/' + user.uid + '/language').once('value', (snap) => {
+                    const savedLang = snap.val();
+                    if(savedLang && langPack[savedLang]) {
+                        activeLanguage = savedLang;
+                        changeSystemLanguage(savedLang);
+                    } else {
+                        renderLanguageOptions();
+                    }
+                });
+                
                 switchTab('home');
             } else {
                 currentUserData = null;
                 document.getElementById('auth-wall').classList.remove('hidden');
                 hideLoadingScreen();
+                renderLanguageOptions();
             }
         });
 
@@ -1101,9 +1286,7 @@
 
             const uid = currentUserData.uid;
             
-            // First delete all user data from database
             database.ref('users/' + uid).remove().then(() => {
-                // Then delete the user's auth account
                 currentUserData.delete().then(() => {
                     alert("Your account has been permanently deleted. Goodbye!");
                     location.reload();
@@ -1465,19 +1648,22 @@
             
             languageList.forEach(lang => {
                 const option = document.createElement('div');
-                option.className = `lang-option ${activeLanguage === lang.code ? 'active' : ''}`;
-                option.onclick = () => {
-                    changeSystemLanguage(lang.code);
-                    // Update UI
+                const isActive = activeLanguage === lang.code;
+                option.className = `lang-option ${isActive ? 'active' : ''}`;
+                option.onclick = function() {
+                    // Remove active from all
                     document.querySelectorAll('.lang-option').forEach(el => el.classList.remove('active'));
-                    option.classList.add('active');
+                    // Add active to this
+                    this.classList.add('active');
+                    // Change language
+                    changeSystemLanguage(lang.code);
                 };
                 option.innerHTML = `
                     <div>
                         <div class="lang-name">${lang.name}</div>
                         <div class="lang-native">${lang.native}</div>
                     </div>
-                    <svg class="w-5 h-5 lang-check ${activeLanguage === lang.code ? 'block' : 'hidden'}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                    <svg class="w-5 h-5 lang-check ${isActive ? 'block' : 'hidden'}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
                 `;
                 container.appendChild(option);
             });
@@ -1518,6 +1704,10 @@
             document.getElementById('lang-close-settings').innerText = dict.closeSettings;
             document.getElementById('lang-signout-btn').innerText = dict.signOut;
             
+            // Legal page
+            document.getElementById('legal-privacy-text').innerText = dict.legalPrivacy;
+            document.getElementById('legal-terms-text').innerText = dict.legalTerms;
+            
             // Delete Account page
             const deletePage = document.getElementById('page-delete');
             if(deletePage) {
@@ -1527,16 +1717,6 @@
                 if(warning) warning.innerHTML = dict.deleteAccountWarning;
                 const btn = deletePage.querySelector('button');
                 if(btn) btn.innerText = dict.deleteAccountBtn;
-            }
-            
-            // Legal page
-            const legalPage = document.getElementById('page-legal');
-            if(legalPage) {
-                const links = legalPage.querySelectorAll('a');
-                if(links.length >= 2) {
-                    links[0].querySelector('span').innerText = dict.legalPrivacy;
-                    links[1].querySelector('span').innerText = dict.legalTerms;
-                }
             }
             
             // Render language options to show active state
@@ -1623,17 +1803,6 @@
             ['home', 'messages', 'profile'].forEach(t => {
                 const btn = document.getElementById(`nav-${t}`);
                 if(btn) btn.className = (t === tabName) ? "flex items-center justify-center p-2.5 rounded-full bg-black text-white transition-all" : "flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all";
-            });
-        }
-
-        // Load saved language preference on startup
-        if(currentUserData) {
-            database.ref('users/' + currentUserData.uid + '/language').once('value', (snap) => {
-                const savedLang = snap.val();
-                if(savedLang && langPack[savedLang]) {
-                    activeLanguage = savedLang;
-                    changeSystemLanguage(savedLang);
-                }
             });
         }
     </script>
