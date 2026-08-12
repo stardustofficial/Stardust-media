@@ -263,15 +263,23 @@
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid #e5e7eb;
+            cursor: pointer;
         }
         .article-header .author-name {
             font-weight: 700;
             font-size: 0.8rem;
             color: #1f2937;
+            cursor: pointer;
         }
         .article-header .author-username {
             font-size: 0.65rem;
             color: #9ca3af;
+        }
+        .article-header .article-date {
+            margin-left: auto;
+            font-size: 0.6rem;
+            color: #9ca3af;
+            font-weight: 500;
         }
         .article-body {
             padding: 12px 14px;
@@ -301,6 +309,7 @@
             padding: 8px 14px 12px;
             border-top: 1px solid #f3f4f6;
             flex-wrap: wrap;
+            position: relative;
         }
         .article-actions button {
             display: flex;
@@ -346,6 +355,7 @@
             margin-left: auto;
             padding: 4px 8px;
             border-radius: 20px;
+            position: relative;
         }
         .article-actions .menu-dots:hover {
             background: #f3f4f6;
@@ -354,19 +364,21 @@
         .three-dot-menu {
             position: relative;
             display: inline-block;
+            margin-left: auto;
         }
         .three-dot-menu .dropdown-content {
             display: none;
             position: absolute;
             right: 0;
-            top: 100%;
+            bottom: 100%;
             background: white;
             min-width: 140px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
             border-radius: 12px;
-            z-index: 50;
+            z-index: 100;
             overflow: hidden;
             border: 1px solid #f3f4f6;
+            margin-bottom: 4px;
         }
         .three-dot-menu .dropdown-content.show {
             display: block;
@@ -465,6 +477,76 @@
         .edit-modal textarea:focus, .edit-modal input:focus {
             border-color: #dc2626;
         }
+
+        /* Search Results Styles */
+        #search-results-container {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        #search-results-container::-webkit-scrollbar {
+            width: 3px;
+        }
+        #search-results-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        #search-results-container::-webkit-scrollbar-thumb {
+            background: #dc2626;
+            border-radius: 10px;
+        }
+        .search-section-title {
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 8px 4px 4px 4px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .search-result-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+        .search-result-item:hover {
+            background: #fef2f2;
+        }
+        .search-result-item img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .search-result-item .result-title {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #1f2937;
+        }
+        .search-result-item .result-sub {
+            font-size: 0.65rem;
+            color: #9ca3af;
+        }
+        .search-result-item .result-type-badge {
+            font-size: 0.5rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .badge-user { background: #dbeafe; color: #1d4ed8; }
+        .badge-post { background: #fce7f3; color: #be185d; }
+        .badge-article { background: #d1fae5; color: #065f46; }
+        .search-empty {
+            padding: 20px;
+            text-align: center;
+            color: #9ca3af;
+            font-size: 0.8rem;
+        }
     </style>
 </head>
 <body id="app-body" class="bg-white text-gray-950 font-sans antialiased pb-24">
@@ -556,10 +638,10 @@
             <div onclick="switchTab('home')" class="text-red-600 font-black text-2xl tracking-tighter cursor-pointer select-none">STARDUST</div>
             <div class="flex-1 relative">
                 <svg class="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                <input type="text" id="search-bar" onkeyup="filterPinsAndUsers()" placeholder="Search ideas, articles or usernames..." class="w-full bg-[#E9E9E9] pl-10 pr-4 py-2.5 rounded-full text-sm font-medium focus:outline-none transition">
+                <input type="text" id="search-bar" oninput="handleSearch()" placeholder="Search ideas, articles or usernames..." class="w-full bg-[#E9E9E9] pl-10 pr-4 py-2.5 rounded-full text-sm font-medium focus:outline-none transition">
             </div>
         </div>
-        <div id="user-search-results-tray" class="hidden w-full bg-gray-50 rounded-2xl p-3 border border-gray-100 space-y-2 max-h-[160px] overflow-y-auto"></div>
+        <div id="search-results-container" class="hidden w-full bg-white rounded-2xl p-3 border border-gray-100 shadow-lg max-h-[60vh] overflow-y-auto"></div>
     </nav>
 
     <input type="file" id="file-input" accept="image/*" class="hidden" onchange="handleUpload(event)">
@@ -691,10 +773,6 @@
                 <div>
                     <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Content</label>
                     <textarea id="article-content-input" rows="4" placeholder="Write your article content here..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-red-600 transition resize-none"></textarea>
-                </div>
-                <div>
-                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Image URL (Optional)</label>
-                    <input type="text" id="article-image-input" placeholder="https://example.com/image.jpg" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-red-600 transition">
                 </div>
             </div>
             <div class="flex gap-2 pt-2">
@@ -990,6 +1068,7 @@
         let currentModalTitle = "";
         let currentModalType = "photo";
         let editPhotoKey = null;
+        let lastTab = "home";
 
         // ============================================================
         // LANGUAGE PACK - ALL 15 LANGUAGES
@@ -1535,6 +1614,7 @@
                     }
                 });
                 
+                // Always default to home tab on app load
                 switchTab('home');
             } else {
                 currentUserData = null;
@@ -1668,8 +1748,8 @@
             selectedProfileUid = "me";
             switchTab('home');
             document.getElementById('search-bar').value = '';
-            document.getElementById('user-search-results-tray').classList.add('hidden');
-            document.getElementById('user-search-results-tray').innerHTML = '';
+            document.getElementById('search-results-container').classList.add('hidden');
+            document.getElementById('search-results-container').innerHTML = '';
         }
 
         function loadUserIdentitySpace(targetUid) {
@@ -1873,71 +1953,125 @@
         }
 
         // ============================================================
-        // SEARCH
+        // SEARCH - Enhanced with 3 sections
         // ============================================================
-        function filterPinsAndUsers() {
+        function handleSearch() {
             const query = document.getElementById('search-bar').value.toLowerCase().trim();
-            const userTray = document.getElementById('user-search-results-tray');
+            const container = document.getElementById('search-results-container');
             
             if(!query) { 
-                userTray.classList.add('hidden'); 
-                userTray.innerHTML = ''; 
+                container.classList.add('hidden'); 
+                container.innerHTML = '';
+                // Show all items
                 document.querySelectorAll('#pin-container .pin-item').forEach(item => item.style.display = "block");
                 document.querySelectorAll('#articles-container .article-card').forEach(item => item.style.display = "block");
                 return; 
             }
             
-            document.querySelectorAll('#pin-container .pin-item').forEach(item => { 
-                item.style.display = item.innerText.toLowerCase().includes(query) ? "block" : "none"; 
-            });
+            // Hide all items while searching
+            document.querySelectorAll('#pin-container .pin-item').forEach(item => item.style.display = "none");
+            document.querySelectorAll('#articles-container .article-card').forEach(item => item.style.display = "none");
             
-            document.querySelectorAll('#articles-container .article-card').forEach(item => { 
-                const title = item.querySelector('h3')?.innerText?.toLowerCase() || '';
-                const content = item.querySelector('.article-body p')?.innerText?.toLowerCase() || '';
-                const author = item.querySelector('.author-name')?.innerText?.toLowerCase() || '';
-                item.style.display = (title.includes(query) || content.includes(query) || author.includes(query)) ? "block" : "none";
-            });
-
-            database.ref('users').once('value', (snapshot) => {
-                userTray.innerHTML = ''; 
-                const users = snapshot.val(); 
-                let count = 0;
-                
-                if(users) {
-                    Object.keys(users).forEach(uid => {
-                        const u = users[uid]; 
-                        const nameMatch = u.name && u.name.toLowerCase().includes(query);
-                        const userMatch = u.username && u.username.toLowerCase().includes(query);
+            // Fetch all data
+            database.ref('users').once('value', (usersSnap) => {
+                database.ref('pins').once('value', (pinsSnap) => {
+                    database.ref('articles').once('value', (articlesSnap) => {
+                        const users = usersSnap.val() || {};
+                        const pins = pinsSnap.val() || {};
+                        const articles = articlesSnap.val() || {};
                         
-                        if(nameMatch || userMatch) {
-                            count++; 
-                            const div = document.createElement('div');
-                            div.className = "flex items-center justify-between bg-white p-2 rounded-xl border cursor-pointer hover:bg-red-50 text-gray-900";
-                            
-                            div.onclick = (function(userUid) {
-                                return function() {
-                                    userTray.classList.add('hidden'); 
-                                    document.getElementById('search-bar').value = ''; 
-                                    loadUserIdentitySpace(userUid);
-                                };
-                            })(uid);
-                            
-                            div.innerHTML = `
-                                <div class="flex items-center gap-2">
-                                    <img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" class="w-6 h-6 rounded-full object-cover">
-                                    <div class="text-xs">
-                                        <p class="font-black">${u.name || 'Member'}</p>
-                                        <p class="text-gray-400 text-[10px]">@${u.username || ''}</p>
+                        let html = '';
+                        
+                        // SECTION 1: USERS
+                        let userResults = [];
+                        Object.keys(users).forEach(uid => {
+                            const u = users[uid];
+                            if(u.name && u.name.toLowerCase().includes(query)) {
+                                userResults.push({ uid, ...u, type: 'user' });
+                            } else if(u.username && u.username.toLowerCase().includes(query)) {
+                                userResults.push({ uid, ...u, type: 'user' });
+                            }
+                        });
+                        
+                        if(userResults.length > 0) {
+                            html += `<div class="search-section-title">Users (${userResults.length})</div>`;
+                            userResults.forEach(u => {
+                                html += `
+                                    <div class="search-result-item" onclick="loadUserIdentitySpace('${u.uid}'); document.getElementById('search-results-container').classList.add('hidden'); document.getElementById('search-bar').value = '';">
+                                        <img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" alt="${u.name}">
+                                        <div>
+                                            <div class="result-title">${u.name}</div>
+                                            <div class="result-sub">@${u.username}</div>
+                                        </div>
+                                        <span class="result-type-badge badge-user" style="margin-left:auto;">User</span>
                                     </div>
-                                </div>
-                                <span class="text-[10px] bg-red-600 text-white font-bold py-1 px-2.5 rounded-full">View Hub</span>
-                            `;
-                            userTray.appendChild(div);
+                                `;
+                            });
                         }
+                        
+                        // SECTION 2: POSTS (Photos)
+                        let postResults = [];
+                        Object.keys(pins).forEach(key => {
+                            const p = pins[key];
+                            if(p.title && p.title.toLowerCase().includes(query)) {
+                                postResults.push({ key, ...p, type: 'post' });
+                            } else if(p.desc && p.desc.toLowerCase().includes(query)) {
+                                postResults.push({ key, ...p, type: 'post' });
+                            }
+                        });
+                        
+                        if(postResults.length > 0) {
+                            html += `<div class="search-section-title">Posts (${postResults.length})</div>`;
+                            postResults.forEach(p => {
+                                html += `
+                                    <div class="search-result-item" onclick="openPhotoModal('${p.img}', '${p.title || 'Post'}', '${p.desc || ''}', '${p.uploaderName || 'Anonymous'}', '${p.key}', '${p.uploaderUid}', 'photo'); document.getElementById('search-results-container').classList.add('hidden'); document.getElementById('search-bar').value = '';">
+                                        <img src="${p.img}" alt="${p.title}" style="border-radius:8px; width:40px; height:40px; object-fit:cover;">
+                                        <div>
+                                            <div class="result-title">${p.title || 'Untitled'}</div>
+                                            <div class="result-sub">${p.desc ? p.desc.substring(0, 40) + '...' : ''}</div>
+                                        </div>
+                                        <span class="result-type-badge badge-post" style="margin-left:auto;">Post</span>
+                                    </div>
+                                `;
+                            });
+                        }
+                        
+                        // SECTION 3: ARTICLES
+                        let articleResults = [];
+                        Object.keys(articles).forEach(key => {
+                            const a = articles[key];
+                            if(a.title && a.title.toLowerCase().includes(query)) {
+                                articleResults.push({ key, ...a, type: 'article' });
+                            } else if(a.content && a.content.toLowerCase().includes(query)) {
+                                articleResults.push({ key, ...a, type: 'article' });
+                            }
+                        });
+                        
+                        if(articleResults.length > 0) {
+                            html += `<div class="search-section-title">Articles (${articleResults.length})</div>`;
+                            articleResults.forEach(a => {
+                                const previewImg = a.image || 'https://via.placeholder.com/400x200?text=Article';
+                                html += `
+                                    <div class="search-result-item" onclick="openPhotoModal('${previewImg}', '${a.title || 'Article'}', '${a.content || ''}', '${a.uploaderName || 'Anonymous'}', '${a.key}', '${a.uploaderUid}', 'article'); document.getElementById('search-results-container').classList.add('hidden'); document.getElementById('search-bar').value = '';">
+                                        <img src="${previewImg}" alt="${a.title}" style="border-radius:8px; width:40px; height:40px; object-fit:cover;">
+                                        <div>
+                                            <div class="result-title">${a.title || 'Untitled'}</div>
+                                            <div class="result-sub">${a.content ? a.content.substring(0, 40) + '...' : ''}</div>
+                                        </div>
+                                        <span class="result-type-badge badge-article" style="margin-left:auto;">Article</span>
+                                    </div>
+                                `;
+                            });
+                        }
+                        
+                        if(!userResults.length && !postResults.length && !articleResults.length) {
+                            html = `<div class="search-empty">No results found for "${query}"</div>`;
+                        }
+                        
+                        container.innerHTML = html;
+                        container.classList.remove('hidden');
                     });
-                }
-                if(count > 0) userTray.classList.remove('hidden'); 
-                else userTray.classList.add('hidden');
+                });
             });
         }
 
@@ -1974,24 +2108,22 @@
                         
                         const card = document.createElement('div');
                         card.className = 'article-card';
-                        let imageHTML = '';
-                        if(article.image) {
-                            imageHTML = `<img src="${article.image}" alt="${article.title}" class="article-image">`;
-                        }
+                        
+                        // Format date
+                        const dateStr = article.timestamp ? new Date(article.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
                         
                         card.innerHTML = `
                             <div class="article-header">
-                                <img src="${authorData.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" alt="${authorData.name}" onclick="event.stopPropagation(); loadUserIdentitySpace('${article.uploaderUid}')" style="cursor:pointer;">
+                                <img src="${authorData.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" alt="${authorData.name}" onclick="event.stopPropagation(); loadUserIdentitySpace('${article.uploaderUid}');">
                                 <div onclick="event.stopPropagation(); loadUserIdentitySpace('${article.uploaderUid}')" style="cursor:pointer;">
                                     <div class="author-name">${authorData.name || 'Anonymous'}</div>
                                     <div class="author-username">@${authorData.username || 'user'}</div>
                                 </div>
-                                <div style="margin-left:auto;font-size:0.6rem;color:#9ca3af;">${new Date(article.timestamp).toLocaleDateString()}</div>
+                                <div class="article-date">${dateStr}</div>
                             </div>
                             <div class="article-body" onclick="openArticleDetail('${key}')">
                                 <h3>${article.title || 'Untitled'}</h3>
                                 <p>${article.content ? article.content.substring(0, 150) + (article.content.length > 150 ? '...' : '') : ''}</p>
-                                ${imageHTML}
                             </div>
                             <div class="article-actions">
                                 <button onclick="event.stopPropagation(); toggleArticleLike('${key}')" id="article-like-btn-${key}" class="${likedByMe ? 'liked' : ''}">
@@ -2007,7 +2139,7 @@
                                     <span>${isSaved ? 'Saved' : 'Save'}</span>
                                 </button>
                                 ${isAuthor ? `
-                                    <div class="three-dot-menu" style="margin-left:auto;">
+                                    <div class="three-dot-menu">
                                         <button class="three-dot-btn" onclick="event.stopPropagation(); toggleArticleMenu('${key}')">•••</button>
                                         <div class="dropdown-content" id="article-menu-${key}">
                                             <button onclick="event.stopPropagation(); editArticle('${key}')">Edit</button>
@@ -2145,12 +2277,8 @@
                 if(newTitle === null) return;
                 const newContent = prompt("Edit Content:", article.content);
                 if(newContent === null) return;
-                const newImage = prompt("Edit Image URL (leave empty to keep existing):", article.image || '');
                 
                 const updates = { title: newTitle, content: newContent };
-                if(newImage !== null) {
-                    updates.image = newImage;
-                }
                 
                 database.ref('articles/' + articleId).update(updates).then(() => {
                     alert("Article updated successfully!");
@@ -2164,7 +2292,6 @@
             if(!confirm("Are you sure you want to delete this article? This action cannot be undone!")) return;
             database.ref('articles/' + articleId).remove().then(() => {
                 alert("Article deleted successfully!");
-                // Refresh profile uploads if on profile tab
                 if(activeProfileTab === 'uploads') {
                     loadUserUploads(viewingUserProfileUid || currentUserData.uid);
                 }
@@ -2243,7 +2370,6 @@
             } else if(type === 'article') {
                 const title = document.getElementById('article-title-input').value.trim();
                 const content = document.getElementById('article-content-input').value.trim();
-                const image = document.getElementById('article-image-input').value.trim();
                 if(!title || !content) {
                     alert("Please fill in both title and content!");
                     return;
@@ -2251,7 +2377,6 @@
                 database.ref('articles').push({
                     title: title,
                     content: content,
-                    image: image || '',
                     uploaderUid: currentUserData.uid,
                     uploaderName: customProfileCache.name || "Stardust Member",
                     timestamp: Date.now(),
@@ -2260,7 +2385,6 @@
                     closeArticleUploadModal();
                     document.getElementById('article-title-input').value = '';
                     document.getElementById('article-content-input').value = '';
-                    document.getElementById('article-image-input').value = '';
                     showUploadSuccessToast();
                     switchTab('articles');
                 });
@@ -2281,6 +2405,7 @@
         // TAB SWITCH
         // ============================================================
         function switchTab(tabName) {
+            lastTab = tabName;
             const navBar = document.getElementById('app-nav');
             if(tabName === 'profile') {
                 navBar.classList.add('hidden');
@@ -2289,10 +2414,17 @@
             }
             if(tabName === 'home') {
                 document.getElementById('search-bar').value = '';
-                document.getElementById('user-search-results-tray').classList.add('hidden');
-                document.getElementById('user-search-results-tray').innerHTML = '';
+                document.getElementById('search-results-container').classList.add('hidden');
+                document.getElementById('search-results-container').innerHTML = '';
                 document.querySelectorAll('#pin-container .pin-item').forEach(item => item.style.display = "block");
                 document.querySelectorAll('#articles-container .article-card').forEach(item => item.style.display = "block");
+                
+                // Reset profile to "me" when going to home from search
+                if(selectedProfileUid !== "me") {
+                    selectedProfileUid = "me";
+                }
+                // Reset viewing user
+                viewingUserProfileUid = null;
             }
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById(`tab-${tabName}`).classList.remove('hidden');
@@ -2426,7 +2558,6 @@
             database.ref(path + '/' + editPhotoKey).remove().then(() => {
                 alert("Deleted successfully!");
                 closePhotoModal();
-                // Refresh profile uploads if on profile tab
                 if(activeProfileTab === 'uploads') {
                     loadUserUploads(viewingUserProfileUid || currentUserData.uid);
                 }
@@ -2757,6 +2888,25 @@
                     el.classList.remove('show');
                 }
             });
+        });
+
+        // Handle page visibility change - always go to home when tab becomes visible
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') {
+                // Only switch to home if we're not on home already and user is logged in
+                if (currentUserData && lastTab !== 'home') {
+                    // Reset profile state before switching
+                    if (selectedProfileUid !== "me") {
+                        selectedProfileUid = "me";
+                        viewingUserProfileUid = null;
+                    }
+                    switchTab('home');
+                    // Clear search bar
+                    document.getElementById('search-bar').value = '';
+                    document.getElementById('search-results-container').classList.add('hidden');
+                    document.getElementById('search-results-container').innerHTML = '';
+                }
+            }
         });
 
         console.log("✅ STARDUST App Loaded Successfully!");
