@@ -247,6 +247,137 @@
             background: #fef2f2;
             color: #dc2626;
         }
+
+        /* Upload Options Modal */
+        .upload-option-btn {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            border: 2px solid #f3f4f6;
+            background: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #1f2937;
+        }
+        .upload-option-btn:hover {
+            border-color: #dc2626;
+            background: #fef2f2;
+        }
+        .upload-option-btn svg {
+            width: 28px;
+            height: 28px;
+            color: #dc2626;
+        }
+
+        /* Article Card Styles */
+        .article-card {
+            background: white;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            border: 1px solid #f3f4f6;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: all 0.2s ease;
+            margin-bottom: 16px;
+            break-inside: avoid;
+        }
+        .article-card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+        .article-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .article-header img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e5e7eb;
+        }
+        .article-header .author-name {
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: #1f2937;
+        }
+        .article-header .author-username {
+            font-size: 0.65rem;
+            color: #9ca3af;
+        }
+        .article-body {
+            padding: 12px 14px;
+        }
+        .article-body h3 {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+        .article-body p {
+            font-size: 0.8rem;
+            color: #4b5563;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+        .article-body .article-image {
+            width: 100%;
+            border-radius: 0.75rem;
+            margin-top: 8px;
+        }
+        .article-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 8px 14px 12px;
+            border-top: 1px solid #f3f4f6;
+        }
+        .article-actions button {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #6b7280;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 20px;
+            transition: all 0.2s ease;
+        }
+        .article-actions button:hover {
+            background: #f3f4f6;
+        }
+        .article-actions button.liked {
+            color: #dc2626;
+        }
+        .article-actions button.liked svg {
+            fill: #dc2626;
+        }
+        .article-actions button.saved-pin {
+            color: #dc2626;
+        }
+        .article-actions button.saved-pin svg {
+            fill: #dc2626;
+        }
+        .article-actions svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+        .article-actions .count {
+            font-size: 0.65rem;
+            color: #9ca3af;
+        }
     </style>
 </head>
 <body id="app-body" class="bg-white text-gray-950 font-sans antialiased pb-24">
@@ -358,36 +489,14 @@
             <div id="pin-container" class="pin-grid"></div>
         </section>
 
-        <section id="tab-messages" class="tab-content hidden max-w-lg mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 border border-gray-200/60 rounded-3xl p-4 shadow-sm min-h-[480px]">
-            <div class="md:col-span-1 border-r pr-2 flex flex-col">
-                <h3 class="text-[10px] font-black uppercase tracking-wider text-gray-400 mb-2 px-1">Active Chat Members</h3>
-                <div id="inbox-users-list" class="flex-1 overflow-y-auto space-y-1 max-h-[110px] md:max-h-[400px]">
-                    <p class="text-[11px] text-gray-400 text-center py-2">Loading users...</p>
-                </div>
-            </div>
-            
-            <div class="md:col-span-2 flex flex-col justify-between">
-                <div class="flex items-center gap-2 border-b pb-2 mb-2">
-                    <span id="chat-window-header-title" class="text-sm font-black text-gray-800">Stardust Core Bot</span>
-                </div>
-                
-                <div class="space-y-3 h-64 overflow-y-auto p-3 bg-white rounded-2xl border border-gray-100 mb-3" id="chat-box">
-                    <div id="lang-welcome-msg" class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">
-                        Welcome to STARDUST Core System! Click any dynamic active user on the left to start a private encrypted real-time chat.
-                    </div>
-                </div>
-                
-                <div class="flex gap-2 items-center bg-white p-1 rounded-full border border-gray-200">
-                    <input type="text" id="chat-input" placeholder="Ask Stardust..." class="flex-1 pl-4 pr-2 py-2 text-sm font-medium focus:outline-none bg-transparent">
-                    <button onclick="sendChatMessage()" id="lang-send-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-2.5 px-4 rounded-full transition active:scale-95">Send</button>
-                </div>
-            </div>
+        <section id="tab-articles" class="tab-content hidden max-w-2xl mx-auto">
+            <div id="articles-container" class="space-y-4"></div>
         </section>
 
         <section id="tab-profile" class="tab-content hidden text-center mt-4 max-w-xl mx-auto p-8 rounded-3xl transition-all duration-300 relative border border-transparent shadow-xl min-h-[70vh]">
             <div class="w-full flex justify-between items-center px-2 mb-6">
-                <button id="profile-back-to-my-btn" onclick="loadUserIdentitySpace('me')" class="hidden flex items-center gap-1 text-xs font-black text-red-600 bg-red-50/80 backdrop-blur py-2 px-4 rounded-full transition active:scale-95 shadow-sm">
-                    Back to My Space
+                <button id="profile-back-to-my-btn" onclick="goBackToHome()" class="hidden flex items-center gap-1 text-xs font-black text-red-600 bg-red-50/80 backdrop-blur py-2 px-4 rounded-full transition active:scale-95 shadow-sm">
+                    ← Back
                 </button>
                 <div class="flex-1"></div>
                 <button onclick="openSettingsModal()" id="profile-settings-trigger-btn" class="p-2.5 text-gray-700 hover:bg-gray-100 rounded-full bg-white/90 backdrop-blur transition shadow-md">
@@ -428,13 +537,33 @@
         </section>
     </div>
 
-    <!-- CUSTOM PROFESSIONAL UPLOAD MODAL -->
-    <div id="upload-modal" class="fixed inset-0 bg-black/60 z-[180] hidden items-center justify-center p-4 backdrop-blur-md transition-opacity">
+    <!-- UPLOAD OPTIONS MODAL -->
+    <div id="upload-options-modal" class="fixed inset-0 bg-black/60 z-[180] hidden items-center justify-center p-4 backdrop-blur-md">
+        <div class="bg-white rounded-3xl w-full max-w-sm p-6 relative shadow-2xl border border-gray-100">
+            <div class="flex items-center justify-between border-b pb-3 mb-4">
+                <h3 class="font-black text-base tracking-wide text-gray-900">Create New Post</h3>
+                <button onclick="closeUploadOptionsModal()" class="text-gray-400 hover:text-black font-bold p-1 transition">✕</button>
+            </div>
+            <div class="space-y-3">
+                <button onclick="openPhotoUpload()" class="upload-option-btn">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <span>Upload Photo</span>
+                </button>
+                <button onclick="openArticleUpload()" class="upload-option-btn">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                    <span>Write Article</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PHOTO UPLOAD MODAL -->
+    <div id="upload-modal" class="fixed inset-0 bg-black/60 z-[180] hidden items-center justify-center p-4 backdrop-blur-md">
         <div class="bg-white rounded-3xl w-full max-w-sm p-6 relative shadow-2xl border border-gray-100 flex flex-col gap-4 text-gray-900">
             <div class="flex items-center justify-between border-b pb-3">
                 <div class="flex items-center gap-2">
                     <span class="w-2.5 h-2.5 bg-red-600 rounded-full animate-ping"></span>
-                    <h3 class="font-black text-base tracking-wide text-gray-900">Create New Post</h3>
+                    <h3 class="font-black text-base tracking-wide text-gray-900">Upload Photo</h3>
                 </div>
                 <button onclick="closeUploadModal()" class="text-gray-400 hover:text-black font-bold p-1 transition">✕</button>
             </div>
@@ -445,19 +574,54 @@
 
             <div class="space-y-3">
                 <div>
-                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Post Title</label>
+                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Title</label>
                     <input type="text" id="upload-title-input" placeholder="Give your visual a title..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-red-600 transition">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Description (Optional)</label>
+                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Description</label>
                     <textarea id="upload-desc-input" rows="2" placeholder="Write a short description..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-red-600 transition resize-none"></textarea>
                 </div>
             </div>
 
             <div class="flex gap-2 pt-2">
                 <button onclick="closeUploadModal()" class="w-1/3 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold py-3 rounded-full transition">Cancel</button>
-                <button onclick="confirmAndPublishUpload()" class="w-2/3 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-3 rounded-full transition shadow-lg active:scale-95 flex items-center justify-center gap-1.5">
-                    <span>Publish Post</span>
+                <button onclick="confirmAndPublishUpload('photo')" class="w-2/3 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-3 rounded-full transition shadow-lg active:scale-95 flex items-center justify-center gap-1.5">
+                    <span>Publish Photo</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ARTICLE UPLOAD MODAL -->
+    <div id="article-upload-modal" class="fixed inset-0 bg-black/60 z-[180] hidden items-center justify-center p-4 backdrop-blur-md">
+        <div class="bg-white rounded-3xl w-full max-w-sm p-6 relative shadow-2xl border border-gray-100 flex flex-col gap-4 text-gray-900">
+            <div class="flex items-center justify-between border-b pb-3">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 bg-red-600 rounded-full animate-ping"></span>
+                    <h3 class="font-black text-base tracking-wide text-gray-900">Write Article</h3>
+                </div>
+                <button onclick="closeArticleUploadModal()" class="text-gray-400 hover:text-black font-bold p-1 transition">✕</button>
+            </div>
+
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Article Title</label>
+                    <input type="text" id="article-title-input" placeholder="Enter article title..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-red-600 transition">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Content</label>
+                    <textarea id="article-content-input" rows="4" placeholder="Write your article content here..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-red-600 transition resize-none"></textarea>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Image URL (Optional)</label>
+                    <input type="text" id="article-image-input" placeholder="https://example.com/image.jpg" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-red-600 transition">
+                </div>
+            </div>
+
+            <div class="flex gap-2 pt-2">
+                <button onclick="closeArticleUploadModal()" class="w-1/3 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold py-3 rounded-full transition">Cancel</button>
+                <button onclick="confirmAndPublishUpload('article')" class="w-2/3 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-3 rounded-full transition shadow-lg active:scale-95 flex items-center justify-center gap-1.5">
+                    <span>Publish Article</span>
                 </button>
             </div>
         </div>
@@ -543,12 +707,10 @@
                         <span id="lang-opt-support">4. Customer Support</span>
                         <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </button>
-                    <!-- Direct Privacy Policy Button -->
                     <a href="privacy.html" target="_blank" class="w-full flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition">
                         <span id="lang-opt-privacy">5. Privacy Policy</span>
                         <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </a>
-                    <!-- Direct Terms of Service Button -->
                     <a href="terms.html" target="_blank" class="w-full flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition">
                         <span id="lang-opt-terms">6. Terms of Service</span>
                         <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
@@ -683,15 +845,16 @@
         </div>
     </div>
 
+    <!-- BOTTOM NAVIGATION -->
     <div class="fixed bottom-4 left-1/2 -translate-x-1/2 max-w-sm w-[90%] bg-white/95 backdrop-blur-md py-3 px-6 flex justify-between items-center z-30 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100/80">
         <button onclick="switchTab('home')" id="nav-home" class="flex items-center justify-center p-2.5 rounded-full bg-black text-white transition-all duration-200">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg>
         </button>
-        <button onclick="document.getElementById('file-input').click()" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+        <button onclick="openUploadOptionsModal()" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
         </button>
-        <button onclick="switchTab('messages')" id="nav-messages" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+        <button onclick="switchTab('articles')" id="nav-articles" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
         </button>
         <button onclick="switchTab('profile')" id="nav-profile" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
@@ -723,12 +886,12 @@
         let activeLanguage = "en";
         let signupPfpBase64 = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150";
         
-        let activeChatTargetUid = "bot";
         let activeCommentPinId = null;
         let selectedProfileUid = "me";
         let pendingUploadData = null;
         let activeProfileTab = "uploads";
         let savedPinsCache = {};
+        let viewingUserProfileUid = null;
 
         // ========== COMPLETE LANGUAGE PACK ==========
         const langPack = {
@@ -736,8 +899,7 @@
                 tagline: "Discover, track and share premium visual ideas with your cloud sync profile instantly.",
                 loginBtn: "Sign In",
                 signupBtn: "Create Account",
-                searchPlaceholder: "Search ideas or usernames...",
-                sendBtn: "Send",
+                searchPlaceholder: "Search ideas, articles or usernames...",
                 myUploads: "Upload Records",
                 savedPins: "Saved Pins",
                 settingsTitle: "Settings",
@@ -745,9 +907,6 @@
                 haveAccount: "Already registered?",
                 signIn: "Sign In",
                 createNew: "Create New Account",
-                welcomeChat: "Welcome to STARDUST Core System! Click any dynamic active user on the left to start a private encrypted real-time chat.",
-                chatPlaceholder: "Ask Stardust...",
-                chatHeader: "Stardust Core Bot",
                 settingsOpt1: "1. Edit Name, Bio & Handle",
                 settingsOpt2: "2. Change Profile Picture",
                 settingsOpt3: "3. System Language",
@@ -771,8 +930,7 @@
                 tagline: "क्लाउड सिंक प्रोफ़ाइल के साथ प्रीमियम विज़ुअल आइडियाज़ खोजें और तुरंत साझा करें।",
                 loginBtn: "साइन इन करें",
                 signupBtn: "खाता बनाएं",
-                searchPlaceholder: "आइडियाज़ या उपयोगकर्ता खोजें...",
-                sendBtn: "भेजें",
+                searchPlaceholder: "आइडियाज़, आर्टिकल या उपयोगकर्ता खोजें...",
                 myUploads: "मेरे अपलोड",
                 savedPins: "सेव किए गए पिन",
                 settingsTitle: "सेटिंग्स",
@@ -780,9 +938,6 @@
                 haveAccount: "पहले से पंजीकृत हैं?",
                 signIn: "साइन इन करें",
                 createNew: "नया खाता बनाएं",
-                welcomeChat: "स्टारडस्ट कोर सिस्टम में आपका स्वागत है! प्राइवेट चैट शुरू करने के लिए बाईं ओर किसी भी सक्रिय उपयोगकर्ता पर क्लिक करें।",
-                chatPlaceholder: "स्टारडस्ट से पूछें...",
-                chatHeader: "स्टारडस्ट कोर बॉट",
                 settingsOpt1: "1. नाम, बायो और हैंडल संपादित करें",
                 settingsOpt2: "2. प्रोफ़ाइल फोटो बदलें",
                 settingsOpt3: "3. सिस्टम भाषा",
@@ -806,8 +961,7 @@
                 tagline: "আপনার ক্লাউড সিঙ্ক প্রোফাইলের সাথে প্রিমিয়াম ভিজ্যুয়াল আইডিয়া আবিষ্কার, ট্র্যাক এবং শেয়ার করুন তাৎক্ষণিকভাবে।",
                 loginBtn: "সাইন ইন করুন",
                 signupBtn: "অ্যাকাউন্ট তৈরি করুন",
-                searchPlaceholder: "আইডিয়া বা ব্যবহারকারী খুঁজুন...",
-                sendBtn: "পাঠান",
+                searchPlaceholder: "আইডিয়া, আর্টিকেল বা ব্যবহারকারী খুঁজুন...",
                 myUploads: "আমার আপলোড",
                 savedPins: "সংরক্ষিত পিন",
                 settingsTitle: "সেটিংস",
@@ -815,9 +969,6 @@
                 haveAccount: "ইতিমধ্যে নিবন্ধিত?",
                 signIn: "সাইন ইন করুন",
                 createNew: "নতুন অ্যাকাউন্ট তৈরি করুন",
-                welcomeChat: "স্টারডাস্ট কোর সিস্টেমে স্বাগতম! একটি প্রাইভেট চ্যাট শুরু করতে বাম দিকে যেকোনো সক্রিয় ব্যবহারকারীতে ক্লিক করুন।",
-                chatPlaceholder: "স্টারডাস্টকে জিজ্ঞাসা করুন...",
-                chatHeader: "স্টারডাস্ট কোর বট",
                 settingsOpt1: "১. নাম, বায়ো এবং হ্যান্ডেল সম্পাদনা করুন",
                 settingsOpt2: "২. প্রোফাইল ছবি পরিবর্তন করুন",
                 settingsOpt3: "৩. সিস্টেম ভাষা",
@@ -841,8 +992,7 @@
                 tagline: "તમારા ક્લાઉડ સિંક પ્રોફાઇલ સાથે પ્રીમિયમ વિઝ્યુઅલ આઈડિયાઝ શોધો, ટ્રેક કરો અને તાત્કાલિક શેર કરો.",
                 loginBtn: "સાઇન ઇન કરો",
                 signupBtn: "ખાતું બનાવો",
-                searchPlaceholder: "વિચારો અથવા વપરાશકર્તાઓ શોધો...",
-                sendBtn: "મોકલો",
+                searchPlaceholder: "વિચારો, આર્ટિકલ અથવા વપરાશકર્તાઓ શોધો...",
                 myUploads: "મારા અપલોડ્સ",
                 savedPins: "સેવ કરેલા પિન",
                 settingsTitle: "સેટિંગ્સ",
@@ -850,9 +1000,6 @@
                 haveAccount: "પહેલેથી નોંધાયેલા?",
                 signIn: "સાઇન ઇન કરો",
                 createNew: "નવું ખાતું બનાવો",
-                welcomeChat: "સ્ટારડસ્ટ કોર સિસ્ટમમાં આપનું સ્વાગત છે! ખાનગી ચેટ શરૂ કરવા માટે ડાબી બાજુના કોઈપણ સક્રિય વપરાશકર્તા પર ક્લિક કરો।",
-                chatPlaceholder: "સ્ટારડસ્ટને પૂછો...",
-                chatHeader: "સ્ટારડસ્ટ કોર બોટ",
                 settingsOpt1: "૧. નામ, બાયો અને હેન્ડલ સંપાદિત કરો",
                 settingsOpt2: "૨. પ્રોફાઇલ ચિત્ર બદલો",
                 settingsOpt3: "૩. સિસ્ટમ ભાષા",
@@ -876,8 +1023,7 @@
                 tagline: "클라우드 동기화 프로필로 프리미엄 시각적 아이디어를 즉시 발견, 추적 및 공유하세요.",
                 loginBtn: "로그인",
                 signupBtn: "계정 만들기",
-                searchPlaceholder: "아이디어 또는 사용자 검색...",
-                sendBtn: "보내기",
+                searchPlaceholder: "아이디어, 기사 또는 사용자 검색...",
                 myUploads: "내 업로드",
                 savedPins: "저장된 핀",
                 settingsTitle: "설정",
@@ -885,9 +1031,6 @@
                 haveAccount: "이미 등록하셨나요?",
                 signIn: "로그인",
                 createNew: "새 계정 만들기",
-                welcomeChat: "스타더스트 코어 시스템에 오신 것을 환영합니다! 개인 채팅을 시작하려면 왼쪽의 활성 사용자를 클릭하세요.",
-                chatPlaceholder: "스타더스트에게 물어보기...",
-                chatHeader: "스타더스트 코어 봇",
                 settingsOpt1: "1. 이름, 소개 및 핸들 편집",
                 settingsOpt2: "2. 프로필 사진 변경",
                 settingsOpt3: "3. 시스템 언어",
@@ -911,8 +1054,7 @@
                 tagline: "通过云同步个人资料即时发现、跟踪和分享高级视觉创意。",
                 loginBtn: "登录",
                 signupBtn: "创建帐户",
-                searchPlaceholder: "搜索创意或用户名...",
-                sendBtn: "发送",
+                searchPlaceholder: "搜索创意、文章或用户名...",
                 myUploads: "我的上传",
                 savedPins: "已保存的图钉",
                 settingsTitle: "设置",
@@ -920,9 +1062,6 @@
                 haveAccount: "已经注册？",
                 signIn: "登录",
                 createNew: "创建新帐户",
-                welcomeChat: "欢迎来到星尘核心系统！点击左侧任何活跃用户开始私密加密实时聊天。",
-                chatPlaceholder: "询问星尘...",
-                chatHeader: "星尘核心机器人",
                 settingsOpt1: "1. 编辑姓名、简介和用户名",
                 settingsOpt2: "2. 更改个人资料图片",
                 settingsOpt3: "3. 系统语言",
@@ -946,8 +1085,7 @@
                 tagline: "透過雲端同步個人檔案即時發現、追蹤和分享高級視覺創意。",
                 loginBtn: "登入",
                 signupBtn: "建立帳戶",
-                searchPlaceholder: "搜尋創意或用戶名...",
-                sendBtn: "傳送",
+                searchPlaceholder: "搜尋創意、文章或用戶名...",
                 myUploads: "我的上傳",
                 savedPins: "已儲存的圖釘",
                 settingsTitle: "設定",
@@ -955,9 +1093,6 @@
                 haveAccount: "已經註冊？",
                 signIn: "登入",
                 createNew: "建立新帳戶",
-                welcomeChat: "歡迎來到星塵核心系統！點擊左側任何活躍用戶開始私密加密即時聊天。",
-                chatPlaceholder: "詢問星塵...",
-                chatHeader: "星塵核心機器人",
                 settingsOpt1: "1. 編輯姓名、簡介和用戶名",
                 settingsOpt2: "2. 更改個人資料圖片",
                 settingsOpt3: "3. 系統語言",
@@ -981,8 +1116,7 @@
                 tagline: "Открывайте, отслеживайте и делитесь премиальными визуальными идеями с помощью облачного синхронизированного профиля мгновенно.",
                 loginBtn: "Войти",
                 signupBtn: "Создать аккаунт",
-                searchPlaceholder: "Поиск идей или пользователей...",
-                sendBtn: "Отправить",
+                searchPlaceholder: "Поиск идей, статей или пользователей...",
                 myUploads: "Мои загрузки",
                 savedPins: "Сохранённые пины",
                 settingsTitle: "Настройки",
@@ -990,9 +1124,6 @@
                 haveAccount: "Уже зарегистрированы?",
                 signIn: "Войти",
                 createNew: "Создать новый аккаунт",
-                welcomeChat: "Добро пожаловать в систему Stardust Core! Нажмите любого активного пользователя слева, чтобы начать приватный чат.",
-                chatPlaceholder: "Спросить Stardust...",
-                chatHeader: "Stardust Core Bot",
                 settingsOpt1: "1. Редактировать имя, био и хэндл",
                 settingsOpt2: "2. Изменить фото профиля",
                 settingsOpt3: "3. Язык системы",
@@ -1016,8 +1147,7 @@
                 tagline: "Khám phá, theo dõi và chia sẻ ý tưởng hình ảnh cao cấp với hồ sơ đồng bộ đám mây của bạn ngay lập tức.",
                 loginBtn: "Đăng nhập",
                 signupBtn: "Tạo tài khoản",
-                searchPlaceholder: "Tìm kiếm ý tưởng hoặc tên người dùng...",
-                sendBtn: "Gửi",
+                searchPlaceholder: "Tìm kiếm ý tưởng, bài viết hoặc tên người dùng...",
                 myUploads: "Tải lên của tôi",
                 savedPins: "Ghim đã lưu",
                 settingsTitle: "Cài đặt",
@@ -1025,9 +1155,6 @@
                 haveAccount: "Đã đăng ký?",
                 signIn: "Đăng nhập",
                 createNew: "Tạo tài khoản mới",
-                welcomeChat: "Chào mừng đến với Hệ thống Stardust Core! Nhấp vào bất kỳ người dùng hoạt động nào bên trái để bắt đầu trò chuyện riêng tư.",
-                chatPlaceholder: "Hỏi Stardust...",
-                chatHeader: "Bot Stardust Core",
                 settingsOpt1: "1. Chỉnh sửa tên, tiểu sử và tên người dùng",
                 settingsOpt2: "2. Thay đổi ảnh đại diện",
                 settingsOpt3: "3. Ngôn ngữ hệ thống",
@@ -1051,8 +1178,7 @@
                 tagline: "ค้นหา ติดตาม และแบ่งปันไอเดียภาพระดับพรีเมียมด้วยโปรไฟล์ที่ซิงค์กับคลาวด์ของคุณได้ทันที",
                 loginBtn: "เข้าสู่ระบบ",
                 signupBtn: "สร้างบัญชี",
-                searchPlaceholder: "ค้นหาไอเดียหรือชื่อผู้ใช้...",
-                sendBtn: "ส่ง",
+                searchPlaceholder: "ค้นหาไอเดีย บทความ หรือชื่อผู้ใช้...",
                 myUploads: "อัปโหลดของฉัน",
                 savedPins: "พินที่บันทึกไว้",
                 settingsTitle: "การตั้งค่า",
@@ -1060,9 +1186,6 @@
                 haveAccount: "ลงทะเบียนแล้ว?",
                 signIn: "เข้าสู่ระบบ",
                 createNew: "สร้างบัญชีใหม่",
-                welcomeChat: "ยินดีต้อนรับสู่ระบบหลัก Stardust! คลิกผู้ใช้ที่ใช้งานทางด้านซ้ายเพื่อเริ่มแชทส่วนตัว",
-                chatPlaceholder: "ถาม Stardust...",
-                chatHeader: "บอทหลัก Stardust",
                 settingsOpt1: "1. แก้ไขชื่อ ประวัติ และแฮนเดิล",
                 settingsOpt2: "2. เปลี่ยนรูปโปรไฟล์",
                 settingsOpt3: "3. ภาษาระบบ",
@@ -1086,8 +1209,7 @@
                 tagline: "اپنے کلاؤڈ سنک پروفائل کے ساتھ پریمیم بصری آئیڈیاز کو فوری طور پر دریافت، ٹریک اور شیئر کریں۔",
                 loginBtn: "سائن ان کریں",
                 signupBtn: "اکاؤنٹ بنائیں",
-                searchPlaceholder: "آئیڈیاز یا صارفین تلاش کریں...",
-                sendBtn: "بھیجیں",
+                searchPlaceholder: "آئیڈیاز، آرٹیکل یا صارفین تلاش کریں...",
                 myUploads: "میرے اپ لوڈز",
                 savedPins: "محفوظ کردہ پن",
                 settingsTitle: "ترتیبات",
@@ -1095,9 +1217,6 @@
                 haveAccount: "پہلے سے رجسٹرڈ ہیں؟",
                 signIn: "سائن ان کریں",
                 createNew: "نیا اکاؤنٹ بنائیں",
-                welcomeChat: "اسٹارڈسٹ کور سسٹم میں خوش آمدید! پرائیویٹ چیٹ شروع کرنے کے لیے بائیں طرف کسی بھی فعال صارف پر کلک کریں۔",
-                chatPlaceholder: "اسٹارڈسٹ سے پوچھیں...",
-                chatHeader: "اسٹارڈسٹ کور بوٹ",
                 settingsOpt1: "1. نام، بائیو اور ہینڈل میں ترمیم کریں",
                 settingsOpt2: "2. پروفائل تصویر تبدیل کریں",
                 settingsOpt3: "3. نظام کی زبان",
@@ -1121,8 +1240,7 @@
                 tagline: "اكتشف وتتبع وشارك الأفكار البصرية المتميزة مع ملف التعريف المتزامن مع السحابة الخاص بك على الفور.",
                 loginBtn: "تسجيل الدخول",
                 signupBtn: "إنشاء حساب",
-                searchPlaceholder: "ابحث عن أفكار أو أسماء مستخدمين...",
-                sendBtn: "إرسال",
+                searchPlaceholder: "ابحث عن أفكار أو مقالات أو أسماء مستخدمين...",
                 myUploads: "تحميلاتي",
                 savedPins: "الدبابيس المحفوظة",
                 settingsTitle: "الإعدادات",
@@ -1130,9 +1248,6 @@
                 haveAccount: "مسجل بالفعل؟",
                 signIn: "تسجيل الدخول",
                 createNew: "إنشاء حساب جديد",
-                welcomeChat: "مرحبًا بك في نظام Stardust Core! انقر على أي مستخدم نشط على اليسار لبدء محادثة خاصة مشفرة في الوقت الفعلي.",
-                chatPlaceholder: "اسأل Stardust...",
-                chatHeader: "بوت Stardust Core",
                 settingsOpt1: "1. تحرير الاسم والسيرة الذاتية والمعرف",
                 settingsOpt2: "2. تغيير صورة الملف الشخصي",
                 settingsOpt3: "3. لغة النظام",
@@ -1156,8 +1271,7 @@
                 tagline: "クラウド同期プロファイルでプレミアムなビジュアルアイデアを瞬時に発見、追跡、共有できます。",
                 loginBtn: "サインイン",
                 signupBtn: "アカウント作成",
-                searchPlaceholder: "アイデアまたはユーザー名を検索...",
-                sendBtn: "送信",
+                searchPlaceholder: "アイデア、記事またはユーザー名を検索...",
                 myUploads: "アップロード履歴",
                 savedPins: "保存したピン",
                 settingsTitle: "設定",
@@ -1165,9 +1279,6 @@
                 haveAccount: "すでに登録済みですか？",
                 signIn: "サインイン",
                 createNew: "新規アカウント作成",
-                welcomeChat: "Stardust Coreシステムへようこそ！左側のアクティブユーザーをクリックしてプライベートチャットを開始します。",
-                chatPlaceholder: "Stardustに質問...",
-                chatHeader: "Stardust Coreボット",
                 settingsOpt1: "1. 名前、バイオ、ハンドルを編集",
                 settingsOpt2: "2. プロフィール画像を変更",
                 settingsOpt3: "3. システム言語",
@@ -1191,8 +1302,7 @@
                 tagline: "Descoperiți, urmăriți și partajați idei vizuale premium cu profilul dvs. sincronizat în cloud instantaneu.",
                 loginBtn: "Autentificare",
                 signupBtn: "Creați cont",
-                searchPlaceholder: "Căutați idei sau nume de utilizator...",
-                sendBtn: "Trimiteți",
+                searchPlaceholder: "Căutați idei, articole sau nume de utilizator...",
                 myUploads: "Încărcările mele",
                 savedPins: "Pinuri salvate",
                 settingsTitle: "Setări",
@@ -1200,9 +1310,6 @@
                 haveAccount: "Deja înregistrat?",
                 signIn: "Autentificare",
                 createNew: "Creați cont nou",
-                welcomeChat: "Bun venit în sistemul Stardust Core! Faceți clic pe orice utilizator activ din stânga pentru a începe un chat privat.",
-                chatPlaceholder: "Întrebați Stardust...",
-                chatHeader: "Bot Stardust Core",
                 settingsOpt1: "1. Editați numele, biografia și numele de utilizator",
                 settingsOpt2: "2. Schimbați poza de profil",
                 settingsOpt3: "3. Limba sistemului",
@@ -1226,8 +1333,7 @@
                 tagline: "Descubra, rastree y comparta ideas visuales premium con su perfil sincronizado en la nube al instante.",
                 loginBtn: "Iniciar sesión",
                 signupBtn: "Crear cuenta",
-                searchPlaceholder: "Buscar ideas o nombres de usuario...",
-                sendBtn: "Enviar",
+                searchPlaceholder: "Buscar ideas, artículos o nombres de usuario...",
                 myUploads: "Mis subidas",
                 savedPins: "Pines guardados",
                 settingsTitle: "Ajustes",
@@ -1235,9 +1341,6 @@
                 haveAccount: "¿Ya estás registrado?",
                 signIn: "Iniciar sesión",
                 createNew: "Crear nueva cuenta",
-                welcomeChat: "¡Bienvenido al sistema Stardust Core! Haz clic en cualquier usuario activo de la izquierda para iniciar un chat privado.",
-                chatPlaceholder: "Preguntar a Stardust...",
-                chatHeader: "Bot Stardust Core",
                 settingsOpt1: "1. Editar nombre, biografía y usuario",
                 settingsOpt2: "2. Cambiar foto de perfil",
                 settingsOpt3: "3. Idioma del sistema",
@@ -1316,7 +1419,7 @@
                 });
                 
                 listenToCloudDataStream();
-                syncActiveInboxMembers();
+                listenToArticles();
                 
                 // Load saved language preference
                 database.ref('users/' + user.uid + '/language').once('value', (snap) => {
@@ -1414,7 +1517,6 @@
 
         function handleLogOut() { auth.signOut().then(() => { location.reload(); }); }
 
-        // ========== DELETE ACCOUNT FUNCTION ==========
         function handleDeleteAccount() {
             if(!currentUserData) return;
             const confirmDelete = confirm("WARNING: This will permanently delete your account and all associated data. This action cannot be undone. Are you sure?");
@@ -1472,9 +1574,18 @@
             });
         }
 
+        function goBackToHome() {
+            selectedProfileUid = "me";
+            switchTab('home');
+            document.getElementById('search-bar').value = '';
+            document.getElementById('user-search-results-tray').classList.add('hidden');
+            document.getElementById('user-search-results-tray').innerHTML = '';
+        }
+
         function loadUserIdentitySpace(targetUid) {
             if(!currentUserData) return;
             selectedProfileUid = targetUid;
+            viewingUserProfileUid = targetUid;
             
             const isMe = (targetUid === "me" || targetUid === currentUserData.uid);
             const finalUid = isMe ? currentUserData.uid : targetUid;
@@ -1513,15 +1624,12 @@
             });
         }
 
-        // ========== PROFILE TABS ==========
         function switchProfileTab(tab) {
             activeProfileTab = tab;
             
-            // Update tab buttons
             document.getElementById('profile-tab-uploads').className = `profile-tab-btn ${tab === 'uploads' ? 'active' : ''}`;
             document.getElementById('profile-tab-saved').className = `profile-tab-btn ${tab === 'saved' ? 'active' : ''}`;
             
-            // Show/hide containers
             document.getElementById('profile-uploads-container').style.display = tab === 'uploads' ? 'block' : 'none';
             document.getElementById('profile-saved-container').style.display = tab === 'saved' ? 'block' : 'none';
             
@@ -1539,38 +1647,53 @@
                 return;
             }
             
-            const savedRef = database.ref('users/' + currentUserData.uid + '/savedPins');
+            // Use the viewing user's uid if viewing someone else, otherwise current user
+            const targetUid = (viewingUserProfileUid && viewingUserProfileUid !== "me") ? viewingUserProfileUid : currentUserData.uid;
+            
+            const savedRef = database.ref('users/' + targetUid + '/savedPins');
             savedRef.once('value', (snapshot) => {
                 const savedData = snapshot.val() || {};
                 const savedKeys = Object.keys(savedData);
                 
                 if(savedKeys.length === 0) {
-                    container.innerHTML = '<div class="text-center text-gray-400 text-xs py-10 col-span-2">No saved pins yet. Start saving your favorite posts!</div>';
+                    container.innerHTML = '<div class="text-center text-gray-400 text-xs py-10 col-span-2">No saved pins yet.</div>';
                     return;
                 }
                 
-                // Fetch pin data for each saved pin
                 database.ref('pins').once('value', (pinsSnapshot) => {
                     const allPins = pinsSnapshot.val() || {};
-                    let hasPins = false;
-                    
-                    savedKeys.forEach(pinKey => {
-                        const pin = allPins[pinKey];
-                        if(pin) {
-                            hasPins = true;
-                            const element = document.createElement('div');
-                            element.className = "pin-item bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:opacity-95 text-gray-900 cursor-zoom-in";
-                            element.setAttribute('itemscope', '');
-                            element.setAttribute('itemtype', 'https://schema.org/ImageObject');
-                            element.onclick = () => openPhotoModal(pin.img, pin.title || "Stardust Card", pin.desc || "", pin.uploaderName || "Anonymous", pinKey, pin.uploaderUid);
-                            element.innerHTML = `<img src="${pin.img}" itemprop="contentUrl" alt="${pin.title || 'Stardust Pin'}" class="w-full h-auto object-cover"><div class="p-2 text-[11px] font-bold truncate" itemprop="caption">${pin.title || 'Idea'}</div>`;
-                            container.appendChild(element);
+                    const allArticles = {};
+                    // Also fetch articles
+                    database.ref('articles').once('value', (articlesSnap) => {
+                        const articlesData = articlesSnap.val() || {};
+                        Object.assign(allPins, articlesData);
+                        
+                        let hasPins = false;
+                        savedKeys.forEach(pinKey => {
+                            const pin = allPins[pinKey];
+                            if(pin) {
+                                hasPins = true;
+                                const element = document.createElement('div');
+                                element.className = "pin-item bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:opacity-95 text-gray-900 cursor-zoom-in";
+                                element.setAttribute('itemscope', '');
+                                element.setAttribute('itemtype', 'https://schema.org/ImageObject');
+                                element.onclick = () => {
+                                    if(pin.type === 'article') {
+                                        // Show article in modal or just open photo modal with article content
+                                        openPhotoModal(pin.image || 'https://via.placeholder.com/400x300?text=Article', pin.title || "Article", pin.content || "", pin.uploaderName || "Anonymous", pinKey, pin.uploaderUid);
+                                    } else {
+                                        openPhotoModal(pin.img, pin.title || "Stardust Card", pin.desc || "", pin.uploaderName || "Anonymous", pinKey, pin.uploaderUid);
+                                    }
+                                };
+                                element.innerHTML = `<img src="${pin.img || pin.image || 'https://via.placeholder.com/400x300?text=Post'}" itemprop="contentUrl" alt="${pin.title || 'Stardust Pin'}" class="w-full h-auto object-cover"><div class="p-2 text-[11px] font-bold truncate" itemprop="caption">${pin.title || 'Idea'}</div>`;
+                                container.appendChild(element);
+                            }
+                        });
+                        
+                        if(!hasPins) {
+                            container.innerHTML = '<div class="text-center text-gray-400 text-xs py-10 col-span-2">No saved pins found.</div>';
                         }
                     });
-                    
-                    if(!hasPins) {
-                        container.innerHTML = '<div class="text-center text-gray-400 text-xs py-10 col-span-2">No saved pins found.</div>';
-                    }
                 });
             });
         }
@@ -1627,9 +1750,29 @@
         function filterPinsAndUsers() {
             const query = document.getElementById('search-bar').value.toLowerCase().trim();
             const userTray = document.getElementById('user-search-results-tray');
-            if(!query) { userTray.classList.add('hidden'); userTray.innerHTML = ''; document.querySelectorAll('#pin-container .pin-item').forEach(item => item.style.display = "block"); return; }
-            document.querySelectorAll('#pin-container .pin-item').forEach(item => { item.style.display = item.innerText.toLowerCase().includes(query) ? "block" : "none"; });
+            
+            if(!query) { 
+                userTray.classList.add('hidden'); 
+                userTray.innerHTML = ''; 
+                document.querySelectorAll('#pin-container .pin-item').forEach(item => item.style.display = "block");
+                document.querySelectorAll('#articles-container .article-card').forEach(item => item.style.display = "block");
+                return; 
+            }
+            
+            // Filter photos
+            document.querySelectorAll('#pin-container .pin-item').forEach(item => { 
+                item.style.display = item.innerText.toLowerCase().includes(query) ? "block" : "none"; 
+            });
+            
+            // Filter articles
+            document.querySelectorAll('#articles-container .article-card').forEach(item => { 
+                const title = item.querySelector('h3')?.innerText?.toLowerCase() || '';
+                const content = item.querySelector('.article-body p')?.innerText?.toLowerCase() || '';
+                const author = item.querySelector('.author-name')?.innerText?.toLowerCase() || '';
+                item.style.display = (title.includes(query) || content.includes(query) || author.includes(query)) ? "block" : "none";
+            });
 
+            // Search users
             database.ref('users').once('value', (snapshot) => {
                 userTray.innerHTML = ''; const users = snapshot.val(); let count = 0;
                 if(users) {
@@ -1640,7 +1783,12 @@
                         if(nameMatch || userMatch) {
                             count++; const div = document.createElement('div');
                             div.className = "flex items-center justify-between bg-white p-2 rounded-xl border cursor-pointer hover:bg-red-50 text-gray-900";
-                            div.onclick = () => { userTray.classList.add('hidden'); document.getElementById('search-bar').value = ''; loadUserIdentitySpace(uid); };
+                            div.onclick = () => { 
+                                userTray.classList.add('hidden'); 
+                                document.getElementById('search-bar').value = ''; 
+                                loadUserIdentitySpace(uid); 
+                                switchTab('profile');
+                            };
                             div.innerHTML = `<div class="flex items-center gap-2"><img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" class="w-6 h-6 rounded-full object-cover"><div class="text-xs"><p class="font-black">${u.name || 'Member'}</p><p class="text-gray-400 text-[10px]">@${u.username || ''}</p></div></div><span class="text-[10px] bg-red-600 text-white font-bold py-1 px-2.5 rounded-full">View Hub</span>`;
                             userTray.appendChild(div);
                         }
@@ -1650,13 +1798,490 @@
             });
         }
 
+        // ========== ARTICLES SYSTEM ==========
+        function listenToArticles() {
+            database.ref('articles').on('value', (snapshot) => {
+                const container = document.getElementById('articles-container');
+                container.innerHTML = '';
+                const data = snapshot.val();
+                
+                if(!data) {
+                    container.innerHTML = '<div class="text-center text-gray-400 py-16 text-sm">No articles published yet. Be the first to write one!</div>';
+                    return;
+                }
+                
+                // Get all user data for author info
+                database.ref('users').once('value', (usersSnap) => {
+                    const usersData = usersSnap.val() || {};
+                    
+                    Object.keys(data).reverse().forEach(key => {
+                        const article = data[key];
+                        const authorData = usersData[article.uploaderUid] || {};
+                        
+                        const card = document.createElement('div');
+                        card.className = 'article-card';
+                        
+                        // Build article HTML
+                        let imageHTML = '';
+                        if(article.image) {
+                            imageHTML = `<img src="${article.image}" alt="${article.title}" class="article-image">`;
+                        }
+                        
+                        card.innerHTML = `
+                            <div class="article-header">
+                                <img src="${authorData.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" alt="${authorData.name}">
+                                <div>
+                                    <div class="author-name">${authorData.name || 'Anonymous'}</div>
+                                    <div class="author-username">@${authorData.username || 'user'}</div>
+                                </div>
+                                <div style="margin-left:auto;font-size:0.6rem;color:#9ca3af;">${new Date(article.timestamp).toLocaleDateString()}</div>
+                            </div>
+                            <div class="article-body" onclick="openArticleDetail('${key}')">
+                                <h3>${article.title || 'Untitled'}</h3>
+                                <p>${article.content ? article.content.substring(0, 150) + (article.content.length > 150 ? '...' : '') : ''}</p>
+                                ${imageHTML}
+                            </div>
+                            <div class="article-actions">
+                                <button onclick="toggleArticleLike('${key}')" id="article-like-btn-${key}">
+                                    <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                                    <span id="article-like-count-${key}">${Object.keys(article.likes || {}).length}</span>
+                                </button>
+                                <button onclick="openArticleCommentModal('${key}')">
+                                    <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                                    <span id="article-comment-count-${key}">${Object.keys(article.comments || {}).length}</span>
+                                </button>
+                                <button onclick="toggleArticleSave('${key}')" id="article-save-btn-${key}">
+                                    <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+                                    <span>${currentUserData && savedPinsCache[key] ? 'Saved' : 'Save'}</span>
+                                </button>
+                            </div>
+                        `;
+                        container.appendChild(card);
+                        
+                        // Update like button state
+                        if(currentUserData && article.likes && article.likes[currentUserData.uid]) {
+                            const btn = document.getElementById(`article-like-btn-${key}`);
+                            if(btn) btn.classList.add('liked');
+                        }
+                        
+                        // Update save button state
+                        if(currentUserData) {
+                            database.ref('users/' + currentUserData.uid + '/savedPins/' + key).once('value', (snap) => {
+                                if(snap.exists()) {
+                                    savedPinsCache[key] = true;
+                                    const btn = document.getElementById(`article-save-btn-${key}`);
+                                    if(btn) {
+                                        btn.classList.add('saved-pin');
+                                        btn.querySelector('span').innerText = 'Saved';
+                                    }
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+        }
+
+        function toggleArticleLike(articleId) {
+            if(!currentUserData) {
+                alert("Please login to like articles!");
+                return;
+            }
+            const likeRef = database.ref('articles/' + articleId + '/likes/' + currentUserData.uid);
+            likeRef.once('value', (snap) => {
+                if(snap.exists()) {
+                    likeRef.remove();
+                } else {
+                    likeRef.set(true);
+                }
+            });
+        }
+
+        function openArticleCommentModal(articleId) {
+            activeCommentPinId = articleId;
+            document.getElementById('comment-modal').style.display = 'flex';
+            
+            database.ref('articles/' + articleId + '/comments').on('value', (snapshot) => {
+                const container = document.getElementById('comments-list-container');
+                container.innerHTML = '';
+                const list = snapshot.val();
+                if(!list) {
+                    container.innerHTML = `<p class="text-gray-400 text-center text-xs py-6">No comments yet.</p>`;
+                    return;
+                }
+                Object.keys(list).forEach(cKey => {
+                    const comment = list[cKey];
+                    const row = document.createElement('div');
+                    row.className = "bg-gray-50 rounded-2xl p-2.5 border text-xs text-left";
+                    row.innerHTML = `<p class="font-black text-gray-700">@${comment.username || 'member'}</p><p class="text-gray-600 mt-0.5">${comment.text}</p>`;
+                    container.appendChild(row);
+                });
+                container.scrollTop = container.scrollHeight;
+            });
+
+            document.getElementById('submit-comment-btn').onclick = () => {
+                const input = document.getElementById('comment-input-field');
+                const val = input.value.trim();
+                if(!val || !currentUserData) return;
+                database.ref('articles/' + articleId + '/comments').push({
+                    userId: currentUserData.uid,
+                    username: customProfileCache.username,
+                    text: val,
+                    timestamp: Date.now()
+                }).then(() => { input.value = ''; });
+            };
+        }
+
+        function toggleArticleSave(articleId) {
+            if(!currentUserData) {
+                alert("Please login to save articles!");
+                return;
+            }
+            
+            const saveRef = database.ref('users/' + currentUserData.uid + '/savedPins/' + articleId);
+            saveRef.once('value', (snap) => {
+                if(snap.exists()) {
+                    saveRef.remove();
+                    savedPinsCache[articleId] = false;
+                    const btn = document.getElementById(`article-save-btn-${articleId}`);
+                    if(btn) {
+                        btn.classList.remove('saved-pin');
+                        btn.querySelector('span').innerText = 'Save';
+                    }
+                } else {
+                    saveRef.set(true);
+                    savedPinsCache[articleId] = true;
+                    const btn = document.getElementById(`article-save-btn-${articleId}`);
+                    if(btn) {
+                        btn.classList.add('saved-pin');
+                        btn.querySelector('span').innerText = 'Saved';
+                    }
+                }
+            });
+        }
+
+        function openArticleDetail(articleId) {
+            database.ref('articles/' + articleId).once('value', (snap) => {
+                const article = snap.val();
+                if(!article) return;
+                // Open in photo modal style
+                openPhotoModal(
+                    article.image || 'https://via.placeholder.com/400x300?text=Article',
+                    article.title || 'Article',
+                    article.content || '',
+                    article.uploaderName || 'Anonymous',
+                    articleId,
+                    article.uploaderUid
+                );
+            });
+        }
+
+        // ========== UPLOAD OPTIONS ==========
+        function openUploadOptionsModal() {
+            if(!currentUserData) {
+                alert("Please login to create posts!");
+                return;
+            }
+            document.getElementById('upload-options-modal').style.display = 'flex';
+        }
+
+        function closeUploadOptionsModal() {
+            document.getElementById('upload-options-modal').style.display = 'none';
+        }
+
+        function openPhotoUpload() {
+            closeUploadOptionsModal();
+            document.getElementById('file-input').click();
+        }
+
+        function openArticleUpload() {
+            closeUploadOptionsModal();
+            document.getElementById('article-upload-modal').style.display = 'flex';
+        }
+
+        function closeArticleUploadModal() {
+            document.getElementById('article-upload-modal').style.display = 'none';
+        }
+
+        function handleUpload(event) {
+            const file = event.target.files[0]; 
+            if (!file || !currentUserData) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                pendingUploadData = e.target.result;
+                document.getElementById('upload-preview-img').src = pendingUploadData;
+                document.getElementById('upload-title-input').value = file.name.split('.')[0] || '';
+                document.getElementById('upload-desc-input').value = '';
+                
+                const modal = document.getElementById('upload-modal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            };
+            reader.readAsDataURL(file);
+            event.target.value = '';
+        }
+
+        function closeUploadModal() {
+            const modal = document.getElementById('upload-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            pendingUploadData = null;
+        }
+
+        function confirmAndPublishUpload(type) {
+            if(type === 'photo') {
+                if (!pendingUploadData || !currentUserData) return;
+                
+                const userTitle = document.getElementById('upload-title-input').value.trim() || "Stardust Inspiration";
+                const userDesc = document.getElementById('upload-desc-input').value.trim() || "Inspired via Stardust.";
+
+                database.ref('pins').push({
+                    title: userTitle,
+                    desc: userDesc,
+                    img: pendingUploadData,
+                    uploaderUid: currentUserData.uid,
+                    uploaderName: customProfileCache.name || "Stardust Member",
+                    timestamp: Date.now(),
+                    type: 'photo'
+                }).then(() => {
+                    closeUploadModal();
+                    showUploadSuccessToast();
+                    switchTab('home');
+                });
+            } else if(type === 'article') {
+                const title = document.getElementById('article-title-input').value.trim();
+                const content = document.getElementById('article-content-input').value.trim();
+                const image = document.getElementById('article-image-input').value.trim();
+                
+                if(!title || !content) {
+                    alert("Please fill in both title and content!");
+                    return;
+                }
+                
+                database.ref('articles').push({
+                    title: title,
+                    content: content,
+                    image: image || '',
+                    uploaderUid: currentUserData.uid,
+                    uploaderName: customProfileCache.name || "Stardust Member",
+                    timestamp: Date.now(),
+                    type: 'article'
+                }).then(() => {
+                    closeArticleUploadModal();
+                    document.getElementById('article-title-input').value = '';
+                    document.getElementById('article-content-input').value = '';
+                    document.getElementById('article-image-input').value = '';
+                    showUploadSuccessToast();
+                    switchTab('articles');
+                });
+            }
+        }
+
+        function showUploadSuccessToast() {
+            const toast = document.getElementById('upload-success-toast');
+            toast.classList.remove('hidden');
+            toast.classList.add('flex');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+                toast.classList.remove('flex');
+            }, 3000);
+        }
+
+        function switchTab(tabName) {
+            const navBar = document.getElementById('app-nav');
+            if(tabName === 'profile') {
+                navBar.classList.add('hidden');
+            } else {
+                navBar.classList.remove('hidden');
+            }
+
+            // Clear search results when switching tabs
+            if(tabName === 'home') {
+                document.getElementById('search-bar').value = '';
+                document.getElementById('user-search-results-tray').classList.add('hidden');
+                document.getElementById('user-search-results-tray').innerHTML = '';
+                // Show all items
+                document.querySelectorAll('#pin-container .pin-item').forEach(item => item.style.display = "block");
+                document.querySelectorAll('#articles-container .article-card').forEach(item => item.style.display = "block");
+            }
+
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            
+            const navMap = {
+                'home': 'nav-home',
+                'articles': 'nav-articles',
+                'profile': 'nav-profile'
+            };
+            
+            ['home', 'articles', 'profile'].forEach(t => {
+                const btn = document.getElementById(`nav-${t}`);
+                if(btn) {
+                    if(t === tabName) {
+                        btn.className = "flex items-center justify-center p-2.5 rounded-full bg-black text-white transition-all duration-200";
+                    } else {
+                        btn.className = "flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200";
+                    }
+                }
+            });
+        }
+
+        // ========== PHOTO MODAL FUNCTIONS ==========
+        function openPhotoModal(imgSrc, titleText, descText, author, pinKey, uploaderUid) {
+            currentModalImgData = imgSrc;
+            currentModalTitle = titleText;
+            currentModalPinKey = pinKey;
+            currentModalUploaderUid = uploaderUid;
+            
+            document.getElementById('modal-img').src = imgSrc;
+            document.getElementById('modal-title').innerText = titleText;
+            document.getElementById('modal-desc').innerText = descText;
+            const authorEl = document.getElementById('modal-author');
+            authorEl.innerText = "BY: " + author.toUpperCase();
+            authorEl.onclick = () => { closePhotoModal(); loadUserIdentitySpace(uploaderUid); };
+
+            updateSaveButtonState(pinKey);
+
+            const likeSvg = document.getElementById('modal-like-svg');
+            const likeTxt = document.getElementById('modal-like-counter-text');
+            
+            // Check if it's an article or photo
+            database.ref('pins/' + pinKey + '/likes').once('value', (snap) => {
+                if(snap.exists()) {
+                    setupLikeListener('pins', pinKey);
+                } else {
+                    database.ref('articles/' + pinKey + '/likes').once('value', (articleSnap) => {
+                        setupLikeListener(articleSnap.exists() ? 'articles' : 'pins', pinKey);
+                    });
+                }
+            });
+
+            document.getElementById('modal-like-trigger-btn').onclick = () => {
+                // Try both pins and articles
+                database.ref('pins/' + pinKey + '/likes/' + (currentUserData ? currentUserData.uid : '')).once('value', (snap) => {
+                    if(snap.exists()) {
+                        database.ref('pins/' + pinKey + '/likes/' + currentUserData.uid).remove();
+                    } else {
+                        database.ref('pins/' + pinKey + '/likes/' + currentUserData.uid).set(true);
+                        // Also check articles
+                        database.ref('articles/' + pinKey + '/likes/' + currentUserData.uid).once('value', (articleSnap) => {
+                            if(!articleSnap.exists()) {
+                                database.ref('articles/' + pinKey + '/likes/' + currentUserData.uid).set(true);
+                            }
+                        });
+                    }
+                });
+            };
+            
+            document.getElementById('modal-comment-trigger-btn').onclick = () => {
+                // Check if it's an article or photo
+                database.ref('articles/' + pinKey).once('value', (snap) => {
+                    if(snap.exists()) {
+                        openArticleCommentModal(pinKey);
+                    } else {
+                        openCommentModal(pinKey);
+                    }
+                });
+            };
+            
+            document.getElementById('photo-modal').style.display = 'flex';
+            window.activeModalPinRefKey = pinKey;
+        }
+
+        function setupLikeListener(path, pinKey) {
+            const likeSvg = document.getElementById('modal-like-svg');
+            const likeTxt = document.getElementById('modal-like-counter-text');
+            
+            database.ref(path + '/' + pinKey + '/likes').on('value', (snapshot) => {
+                const likes = snapshot.val() || {};
+                const total = Object.keys(likes).length;
+                likeTxt.innerText = `${total} likes`;
+                if(currentUserData && likes[currentUserData.uid]) {
+                    likeSvg.className = "w-5 h-5 text-red-500 fill-current";
+                } else {
+                    likeSvg.className = "w-5 h-5 text-gray-400";
+                }
+            });
+        }
+
+        function updateSaveButtonState(pinKey) {
+            const saveBtn = document.getElementById('modal-save-btn');
+            const saveText = document.getElementById('modal-save-text');
+            const dict = langPack[activeLanguage] || langPack['en'];
+            
+            if(!currentUserData) {
+                saveBtn.className = "modal-action-btn saved flex-1";
+                saveText.innerText = "Login to Save";
+                return;
+            }
+            
+            database.ref('users/' + currentUserData.uid + '/savedPins/' + pinKey).once('value', (snap) => {
+                if(snap.exists()) {
+                    saveBtn.className = "modal-action-btn saved flex-1";
+                    saveText.innerText = dict.unsavePin || "Unsave Pin";
+                } else {
+                    saveBtn.className = "modal-action-btn save flex-1";
+                    saveText.innerText = dict.savePin || "Save Pin";
+                }
+            });
+        }
+
+        function toggleSavePin() {
+            if(!currentUserData || !currentModalPinKey) {
+                alert("Please login to save pins!");
+                return;
+            }
+            
+            const pinKey = currentModalPinKey;
+            const saveRef = database.ref('users/' + currentUserData.uid + '/savedPins/' + pinKey);
+            const dict = langPack[activeLanguage] || langPack['en'];
+            
+            saveRef.once('value', (snap) => {
+                if(snap.exists()) {
+                    saveRef.remove().then(() => {
+                        updateSaveButtonState(pinKey);
+                        if(activeProfileTab === 'saved') renderSavedPins();
+                    });
+                } else {
+                    saveRef.set(true).then(() => {
+                        updateSaveButtonState(pinKey);
+                        if(activeProfileTab === 'saved') renderSavedPins();
+                    });
+                }
+            });
+        }
+
+        function closePhotoModal() {
+            if(window.activeModalPinRefKey) {
+                database.ref('pins/' + window.activeModalPinRefKey + '/likes').off();
+                database.ref('articles/' + window.activeModalPinRefKey + '/likes').off();
+            }
+            document.getElementById('photo-modal').style.display = 'none';
+        }
+
+        function downloadImage() {
+            if(!currentModalImgData) return;
+            const link = document.createElement("a");
+            link.href = currentModalImgData;
+            link.download = currentModalTitle.replace(/\s+/g, '_') + ".jpg";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // ========== PHOTO MODAL FUNCTIONS END ==========
+
         function listenToCloudDataStream() {
             database.ref('pins').on('value', (snapshot) => {
                 const globalContainer = document.getElementById('pin-container');
                 globalContainer.innerHTML = ''; const data = snapshot.val();
                 if(data) {
                     Object.keys(data).reverse().forEach(key => {
-                        const pin = data[key]; const likesObj = pin.likes || {}; const totalLikes = Object.keys(likesObj).length;
+                        const pin = data[key];
+                        if(pin.type === 'article') return; // Skip articles in photo feed
+                        const likesObj = pin.likes || {};
+                        const totalLikes = Object.keys(likesObj).length;
                         const likedByMe = currentUserData ? !!likesObj[currentUserData.uid] : false;
                         const pinElement = document.createElement('div');
                         pinElement.className = "pin-item bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm transition relative flex flex-col";
@@ -1700,19 +2325,29 @@
         }
 
         function handleDoubleTapLikeAnimation(event, pinId) {
-            toggleLikePost(pinId); const container = event.currentTarget; const heart = document.createElement('div');
+            toggleLikePost(pinId);
+            const container = event.currentTarget;
+            const heart = document.createElement('div');
             heart.className = "absolute inset-0 flex items-center justify-center pointer-events-none animate-ping";
             heart.innerHTML = `<svg class="w-16 h-16 text-red-500 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
-            container.appendChild(heart); setTimeout(() => heart.remove(), 600);
+            container.appendChild(heart);
+            setTimeout(() => heart.remove(), 600);
         }
 
         function openCommentModal(pinId) {
-            activeCommentPinId = pinId; document.getElementById('comment-modal').style.display = 'flex';
+            activeCommentPinId = pinId;
+            document.getElementById('comment-modal').style.display = 'flex';
             database.ref('pins/' + pinId + '/comments').on('value', (snapshot) => {
-                const container = document.getElementById('comments-list-container'); container.innerHTML = ''; const list = snapshot.val();
-                if(!list) { container.innerHTML = `<p class="text-gray-400 text-center text-xs py-6">No comments yet.</p>`; return; }
+                const container = document.getElementById('comments-list-container');
+                container.innerHTML = '';
+                const list = snapshot.val();
+                if(!list) {
+                    container.innerHTML = `<p class="text-gray-400 text-center text-xs py-6">No comments yet.</p>`;
+                    return;
+                }
                 Object.keys(list).forEach(cKey => {
-                    const comment = list[cKey]; const row = document.createElement('div');
+                    const comment = list[cKey];
+                    const row = document.createElement('div');
                     row.className = "bg-gray-50 rounded-2xl p-2.5 border text-xs text-left";
                     row.innerHTML = `<p class="font-black text-gray-700">@${comment.username || 'member'}</p><p class="text-gray-600 mt-0.5">${comment.text}</p>`;
                     container.appendChild(row);
@@ -1721,143 +2356,24 @@
             });
 
             document.getElementById('submit-comment-btn').onclick = () => {
-                const input = document.getElementById('comment-input-field'); const val = input.value.trim(); if(!val || !currentUserData) return;
-                database.ref('pins/' + pinId + '/comments').push({ userId: currentUserData.uid, username: customProfileCache.username, text: val, timestamp: Date.now() }).then(() => { input.value = ''; });
+                const input = document.getElementById('comment-input-field');
+                const val = input.value.trim();
+                if(!val || !currentUserData) return;
+                database.ref('pins/' + pinId + '/comments').push({
+                    userId: currentUserData.uid,
+                    username: customProfileCache.username,
+                    text: val,
+                    timestamp: Date.now()
+                }).then(() => { input.value = ''; });
             };
         }
 
-        function closeCommentModal() { if(activeCommentPinId) database.ref('pins/' + activeCommentPinId + '/comments').off(); document.getElementById('comment-modal').style.display = 'none'; }
-
-        // ========== PHOTO MODAL WITH SAVE PIN ==========
-        function openPhotoModal(imgSrc, titleText, descText, author, pinKey, uploaderUid) {
-            currentModalImgData = imgSrc;
-            currentModalTitle = titleText;
-            currentModalPinKey = pinKey;
-            currentModalUploaderUid = uploaderUid;
-            
-            document.getElementById('modal-img').src = imgSrc;
-            document.getElementById('modal-title').innerText = titleText;
-            document.getElementById('modal-desc').innerText = descText;
-            const authorEl = document.getElementById('modal-author'); authorEl.innerText = "BY: " + author.toUpperCase();
-            authorEl.onclick = () => { closePhotoModal(); loadUserIdentitySpace(uploaderUid); };
-
-            // Update save button state
-            updateSaveButtonState(pinKey);
-
-            const likeSvg = document.getElementById('modal-like-svg'); const likeTxt = document.getElementById('modal-like-counter-text');
-            database.ref('pins/' + pinKey + '/likes').on('value', (snapshot) => {
-                const likes = snapshot.val() || {}; const total = Object.keys(likes).length; likeTxt.innerText = `${total} likes`;
-                if(currentUserData && likes[currentUserData.uid]) likeSvg.className = "w-5 h-5 text-red-500 fill-current"; else likeSvg.className = "w-5 h-5 text-gray-400";
-            });
-
-            document.getElementById('modal-like-trigger-btn').onclick = () => toggleLikePost(pinKey);
-            document.getElementById('modal-comment-trigger-btn').onclick = () => openCommentModal(pinKey);
-            document.getElementById('photo-modal').style.display = 'flex'; window.activeModalPinRefKey = pinKey;
-        }
-
-        function updateSaveButtonState(pinKey) {
-            const saveBtn = document.getElementById('modal-save-btn');
-            const saveText = document.getElementById('modal-save-text');
-            const dict = langPack[activeLanguage] || langPack['en'];
-            
-            if(!currentUserData) {
-                saveBtn.className = "modal-action-btn saved flex-1";
-                saveText.innerText = "Login to Save";
-                return;
+        function closeCommentModal() {
+            if(activeCommentPinId) {
+                database.ref('pins/' + activeCommentPinId + '/comments').off();
+                database.ref('articles/' + activeCommentPinId + '/comments').off();
             }
-            
-            database.ref('users/' + currentUserData.uid + '/savedPins/' + pinKey).once('value', (snap) => {
-                if(snap.exists()) {
-                    saveBtn.className = "modal-action-btn saved flex-1";
-                    saveText.innerText = dict.unsavePin || "Unsave Pin";
-                } else {
-                    saveBtn.className = "modal-action-btn save flex-1";
-                    saveText.innerText = dict.savePin || "Save Pin";
-                }
-            });
-        }
-
-        function toggleSavePin() {
-            if(!currentUserData || !currentModalPinKey) {
-                alert("Please login to save pins!");
-                return;
-            }
-            
-            const pinKey = currentModalPinKey;
-            const saveRef = database.ref('users/' + currentUserData.uid + '/savedPins/' + pinKey);
-            const dict = langPack[activeLanguage] || langPack['en'];
-            
-            saveRef.once('value', (snap) => {
-                if(snap.exists()) {
-                    // Unsave
-                    saveRef.remove().then(() => {
-                        updateSaveButtonState(pinKey);
-                        // Refresh saved pins if profile is open
-                        if(activeProfileTab === 'saved') renderSavedPins();
-                    });
-                } else {
-                    // Save
-                    saveRef.set(true).then(() => {
-                        updateSaveButtonState(pinKey);
-                        if(activeProfileTab === 'saved') renderSavedPins();
-                    });
-                }
-            });
-        }
-
-        function closePhotoModal() { if(window.activeModalPinRefKey) database.ref('pins/' + window.activeModalPinRefKey + '/likes').off(); document.getElementById('photo-modal').style.display = 'none'; }
-
-        function downloadImage() { if(!currentModalImgData) return; const link = document.createElement("a"); link.href = currentModalImgData; link.download = currentModalTitle.replace(/\s+/g, '_') + ".jpg"; document.body.appendChild(link); link.click(); document.body.removeChild(link); }
-
-        function syncActiveInboxMembers() {
-            database.ref('users').on('value', (snapshot) => {
-                const listEl = document.getElementById('inbox-users-list'); listEl.innerHTML = ''; const users = snapshot.val();
-                const botRow = document.createElement('div');
-                botRow.className = "p-2 hover:bg-gray-100 rounded-xl cursor-pointer text-xs font-bold text-red-600 border flex items-center gap-1.5 transition";
-                botRow.onclick = () => selectActiveChatTarget('bot', 'System Bot');
-                botRow.innerHTML = `<svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg> <span>Broadcast Bot</span>`; listEl.appendChild(botRow);
-
-                if(users && currentUserData) {
-                    Object.keys(users).forEach(uid => {
-                        if(uid === currentUserData.uid) return; const u = users[uid]; const row = document.createElement('div');
-                        row.className = "p-2 hover:bg-gray-100 rounded-xl cursor-pointer text-xs font-semibold text-gray-700 truncate flex items-center gap-2";
-                        row.onclick = () => selectActiveChatTarget(uid, u.name || 'User');
-                        row.innerHTML = `<img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" class="w-4 h-4 rounded-full object-cover"> <span>@${u.username}</span>`;
-                        listEl.appendChild(row);
-                    });
-                }
-            });
-        }
-
-        function selectActiveChatTarget(uid, nameText) { activeChatTargetUid = uid; document.getElementById('chat-window-header-title').innerText = (uid === 'bot') ? 'Broadcast Bot' : `Chat: @${nameText}`; listenToPrivateChatEngine(); }
-
-        function listenToPrivateChatEngine() {
-            const chatBox = document.getElementById('chat-box'); chatBox.innerHTML = '';
-            if(activeChatTargetUid === 'bot') { chatBox.innerHTML = `<div class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">Welcome to STARDUST Core System! Click any dynamic active user on the left to start a private chat.</div>`; return; }
-            const chatNodeRef = currentUserData.uid < activeChatTargetUid ? `${currentUserData.uid}_${activeChatTargetUid}` : `${activeChatTargetUid}_${currentUserData.uid}`;
-            database.ref('chats/' + chatNodeRef).off();
-            database.ref('chats/' + chatNodeRef).on('value', (snapshot) => {
-                chatBox.innerHTML = ''; const logs = snapshot.val();
-                if(!logs) { chatBox.innerHTML = `<p class="text-center text-xs text-gray-400 py-10">No messages. Say hello!</p>`; return; }
-                Object.keys(logs).forEach(mId => {
-                    const msg = logs[mId]; const bubble = document.createElement('div');
-                    bubble.className = msg.sender === currentUserData.uid ? "bg-black text-white p-3.5 rounded-2xl rounded-tr-none text-sm max-w-[85%] ml-auto text-right font-medium" : "bg-gray-100 text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium";
-                    bubble.innerText = msg.text; chatBox.appendChild(bubble);
-                });
-                chatBox.scrollTop = chatBox.scrollHeight;
-            });
-        }
-
-        function sendChatMessage() {
-            const input = document.getElementById('chat-input'); const msgVal = input.value.trim(); if(!msgVal) return;
-            if(activeChatTargetUid === 'bot') {
-                const chatBox = document.getElementById('chat-box'); chatBox.innerHTML += `<div class="bg-black text-white p-3.5 rounded-2xl rounded-tr-none text-sm max-w-[85%] ml-auto text-right font-medium">${msgVal}</div>`;
-                input.value = ''; chatBox.scrollTop = chatBox.scrollHeight;
-                setTimeout(() => { chatBox.innerHTML += `<div class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">SYSTEM NOTICE: Click any active member from the left to start a real chat!</div>`; chatBox.scrollTop = chatBox.scrollHeight; }, 900);
-                return;
-            }
-            const chatNodeRef = currentUserData.uid < activeChatTargetUid ? `${currentUserData.uid}_${activeChatTargetUid}` : `${activeChatTargetUid}_${currentUserData.uid}`;
-            database.ref('chats/' + chatNodeRef).push({ sender: currentUserData.uid, text: msgVal, timestamp: Date.now() }).then(() => { input.value = ''; });
+            document.getElementById('comment-modal').style.display = 'none';
         }
 
         function showSettingsPage(pageId) {
@@ -1874,9 +2390,19 @@
             }
         }
 
-        function backToSettingsMain() { document.querySelectorAll('.settings-sub-page').forEach(page => page.classList.add('hidden')); document.getElementById('settings-main-screen').classList.remove('hidden'); }
-        function openSettingsModal() { backToSettingsMain(); document.getElementById('settings-modal').style.display = 'flex'; }
-        function closeSettingsModal() { document.getElementById('settings-modal').style.display = 'none'; }
+        function backToSettingsMain() {
+            document.querySelectorAll('.settings-sub-page').forEach(page => page.classList.add('hidden'));
+            document.getElementById('settings-main-screen').classList.remove('hidden');
+        }
+        
+        function openSettingsModal() {
+            backToSettingsMain();
+            document.getElementById('settings-modal').style.display = 'flex';
+        }
+        
+        function closeSettingsModal() {
+            document.getElementById('settings-modal').style.display = 'none';
+        }
 
         function saveProfileCustomizations() {
             if(!currentUserData) return;
@@ -1884,25 +2410,43 @@
             const inputBio = document.getElementById('edit-bio-input').value.trim();
             const inputUsername = document.getElementById('edit-username-input').value.trim().toLowerCase().replace(/\s+/g, '');
 
-            if(!inputName || !inputUsername) { alert("Fields cannot be blank references!"); return; }
+            if(!inputName || !inputUsername) {
+                alert("Fields cannot be blank references!");
+                return;
+            }
 
             database.ref('users').orderByChild('username').equalTo(inputUsername).once('value', (snapshot) => {
                 if(snapshot.exists()) {
                     const ownerId = Object.keys(snapshot.val())[0];
-                    if(ownerId !== currentUserData.uid) { alert("Username already taken!"); return; }
+                    if(ownerId !== currentUserData.uid) {
+                        alert("Username already taken!");
+                        return;
+                    }
                 }
-                database.ref('users/' + currentUserData.uid).update({ name: inputName, bio: inputBio || "No bio written yet.", username: inputUsername }).then(() => { alert("Identity updated!"); closeSettingsModal(); });
+                database.ref('users/' + currentUserData.uid).update({
+                    name: inputName,
+                    bio: inputBio || "No bio written yet.",
+                    username: inputUsername
+                }).then(() => {
+                    alert("Identity updated!");
+                    closeSettingsModal();
+                });
             });
         }
 
         function handlePfpUpload(event) {
-            const file = event.target.files[0]; if (!file || !currentUserData) return;
+            const file = event.target.files[0];
+            if (!file || !currentUserData) return;
             const reader = new FileReader();
-            reader.onload = function(e) { database.ref('users/' + currentUserData.uid).update({ pfp: e.target.result }).then(() => { alert("PFP Synced!"); closeSettingsModal(); }); };
+            reader.onload = function(e) {
+                database.ref('users/' + currentUserData.uid).update({ pfp: e.target.result }).then(() => {
+                    alert("PFP Synced!");
+                    closeSettingsModal();
+                });
+            };
             reader.readAsDataURL(file);
         }
 
-        // ========== RENDER LANGUAGE OPTIONS ==========
         function renderLanguageOptions() {
             const container = document.getElementById('language-options-container');
             if(!container) return;
@@ -1928,33 +2472,17 @@
             });
         }
 
-        // ========== CHANGE SYSTEM LANGUAGE ==========
         function changeSystemLanguage(langKey) {
             activeLanguage = langKey;
             const dict = langPack[langKey] || langPack['en'];
             
-            // Auth page
             document.getElementById('lang-tagline').innerText = dict.tagline;
             document.getElementById('login-btn-text').innerText = dict.loginBtn;
             document.getElementById('signup-btn-text').innerText = dict.signupBtn;
             document.getElementById('no-account-text').innerHTML = `${dict.noAccount} <button onclick="toggleAuthView('signup')" class="text-red-600 font-bold hover:underline">${dict.createNew}</button>`;
             document.getElementById('have-account-text').innerHTML = `${dict.haveAccount} <button onclick="toggleAuthView('login')" class="text-black font-bold hover:underline">${dict.signIn}</button>`;
-            
-            // Search
             document.getElementById('search-bar').placeholder = dict.searchPlaceholder;
             
-            // Chat
-            document.getElementById('lang-send-btn').innerText = dict.sendBtn;
-            document.getElementById('lang-welcome-msg').innerText = dict.welcomeChat;
-            document.getElementById('chat-input').placeholder = dict.chatPlaceholder;
-            document.getElementById('chat-window-header-title').innerText = dict.chatHeader;
-            
-            // Profile
-            document.getElementById('lang-my-uploads').innerText = dict.myUploads;
-            document.getElementById('profile-tab-uploads').innerText = dict.myUploads;
-            document.getElementById('profile-tab-saved').innerText = dict.savedPins;
-            
-            // Settings
             document.getElementById('lang-settings-title').innerText = dict.settingsTitle;
             document.getElementById('lang-opt-account').innerText = dict.settingsOpt1;
             document.getElementById('lang-opt-pfp').innerText = dict.settingsOpt2;
@@ -1966,11 +2494,9 @@
             document.getElementById('lang-close-settings').innerText = dict.closeSettings;
             document.getElementById('lang-signout-btn').innerText = dict.signOut;
             
-            // Photo modal buttons
             document.getElementById('modal-save-text').innerText = dict.savePin || "Save Pin";
             document.getElementById('modal-download-btn').innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg> ${dict.download || "Download"}`;
             
-            // Delete Account page
             const deletePage = document.getElementById('page-delete');
             if(deletePage) {
                 const title = deletePage.querySelector('h4');
@@ -1989,78 +2515,16 @@
         }
 
         function submitSupportTicket() {
-            const input = document.getElementById('support-text-input'); if(!input.value.trim()) return;
-            database.ref('support_tickets').push({ uid: currentUserData.uid, text: input.value.trim(), timestamp: Date.now() }).then(() => { alert("Ticket Sent!"); input.value = ''; closeSettingsModal(); });
-        }
-
-        function handleUpload(event) {
-            const file = event.target.files[0]; 
-            if (!file || !currentUserData) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                pendingUploadData = e.target.result;
-                document.getElementById('upload-preview-img').src = pendingUploadData;
-                document.getElementById('upload-title-input').value = file.name.split('.')[0] || '';
-                document.getElementById('upload-desc-input').value = '';
-                
-                const modal = document.getElementById('upload-modal');
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-            };
-            reader.readAsDataURL(file);
-            event.target.value = '';
-        }
-
-        function closeUploadModal() {
-            const modal = document.getElementById('upload-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-            pendingUploadData = null;
-        }
-
-        function confirmAndPublishUpload() {
-            if (!pendingUploadData || !currentUserData) return;
-            
-            const userTitle = document.getElementById('upload-title-input').value.trim() || "Stardust Inspiration";
-            const userDesc = document.getElementById('upload-desc-input').value.trim() || "Inspired via Stardust.";
-
-            database.ref('pins').push({
-                title: userTitle,
-                desc: userDesc,
-                img: pendingUploadData,
-                uploaderUid: currentUserData.uid,
-                uploaderName: customProfileCache.name || "Stardust Member"
+            const input = document.getElementById('support-text-input');
+            if(!input.value.trim()) return;
+            database.ref('support_tickets').push({
+                uid: currentUserData.uid,
+                text: input.value.trim(),
+                timestamp: Date.now()
             }).then(() => {
-                closeUploadModal();
-                showUploadSuccessToast();
-                switchTab('home');
-            });
-        }
-
-        function showUploadSuccessToast() {
-            const toast = document.getElementById('upload-success-toast');
-            toast.classList.remove('hidden');
-            toast.classList.add('flex');
-            setTimeout(() => {
-                toast.classList.add('hidden');
-                toast.classList.remove('flex');
-            }, 3000);
-        }
-
-        function switchTab(tabName) {
-            const navBar = document.getElementById('app-nav');
-            if(tabName === 'profile') {
-                navBar.classList.add('hidden');
-            } else {
-                navBar.classList.remove('hidden');
-            }
-
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
-            ['home', 'messages', 'profile'].forEach(t => {
-                const btn = document.getElementById(`nav-${t}`);
-                if(btn) btn.className = (t === tabName) ? "flex items-center justify-center p-2.5 rounded-full bg-black text-white transition-all" : "flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all";
+                alert("Ticket Sent!");
+                input.value = '';
+                closeSettingsModal();
             });
         }
     </script>
