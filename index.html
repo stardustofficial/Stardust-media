@@ -68,6 +68,57 @@
             border-left-color: #dc2626;
             animation: spin 0.8s linear infinite;
         }
+
+        .legal-link {
+            color: #dc2626;
+            text-decoration: underline;
+            font-weight: 600;
+            font-size: 0.7rem;
+        }
+        .legal-link:hover {
+            opacity: 0.8;
+        }
+
+        /* Language Modal Styles */
+        .lang-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            border: 1px solid #f3f4f6;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #ffffff;
+        }
+        .lang-option:hover {
+            background: #fef2f2;
+            border-color: #fecaca;
+        }
+        .lang-option.active {
+            background: #dc2626;
+            color: white;
+            border-color: #dc2626;
+        }
+        .lang-option.active .lang-check {
+            display: block;
+        }
+        .lang-check {
+            display: none;
+            color: white;
+        }
+        .lang-option .lang-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .lang-option .lang-native {
+            font-size: 0.75rem;
+            opacity: 0.6;
+        }
+        .lang-option.active .lang-native {
+            opacity: 0.8;
+            color: white;
+        }
     </style>
 </head>
 <body id="app-body" class="bg-white text-gray-950 font-sans antialiased pb-24">
@@ -96,10 +147,16 @@
                     <input type="password" id="login-password" placeholder="••••••••" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-red-600 transition">
                 </div>
                 <button onclick="handleEmailLogin()" class="w-full bg-black hover:opacity-90 text-white font-bold text-sm py-4 px-6 rounded-full flex items-center justify-center gap-2 transition shadow-lg active:scale-95 mt-4">
-                    <span>Sign In</span>
+                    <span id="login-btn-text">Sign In</span>
                 </button>
                 <div class="text-center pt-3">
-                    <p class="text-xs text-gray-500 font-medium">Don't have an account? <button onclick="toggleAuthView('signup')" class="text-red-600 font-bold hover:underline">Create New Account</button></p>
+                    <p class="text-xs text-gray-500 font-medium" id="no-account-text">Don't have an account? <button onclick="toggleAuthView('signup')" class="text-red-600 font-bold hover:underline">Create New Account</button></p>
+                </div>
+                <!-- Privacy & Terms Links on Login -->
+                <div class="text-center pt-2 flex items-center justify-center gap-3 text-[10px]">
+                    <a href="privacy.html" target="_blank" class="legal-link">Privacy Policy</a>
+                    <span class="text-gray-300">•</span>
+                    <a href="terms.html" target="_blank" class="legal-link">Terms of Service</a>
                 </div>
             </div>
 
@@ -138,10 +195,16 @@
                 </div>
 
                 <button onclick="handleEmailSignUp()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-sm py-3.5 px-6 rounded-full flex items-center justify-center gap-2 transition shadow-lg active:scale-95 mt-3">
-                    <span>Create Account</span>
+                    <span id="signup-btn-text">Create Account</span>
                 </button>
                 <div class="text-center pt-2">
-                    <p class="text-xs text-gray-500 font-medium">Already registered? <button onclick="toggleAuthView('login')" class="text-black font-bold hover:underline">Sign In</button></p>
+                    <p class="text-xs text-gray-500 font-medium" id="have-account-text">Already registered? <button onclick="toggleAuthView('login')" class="text-black font-bold hover:underline">Sign In</button></p>
+                </div>
+                <!-- Privacy & Terms Links on Signup -->
+                <div class="text-center pt-2 flex items-center justify-center gap-3 text-[10px]">
+                    <a href="privacy.html" target="_blank" class="legal-link">Privacy Policy</a>
+                    <span class="text-gray-300">•</span>
+                    <a href="terms.html" target="_blank" class="legal-link">Terms of Service</a>
                 </div>
             </div>
         </div>
@@ -349,6 +412,14 @@
                         <span id="lang-opt-support">4. Customer Support</span>
                         <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </button>
+                    <button onclick="showSettingsPage('page-legal')" class="w-full flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition">
+                        <span id="lang-opt-legal">5. Privacy & Terms</span>
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                    <button onclick="showSettingsPage('page-delete')" class="w-full flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-red-50 font-bold text-sm text-red-600 transition">
+                        <span id="lang-opt-delete">6. Delete Account</span>
+                        <svg class="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
                 </div>
 
                 <div class="flex gap-2 pt-4 border-t mt-2">
@@ -392,12 +463,11 @@
             <div id="page-lang" class="settings-sub-page hidden space-y-4 flex-1">
                 <div class="flex items-center gap-2 border-b pb-2 mb-2">
                     <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
-                    <h4 class="font-black text-sm uppercase tracking-wider">Language Engine</h4>
+                    <h4 class="font-black text-sm uppercase tracking-wider">Select Language</h4>
                 </div>
-                <select id="lang-select" onchange="changeSystemLanguage(this.value)" class="w-full bg-gray-50 border rounded-xl px-3 py-2 text-sm font-semibold">
-                    <option value="en">English</option>
-                    <option value="hi">Hindi (हिन्दी)</option>
-                </select>
+                <div class="space-y-2" id="language-options-container">
+                    <!-- Languages will be rendered by JS -->
+                </div>
             </div>
 
             <div id="page-support" class="settings-sub-page hidden space-y-4 flex-1">
@@ -407,6 +477,36 @@
                 </div>
                 <textarea id="support-text-input" rows="4" placeholder="Write context here..." class="w-full bg-gray-50 border rounded-xl px-3 py-2 text-xs resize-none"></textarea>
                 <button onclick="submitSupportTicket()" class="w-full bg-red-600 text-white font-bold text-xs py-2.5 rounded-xl">Submit Ticket</button>
+            </div>
+
+            <div id="page-legal" class="settings-sub-page hidden space-y-4 flex-1">
+                <div class="flex items-center gap-2 border-b pb-2 mb-2">
+                    <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                    <h4 class="font-black text-sm uppercase tracking-wider">Legal</h4>
+                </div>
+                <div class="space-y-3">
+                    <a href="privacy.html" target="_blank" class="w-full flex items-center justify-between py-3 px-4 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition border border-gray-100">
+                        <span>Privacy Policy</span>
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </a>
+                    <a href="terms.html" target="_blank" class="w-full flex items-center justify-between py-3 px-4 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition border border-gray-100">
+                        <span>Terms of Service</span>
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </a>
+                </div>
+            </div>
+
+            <div id="page-delete" class="settings-sub-page hidden space-y-4 flex-1">
+                <div class="flex items-center gap-2 border-b pb-2 mb-2">
+                    <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                    <h4 class="font-black text-sm uppercase tracking-wider text-red-600">Delete Account</h4>
+                </div>
+                <div class="text-center py-4 space-y-4">
+                    <p class="text-sm text-gray-600 leading-relaxed">This action is <strong>permanent</strong> and cannot be undone. All your data including posts, chats, and profile information will be removed.</p>
+                    <button onclick="handleDeleteAccount()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-sm py-3.5 rounded-full transition shadow-lg active:scale-95">
+                        Permanently Delete My Account
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -498,10 +598,373 @@
         let selectedProfileUid = "me";
         let pendingUploadData = null;
 
+        // ========== COMPLETE LANGUAGE PACK ==========
         const langPack = {
-            en: { tagline: "Discover, track and share premium visual ideas with your cloud sync profile instantly.", loginBtn: "Sign In", searchPlaceholder: "Search inspired ideas...", sendBtn: "Send", myUploads: "Upload Records", settingsTitle: "Settings" },
-            hi: { tagline: "क्लाउड सिंक प्रोफ़ाइल के साथ प्रीमियम विज़ुअल आइडियाज़ खोजें और तुरंत साझा करें।", loginBtn: "साइन इन करें", searchPlaceholder: "आइडियाज़ खोजें...", sendBtn: "भेजें", myUploads: "मेरे अपलोड", settingsTitle: "सेटिंग्स" }
+            en: {
+                tagline: "Discover, track and share premium visual ideas with your cloud sync profile instantly.",
+                loginBtn: "Sign In",
+                signupBtn: "Create Account",
+                searchPlaceholder: "Search ideas or usernames...",
+                sendBtn: "Send",
+                myUploads: "Upload Records",
+                settingsTitle: "Settings",
+                noAccount: "Don't have an account?",
+                haveAccount: "Already registered?",
+                signIn: "Sign In",
+                createNew: "Create New Account",
+                welcomeChat: "Welcome to STARDUST Core System! Click any dynamic active user on the left to start a private encrypted real-time chat.",
+                chatPlaceholder: "Ask Stardust...",
+                chatHeader: "Stardust Core Bot",
+                settingsOpt1: "1. Edit Name, Bio & Handle",
+                settingsOpt2: "2. Change Profile Picture",
+                settingsOpt3: "3. System Language",
+                settingsOpt4: "4. Customer Support",
+                settingsOpt5: "5. Privacy & Terms",
+                settingsOpt6: "6. Delete Account",
+                closeSettings: "Close",
+                signOut: "Sign Out",
+                deleteAccountTitle: "Delete Account",
+                deleteAccountWarning: "This action is permanent and cannot be undone. All your data including posts, chats, and profile information will be removed.",
+                deleteAccountBtn: "Permanently Delete My Account",
+                legalPrivacy: "Privacy Policy",
+                legalTerms: "Terms of Service"
+            },
+            hi: {
+                tagline: "क्लाउड सिंक प्रोफ़ाइल के साथ प्रीमियम विज़ुअल आइडियाज़ खोजें और तुरंत साझा करें।",
+                loginBtn: "साइन इन करें",
+                signupBtn: "खाता बनाएं",
+                searchPlaceholder: "आइडियाज़ या उपयोगकर्ता खोजें...",
+                sendBtn: "भेजें",
+                myUploads: "मेरे अपलोड",
+                settingsTitle: "सेटिंग्स",
+                noAccount: "कोई खाता नहीं है?",
+                haveAccount: "पहले से पंजीकृत हैं?",
+                signIn: "साइन इन करें",
+                createNew: "नया खाता बनाएं",
+                welcomeChat: "स्टारडस्ट कोर सिस्टम में आपका स्वागत है! प्राइवेट चैट शुरू करने के लिए बाईं ओर किसी भी सक्रिय उपयोगकर्ता पर क्लिक करें।",
+                chatPlaceholder: "स्टारडस्ट से पूछें...",
+                chatHeader: "स्टारडस्ट कोर बॉट",
+                settingsOpt1: "1. नाम, बायो और हैंडल संपादित करें",
+                settingsOpt2: "2. प्रोफ़ाइल फोटो बदलें",
+                settingsOpt3: "3. सिस्टम भाषा",
+                settingsOpt4: "4. ग्राहक सहायता",
+                settingsOpt5: "5. गोपनीयता और शर्तें",
+                settingsOpt6: "6. खाता हटाएं",
+                closeSettings: "बंद करें",
+                signOut: "साइन आउट",
+                deleteAccountTitle: "खाता हटाएं",
+                deleteAccountWarning: "यह कार्रवाई स्थायी है और इसे पूर्ववत नहीं किया जा सकता। आपका सारा डेटा जिसमें पोस्ट, चैट और प्रोफ़ाइल जानकारी शामिल है, हटा दिया जाएगा।",
+                deleteAccountBtn: "मेरा खाता स्थायी रूप से हटाएं",
+                legalPrivacy: "गोपनीयता नीति",
+                legalTerms: "सेवा की शर्तें"
+            },
+            bn: {
+                tagline: "আপনার ক্লাউড সিঙ্ক প্রোফাইলের সাথে প্রিমিয়াম ভিজ্যুয়াল আইডিয়া আবিষ্কার, ট্র্যাক এবং শেয়ার করুন তাৎক্ষণিকভাবে।",
+                loginBtn: "সাইন ইন করুন",
+                signupBtn: "অ্যাকাউন্ট তৈরি করুন",
+                searchPlaceholder: "আইডিয়া বা ব্যবহারকারী খুঁজুন...",
+                sendBtn: "পাঠান",
+                myUploads: "আমার আপলোড",
+                settingsTitle: "সেটিংস",
+                noAccount: "কোন অ্যাকাউন্ট নেই?",
+                haveAccount: "ইতিমধ্যে নিবন্ধিত?",
+                signIn: "সাইন ইন করুন",
+                createNew: "নতুন অ্যাকাউন্ট তৈরি করুন",
+                welcomeChat: "স্টারডাস্ট কোর সিস্টেমে স্বাগতম! একটি প্রাইভেট চ্যাট শুরু করতে বাম দিকে যেকোনো সক্রিয় ব্যবহারকারীতে ক্লিক করুন।",
+                chatPlaceholder: "স্টারডাস্টকে জিজ্ঞাসা করুন...",
+                chatHeader: "স্টারডাস্ট কোর বট",
+                settingsOpt1: "১. নাম, বায়ো এবং হ্যান্ডেল সম্পাদনা করুন",
+                settingsOpt2: "২. প্রোফাইল ছবি পরিবর্তন করুন",
+                settingsOpt3: "৩. সিস্টেম ভাষা",
+                settingsOpt4: "৪. গ্রাহক সহায়তা",
+                settingsOpt5: "৫. গোপনীয়তা এবং শর্তাবলী",
+                settingsOpt6: "৬. অ্যাকাউন্ট মুছুন",
+                closeSettings: "বন্ধ করুন",
+                signOut: "সাইন আউট",
+                deleteAccountTitle: "অ্যাকাউন্ট মুছুন",
+                deleteAccountWarning: "এই কাজটি স্থায়ী এবং পূর্বাবস্থায় ফেরানো যাবে না। আপনার পোস্ট, চ্যাট এবং প্রোফাইলের তথ্য সহ সমস্ত ডেটা মুছে ফেলা হবে।",
+                deleteAccountBtn: "আমার অ্যাকাউন্ট স্থায়ীভাবে মুছুন",
+                legalPrivacy: "গোপনীয়তা নীতি",
+                legalTerms: "সেবার শর্তাবলী"
+            },
+            gu: {
+                tagline: "તમારા ક્લાઉડ સિંક પ્રોફાઇલ સાથે પ્રીમિયમ વિઝ્યુઅલ આઈડિયાઝ શોધો, ટ્રેક કરો અને તાત્કાલિક શેર કરો.",
+                loginBtn: "સાઇન ઇન કરો",
+                signupBtn: "ખાતું બનાવો",
+                searchPlaceholder: "વિચારો અથવા વપરાશકર્તાઓ શોધો...",
+                sendBtn: "મોકલો",
+                myUploads: "મારા અપલોડ્સ",
+                settingsTitle: "સેટિંગ્સ",
+                noAccount: "ખાતું નથી?",
+                haveAccount: "પહેલેથી નોંધાયેલા?",
+                signIn: "સાઇન ઇન કરો",
+                createNew: "નવું ખાતું બનાવો",
+                welcomeChat: "સ્ટારડસ્ટ કોર સિસ્ટમમાં આપનું સ્વાગત છે! ખાનગી ચેટ શરૂ કરવા માટે ડાબી બાજુના કોઈપણ સક્રિય વપરાશકર્તા પર ક્લિક કરો.",
+                chatPlaceholder: "સ્ટારડસ્ટને પૂછો...",
+                chatHeader: "સ્ટારડસ્ટ કોર બોટ",
+                settingsOpt1: "૧. નામ, બાયો અને હેન્ડલ સંપાદિત કરો",
+                settingsOpt2: "૨. પ્રોફાઇલ ચિત્ર બદલો",
+                settingsOpt3: "૩. સિસ્ટમ ભાષા",
+                settingsOpt4: "૪. ગ્રાહક સહાય",
+                settingsOpt5: "૫. ગોપનીયતા અને શરતો",
+                settingsOpt6: "૬. ખાતું કાઢી નાખો",
+                closeSettings: "બંધ કરો",
+                signOut: "સાઇન આઉટ",
+                deleteAccountTitle: "ખાતું કાઢી નાખો",
+                deleteAccountWarning: "આ ક્રિયા કાયમી છે અને તેને પૂર્વવત્ કરી શકાતી નથી. તમારા પોસ્ટ્સ, ચેટ્સ અને પ્રોફાઇલ માહિતી સહિતનો તમામ ડેટા દૂર કરવામાં આવશે.",
+                deleteAccountBtn: "મારું ખાતું કાયમી રૂપે કાઢી નાખો",
+                legalPrivacy: "ગોપનીયતા નીતિ",
+                legalTerms: "સેવાની શરતો"
+            },
+            ko: {
+                tagline: "클라우드 동기화 프로필로 프리미엄 시각적 아이디어를 즉시 발견, 추적 및 공유하세요.",
+                loginBtn: "로그인",
+                signupBtn: "계정 만들기",
+                searchPlaceholder: "아이디어 또는 사용자 검색...",
+                sendBtn: "보내기",
+                myUploads: "내 업로드",
+                settingsTitle: "설정",
+                noAccount: "계정이 없으신가요?",
+                haveAccount: "이미 등록하셨나요?",
+                signIn: "로그인",
+                createNew: "새 계정 만들기",
+                welcomeChat: "스타더스트 코어 시스템에 오신 것을 환영합니다! 개인 채팅을 시작하려면 왼쪽의 활성 사용자를 클릭하세요.",
+                chatPlaceholder: "스타더스트에게 물어보기...",
+                chatHeader: "스타더스트 코어 봇",
+                settingsOpt1: "1. 이름, 소개 및 핸들 편집",
+                settingsOpt2: "2. 프로필 사진 변경",
+                settingsOpt3: "3. 시스템 언어",
+                settingsOpt4: "4. 고객 지원",
+                settingsOpt5: "5. 개인정보 및 약관",
+                settingsOpt6: "6. 계정 삭제",
+                closeSettings: "닫기",
+                signOut: "로그아웃",
+                deleteAccountTitle: "계정 삭제",
+                deleteAccountWarning: "이 작업은 영구적이며 취소할 수 없습니다. 게시물, 채팅 및 프로필 정보를 포함한 모든 데이터가 삭제됩니다.",
+                deleteAccountBtn: "내 계정 영구 삭제",
+                legalPrivacy: "개인정보 보호정책",
+                legalTerms: "서비스 약관"
+            },
+            zh: {
+                tagline: "通过云同步个人资料即时发现、跟踪和分享高级视觉创意。",
+                loginBtn: "登录",
+                signupBtn: "创建帐户",
+                searchPlaceholder: "搜索创意或用户名...",
+                sendBtn: "发送",
+                myUploads: "我的上传",
+                settingsTitle: "设置",
+                noAccount: "没有帐户？",
+                haveAccount: "已经注册？",
+                signIn: "登录",
+                createNew: "创建新帐户",
+                welcomeChat: "欢迎来到星尘核心系统！点击左侧任何活跃用户开始私密加密实时聊天。",
+                chatPlaceholder: "询问星尘...",
+                chatHeader: "星尘核心机器人",
+                settingsOpt1: "1. 编辑姓名、简介和用户名",
+                settingsOpt2: "2. 更改个人资料图片",
+                settingsOpt3: "3. 系统语言",
+                settingsOpt4: "4. 客户支持",
+                settingsOpt5: "5. 隐私和条款",
+                settingsOpt6: "6. 删除帐户",
+                closeSettings: "关闭",
+                signOut: "退出",
+                deleteAccountTitle: "删除帐户",
+                deleteAccountWarning: "此操作是永久性的，无法撤消。您的所有数据，包括帖子、聊天和个人资料信息都将被删除。",
+                deleteAccountBtn: "永久删除我的帐户",
+                legalPrivacy: "隐私政策",
+                legalTerms: "服务条款"
+            },
+            'zh-TW': {
+                tagline: "透過雲端同步個人檔案即時發現、追蹤和分享高級視覺創意。",
+                loginBtn: "登入",
+                signupBtn: "建立帳戶",
+                searchPlaceholder: "搜尋創意或用戶名...",
+                sendBtn: "傳送",
+                myUploads: "我的上傳",
+                settingsTitle: "設定",
+                noAccount: "沒有帳戶？",
+                haveAccount: "已經註冊？",
+                signIn: "登入",
+                createNew: "建立新帳戶",
+                welcomeChat: "歡迎來到星塵核心系統！點擊左側任何活躍用戶開始私密加密即時聊天。",
+                chatPlaceholder: "詢問星塵...",
+                chatHeader: "星塵核心機器人",
+                settingsOpt1: "1. 編輯姓名、簡介和用戶名",
+                settingsOpt2: "2. 更改個人資料圖片",
+                settingsOpt3: "3. 系統語言",
+                settingsOpt4: "4. 客戶支援",
+                settingsOpt5: "5. 隱私和條款",
+                settingsOpt6: "6. 刪除帳戶",
+                closeSettings: "關閉",
+                signOut: "登出",
+                deleteAccountTitle: "刪除帳戶",
+                deleteAccountWarning: "此操作是永久性的，無法撤消。您的所有數據，包括帖子、聊天和個人資料信息都將被刪除。",
+                deleteAccountBtn: "永久刪除我的帳戶",
+                legalPrivacy: "隱私政策",
+                legalTerms: "服務條款"
+            },
+            ru: {
+                tagline: "Открывайте, отслеживайте и делитесь премиальными визуальными идеями с помощью облачного синхронизированного профиля мгновенно.",
+                loginBtn: "Войти",
+                signupBtn: "Создать аккаунт",
+                searchPlaceholder: "Поиск идей или пользователей...",
+                sendBtn: "Отправить",
+                myUploads: "Мои загрузки",
+                settingsTitle: "Настройки",
+                noAccount: "Нет аккаунта?",
+                haveAccount: "Уже зарегистрированы?",
+                signIn: "Войти",
+                createNew: "Создать новый аккаунт",
+                welcomeChat: "Добро пожаловать в систему Stardust Core! Нажмите любого активного пользователя слева, чтобы начать приватный чат.",
+                chatPlaceholder: "Спросить Stardust...",
+                chatHeader: "Stardust Core Bot",
+                settingsOpt1: "1. Редактировать имя, био и хэндл",
+                settingsOpt2: "2. Изменить фото профиля",
+                settingsOpt3: "3. Язык системы",
+                settingsOpt4: "4. Поддержка клиентов",
+                settingsOpt5: "5. Конфиденциальность и условия",
+                settingsOpt6: "6. Удалить аккаунт",
+                closeSettings: "Закрыть",
+                signOut: "Выйти",
+                deleteAccountTitle: "Удалить аккаунт",
+                deleteAccountWarning: "Это действие является постоянным и не может быть отменено. Все ваши данные, включая посты, чаты и информацию профиля, будут удалены.",
+                deleteAccountBtn: "Навсегда удалить мой аккаунт",
+                legalPrivacy: "Политика конфиденциальности",
+                legalTerms: "Условия использования"
+            },
+            vi: {
+                tagline: "Khám phá, theo dõi và chia sẻ ý tưởng hình ảnh cao cấp với hồ sơ đồng bộ đám mây của bạn ngay lập tức.",
+                loginBtn: "Đăng nhập",
+                signupBtn: "Tạo tài khoản",
+                searchPlaceholder: "Tìm kiếm ý tưởng hoặc tên người dùng...",
+                sendBtn: "Gửi",
+                myUploads: "Tải lên của tôi",
+                settingsTitle: "Cài đặt",
+                noAccount: "Chưa có tài khoản?",
+                haveAccount: "Đã đăng ký?",
+                signIn: "Đăng nhập",
+                createNew: "Tạo tài khoản mới",
+                welcomeChat: "Chào mừng đến với Hệ thống Stardust Core! Nhấp vào bất kỳ người dùng hoạt động nào bên trái để bắt đầu trò chuyện riêng tư.",
+                chatPlaceholder: "Hỏi Stardust...",
+                chatHeader: "Bot Stardust Core",
+                settingsOpt1: "1. Chỉnh sửa tên, tiểu sử và tên người dùng",
+                settingsOpt2: "2. Thay đổi ảnh đại diện",
+                settingsOpt3: "3. Ngôn ngữ hệ thống",
+                settingsOpt4: "4. Hỗ trợ khách hàng",
+                settingsOpt5: "5. Quyền riêng tư và Điều khoản",
+                settingsOpt6: "6. Xóa tài khoản",
+                closeSettings: "Đóng",
+                signOut: "Đăng xuất",
+                deleteAccountTitle: "Xóa tài khoản",
+                deleteAccountWarning: "Hành động này là vĩnh viễn và không thể hoàn tác. Tất cả dữ liệu của bạn bao gồm bài đăng, trò chuyện và thông tin hồ sơ sẽ bị xóa.",
+                deleteAccountBtn: "Xóa vĩnh viễn tài khoản của tôi",
+                legalPrivacy: "Chính sách bảo mật",
+                legalTerms: "Điều khoản dịch vụ"
+            },
+            th: {
+                tagline: "ค้นหา ติดตาม และแบ่งปันไอเดียภาพระดับพรีเมียมด้วยโปรไฟล์ที่ซิงค์กับคลาวด์ของคุณได้ทันที",
+                loginBtn: "เข้าสู่ระบบ",
+                signupBtn: "สร้างบัญชี",
+                searchPlaceholder: "ค้นหาไอเดียหรือชื่อผู้ใช้...",
+                sendBtn: "ส่ง",
+                myUploads: "อัปโหลดของฉัน",
+                settingsTitle: "การตั้งค่า",
+                noAccount: "ยังไม่มีบัญชี?",
+                haveAccount: "ลงทะเบียนแล้ว?",
+                signIn: "เข้าสู่ระบบ",
+                createNew: "สร้างบัญชีใหม่",
+                welcomeChat: "ยินดีต้อนรับสู่ระบบหลัก Stardust! คลิกผู้ใช้ที่ใช้งานทางด้านซ้ายเพื่อเริ่มแชทส่วนตัว",
+                chatPlaceholder: "ถาม Stardust...",
+                chatHeader: "บอทหลัก Stardust",
+                settingsOpt1: "1. แก้ไขชื่อ ประวัติ และแฮนเดิล",
+                settingsOpt2: "2. เปลี่ยนรูปโปรไฟล์",
+                settingsOpt3: "3. ภาษาระบบ",
+                settingsOpt4: "4. การสนับสนุนลูกค้า",
+                settingsOpt5: "5. ความเป็นส่วนตัวและข้อกำหนด",
+                settingsOpt6: "6. ลบบัญชี",
+                closeSettings: "ปิด",
+                signOut: "ออกจากระบบ",
+                deleteAccountTitle: "ลบบัญชี",
+                deleteAccountWarning: "การดำเนินการนี้เป็นแบบถาวรและไม่สามารถยกเลิกได้ ข้อมูลทั้งหมดของคุณรวมถึงโพสต์ แชท และข้อมูลโปรไฟล์จะถูกลบ",
+                deleteAccountBtn: "ลบบัญชีของฉันอย่างถาวร",
+                legalPrivacy: "นโยบายความเป็นส่วนตัว",
+                legalTerms: "ข้อกำหนดการให้บริการ"
+            },
+            ur: {
+                tagline: "اپنے کلاؤڈ سنک پروفائل کے ساتھ پریمیم بصری آئیڈیاز کو فوری طور پر دریافت، ٹریک اور شیئر کریں۔",
+                loginBtn: "سائن ان کریں",
+                signupBtn: "اکاؤنٹ بنائیں",
+                searchPlaceholder: "آئیڈیاز یا صارفین تلاش کریں...",
+                sendBtn: "بھیجیں",
+                myUploads: "میرے اپ لوڈز",
+                settingsTitle: "ترتیبات",
+                noAccount: "اکاؤنٹ نہیں ہے؟",
+                haveAccount: "پہلے سے رجسٹرڈ ہیں؟",
+                signIn: "سائن ان کریں",
+                createNew: "نیا اکاؤنٹ بنائیں",
+                welcomeChat: "اسٹارڈسٹ کور سسٹم میں خوش آمدید! پرائیویٹ چیٹ شروع کرنے کے لیے بائیں طرف کسی بھی فعال صارف پر کلک کریں۔",
+                chatPlaceholder: "اسٹارڈسٹ سے پوچھیں...",
+                chatHeader: "اسٹارڈسٹ کور بوٹ",
+                settingsOpt1: "1. نام، بائیو اور ہینڈل میں ترمیم کریں",
+                settingsOpt2: "2. پروفائل تصویر تبدیل کریں",
+                settingsOpt3: "3. نظام کی زبان",
+                settingsOpt4: "4. کسٹمر سپورٹ",
+                settingsOpt5: "5. رازداری اور شرائط",
+                settingsOpt6: "6. اکاؤنٹ حذف کریں",
+                closeSettings: "بند کریں",
+                signOut: "سائن آؤٹ",
+                deleteAccountTitle: "اکاؤنٹ حذف کریں",
+                deleteAccountWarning: "یہ عمل مستقل ہے اور اسے واپس نہیں لیا جا سکتا۔ آپ کا تمام ڈیٹا بشمول پوسٹس، چیٹس اور پروفائل کی معلومات حذف کر دی جائے گی۔",
+                deleteAccountBtn: "میرا اکاؤنٹ مستقل طور پر حذف کریں",
+                legalPrivacy: "رازداری کی پالیسی",
+                legalTerms: "خدمت کی شرائط"
+            },
+            ar: {
+                tagline: "اكتشف وتتبع وشارك الأفكار البصرية المتميزة مع ملف التعريف المتزامن مع السحابة الخاص بك على الفور.",
+                loginBtn: "تسجيل الدخول",
+                signupBtn: "إنشاء حساب",
+                searchPlaceholder: "ابحث عن أفكار أو أسماء مستخدمين...",
+                sendBtn: "إرسال",
+                myUploads: "تحميلاتي",
+                settingsTitle: "الإعدادات",
+                noAccount: "ليس لديك حساب؟",
+                haveAccount: "مسجل بالفعل؟",
+                signIn: "تسجيل الدخول",
+                createNew: "إنشاء حساب جديد",
+                welcomeChat: "مرحبًا بك في نظام Stardust Core! انقر على أي مستخدم نشط على اليسار لبدء محادثة خاصة مشفرة في الوقت الفعلي.",
+                chatPlaceholder: "اسأل Stardust...",
+                chatHeader: "بوت Stardust Core",
+                settingsOpt1: "1. تحرير الاسم والسيرة الذاتية والمعرف",
+                settingsOpt2: "2. تغيير صورة الملف الشخصي",
+                settingsOpt3: "3. لغة النظام",
+                settingsOpt4: "4. دعم العملاء",
+                settingsOpt5: "5. الخصوصية والشروط",
+                settingsOpt6: "6. حذف الحساب",
+                closeSettings: "إغلاق",
+                signOut: "تسجيل الخروج",
+                deleteAccountTitle: "حذف الحساب",
+                deleteAccountWarning: "هذا الإجراء دائم ولا يمكن التراجع عنه. سيتم حذف جميع بياناتك بما في ذلك المنشورات والمحادثات ومعلومات الملف الشخصي.",
+                deleteAccountBtn: "حذف حسابي بشكل دائم",
+                legalPrivacy: "سياسة الخصوصية",
+                legalTerms: "شروط الخدمة"
+            }
         };
+
+        // Language list for UI
+        const languageList = [
+            { code: 'en', name: 'English', native: 'English' },
+            { code: 'hi', name: 'Hindi', native: 'हिन्दी' },
+            { code: 'bn', name: 'Bengali', native: 'বাংলা' },
+            { code: 'gu', name: 'Gujarati', native: 'ગુજરાતી' },
+            { code: 'ko', name: 'Korean', native: '한국어' },
+            { code: 'zh', name: 'Chinese', native: '中文' },
+            { code: 'zh-TW', name: 'Chinese Traditional', native: '繁體中文' },
+            { code: 'ru', name: 'Russian', native: 'Русский' },
+            { code: 'vi', name: 'Vietnamese', native: 'Tiếng Việt' },
+            { code: 'th', name: 'Thai', native: 'ไทย' },
+            { code: 'ur', name: 'Urdu', native: 'اردو' },
+            { code: 'ar', name: 'Arabic', native: 'العربية' }
+        ];
 
         function hideLoadingScreen() {
             const loader = document.getElementById('loading-screen');
@@ -535,7 +998,6 @@
 
                     setupPremiumUIElements(customProfileCache.isPremium);
 
-                    // ✅ Profile data load karo but tab switch mat karo - sirf data cache ke liye
                     if(selectedProfileUid === "me") {
                         loadUserIdentitySpace("me");
                     }
@@ -543,8 +1005,7 @@
                 
                 listenToCloudDataStream();
                 syncActiveInboxMembers();
-
-                // ✅ ENSURE DEFAULT LANDING PAGE IS HOME TAB - startup par home screen dikhe
+                renderLanguageOptions();
                 switchTab('home');
             } else {
                 currentUserData = null;
@@ -629,6 +1090,31 @@
 
         function handleLogOut() { auth.signOut().then(() => { location.reload(); }); }
 
+        // ========== DELETE ACCOUNT FUNCTION ==========
+        function handleDeleteAccount() {
+            if(!currentUserData) return;
+            const confirmDelete = confirm("WARNING: This will permanently delete your account and all associated data. This action cannot be undone. Are you sure?");
+            if(!confirmDelete) return;
+            
+            const finalConfirm = confirm("Type 'YES' to confirm permanent deletion.");
+            if(!finalConfirm) return;
+
+            const uid = currentUserData.uid;
+            
+            // First delete all user data from database
+            database.ref('users/' + uid).remove().then(() => {
+                // Then delete the user's auth account
+                currentUserData.delete().then(() => {
+                    alert("Your account has been permanently deleted. Goodbye!");
+                    location.reload();
+                }).catch((err) => {
+                    alert("Account deletion failed. Please try again: " + err.message);
+                });
+            }).catch((err) => {
+                alert("Failed to delete your data: " + err.message);
+            });
+        }
+
         function simulatePremiumPurchase() {
             if(!currentUserData) return;
             const confirmBuy = confirm("Activate STARDUST NITRO PREMIUM membership?");
@@ -664,7 +1150,6 @@
             });
         }
 
-        // ✅ FIXED: loadUserIdentitySpace() ab profile tab switch nahi karega - sirf data load karega
         function loadUserIdentitySpace(targetUid) {
             if(!currentUserData) return;
             selectedProfileUid = targetUid;
@@ -702,7 +1187,6 @@
                 document.getElementById('profile-bio').innerText = uData.bio || "No bio written yet.";
                 
                 syncSocialNetworkCounters(finalUid);
-                // ✅ switchTab('profile') HATAYA - ab ye function sirf data load karega, tab switch nahi karega
             });
         }
 
@@ -940,6 +1424,9 @@
                 document.getElementById('edit-bio-input').value = customProfileCache.bio === "No bio written yet." ? "" : customProfileCache.bio;
                 document.getElementById('edit-username-input').value = customProfileCache.username;
             }
+            if(pageId === 'page-lang') {
+                renderLanguageOptions();
+            }
         }
 
         function backToSettingsMain() { document.querySelectorAll('.settings-sub-page').forEach(page => page.classList.add('hidden')); document.getElementById('settings-main-screen').classList.remove('hidden'); }
@@ -970,11 +1457,95 @@
             reader.readAsDataURL(file);
         }
 
+        // ========== RENDER LANGUAGE OPTIONS ==========
+        function renderLanguageOptions() {
+            const container = document.getElementById('language-options-container');
+            if(!container) return;
+            container.innerHTML = '';
+            
+            languageList.forEach(lang => {
+                const option = document.createElement('div');
+                option.className = `lang-option ${activeLanguage === lang.code ? 'active' : ''}`;
+                option.onclick = () => {
+                    changeSystemLanguage(lang.code);
+                    // Update UI
+                    document.querySelectorAll('.lang-option').forEach(el => el.classList.remove('active'));
+                    option.classList.add('active');
+                };
+                option.innerHTML = `
+                    <div>
+                        <div class="lang-name">${lang.name}</div>
+                        <div class="lang-native">${lang.native}</div>
+                    </div>
+                    <svg class="w-5 h-5 lang-check ${activeLanguage === lang.code ? 'block' : 'hidden'}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                `;
+                container.appendChild(option);
+            });
+        }
+
+        // ========== CHANGE SYSTEM LANGUAGE ==========
         function changeSystemLanguage(langKey) {
-            activeLanguage = langKey; const dict = langPack[langKey] || langPack['en'];
+            activeLanguage = langKey;
+            const dict = langPack[langKey] || langPack['en'];
+            
+            // Auth page
             document.getElementById('lang-tagline').innerText = dict.tagline;
-            document.getElementById('search-bar').placeholder = dict.searchPlaceholder; document.getElementById('lang-send-btn').innerText = dict.sendBtn;
-            document.getElementById('lang-my-uploads').innerText = dict.myUploads; document.getElementById('lang-settings-title').innerText = dict.settingsTitle;
+            document.getElementById('login-btn-text').innerText = dict.loginBtn;
+            document.getElementById('signup-btn-text').innerText = dict.signupBtn;
+            document.getElementById('no-account-text').innerHTML = `${dict.noAccount} <button onclick="toggleAuthView('signup')" class="text-red-600 font-bold hover:underline">${dict.createNew}</button>`;
+            document.getElementById('have-account-text').innerHTML = `${dict.haveAccount} <button onclick="toggleAuthView('login')" class="text-black font-bold hover:underline">${dict.signIn}</button>`;
+            
+            // Search
+            document.getElementById('search-bar').placeholder = dict.searchPlaceholder;
+            
+            // Chat
+            document.getElementById('lang-send-btn').innerText = dict.sendBtn;
+            document.getElementById('lang-welcome-msg').innerText = dict.welcomeChat;
+            document.getElementById('chat-input').placeholder = dict.chatPlaceholder;
+            document.getElementById('chat-window-header-title').innerText = dict.chatHeader;
+            
+            // Profile
+            document.getElementById('lang-my-uploads').innerText = dict.myUploads;
+            
+            // Settings
+            document.getElementById('lang-settings-title').innerText = dict.settingsTitle;
+            document.getElementById('lang-opt-account').innerText = dict.settingsOpt1;
+            document.getElementById('lang-opt-pfp').innerText = dict.settingsOpt2;
+            document.getElementById('lang-opt-lang').innerText = dict.settingsOpt3;
+            document.getElementById('lang-opt-support').innerText = dict.settingsOpt4;
+            document.getElementById('lang-opt-legal').innerText = dict.settingsOpt5;
+            document.getElementById('lang-opt-delete').innerText = dict.settingsOpt6;
+            document.getElementById('lang-close-settings').innerText = dict.closeSettings;
+            document.getElementById('lang-signout-btn').innerText = dict.signOut;
+            
+            // Delete Account page
+            const deletePage = document.getElementById('page-delete');
+            if(deletePage) {
+                const title = deletePage.querySelector('h4');
+                if(title) title.innerText = dict.deleteAccountTitle;
+                const warning = deletePage.querySelector('p');
+                if(warning) warning.innerHTML = dict.deleteAccountWarning;
+                const btn = deletePage.querySelector('button');
+                if(btn) btn.innerText = dict.deleteAccountBtn;
+            }
+            
+            // Legal page
+            const legalPage = document.getElementById('page-legal');
+            if(legalPage) {
+                const links = legalPage.querySelectorAll('a');
+                if(links.length >= 2) {
+                    links[0].querySelector('span').innerText = dict.legalPrivacy;
+                    links[1].querySelector('span').innerText = dict.legalTerms;
+                }
+            }
+            
+            // Render language options to show active state
+            renderLanguageOptions();
+            
+            // Save preference to Firebase if user is logged in
+            if(currentUserData) {
+                database.ref('users/' + currentUserData.uid + '/language').set(langKey);
+            }
         }
 
         function submitSupportTicket() {
@@ -984,7 +1555,6 @@
 
         function downloadImage() { if(!currentModalImgData) return; const link = document.createElement("a"); link.href = currentModalImgData; link.download = currentModalTitle.replace(/\s+/g, '_') + ".jpg"; document.body.appendChild(link); link.click(); document.body.removeChild(link); }
 
-        /* REPLACED DEFAULT PROMPTS WITH CUSTOM MODERN UI MODAL & SUCCESS TOAST */
         function handleUpload(event) {
             const file = event.target.files[0]; 
             if (!file || !currentUserData) return;
@@ -1053,6 +1623,17 @@
             ['home', 'messages', 'profile'].forEach(t => {
                 const btn = document.getElementById(`nav-${t}`);
                 if(btn) btn.className = (t === tabName) ? "flex items-center justify-center p-2.5 rounded-full bg-black text-white transition-all" : "flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all";
+            });
+        }
+
+        // Load saved language preference on startup
+        if(currentUserData) {
+            database.ref('users/' + currentUserData.uid + '/language').once('value', (snap) => {
+                const savedLang = snap.val();
+                if(savedLang && langPack[savedLang]) {
+                    activeLanguage = savedLang;
+                    changeSystemLanguage(savedLang);
+                }
             });
         }
     </script>
