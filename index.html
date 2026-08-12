@@ -11,6 +11,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Fira+Code:wght@600&family=Orbitron:wght@800&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
+        /* ===== ALL EXISTING STYLES ===== */
         .pin-grid {
             columns: 2;
             column-gap: 16px;
@@ -23,7 +24,6 @@
             -webkit-tap-highlight-color: transparent;
         }
         
-        /* DYNAMIC PREMIUM THEMES */
         .theme-neon { background: linear-gradient(135deg, #1e1b4b, #311042) !important; color: #f3e8ff !important; }
         .theme-cyber { background: linear-gradient(135deg, #0f172a, #020617) !important; color: #38bdf8 !important; }
         .theme-gold { background: linear-gradient(135deg, #1c1917, #443c31) !important; color: #fef08a !important; }
@@ -34,13 +34,11 @@
             box-shadow: inset 0 0 50px rgba(251, 191, 36, 0.25) !important;
         }
         
-        /* FONTS MAPPING */
         .font-modern { font-family: 'Inter', sans-serif !important; }
         .font-serif { font-family: 'Cinzel', serif !important; }
         .font-retro { font-family: 'Fira Code', monospace !important; }
         .font-future { font-family: 'Orbitron', sans-serif !important; }
 
-        /* PREMIUM FRAMES (STEADY) */
         .frame-none { border: 2px solid #e5e7eb; padding: 2px; }
         .frame-neon { border: 4px solid #d946ef; box-shadow: 0 0 15px #d946ef; padding: 3px; }
         .frame-gold { border: 4px solid #fbbf24; box-shadow: 0 0 15px #fbbf24; padding: 3px; }
@@ -79,7 +77,6 @@
             opacity: 0.8;
         }
 
-        /* Language Modal Styles */
         .lang-option {
             display: flex;
             align-items: center;
@@ -124,7 +121,6 @@
             color: white;
         }
         
-        /* Language modal container scroll fix */
         #language-options-container {
             max-height: 55vh;
             overflow-y: auto;
@@ -142,7 +138,6 @@
             border-radius: 10px;
         }
 
-        /* Settings sub-page scroll fix */
         .settings-sub-page {
             overflow-y: auto;
             max-height: 70vh;
@@ -159,7 +154,6 @@
             border-radius: 10px;
         }
 
-        /* Legal buttons in settings */
         .legal-settings-btn {
             display: flex;
             align-items: center;
@@ -187,7 +181,6 @@
             color: #dc2626;
         }
 
-        /* Photo modal buttons */
         .modal-action-btn {
             display: flex;
             align-items: center;
@@ -224,7 +217,6 @@
             background: #d1d5db;
         }
 
-        /* Profile tabs */
         .profile-tab-btn {
             padding: 0.5rem 1.5rem;
             border-radius: 9999px;
@@ -248,7 +240,6 @@
             color: #dc2626;
         }
 
-        /* Upload Options Modal */
         .upload-option-btn {
             display: flex;
             align-items: center;
@@ -274,7 +265,7 @@
             color: #dc2626;
         }
 
-        /* Article Card Styles */
+        /* ===== ARTICLE CARD STYLES ===== */
         .article-card {
             background: white;
             border-radius: 1.5rem;
@@ -294,7 +285,6 @@
             gap: 10px;
             padding: 12px 14px;
             border-bottom: 1px solid #f3f4f6;
-            position: relative;
         }
         .article-header img {
             width: 32px;
@@ -311,31 +301,6 @@
         .article-header .author-username {
             font-size: 0.65rem;
             color: #9ca3af;
-        }
-        .article-header .header-right {
-            margin-left: auto;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .article-header .header-right .date {
-            font-size: 0.6rem;
-            color: #9ca3af;
-        }
-        .article-header .menu-dots {
-            cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 50%;
-            transition: all 0.2s ease;
-            background: none;
-            border: none;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #6b7280;
-            line-height: 1;
-        }
-        .article-header .menu-dots:hover {
-            background: #f3f4f6;
         }
         .article-body {
             padding: 12px 14px;
@@ -361,7 +326,7 @@
         .article-actions {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
             padding: 8px 14px 12px;
             border-top: 1px solid #f3f4f6;
             flex-wrap: wrap;
@@ -395,12 +360,6 @@
         .article-actions button.saved-pin svg {
             fill: #dc2626;
         }
-        .article-actions button.disliked {
-            color: #3b82f6;
-        }
-        .article-actions button.disliked svg {
-            fill: #3b82f6;
-        }
         .article-actions svg {
             width: 18px;
             height: 18px;
@@ -412,237 +371,149 @@
             font-size: 0.65rem;
             color: #9ca3af;
         }
+        .article-actions .menu-dots {
+            margin-left: auto;
+            padding: 4px 8px;
+            border-radius: 20px;
+        }
+        .article-actions .menu-dots:hover {
+            background: #f3f4f6;
+        }
 
-        /* Edit/Delete Menu Dropdown */
-        .menu-dropdown {
+        /* ===== 3-DOT MENU STYLES ===== */
+        .three-dot-menu {
+            position: relative;
+            display: inline-block;
+        }
+        .three-dot-menu .dropdown-content {
             display: none;
             position: absolute;
             right: 0;
             top: 100%;
             background: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-            border: 1px solid #f3f4f6;
-            overflow: hidden;
             min-width: 120px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            border-radius: 12px;
             z-index: 50;
+            overflow: hidden;
+            border: 1px solid #f3f4f6;
         }
-        .menu-dropdown.show {
+        .three-dot-menu .dropdown-content.show {
             display: block;
         }
-        .menu-dropdown button {
+        .three-dot-menu .dropdown-content button {
             display: block;
             width: 100%;
-            padding: 8px 16px;
+            padding: 10px 16px;
             text-align: left;
+            background: none;
+            border: none;
             font-size: 0.8rem;
             font-weight: 600;
             color: #1f2937;
-            background: none;
-            border: none;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: background 0.2s ease;
         }
-        .menu-dropdown button:hover {
-            background: #f3f4f6;
-        }
-        .menu-dropdown button.delete-btn {
-            color: #dc2626;
-        }
-        .menu-dropdown button.delete-btn:hover {
+        .three-dot-menu .dropdown-content button:hover {
             background: #fef2f2;
         }
-
-        /* Full Screen Modal with Menu */
-        .fullscreen-modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 8px 16px;
-            position: relative;
+        .three-dot-menu .dropdown-content button.delete-btn {
+            color: #dc2626;
         }
-        .fullscreen-modal-header .modal-title {
-            color: white;
-            font-size: 1rem;
-            font-weight: 700;
-            truncate: max-w-[60%];
+        .three-dot-menu .dropdown-content button.delete-btn:hover {
+            background: #fef2f2;
         }
-        .fullscreen-modal-header .modal-close-btn {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border-radius: 50%;
-            padding: 8px;
-            cursor: pointer;
+        .three-dot-btn {
+            background: none;
             border: none;
-            transition: all 0.2s ease;
-        }
-        .fullscreen-modal-header .modal-close-btn:hover {
-            background: rgba(255,255,255,0.2);
-        }
-        .fullscreen-modal-header .modal-menu-btn {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border-radius: 50%;
-            padding: 8px 12px;
+            padding: 4px 8px;
+            border-radius: 20px;
             cursor: pointer;
-            border: none;
             font-size: 1.2rem;
             font-weight: 700;
-            transition: all 0.2s ease;
-            line-height: 1;
+            color: #6b7280;
+            transition: background 0.2s ease;
         }
-        .fullscreen-modal-header .modal-menu-btn:hover {
-            background: rgba(255,255,255,0.2);
-        }
-        .fullscreen-menu-dropdown {
-            display: none;
-            position: absolute;
-            right: 16px;
-            top: 50px;
-            background: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-            border: 1px solid #f3f4f6;
-            overflow: hidden;
-            min-width: 120px;
-            z-index: 200;
-        }
-        .fullscreen-menu-dropdown.show {
-            display: block;
-        }
-        .fullscreen-menu-dropdown button {
-            display: block;
-            width: 100%;
-            padding: 10px 20px;
-            text-align: left;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #1f2937;
-            background: none;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .fullscreen-menu-dropdown button:hover {
+        .three-dot-btn:hover {
             background: #f3f4f6;
-        }
-        .fullscreen-menu-dropdown button.delete-btn {
-            color: #dc2626;
-        }
-        .fullscreen-menu-dropdown button.delete-btn:hover {
-            background: #fef2f2;
         }
 
-        /* Edit Modal */
-        .edit-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            z-index: 300;
+        /* Photo modal 3-dot */
+        .photo-modal-menu {
+            position: relative;
+            display: inline-block;
+        }
+        .photo-modal-menu .dropdown-content {
             display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            backdrop-filter: blur(4px);
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: #1f2937;
+            min-width: 140px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            border-radius: 12px;
+            z-index: 60;
+            overflow: hidden;
+            border: 1px solid #374151;
         }
-        .edit-modal.show {
-            display: flex;
-        }
-        .edit-modal-content {
-            background: white;
-            border-radius: 1.5rem;
-            max-width: 400px;
-            width: 100%;
-            padding: 24px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-        }
-        .edit-modal-content h3 {
-            font-weight: 700;
-            font-size: 1.1rem;
-            margin-bottom: 16px;
-            border-bottom: 1px solid #f3f4f6;
-            padding-bottom: 12px;
-        }
-        .edit-modal-content label {
+        .photo-modal-menu .dropdown-content.show {
             display: block;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: #6b7280;
-            margin-bottom: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
         }
-        .edit-modal-content input,
-        .edit-modal-content textarea {
+        .photo-modal-menu .dropdown-content button {
+            display: block;
             width: 100%;
-            padding: 10px 14px;
+            padding: 10px 16px;
+            text-align: left;
+            background: none;
+            border: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #e5e7eb;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        .photo-modal-menu .dropdown-content button:hover {
+            background: #374151;
+        }
+        .photo-modal-menu .dropdown-content button.delete-btn {
+            color: #ef4444;
+        }
+        .photo-modal-menu .dropdown-content button.delete-btn:hover {
+            background: #374151;
+        }
+
+        /* Edit Photo Modal */
+        .edit-modal textarea, .edit-modal input {
+            width: 100%;
+            background: #f9fafb;
             border: 1px solid #e5e7eb;
-            border-radius: 0.75rem;
+            border-radius: 12px;
+            padding: 10px 14px;
             font-size: 0.85rem;
             font-weight: 500;
-            margin-bottom: 12px;
-            transition: all 0.2s ease;
-            font-family: inherit;
-        }
-        .edit-modal-content input:focus,
-        .edit-modal-content textarea:focus {
+            transition: border 0.2s ease;
             outline: none;
+        }
+        .edit-modal textarea:focus, .edit-modal input:focus {
             border-color: #dc2626;
-        }
-        .edit-modal-content textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-        .edit-modal-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 8px;
-        }
-        .edit-modal-actions button {
-            flex: 1;
-            padding: 10px;
-            border-radius: 0.75rem;
-            font-weight: 700;
-            font-size: 0.8rem;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .edit-modal-actions .cancel-btn {
-            background: #f3f4f6;
-            color: #4b5563;
-        }
-        .edit-modal-actions .cancel-btn:hover {
-            background: #e5e7eb;
-        }
-        .edit-modal-actions .save-btn {
-            background: #dc2626;
-            color: white;
-        }
-        .edit-modal-actions .save-btn:hover {
-            background: #b91c1c;
         }
     </style>
 </head>
 <body id="app-body" class="bg-white text-gray-950 font-sans antialiased pb-24">
 
-    <!-- PROFESSIONAL LOADING SCREEN FOR PRE-LOGGED USERS -->
+    <!-- LOADING SCREEN -->
     <div id="loading-screen" class="fixed inset-0 bg-white z-[250] flex flex-col items-center justify-center p-6 text-center transition-opacity duration-300">
         <h1 class="text-red-600 font-black text-5xl tracking-tighter select-none mb-6 animate-pulse">STARDUST</h1>
         <div class="spinner"></div>
         <p class="text-xs font-bold text-gray-400 mt-4 tracking-widest uppercase">Initializing Core System...</p>
     </div>
 
-    <!-- AUTHENTICATION CONTAINER -->
+    <!-- AUTH WALL -->
     <div id="auth-wall" class="fixed inset-0 bg-white z-[200] hidden flex flex-col items-center justify-center p-6 text-center overflow-y-auto">
         <div class="max-w-sm w-full space-y-5 my-auto">
             <h1 class="text-red-600 font-black text-5xl tracking-tighter select-none mb-1">STARDUST</h1>
             <p id="lang-tagline" class="text-gray-500 text-sm font-medium leading-relaxed px-2">Discover, track and share premium visual ideas with your cloud sync profile instantly.</p>
 
-            <!-- LOGIN FORM -->
             <div id="auth-login-view" class="space-y-3 pt-2 text-left">
                 <div>
                     <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Email Address</label>
@@ -665,7 +536,6 @@
                 </div>
             </div>
 
-            <!-- CREATE NEW ACCOUNT FORM -->
             <div id="auth-signup-view" class="space-y-3 pt-1 text-left hidden">
                 <div class="flex flex-col items-center justify-center mb-2">
                     <div onclick="document.getElementById('signup-pfp-input').click()" class="w-20 h-20 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 cursor-pointer overflow-hidden relative group">
@@ -677,7 +547,6 @@
                     <span class="text-[10px] font-bold text-gray-400 mt-1">Upload PFP from Gallery</span>
                     <input type="file" id="signup-pfp-input" accept="image/*" class="hidden" onchange="previewSignupPfp(event)">
                 </div>
-
                 <div>
                     <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Full Name</label>
                     <input type="text" id="signup-name" placeholder="John Doe" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:border-red-600 transition">
@@ -698,7 +567,6 @@
                     <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Password</label>
                     <input type="password" id="signup-password" placeholder="••••••••" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:border-red-600 transition">
                 </div>
-
                 <button onclick="handleEmailSignUp()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-sm py-3.5 px-6 rounded-full flex items-center justify-center gap-2 transition shadow-lg active:scale-95 mt-3">
                     <span id="signup-btn-text">Create Account</span>
                 </button>
@@ -714,9 +582,10 @@
         </div>
     </div>
 
+    <!-- NAV -->
     <nav id="app-nav" class="sticky top-0 bg-white/95 backdrop-blur-md px-5 py-4 flex flex-col gap-2 z-40 border-b border-gray-100 shadow-sm transition-all duration-300">
         <div class="flex items-center justify-between gap-4 w-full">
-            <div onclick="goBackToHome()" class="text-red-600 font-black text-2xl tracking-tighter cursor-pointer select-none">STARDUST</div>
+            <div onclick="switchTab('home')" class="text-red-600 font-black text-2xl tracking-tighter cursor-pointer select-none">STARDUST</div>
             <div class="flex-1 relative">
                 <svg class="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 <input type="text" id="search-bar" onkeyup="filterPinsAndUsers()" placeholder="Search ideas, articles or usernames..." class="w-full bg-[#E9E9E9] pl-10 pr-4 py-2.5 rounded-full text-sm font-medium focus:outline-none transition">
@@ -730,14 +599,17 @@
 
     <div class="p-4 max-w-7xl mx-auto">
 
+        <!-- HOME TAB -->
         <section id="tab-home" class="tab-content">
             <div id="pin-container" class="pin-grid"></div>
         </section>
 
+        <!-- ARTICLES TAB -->
         <section id="tab-articles" class="tab-content hidden max-w-2xl mx-auto">
             <div id="articles-container" class="space-y-4"></div>
         </section>
 
+        <!-- PROFILE TAB -->
         <section id="tab-profile" class="tab-content hidden text-center mt-4 max-w-xl mx-auto p-8 rounded-3xl transition-all duration-300 relative border border-transparent shadow-xl min-h-[70vh]">
             <div class="w-full flex justify-between items-center px-2 mb-6">
                 <button id="profile-back-to-my-btn" onclick="goBackToHome()" class="hidden flex items-center gap-1 text-xs font-black text-red-600 bg-red-50/80 backdrop-blur py-2 px-4 rounded-full transition active:scale-95 shadow-sm">
@@ -772,7 +644,6 @@
                 <p id="profile-bio" class="text-sm mt-4 px-8 font-medium italic opacity-85 max-w-md leading-relaxed">No bio written yet.</p>
             </div>
             
-            <!-- Profile Tabs -->
             <div class="flex justify-center gap-2 mt-10 border-b border-gray-100 pb-3 text-sm font-bold">
                 <button onclick="switchProfileTab('uploads')" id="profile-tab-uploads" class="profile-tab-btn active">Upload Records</button>
                 <button onclick="switchProfileTab('saved')" id="profile-tab-saved" class="profile-tab-btn">Saved Pins</button>
@@ -812,11 +683,9 @@
                 </div>
                 <button onclick="closeUploadModal()" class="text-gray-400 hover:text-black font-bold p-1 transition">✕</button>
             </div>
-
             <div class="w-full h-40 rounded-2xl bg-gray-50 border border-gray-100 overflow-hidden flex items-center justify-center relative">
                 <img id="upload-preview-img" src="" class="w-full h-full object-cover">
             </div>
-
             <div class="space-y-3">
                 <div>
                     <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Title</label>
@@ -827,7 +696,6 @@
                     <textarea id="upload-desc-input" rows="2" placeholder="Write a short description..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-red-600 transition resize-none"></textarea>
                 </div>
             </div>
-
             <div class="flex gap-2 pt-2">
                 <button onclick="closeUploadModal()" class="w-1/3 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold py-3 rounded-full transition">Cancel</button>
                 <button onclick="confirmAndPublishUpload('photo')" class="w-2/3 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-3 rounded-full transition shadow-lg active:scale-95 flex items-center justify-center gap-1.5">
@@ -847,7 +715,6 @@
                 </div>
                 <button onclick="closeArticleUploadModal()" class="text-gray-400 hover:text-black font-bold p-1 transition">✕</button>
             </div>
-
             <div class="space-y-3">
                 <div>
                     <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Article Title</label>
@@ -862,7 +729,6 @@
                     <input type="text" id="article-image-input" placeholder="https://example.com/image.jpg" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-red-600 transition">
                 </div>
             </div>
-
             <div class="flex gap-2 pt-2">
                 <button onclick="closeArticleUploadModal()" class="w-1/3 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold py-3 rounded-full transition">Cancel</button>
                 <button onclick="confirmAndPublishUpload('article')" class="w-2/3 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-3 rounded-full transition shadow-lg active:scale-95 flex items-center justify-center gap-1.5">
@@ -872,18 +738,17 @@
         </div>
     </div>
 
-    <!-- SUCCESS POPUP NOTICE -->
+    <!-- SUCCESS TOAST -->
     <div id="upload-success-toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-[220] hidden items-center gap-2.5 bg-gray-900 text-white px-5 py-3 rounded-full shadow-2xl border border-white/20 transition-all duration-300">
         <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
         <span class="text-xs font-bold tracking-wide">Post Published Successfully!</span>
     </div>
 
+    <!-- SETTINGS MODAL -->
     <div id="settings-modal" class="fixed inset-0 bg-black/50 z-[160] hidden items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl w-full max-w-sm p-6 relative shadow-2xl border overflow-hidden max-h-[85vh] flex flex-col text-gray-900">
-            
             <div id="settings-main-screen" class="space-y-4 flex-1 overflow-y-auto pr-1">
                 <h3 id="lang-settings-title" class="text-lg font-black tracking-tight border-b pb-2 mb-4">Settings</h3>
-                
                 <div id="nitro-promo-card" class="bg-gradient-to-r from-purple-600 via-pink-600 to-red-500 p-4 rounded-2xl text-white space-y-2 shadow-md">
                     <div class="flex justify-between items-start">
                         <div>
@@ -892,14 +757,10 @@
                         </div>
                         <span class="bg-white/20 text-[9px] font-black px-2 py-0.5 rounded-full">SALE</span>
                     </div>
-                    <button id="activate-premium-btn" onclick="simulatePremiumPurchase()" class="w-full bg-white text-purple-700 font-black text-xs py-2 rounded-xl active:scale-95 transition shadow">
-                        Activate Membership
-                    </button>
+                    <button id="activate-premium-btn" onclick="simulatePremiumPurchase()" class="w-full bg-white text-purple-700 font-black text-xs py-2 rounded-xl active:scale-95 transition shadow">Activate Membership</button>
                 </div>
-
                 <div id="premium-settings-section" class="hidden border-2 border-purple-500 bg-purple-50/50 p-3 rounded-2xl space-y-3">
                     <h4 class="text-xs font-black text-purple-700 tracking-wider uppercase">Nitro Customization Pad</h4>
-                    
                     <div>
                         <label class="block text-[10px] font-bold text-gray-500 mb-1">SELECT PROFILE BACKGROUND THEME</label>
                         <select id="premium-theme-select" onchange="applyPremiumCustomization()" class="w-full bg-white border border-purple-300 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none">
@@ -911,7 +772,6 @@
                             <option value="theme-mint">Emerald Mint Luxury</option>
                         </select>
                     </div>
-
                     <div>
                         <label class="block text-[10px] font-bold text-gray-500 mb-1">SELECT PREMIUM PFP FRAME</label>
                         <select id="premium-frame-select" onchange="applyPremiumCustomization()" class="w-full bg-white border border-purple-300 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none">
@@ -923,7 +783,6 @@
                             <option value="frame-diamond">Diamond Sparkle Cut</option>
                         </select>
                     </div>
-
                     <div>
                         <label class="block text-[10px] font-bold text-gray-500 mb-1">SELECT PREMIUM PROFILE FONT</label>
                         <select id="premium-font-select" onchange="applyPremiumCustomization()" class="w-full bg-white border border-purple-300 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none">
@@ -934,7 +793,6 @@
                         </select>
                     </div>
                 </div>
-                
                 <div class="space-y-1">
                     <button onclick="showSettingsPage('page-account')" class="w-full flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-gray-50 font-bold text-sm text-gray-800 transition">
                         <span id="lang-opt-account">1. Edit Name, Bio & Handle</span>
@@ -965,13 +823,11 @@
                         <svg class="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </button>
                 </div>
-
                 <div class="flex gap-2 pt-4 border-t mt-2">
                     <button onclick="closeSettingsModal()" id="lang-close-settings" class="w-1/2 bg-gray-100 text-gray-800 text-xs font-bold py-3 rounded-full transition">Close</button>
                     <button onclick="handleLogOut()" id="lang-signout-btn" class="w-1/2 bg-red-50 text-red-600 text-xs font-bold py-3 rounded-full hover:bg-red-100 transition">Sign Out</button>
                 </div>
             </div>
-
             <div id="page-account" class="settings-sub-page hidden space-y-4 flex-1">
                 <div class="flex items-center gap-2 border-b pb-2 mb-2">
                     <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
@@ -993,7 +849,6 @@
                     <button onclick="saveProfileCustomizations()" class="w-full bg-black text-white text-xs font-bold py-3 rounded-xl transition">Save Identity</button>
                 </div>
             </div>
-
             <div id="page-pfp" class="settings-sub-page hidden space-y-4 flex-1">
                 <div class="flex items-center gap-2 border-b pb-2 mb-2">
                     <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
@@ -1003,18 +858,14 @@
                     <button onclick="document.getElementById('pfp-file-input').click()" class="bg-red-600 text-white font-bold text-xs py-3 px-6 rounded-full transition shadow-md">Open Local Gallery</button>
                 </div>
             </div>
-
             <div id="page-lang" class="settings-sub-page hidden space-y-4 flex-1">
                 <div class="flex items-center justify-between border-b pb-2 mb-2">
                     <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
                     <h4 class="font-black text-sm uppercase tracking-wider">Select Language</h4>
                     <button onclick="backToSettingsMain()" class="bg-black text-white text-xs font-bold py-1.5 px-4 rounded-full transition hover:opacity-90">Close</button>
                 </div>
-                <div class="space-y-2" id="language-options-container">
-                    <!-- Languages will be rendered by JS -->
-                </div>
+                <div class="space-y-2" id="language-options-container"></div>
             </div>
-
             <div id="page-support" class="settings-sub-page hidden space-y-4 flex-1">
                 <div class="flex items-center gap-2 border-b pb-2 mb-2">
                     <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
@@ -1023,7 +874,6 @@
                 <textarea id="support-text-input" rows="4" placeholder="Write context here..." class="w-full bg-gray-50 border rounded-xl px-3 py-2 text-xs resize-none"></textarea>
                 <button onclick="submitSupportTicket()" class="w-full bg-red-600 text-white font-bold text-xs py-2.5 rounded-xl">Submit Ticket</button>
             </div>
-
             <div id="page-delete" class="settings-sub-page hidden space-y-4 flex-1">
                 <div class="flex items-center gap-2 border-b pb-2 mb-2">
                     <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
@@ -1031,14 +881,13 @@
                 </div>
                 <div class="text-center py-4 space-y-4">
                     <p class="text-sm text-gray-600 leading-relaxed">This action is <strong>permanent</strong> and cannot be undone. All your data including posts, chats, and profile information will be removed.</p>
-                    <button onclick="handleDeleteAccount()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-sm py-3.5 rounded-full transition shadow-lg active:scale-95">
-                        Permanently Delete My Account
-                    </button>
+                    <button onclick="handleDeleteAccount()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-sm py-3.5 rounded-full transition shadow-lg active:scale-95">Permanently Delete My Account</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- COMMENT MODAL -->
     <div id="comment-modal" class="fixed inset-0 bg-black/60 z-[160] hidden items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl w-full max-w-sm p-5 flex flex-col max-h-[80vh] text-gray-900">
             <div class="flex items-center justify-between border-b pb-3 mb-3">
@@ -1053,24 +902,27 @@
         </div>
     </div>
 
-    <!-- PHOTO FULLSCREEN MODAL WITH 3-DOT MENU -->
-    <div id="photo-modal" class="fixed inset-0 bg-black/95 z-[100] hidden flex flex-col p-4 backdrop-blur-md">
-        <div class="fullscreen-modal-header">
-            <h3 id="modal-title" class="text-white text-base font-bold tracking-wide truncate max-w-[50%]">Stardust Image</h3>
-            <div style="display:flex;align-items:center;gap:12px;position:relative;">
-                <button id="modal-menu-btn" onclick="toggleFullscreenMenu()" class="modal-menu-btn" style="display:none;">⋯</button>
-                <div id="fullscreen-menu-dropdown" class="fullscreen-menu-dropdown">
-                    <button onclick="handleFullscreenEdit()">✏️ Edit</button>
-                    <button onclick="handleFullscreenDelete()" class="delete-btn">🗑️ Delete</button>
+    <!-- PHOTO MODAL -->
+    <div id="photo-modal" class="fixed inset-0 bg-black/95 z-[100] hidden flex flex-col justify-between p-4 backdrop-blur-md">
+        <div class="flex justify-between items-center w-full max-w-md mx-auto pt-2">
+            <h3 id="modal-title" class="text-white text-base font-bold tracking-wide truncate max-w-[60%]">Stardust Image</h3>
+            <div class="flex items-center gap-2">
+                <!-- 3-DOT MENU FOR PHOTO MODAL -->
+                <div class="photo-modal-menu" id="photo-modal-menu">
+                    <button class="three-dot-btn text-white hover:bg-white/10" onclick="togglePhotoModalMenu()">•••</button>
+                    <div class="dropdown-content" id="photo-modal-dropdown">
+                        <button onclick="editPhotoFromModal()">✏️ Edit</button>
+                        <button onclick="deletePhotoFromModal()" class="delete-btn">🗑️ Delete</button>
+                    </div>
                 </div>
-                <button onclick="closePhotoModal()" class="modal-close-btn">
+                <button onclick="closePhotoModal()" class="bg-white/10 text-white rounded-full p-2 hover:bg-white/20 transition">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
         </div>
         
         <div class="flex-1 flex flex-col items-center justify-center max-w-lg mx-auto my-1 overflow-hidden w-full relative">
-            <img id="modal-img" src="" class="max-w-full max-h-[45vh] object-contain rounded-2xl shadow-2xl border border-white/10">
+            <img id="modal-img" src="" class="max-w-full max-h-[40vh] object-contain rounded-2xl shadow-2xl border border-white/10">
             <p id="modal-desc" class="text-gray-400 text-xs mt-3 text-center px-6 max-h-[8vh] overflow-y-auto leading-relaxed font-medium"></p>
             <span id="modal-author" class="text-red-500 text-[10px] mt-1 font-black tracking-wider uppercase cursor-pointer hover:underline"></span>
             
@@ -1098,18 +950,22 @@
         </div>
     </div>
 
-    <!-- EDIT MODAL -->
-    <div id="edit-modal" class="edit-modal">
-        <div class="edit-modal-content">
-            <h3 id="edit-modal-title">Edit Post</h3>
-            <label>Title</label>
-            <input type="text" id="edit-title-input" placeholder="Enter title...">
-            <label>Description</label>
-            <textarea id="edit-desc-input" placeholder="Enter description..."></textarea>
-            <div class="edit-modal-actions">
-                <button class="cancel-btn" onclick="closeEditModal()">Cancel</button>
-                <button class="save-btn" onclick="saveEditChanges()">Save Changes</button>
+    <!-- EDIT PHOTO MODAL -->
+    <div id="edit-photo-modal" class="fixed inset-0 bg-black/60 z-[170] hidden items-center justify-center p-4 backdrop-blur-md">
+        <div class="bg-white rounded-3xl w-full max-w-sm p-6 relative shadow-2xl border border-gray-100 flex flex-col gap-4 text-gray-900 edit-modal">
+            <div class="flex items-center justify-between border-b pb-3">
+                <h3 class="font-black text-base tracking-wide text-gray-900">✏️ Edit Photo</h3>
+                <button onclick="closeEditPhotoModal()" class="text-gray-400 hover:text-black font-bold p-1 transition">✕</button>
             </div>
+            <div>
+                <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Title</label>
+                <input type="text" id="edit-photo-title" placeholder="Enter title...">
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Description</label>
+                <textarea id="edit-photo-desc" rows="3" placeholder="Enter description..."></textarea>
+            </div>
+            <button onclick="savePhotoEdits()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-sm py-3.5 rounded-full transition shadow-lg active:scale-95">Save Changes</button>
         </div>
     </div>
 
@@ -1130,6 +986,7 @@
     </div>
 
     <script>
+        // ===== FIREBASE CONFIG =====
         const firebaseConfig = {
             apiKey: "AIzaSyAuFUuH0pnldHPlW0BJDR8Pj8Q09mG7zGc",
             authDomain: "stardust-media-1ffc8.firebaseapp.com",
@@ -1145,26 +1002,25 @@
         const database = firebase.database();
         const auth = firebase.auth();
 
+        // ===== GLOBALS =====
         let currentUserData = null;
-        let currentModalImgData = "";
-        let currentModalTitle = "";
-        let currentModalPinKey = null;
-        let currentModalUploaderUid = null;
-        let currentModalType = "photo"; // "photo" or "article"
         let customProfileCache = { name: "", pfp: "", bio: "", username: "", isPremium: false, theme: "default", font: "font-modern", frame: "frame-none" };
         let activeLanguage = "en";
         let signupPfpBase64 = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150";
-        
         let activeCommentPinId = null;
         let selectedProfileUid = "me";
         let viewingUserProfileUid = null;
         let pendingUploadData = null;
         let activeProfileTab = "uploads";
         let savedPinsCache = {};
-        let editingItemKey = null;
-        let editingItemType = null;
+        let currentModalPinKey = null;
+        let currentModalUploaderUid = null;
+        let currentModalImgData = "";
+        let currentModalTitle = "";
+        let currentModalType = "photo";
+        let editPhotoKey = null;
 
-        // Language pack (shortened for brevity - same as before)
+        // ===== LANGUAGE PACK =====
         const langPack = {
             en: {
                 tagline: "Discover, track and share premium visual ideas with your cloud sync profile instantly.",
@@ -1197,27 +1053,45 @@
                 unsavePin: "Unsave Pin",
                 download: "Download"
             },
-            // ... other languages omitted for brevity (same as before)
+            hi: {
+                tagline: "क्लाउड सिंक प्रोफ़ाइल के साथ प्रीमियम विज़ुअल आइडियाज़ खोजें और तुरंत साझा करें।",
+                loginBtn: "साइन इन करें",
+                signupBtn: "खाता बनाएं",
+                searchPlaceholder: "आइडियाज़, आर्टिकल या उपयोगकर्ता खोजें...",
+                myUploads: "मेरे अपलोड",
+                savedPins: "सेव किए गए पिन",
+                settingsTitle: "सेटिंग्स",
+                noAccount: "कोई खाता नहीं है?",
+                haveAccount: "पहले से पंजीकृत हैं?",
+                signIn: "साइन इन करें",
+                createNew: "नया खाता बनाएं",
+                settingsOpt1: "1. नाम, बायो और हैंडल संपादित करें",
+                settingsOpt2: "2. प्रोफ़ाइल फोटो बदलें",
+                settingsOpt3: "3. सिस्टम भाषा",
+                settingsOpt4: "4. ग्राहक सहायता",
+                settingsOpt5: "5. गोपनीयता नीति",
+                settingsOpt6: "6. सेवा की शर्तें",
+                settingsOpt7: "7. खाता हटाएं",
+                closeSettings: "बंद करें",
+                signOut: "साइन आउट",
+                deleteAccountTitle: "खाता हटाएं",
+                deleteAccountWarning: "यह कार्रवाई स्थायी है और इसे पूर्ववत नहीं किया जा सकता। आपका सारा डेटा जिसमें पोस्ट, चैट और प्रोफ़ाइल जानकारी शामिल है, हटा दिया जाएगा।",
+                deleteAccountBtn: "मेरा खाता स्थायी रूप से हटाएं",
+                legalPrivacy: "गोपनीयता नीति",
+                legalTerms: "सेवा की शर्तें",
+                closeLang: "बंद करें",
+                savePin: "पिन सहेजें",
+                unsavePin: "पिन हटाएं",
+                download: "डाउनलोड"
+            }
         };
-        // Simplified language list
+
         const languageList = [
             { code: 'en', name: 'English', native: 'English' },
-            { code: 'hi', name: 'Hindi', native: 'हिन्दी' },
-            { code: 'bn', name: 'Bengali', native: 'বাংলা' },
-            { code: 'gu', name: 'Gujarati', native: 'ગુજરાતી' },
-            { code: 'ko', name: 'Korean', native: '한국어' },
-            { code: 'zh', name: 'Chinese', native: '中文' },
-            { code: 'zh-TW', name: 'Chinese Traditional', native: '繁體中文' },
-            { code: 'ru', name: 'Russian', native: 'Русский' },
-            { code: 'vi', name: 'Vietnamese', native: 'Tiếng Việt' },
-            { code: 'th', name: 'Thai', native: 'ไทย' },
-            { code: 'ur', name: 'Urdu', native: 'اردو' },
-            { code: 'ar', name: 'Arabic', native: 'العربية' },
-            { code: 'ja', name: 'Japanese', native: '日本語' },
-            { code: 'ro', name: 'Romanian', native: 'Română' },
-            { code: 'es', name: 'Spanish', native: 'Español' }
+            { code: 'hi', name: 'Hindi', native: 'हिन्दी' }
         ];
 
+        // ===== AUTH =====
         function hideLoadingScreen() {
             const loader = document.getElementById('loading-screen');
             if (loader) {
@@ -1226,7 +1100,6 @@
             }
         }
 
-        // ========== AUTH ==========
         auth.onAuthStateChanged((user) => {
             if (user) {
                 currentUserData = user;
@@ -1250,8 +1123,7 @@
                     }
 
                     setupPremiumUIElements(customProfileCache.isPremium);
-
-                    if(selectedProfileUid === "me" || selectedProfileUid === "me" ) {
+                    if(selectedProfileUid === "me") {
                         loadUserIdentitySpace("me");
                     }
                 });
@@ -1278,6 +1150,7 @@
             }
         });
 
+        // ===== AUTH FUNCTIONS =====
         function toggleAuthView(view) {
             if(view === 'signup') {
                 document.getElementById('auth-login-view').classList.add('hidden');
@@ -1306,8 +1179,7 @@
                 alert("Please enter both email and password!");
                 return;
             }
-            auth.signInWithEmailAndPassword(email, password)
-                .catch((err) => { alert("Login Failed: " + err.message); });
+            auth.signInWithEmailAndPassword(email, password).catch((err) => { alert("Login Failed: " + err.message); });
         }
 
         function handleEmailSignUp() {
@@ -1339,13 +1211,9 @@
                             theme: "default",
                             font: "font-modern",
                             frame: "frame-none"
-                        }).then(() => {
-                            location.reload();
-                        });
+                        }).then(() => { location.reload(); });
                     })
-                    .catch((err) => {
-                        alert("Sign Up Error: " + err.message);
-                    });
+                    .catch((err) => { alert("Sign Up Error: " + err.message); });
             });
         }
 
@@ -1362,12 +1230,8 @@
                 currentUserData.delete().then(() => {
                     alert("Your account has been permanently deleted. Goodbye!");
                     location.reload();
-                }).catch((err) => {
-                    alert("Account deletion failed. Please try again: " + err.message);
-                });
-            }).catch((err) => {
-                alert("Failed to delete your data: " + err.message);
-            });
+                }).catch((err) => { alert("Account deletion failed: " + err.message); });
+            }).catch((err) => { alert("Failed to delete your data: " + err.message); });
         }
 
         function simulatePremiumPurchase() {
@@ -1404,57 +1268,15 @@
             });
         }
 
-        // ========== NAVIGATION ==========
+        // ===== PROFILE FUNCTIONS =====
         function goBackToHome() {
             selectedProfileUid = "me";
-            viewingUserProfileUid = null;
             switchTab('home');
             document.getElementById('search-bar').value = '';
             document.getElementById('user-search-results-tray').classList.add('hidden');
             document.getElementById('user-search-results-tray').innerHTML = '';
-            // Show all items
-            document.querySelectorAll('#pin-container .pin-item').forEach(item => item.style.display = "block");
-            document.querySelectorAll('#articles-container .article-card').forEach(item => item.style.display = "block");
         }
 
-        function switchTab(tabName) {
-            const navBar = document.getElementById('app-nav');
-            if(tabName === 'profile') {
-                navBar.classList.add('hidden');
-            } else {
-                navBar.classList.remove('hidden');
-            }
-
-            if(tabName === 'home') {
-                document.getElementById('search-bar').value = '';
-                document.getElementById('user-search-results-tray').classList.add('hidden');
-                document.getElementById('user-search-results-tray').innerHTML = '';
-                document.querySelectorAll('#pin-container .pin-item').forEach(item => item.style.display = "block");
-                document.querySelectorAll('#articles-container .article-card').forEach(item => item.style.display = "block");
-            }
-
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            const tabMap = {
-                'home': 'tab-home',
-                'articles': 'tab-articles',
-                'profile': 'tab-profile'
-            };
-            const target = document.getElementById(tabMap[tabName]);
-            if(target) target.classList.remove('hidden');
-            
-            ['home', 'articles', 'profile'].forEach(t => {
-                const btn = document.getElementById(`nav-${t}`);
-                if(btn) {
-                    if(t === tabName) {
-                        btn.className = "flex items-center justify-center p-2.5 rounded-full bg-black text-white transition-all duration-200";
-                    } else {
-                        btn.className = "flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200";
-                    }
-                }
-            });
-        }
-
-        // ========== PROFILE ==========
         function loadUserIdentitySpace(targetUid) {
             if(!currentUserData) return;
             selectedProfileUid = targetUid;
@@ -1509,70 +1331,7 @@
             document.getElementById('profile-tab-saved').className = `profile-tab-btn ${tab === 'saved' ? 'active' : ''}`;
             document.getElementById('profile-uploads-container').style.display = tab === 'uploads' ? 'block' : 'none';
             document.getElementById('profile-saved-container').style.display = tab === 'saved' ? 'block' : 'none';
-            if(tab === 'saved') {
-                renderSavedPins();
-            } else {
-                renderUserUploads();
-            }
-        }
-
-        function renderUserUploads() {
-            const container = document.getElementById('profile-uploads-container');
-            container.innerHTML = '';
-            const targetUid = (viewingUserProfileUid && viewingUserProfileUid !== "me") ? viewingUserProfileUid : currentUserData.uid;
-            
-            // Show both photos and articles
-            let hasItems = false;
-            
-            // Get photos
-            database.ref('pins').once('value', (pinsSnap) => {
-                const pins = pinsSnap.val() || {};
-                // Get articles
-                database.ref('articles').once('value', (articlesSnap) => {
-                    const articles = articlesSnap.val() || {};
-                    const allItems = {};
-                    
-                    // Add photos
-                    Object.keys(pins).forEach(key => {
-                        const item = pins[key];
-                        if(item.type === 'article') return;
-                        if(item.uploaderUid === targetUid) {
-                            allItems[key] = { ...item, _type: 'photo', _key: key };
-                        }
-                    });
-                    
-                    // Add articles
-                    Object.keys(articles).forEach(key => {
-                        const item = articles[key];
-                        if(item.uploaderUid === targetUid) {
-                            allItems[key] = { ...item, _type: 'article', _key: key };
-                        }
-                    });
-                    
-                    const keys = Object.keys(allItems).reverse();
-                    if(keys.length === 0) {
-                        container.innerHTML = '<div class="text-center text-gray-400 text-xs py-10 col-span-2">No uploads shared.</div>';
-                        return;
-                    }
-                    
-                    keys.forEach(key => {
-                        const item = allItems[key];
-                        hasItems = true;
-                        const element = document.createElement('div');
-                        element.className = "pin-item bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:opacity-95 text-gray-900 cursor-zoom-in";
-                        const imgSrc = item.img || item.image || 'https://via.placeholder.com/400x300?text=Post';
-                        element.onclick = () => {
-                            if(item._type === 'article') {
-                                openPhotoModal(imgSrc, item.title || "Article", item.content || "", item.uploaderName || "Anonymous", key, item.uploaderUid, 'article');
-                            } else {
-                                openPhotoModal(imgSrc, item.title || "Stardust Card", item.desc || "", item.uploaderName || "Anonymous", key, item.uploaderUid, 'photo');
-                            }
-                        };
-                        element.innerHTML = `<img src="${imgSrc}" class="w-full h-auto object-cover"><div class="p-2 text-[11px] font-bold truncate">${item.title || 'Untitled'}</div>`;
-                        container.appendChild(element);
-                    });
-                });
-            });
+            if(tab === 'saved') { renderSavedPins(); }
         }
 
         function renderSavedPins() {
@@ -1583,7 +1342,6 @@
                 return;
             }
             const targetUid = (viewingUserProfileUid && viewingUserProfileUid !== "me") ? viewingUserProfileUid : currentUserData.uid;
-            
             const savedRef = database.ref('users/' + targetUid + '/savedPins');
             savedRef.once('value', (snapshot) => {
                 const savedData = snapshot.val() || {};
@@ -1592,31 +1350,26 @@
                     container.innerHTML = '<div class="text-center text-gray-400 text-xs py-10 col-span-2">No saved pins yet.</div>';
                     return;
                 }
-                
-                database.ref('pins').once('value', (pinsSnap) => {
-                    const pins = pinsSnap.val() || {};
+                database.ref('pins').once('value', (pinsSnapshot) => {
+                    const allPins = pinsSnapshot.val() || {};
                     database.ref('articles').once('value', (articlesSnap) => {
-                        const articles = articlesSnap.val() || {};
-                        const allItems = {};
-                        Object.keys(pins).forEach(k => { allItems[k] = { ...pins[k], _type: 'photo' }; });
-                        Object.keys(articles).forEach(k => { allItems[k] = { ...articles[k], _type: 'article' }; });
-                        
+                        const articlesData = articlesSnap.val() || {};
+                        Object.assign(allPins, articlesData);
                         let hasPins = false;
                         savedKeys.forEach(pinKey => {
-                            const item = allItems[pinKey];
-                            if(item) {
+                            const pin = allPins[pinKey];
+                            if(pin) {
                                 hasPins = true;
                                 const element = document.createElement('div');
                                 element.className = "pin-item bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:opacity-95 text-gray-900 cursor-zoom-in";
-                                const imgSrc = item.img || item.image || 'https://via.placeholder.com/400x300?text=Post';
                                 element.onclick = () => {
-                                    if(item._type === 'article') {
-                                        openPhotoModal(imgSrc, item.title || "Article", item.content || "", item.uploaderName || "Anonymous", pinKey, item.uploaderUid, 'article');
+                                    if(pin.type === 'article') {
+                                        openPhotoModal(pin.image || 'https://via.placeholder.com/400x300?text=Article', pin.title || "Article", pin.content || "", pin.uploaderName || "Anonymous", pinKey, pin.uploaderUid, 'article');
                                     } else {
-                                        openPhotoModal(imgSrc, item.title || "Stardust Card", item.desc || "", item.uploaderName || "Anonymous", pinKey, item.uploaderUid, 'photo');
+                                        openPhotoModal(pin.img, pin.title || "Stardust Card", pin.desc || "", pin.uploaderName || "Anonymous", pinKey, pin.uploaderUid, 'photo');
                                     }
                                 };
-                                element.innerHTML = `<img src="${imgSrc}" class="w-full h-auto object-cover"><div class="p-2 text-[11px] font-bold truncate">${item.title || 'Untitled'}</div>`;
+                                element.innerHTML = `<img src="${pin.img || pin.image || 'https://via.placeholder.com/400x300?text=Post'}" class="w-full h-auto object-cover"><div class="p-2 text-[11px] font-bold truncate">${pin.title || 'Idea'}</div>`;
                                 container.appendChild(element);
                             }
                         });
@@ -1644,6 +1397,63 @@
             database.ref('network/following/' + uid).on('value', (snap) => {
                 document.getElementById('profile-following-count').innerText = Object.keys(snap.val() || {}).length;
             });
+            // Load uploads
+            loadUserUploads(uid);
+        }
+
+        function loadUserUploads(uid) {
+            const container = document.getElementById('profile-uploads-container');
+            container.innerHTML = '';
+            
+            // Load photos
+            database.ref('pins').once('value', (pinsSnap) => {
+                const pins = pinsSnap.val() || {};
+                let hasItems = false;
+                const items = [];
+                
+                Object.keys(pins).forEach(key => {
+                    const pin = pins[key];
+                    if(pin.uploaderUid === uid) {
+                        hasItems = true;
+                        items.push({ key, ...pin, type: 'photo' });
+                    }
+                });
+                
+                // Load articles
+                database.ref('articles').once('value', (articlesSnap) => {
+                    const articles = articlesSnap.val() || {};
+                    Object.keys(articles).forEach(key => {
+                        const article = articles[key];
+                        if(article.uploaderUid === uid) {
+                            hasItems = true;
+                            items.push({ key, ...article, type: 'article' });
+                        }
+                    });
+                    
+                    // Sort by timestamp (newest first)
+                    items.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+                    
+                    if(!hasItems) {
+                        container.innerHTML = '<div class="text-center text-gray-400 text-xs py-10 col-span-2">No uploads shared.</div>';
+                        return;
+                    }
+                    
+                    items.forEach(item => {
+                        const element = document.createElement('div');
+                        element.className = "pin-item bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:opacity-95 text-gray-900 cursor-zoom-in";
+                        const imgSrc = item.img || item.image || 'https://via.placeholder.com/400x300?text=Post';
+                        element.onclick = () => {
+                            if(item.type === 'article') {
+                                openPhotoModal(imgSrc, item.title || "Article", item.content || "", item.uploaderName || "Anonymous", item.key, item.uploaderUid, 'article');
+                            } else {
+                                openPhotoModal(imgSrc, item.title || "Stardust Card", item.desc || "", item.uploaderName || "Anonymous", item.key, item.uploaderUid, 'photo');
+                            }
+                        };
+                        element.innerHTML = `<img src="${imgSrc}" class="w-full h-auto object-cover"><div class="p-2 text-[11px] font-bold truncate">${item.title || 'Idea'}</div>`;
+                        container.appendChild(element);
+                    });
+                });
+            });
         }
 
         function handleNetworkFollowToggle() {
@@ -1656,7 +1466,7 @@
             });
         }
 
-        // ========== SEARCH ==========
+        // ===== SEARCH =====
         function filterPinsAndUsers() {
             const query = document.getElementById('search-bar').value.toLowerCase().trim();
             const userTray = document.getElementById('user-search-results-tray');
@@ -1669,10 +1479,12 @@
                 return; 
             }
             
+            // Filter photos
             document.querySelectorAll('#pin-container .pin-item').forEach(item => { 
                 item.style.display = item.innerText.toLowerCase().includes(query) ? "block" : "none"; 
             });
             
+            // Filter articles
             document.querySelectorAll('#articles-container .article-card').forEach(item => { 
                 const title = item.querySelector('h3')?.innerText?.toLowerCase() || '';
                 const content = item.querySelector('.article-body p')?.innerText?.toLowerCase() || '';
@@ -1680,6 +1492,7 @@
                 item.style.display = (title.includes(query) || content.includes(query) || author.includes(query)) ? "block" : "none";
             });
 
+            // Search users
             database.ref('users').once('value', (snapshot) => {
                 userTray.innerHTML = ''; const users = snapshot.val(); let count = 0;
                 if(users) {
@@ -1693,7 +1506,7 @@
                             div.onclick = () => { 
                                 userTray.classList.add('hidden'); 
                                 document.getElementById('search-bar').value = ''; 
-                                loadUserIdentitySpace(uid); 
+                                loadUserIdentitySpace(uid);
                             };
                             div.innerHTML = `<div class="flex items-center gap-2"><img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" class="w-6 h-6 rounded-full object-cover"><div class="text-xs"><p class="font-black">${u.name || 'Member'}</p><p class="text-gray-400 text-[10px]">@${u.username || ''}</p></div></div><span class="text-[10px] bg-red-600 text-white font-bold py-1 px-2.5 rounded-full">View Hub</span>`;
                             userTray.appendChild(div);
@@ -1704,36 +1517,29 @@
             });
         }
 
-        // ========== ARTICLES SYSTEM ==========
+        // ===== ARTICLES =====
         function listenToArticles() {
             database.ref('articles').on('value', (snapshot) => {
                 const container = document.getElementById('articles-container');
                 container.innerHTML = '';
                 const data = snapshot.val();
-                
                 if(!data) {
                     container.innerHTML = '<div class="text-center text-gray-400 py-16 text-sm">No articles published yet. Be the first to write one!</div>';
                     return;
                 }
-                
                 database.ref('users').once('value', (usersSnap) => {
                     const usersData = usersSnap.val() || {};
-                    
                     Object.keys(data).reverse().forEach(key => {
                         const article = data[key];
                         const authorData = usersData[article.uploaderUid] || {};
                         const isAuthor = currentUserData && article.uploaderUid === currentUserData.uid;
                         const likesObj = article.likes || {};
-                        const dislikesObj = article.dislikes || {};
                         const totalLikes = Object.keys(likesObj).length;
-                        const totalDislikes = Object.keys(dislikesObj).length;
-                        const isLiked = currentUserData && !!likesObj[currentUserData.uid];
-                        const isDisliked = currentUserData && !!dislikesObj[currentUserData.uid];
-                        const isSaved = currentUserData && !!savedPinsCache[key];
+                        const likedByMe = currentUserData ? !!likesObj[currentUserData.uid] : false;
+                        const commentsCount = Object.keys(article.comments || {}).length;
                         
                         const card = document.createElement('div');
                         card.className = 'article-card';
-                        
                         let imageHTML = '';
                         if(article.image) {
                             imageHTML = `<img src="${article.image}" alt="${article.title}" class="article-image">`;
@@ -1741,19 +1547,12 @@
                         
                         card.innerHTML = `
                             <div class="article-header">
-                                <img src="${authorData.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" alt="${authorData.name}">
-                                <div>
+                                <img src="${authorData.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" alt="${authorData.name}" onclick="event.stopPropagation(); loadUserIdentitySpace('${article.uploaderUid}')" style="cursor:pointer;">
+                                <div onclick="event.stopPropagation(); loadUserIdentitySpace('${article.uploaderUid}')" style="cursor:pointer;">
                                     <div class="author-name">${authorData.name || 'Anonymous'}</div>
                                     <div class="author-username">@${authorData.username || 'user'}</div>
                                 </div>
-                                <div class="header-right">
-                                    <span class="date">${new Date(article.timestamp).toLocaleDateString()}</span>
-                                    ${isAuthor ? `<button class="menu-dots" onclick="event.stopPropagation();toggleArticleMenu('${key}')">⋯</button>` : ''}
-                                    <div id="article-menu-${key}" class="menu-dropdown">
-                                        <button onclick="event.stopPropagation();editArticle('${key}')">✏️ Edit</button>
-                                        <button onclick="event.stopPropagation();deleteArticle('${key}')" class="delete-btn">🗑️ Delete</button>
-                                    </div>
-                                </div>
+                                <div style="margin-left:auto;font-size:0.6rem;color:#9ca3af;">${new Date(article.timestamp).toLocaleDateString()}</div>
                             </div>
                             <div class="article-body" onclick="openArticleDetail('${key}')">
                                 <h3>${article.title || 'Untitled'}</h3>
@@ -1761,25 +1560,44 @@
                                 ${imageHTML}
                             </div>
                             <div class="article-actions">
-                                <button onclick="toggleArticleLike('${key}')" class="${isLiked ? 'liked' : ''}">
+                                <button onclick="toggleArticleLike('${key}')" id="article-like-btn-${key}" class="${likedByMe ? 'liked' : ''}">
                                     <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                                     <span id="article-like-count-${key}">${totalLikes}</span>
                                 </button>
-                                <button onclick="toggleArticleDislike('${key}')" class="${isDisliked ? 'disliked' : ''}">
-                                    <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-                                    <span id="article-dislike-count-${key}">${totalDislikes}</span>
-                                </button>
                                 <button onclick="openArticleCommentModal('${key}')">
                                     <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-                                    <span id="article-comment-count-${key}">${Object.keys(article.comments || {}).length}</span>
+                                    <span id="article-comment-count-${key}">${commentsCount}</span>
                                 </button>
-                                <button onclick="toggleArticleSave('${key}')" class="${isSaved ? 'saved-pin' : ''}">
+                                <button onclick="toggleArticleSave('${key}')" id="article-save-btn-${key}" class="${savedPinsCache[key] ? 'saved-pin' : ''}">
                                     <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
-                                    <span id="article-save-text-${key}">${isSaved ? 'Saved' : 'Save'}</span>
+                                    <span>${savedPinsCache[key] ? 'Saved' : 'Save'}</span>
                                 </button>
+                                ${isAuthor ? `
+                                    <div class="three-dot-menu" style="margin-left:auto;">
+                                        <button class="three-dot-btn" onclick="event.stopPropagation(); toggleArticleMenu('${key}')">•••</button>
+                                        <div class="dropdown-content" id="article-menu-${key}">
+                                            <button onclick="editArticle('${key}')">✏️ Edit</button>
+                                            <button onclick="deleteArticle('${key}')" class="delete-btn">🗑️ Delete</button>
+                                        </div>
+                                    </div>
+                                ` : ''}
                             </div>
                         `;
                         container.appendChild(card);
+                        
+                        // Update save state if not set
+                        if(currentUserData && !savedPinsCache[key]) {
+                            database.ref('users/' + currentUserData.uid + '/savedPins/' + key).once('value', (snap) => {
+                                if(snap.exists()) {
+                                    savedPinsCache[key] = true;
+                                    const btn = document.getElementById(`article-save-btn-${key}`);
+                                    if(btn) {
+                                        btn.classList.add('saved-pin');
+                                        btn.querySelector('span').innerText = 'Saved';
+                                    }
+                                }
+                            });
+                        }
                     });
                 });
             });
@@ -1790,8 +1608,8 @@
             if(menu) {
                 menu.classList.toggle('show');
                 // Close other menus
-                document.querySelectorAll('.menu-dropdown.show').forEach(m => {
-                    if(m.id !== `article-menu-${articleId}`) m.classList.remove('show');
+                document.querySelectorAll('.dropdown-content.show').forEach(el => {
+                    if(el.id !== `article-menu-${articleId}`) el.classList.remove('show');
                 });
             }
         }
@@ -1802,38 +1620,11 @@
                 return;
             }
             const likeRef = database.ref('articles/' + articleId + '/likes/' + currentUserData.uid);
-            const dislikeRef = database.ref('articles/' + articleId + '/dislikes/' + currentUserData.uid);
-            
             likeRef.once('value', (snap) => {
                 if(snap.exists()) {
                     likeRef.remove();
                 } else {
-                    // Remove dislike if exists
-                    dislikeRef.once('value', (dSnap) => {
-                        if(dSnap.exists()) dislikeRef.remove();
-                    });
                     likeRef.set(true);
-                }
-            });
-        }
-
-        function toggleArticleDislike(articleId) {
-            if(!currentUserData) {
-                alert("Please login to dislike articles!");
-                return;
-            }
-            const dislikeRef = database.ref('articles/' + articleId + '/dislikes/' + currentUserData.uid);
-            const likeRef = database.ref('articles/' + articleId + '/likes/' + currentUserData.uid);
-            
-            dislikeRef.once('value', (snap) => {
-                if(snap.exists()) {
-                    dislikeRef.remove();
-                } else {
-                    // Remove like if exists
-                    likeRef.once('value', (lSnap) => {
-                        if(lSnap.exists()) likeRef.remove();
-                    });
-                    dislikeRef.set(true);
                 }
             });
         }
@@ -1841,7 +1632,6 @@
         function openArticleCommentModal(articleId) {
             activeCommentPinId = articleId;
             document.getElementById('comment-modal').style.display = 'flex';
-            
             database.ref('articles/' + articleId + '/comments').on('value', (snapshot) => {
                 const container = document.getElementById('comments-list-container');
                 container.innerHTML = '';
@@ -1859,7 +1649,6 @@
                 });
                 container.scrollTop = container.scrollHeight;
             });
-
             document.getElementById('submit-comment-btn').onclick = () => {
                 const input = document.getElementById('comment-input-field');
                 const val = input.value.trim();
@@ -1883,40 +1672,20 @@
                 if(snap.exists()) {
                     saveRef.remove();
                     savedPinsCache[articleId] = false;
-                    const btn = document.getElementById(`article-save-text-${articleId}`);
-                    if(btn) btn.innerText = 'Save';
-                    const parent = document.getElementById(`article-save-text-${articleId}`)?.closest('button');
-                    if(parent) parent.classList.remove('saved-pin');
+                    const btn = document.getElementById(`article-save-btn-${articleId}`);
+                    if(btn) {
+                        btn.classList.remove('saved-pin');
+                        btn.querySelector('span').innerText = 'Save';
+                    }
                 } else {
                     saveRef.set(true);
                     savedPinsCache[articleId] = true;
-                    const btn = document.getElementById(`article-save-text-${articleId}`);
-                    if(btn) btn.innerText = 'Saved';
-                    const parent = document.getElementById(`article-save-text-${articleId}`)?.closest('button');
-                    if(parent) parent.classList.add('saved-pin');
+                    const btn = document.getElementById(`article-save-btn-${articleId}`);
+                    if(btn) {
+                        btn.classList.add('saved-pin');
+                        btn.querySelector('span').innerText = 'Saved';
+                    }
                 }
-            });
-        }
-
-        function editArticle(articleId) {
-            document.querySelectorAll('.menu-dropdown.show').forEach(m => m.classList.remove('show'));
-            database.ref('articles/' + articleId).once('value', (snap) => {
-                const data = snap.val();
-                if(!data) return;
-                editingItemKey = articleId;
-                editingItemType = 'article';
-                document.getElementById('edit-modal-title').innerText = 'Edit Article';
-                document.getElementById('edit-title-input').value = data.title || '';
-                document.getElementById('edit-desc-input').value = data.content || '';
-                document.getElementById('edit-modal').classList.add('show');
-            });
-        }
-
-        function deleteArticle(articleId) {
-            document.querySelectorAll('.menu-dropdown.show').forEach(m => m.classList.remove('show'));
-            if(!confirm("Are you sure you want to delete this article?")) return;
-            database.ref('articles/' + articleId).remove().then(() => {
-                alert("Article deleted successfully!");
             });
         }
 
@@ -1936,7 +1705,38 @@
             });
         }
 
-        // ========== PHOTO UPLOAD & DISPLAY ==========
+        function editArticle(articleId) {
+            database.ref('articles/' + articleId).once('value', (snap) => {
+                const article = snap.val();
+                if(!article) return;
+                const newTitle = prompt("Edit Title:", article.title);
+                if(newTitle === null) return;
+                const newContent = prompt("Edit Content:", article.content);
+                if(newContent === null) return;
+                const newImage = prompt("Edit Image URL (leave empty to keep existing):", article.image || '');
+                
+                const updates = { title: newTitle, content: newContent };
+                if(newImage !== null) {
+                    updates.image = newImage;
+                }
+                
+                database.ref('articles/' + articleId).update(updates).then(() => {
+                    alert("Article updated successfully!");
+                    // Close dropdown
+                    const menu = document.getElementById(`article-menu-${articleId}`);
+                    if(menu) menu.classList.remove('show');
+                });
+            });
+        }
+
+        function deleteArticle(articleId) {
+            if(!confirm("Are you sure you want to delete this article? This action cannot be undone!")) return;
+            database.ref('articles/' + articleId).remove().then(() => {
+                alert("Article deleted successfully!");
+            });
+        }
+
+        // ===== UPLOAD FUNCTIONS =====
         function openUploadOptionsModal() {
             if(!currentUserData) {
                 alert("Please login to create posts!");
@@ -2040,36 +1840,61 @@
             }, 3000);
         }
 
-        // ========== PHOTO MODAL ==========
+        // ===== TAB SWITCH =====
+        function switchTab(tabName) {
+            const navBar = document.getElementById('app-nav');
+            if(tabName === 'profile') {
+                navBar.classList.add('hidden');
+            } else {
+                navBar.classList.remove('hidden');
+            }
+            if(tabName === 'home') {
+                document.getElementById('search-bar').value = '';
+                document.getElementById('user-search-results-tray').classList.add('hidden');
+                document.getElementById('user-search-results-tray').innerHTML = '';
+                document.querySelectorAll('#pin-container .pin-item').forEach(item => item.style.display = "block");
+                document.querySelectorAll('#articles-container .article-card').forEach(item => item.style.display = "block");
+            }
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            ['home', 'articles', 'profile'].forEach(t => {
+                const btn = document.getElementById(`nav-${t}`);
+                if(btn) {
+                    if(t === tabName) {
+                        btn.className = "flex items-center justify-center p-2.5 rounded-full bg-black text-white transition-all duration-200";
+                    } else {
+                        btn.className = "flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200";
+                    }
+                }
+            });
+        }
+
+        // ===== PHOTO MODAL =====
         function openPhotoModal(imgSrc, titleText, descText, author, pinKey, uploaderUid, type = 'photo') {
             currentModalImgData = imgSrc;
             currentModalTitle = titleText;
             currentModalPinKey = pinKey;
             currentModalUploaderUid = uploaderUid;
             currentModalType = type;
+            editPhotoKey = pinKey;
             
             document.getElementById('modal-img').src = imgSrc;
             document.getElementById('modal-title').innerText = titleText;
             document.getElementById('modal-desc').innerText = descText;
             const authorEl = document.getElementById('modal-author');
-            authorEl.innerText = "BY: " + (author || 'Anonymous').toUpperCase();
+            authorEl.innerText = "BY: " + author.toUpperCase();
             authorEl.onclick = () => { closePhotoModal(); loadUserIdentitySpace(uploaderUid); };
 
-            // Show/hide menu button based on author
-            const menuBtn = document.getElementById('modal-menu-btn');
+            // Show/hide 3-dot menu based on author
+            const menuContainer = document.getElementById('photo-modal-menu');
             const isAuthor = currentUserData && uploaderUid === currentUserData.uid;
-            menuBtn.style.display = isAuthor ? 'block' : 'none';
-            
-            // Store current item info for edit/delete
-            menuBtn.dataset.key = pinKey;
-            menuBtn.dataset.type = type;
+            menuContainer.style.display = isAuthor ? 'inline-block' : 'none';
 
             updateSaveButtonState(pinKey);
 
             const likeSvg = document.getElementById('modal-like-svg');
             const likeTxt = document.getElementById('modal-like-counter-text');
             
-            // Setup like listener based on type
             const path = type === 'article' ? 'articles' : 'pins';
             database.ref(path + '/' + pinKey + '/likes').on('value', (snapshot) => {
                 const likes = snapshot.val() || {};
@@ -2083,11 +1908,12 @@
             });
 
             document.getElementById('modal-like-trigger-btn').onclick = () => {
-                if(type === 'article') {
-                    toggleArticleLike(pinKey);
-                } else {
-                    toggleLikePost(pinKey);
-                }
+                if(!currentUserData) { alert("Please login to like!"); return; }
+                const likeRef = database.ref(path + '/' + pinKey + '/likes/' + currentUserData.uid);
+                likeRef.once('value', (snap) => {
+                    if(snap.exists()) likeRef.remove();
+                    else likeRef.set(true);
+                });
             };
             
             document.getElementById('modal-comment-trigger-btn').onclick = () => {
@@ -2102,109 +1928,68 @@
             window.activeModalPinRefKey = pinKey;
         }
 
-        function toggleFullscreenMenu() {
-            const menu = document.getElementById('fullscreen-menu-dropdown');
-            menu.classList.toggle('show');
+        function togglePhotoModalMenu() {
+            const menu = document.getElementById('photo-modal-dropdown');
+            if(menu) menu.classList.toggle('show');
         }
 
-        function handleFullscreenEdit() {
-            document.getElementById('fullscreen-menu-dropdown').classList.remove('show');
-            const key = document.getElementById('modal-menu-btn').dataset.key;
-            const type = document.getElementById('modal-menu-btn').dataset.type;
+        function editPhotoFromModal() {
+            // Close dropdown
+            document.getElementById('photo-modal-dropdown').classList.remove('show');
             
-            if(type === 'article') {
-                editArticle(key);
-            } else {
-                // Edit photo
-                database.ref('pins/' + key).once('value', (snap) => {
-                    const data = snap.val();
-                    if(!data) return;
-                    editingItemKey = key;
-                    editingItemType = 'photo';
-                    document.getElementById('edit-modal-title').innerText = 'Edit Photo';
-                    document.getElementById('edit-title-input').value = data.title || '';
-                    document.getElementById('edit-desc-input').value = data.desc || '';
-                    document.getElementById('edit-modal').classList.add('show');
-                    closePhotoModal();
-                });
-            }
-        }
-
-        function handleFullscreenDelete() {
-            document.getElementById('fullscreen-menu-dropdown').classList.remove('show');
-            const key = document.getElementById('modal-menu-btn').dataset.key;
-            const type = document.getElementById('modal-menu-btn').dataset.type;
-            
-            if(!confirm("Are you sure you want to delete this post?")) return;
-            
-            if(type === 'article') {
-                database.ref('articles/' + key).remove().then(() => {
-                    alert("Article deleted successfully!");
-                    closePhotoModal();
-                });
-            } else {
-                database.ref('pins/' + key).remove().then(() => {
-                    alert("Photo deleted successfully!");
-                    closePhotoModal();
-                });
-            }
-        }
-
-        function closePhotoModal() {
-            if(window.activeModalPinRefKey) {
-                database.ref('pins/' + window.activeModalPinRefKey + '/likes').off();
-                database.ref('articles/' + window.activeModalPinRefKey + '/likes').off();
-            }
-            document.getElementById('fullscreen-menu-dropdown').classList.remove('show');
-            document.getElementById('photo-modal').style.display = 'none';
-        }
-
-        function toggleLikePost(pinId) {
-            if(!currentUserData) return;
-            const likeRef = database.ref('pins/' + pinId + '/likes/' + currentUserData.uid);
-            likeRef.once('value', (snap) => { if(snap.exists()) likeRef.remove(); else likeRef.set(true); });
-        }
-
-        function openCommentModal(pinId) {
-            activeCommentPinId = pinId;
-            document.getElementById('comment-modal').style.display = 'flex';
-            database.ref('pins/' + pinId + '/comments').on('value', (snapshot) => {
-                const container = document.getElementById('comments-list-container');
-                container.innerHTML = '';
-                const list = snapshot.val();
-                if(!list) {
-                    container.innerHTML = `<p class="text-gray-400 text-center text-xs py-6">No comments yet.</p>`;
-                    return;
-                }
-                Object.keys(list).forEach(cKey => {
-                    const comment = list[cKey];
-                    const row = document.createElement('div');
-                    row.className = "bg-gray-50 rounded-2xl p-2.5 border text-xs text-left";
-                    row.innerHTML = `<p class="font-black text-gray-700">@${comment.username || 'member'}</p><p class="text-gray-600 mt-0.5">${comment.text}</p>`;
-                    container.appendChild(row);
-                });
-                container.scrollTop = container.scrollHeight;
+            // Get current data
+            const path = currentModalType === 'article' ? 'articles' : 'pins';
+            database.ref(path + '/' + editPhotoKey).once('value', (snap) => {
+                const data = snap.val();
+                if(!data) return;
+                
+                const titleField = currentModalType === 'article' ? 'title' : 'title';
+                const descField = currentModalType === 'article' ? 'content' : 'desc';
+                
+                document.getElementById('edit-photo-title').value = data[titleField] || '';
+                document.getElementById('edit-photo-desc').value = data[descField] || '';
+                document.getElementById('edit-photo-modal').style.display = 'flex';
             });
-
-            document.getElementById('submit-comment-btn').onclick = () => {
-                const input = document.getElementById('comment-input-field');
-                const val = input.value.trim();
-                if(!val || !currentUserData) return;
-                database.ref('pins/' + pinId + '/comments').push({
-                    userId: currentUserData.uid,
-                    username: customProfileCache.username,
-                    text: val,
-                    timestamp: Date.now()
-                }).then(() => { input.value = ''; });
-            };
         }
 
-        function closeCommentModal() {
-            if(activeCommentPinId) {
-                database.ref('pins/' + activeCommentPinId + '/comments').off();
-                database.ref('articles/' + activeCommentPinId + '/comments').off();
+        function closeEditPhotoModal() {
+            document.getElementById('edit-photo-modal').style.display = 'none';
+        }
+
+        function savePhotoEdits() {
+            const newTitle = document.getElementById('edit-photo-title').value.trim();
+            const newDesc = document.getElementById('edit-photo-desc').value.trim();
+            
+            if(!newTitle) {
+                alert("Title is required!");
+                return;
             }
-            document.getElementById('comment-modal').style.display = 'none';
+            
+            const path = currentModalType === 'article' ? 'articles' : 'pins';
+            const descField = currentModalType === 'article' ? 'content' : 'desc';
+            
+            const updates = {};
+            updates['title'] = newTitle;
+            updates[descField] = newDesc;
+            
+            database.ref(path + '/' + editPhotoKey).update(updates).then(() => {
+                alert("Updated successfully!");
+                closeEditPhotoModal();
+                // Refresh modal view
+                const imgSrc = document.getElementById('modal-img').src;
+                openPhotoModal(imgSrc, newTitle, newDesc, document.getElementById('modal-author').innerText.replace('BY: ', ''), editPhotoKey, currentModalUploaderUid, currentModalType);
+            });
+        }
+
+        function deletePhotoFromModal() {
+            document.getElementById('photo-modal-dropdown').classList.remove('show');
+            if(!confirm("Are you sure you want to delete this? This action cannot be undone!")) return;
+            
+            const path = currentModalType === 'article' ? 'articles' : 'pins';
+            database.ref(path + '/' + editPhotoKey).remove().then(() => {
+                alert("Deleted successfully!");
+                closePhotoModal();
+            });
         }
 
         function updateSaveButtonState(pinKey) {
@@ -2253,6 +2038,16 @@
             });
         }
 
+        function closePhotoModal() {
+            if(window.activeModalPinRefKey) {
+                database.ref('pins/' + window.activeModalPinRefKey + '/likes').off();
+                database.ref('articles/' + window.activeModalPinRefKey + '/likes').off();
+            }
+            document.getElementById('photo-modal').style.display = 'none';
+            // Close any open dropdowns
+            document.querySelectorAll('.dropdown-content.show').forEach(el => el.classList.remove('show'));
+        }
+
         function downloadImage() {
             if(!currentModalImgData) return;
             const link = document.createElement("a");
@@ -2263,50 +2058,7 @@
             document.body.removeChild(link);
         }
 
-        // ========== EDIT MODAL ==========
-        function closeEditModal() {
-            document.getElementById('edit-modal').classList.remove('show');
-            editingItemKey = null;
-            editingItemType = null;
-        }
-
-        function saveEditChanges() {
-            if(!editingItemKey || !editingItemType) return;
-            const title = document.getElementById('edit-title-input').value.trim();
-            const desc = document.getElementById('edit-desc-input').value.trim();
-            
-            if(!title) {
-                alert("Title cannot be empty!");
-                return;
-            }
-            
-            if(editingItemType === 'article') {
-                database.ref('articles/' + editingItemKey).update({
-                    title: title,
-                    content: desc
-                }).then(() => {
-                    alert("Article updated successfully!");
-                    closeEditModal();
-                });
-            } else {
-                database.ref('pins/' + editingItemKey).update({
-                    title: title,
-                    desc: desc
-                }).then(() => {
-                    alert("Photo updated successfully!");
-                    closeEditModal();
-                    // Re-open the photo modal with updated data
-                    database.ref('pins/' + editingItemKey).once('value', (snap) => {
-                        const data = snap.val();
-                        if(data) {
-                            openPhotoModal(data.img, data.title, data.desc, data.uploaderName, editingItemKey, data.uploaderUid, 'photo');
-                        }
-                    });
-                });
-            }
-        }
-
-        // ========== PHOTO FEED ==========
+        // ===== PHOTO FEED =====
         function listenToCloudDataStream() {
             database.ref('pins').on('value', (snapshot) => {
                 const globalContainer = document.getElementById('pin-container');
@@ -2342,15 +2094,7 @@
                         const setupTriggers = () => { openPhotoModal(pin.img, pin.title || "Stardust Card", pin.desc || "", pin.uploaderName || "Anonymous", key, pin.uploaderUid, 'photo'); };
                         pinElement.querySelector(`#img-wrapper-${key}`).onclick = setupTriggers;
                         pinElement.querySelector(`#text-click-hook-${key}`).onclick = setupTriggers;
-                        pinElement.querySelector(`#img-wrapper-${key}`).addEventListener('dblclick', (e) => { 
-                            toggleLikePost(key);
-                            const container = e.currentTarget;
-                            const heart = document.createElement('div');
-                            heart.className = "absolute inset-0 flex items-center justify-center pointer-events-none animate-ping";
-                            heart.innerHTML = `<svg class="w-16 h-16 text-red-500 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
-                            container.appendChild(heart);
-                            setTimeout(() => heart.remove(), 600);
-                        });
+                        pinElement.querySelector(`#img-wrapper-${key}`).addEventListener('dblclick', (e) => { handleDoubleTapLikeAnimation(e, key); });
                     });
                 }
                 if(!globalContainer.innerHTML) globalContainer.innerHTML = '<div class="text-center text-gray-400 py-16 col-span-2">No cards shared.</div>';
@@ -2358,7 +2102,64 @@
             });
         }
 
-        // ========== SETTINGS ==========
+        function toggleLikePost(pinId) {
+            if(!currentUserData) return;
+            const likeRef = database.ref('pins/' + pinId + '/likes/' + currentUserData.uid);
+            likeRef.once('value', (snap) => { if(snap.exists()) likeRef.remove(); else likeRef.set(true); });
+        }
+
+        function handleDoubleTapLikeAnimation(event, pinId) {
+            toggleLikePost(pinId);
+            const container = event.currentTarget;
+            const heart = document.createElement('div');
+            heart.className = "absolute inset-0 flex items-center justify-center pointer-events-none animate-ping";
+            heart.innerHTML = `<svg class="w-16 h-16 text-red-500 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
+            container.appendChild(heart);
+            setTimeout(() => heart.remove(), 600);
+        }
+
+        function openCommentModal(pinId) {
+            activeCommentPinId = pinId;
+            document.getElementById('comment-modal').style.display = 'flex';
+            database.ref('pins/' + pinId + '/comments').on('value', (snapshot) => {
+                const container = document.getElementById('comments-list-container');
+                container.innerHTML = '';
+                const list = snapshot.val();
+                if(!list) {
+                    container.innerHTML = `<p class="text-gray-400 text-center text-xs py-6">No comments yet.</p>`;
+                    return;
+                }
+                Object.keys(list).forEach(cKey => {
+                    const comment = list[cKey];
+                    const row = document.createElement('div');
+                    row.className = "bg-gray-50 rounded-2xl p-2.5 border text-xs text-left";
+                    row.innerHTML = `<p class="font-black text-gray-700">@${comment.username || 'member'}</p><p class="text-gray-600 mt-0.5">${comment.text}</p>`;
+                    container.appendChild(row);
+                });
+                container.scrollTop = container.scrollHeight;
+            });
+            document.getElementById('submit-comment-btn').onclick = () => {
+                const input = document.getElementById('comment-input-field');
+                const val = input.value.trim();
+                if(!val || !currentUserData) return;
+                database.ref('pins/' + pinId + '/comments').push({
+                    userId: currentUserData.uid,
+                    username: customProfileCache.username,
+                    text: val,
+                    timestamp: Date.now()
+                }).then(() => { input.value = ''; });
+            };
+        }
+
+        function closeCommentModal() {
+            if(activeCommentPinId) {
+                database.ref('pins/' + activeCommentPinId + '/comments').off();
+                database.ref('articles/' + activeCommentPinId + '/comments').off();
+            }
+            document.getElementById('comment-modal').style.display = 'none';
+        }
+
+        // ===== SETTINGS =====
         function showSettingsPage(pageId) {
             document.getElementById('settings-main-screen').classList.add('hidden');
             document.querySelectorAll('.settings-sub-page').forEach(page => page.classList.add('hidden'));
@@ -2377,12 +2178,12 @@
             document.querySelectorAll('.settings-sub-page').forEach(page => page.classList.add('hidden'));
             document.getElementById('settings-main-screen').classList.remove('hidden');
         }
-
+        
         function openSettingsModal() {
             backToSettingsMain();
             document.getElementById('settings-modal').style.display = 'flex';
         }
-
+        
         function closeSettingsModal() {
             document.getElementById('settings-modal').style.display = 'none';
         }
@@ -2392,12 +2193,10 @@
             const inputName = document.getElementById('edit-name-input').value.trim();
             const inputBio = document.getElementById('edit-bio-input').value.trim();
             const inputUsername = document.getElementById('edit-username-input').value.trim().toLowerCase().replace(/\s+/g, '');
-
             if(!inputName || !inputUsername) {
                 alert("Fields cannot be blank references!");
                 return;
             }
-
             database.ref('users').orderByChild('username').equalTo(inputUsername).once('value', (snapshot) => {
                 if(snapshot.exists()) {
                     const ownerId = Object.keys(snapshot.val())[0];
@@ -2430,7 +2229,7 @@
             reader.readAsDataURL(file);
         }
 
-        // ========== LANGUAGE ==========
+        // ===== LANGUAGE =====
         function renderLanguageOptions() {
             const container = document.getElementById('language-options-container');
             if(!container) return;
@@ -2506,23 +2305,15 @@
         }
 
         // Close dropdowns on click outside
-        document.addEventListener('click', function(e) {
-            document.querySelectorAll('.menu-dropdown.show').forEach(m => {
-                if(!m.contains(e.target) && !e.target.closest('.menu-dots')) {
-                    m.classList.remove('show');
+        document.addEventListener('click', function(event) {
+            document.querySelectorAll('.dropdown-content.show').forEach(el => {
+                if(!el.parentElement.contains(event.target)) {
+                    el.classList.remove('show');
                 }
             });
-            document.getElementById('fullscreen-menu-dropdown')?.classList.remove('show');
         });
 
-        // Close edit modal on ESC
-        document.addEventListener('keydown', function(e) {
-            if(e.key === 'Escape') {
-                closeEditModal();
-                closePhotoModal();
-                closeCommentModal();
-            }
-        });
+        console.log("✅ STARDUST App Loaded Successfully!");
     </script>
 </body>
 </html>
