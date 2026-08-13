@@ -587,6 +587,7 @@
             padding: 4px 0;
         }
 
+        /* Profile viewer indicator */
         .profile-viewing-badge {
             font-size: 0.55rem;
             background: #f3f4f6;
@@ -596,28 +597,6 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-        }
-
-        /* Comment delete button */
-        .comment-item {
-            position: relative;
-        }
-        .comment-delete-btn {
-            position: absolute;
-            right: 4px;
-            top: 4px;
-            background: none;
-            border: none;
-            color: #ef4444;
-            font-size: 0.7rem;
-            font-weight: 700;
-            cursor: pointer;
-            padding: 2px 6px;
-            border-radius: 6px;
-            transition: background 0.2s ease;
-        }
-        .comment-delete-btn:hover {
-            background: #fef2f2;
         }
     </style>
 </head>
@@ -1131,8 +1110,7 @@
         let activeLanguage = "en";
         let signupPfpBase64 = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150";
         let activeCommentPinId = null;
-        let activeCommentType = "pins";
-        let selectedProfileUid = null;
+        let selectedProfileUid = null; // null means "me"
         let viewingUserProfileUid = null;
         let pendingUploadData = null;
         let activeProfileTab = "uploads";
@@ -1147,7 +1125,7 @@
         let searchActiveTab = "users";
 
         // ============================================================
-        // LANGUAGE PACK (shortened for brevity - same as before)
+        // LANGUAGE PACK - ALL 15 LANGUAGES
         // ============================================================
         const langPack = {
             en: {
@@ -1181,10 +1159,442 @@
                 unsavePin: "Unsave Pin",
                 download: "Download"
             },
-            // ... other languages (same as before)
+            hi: {
+                tagline: "क्लाउड सिंक प्रोफ़ाइल के साथ प्रीमियम विज़ुअल आइडियाज़ खोजें और तुरंत साझा करें।",
+                loginBtn: "साइन इन करें",
+                signupBtn: "खाता बनाएं",
+                searchPlaceholder: "आइडियाज़, आर्टिकल या उपयोगकर्ता खोजें...",
+                myUploads: "मेरे अपलोड",
+                savedPins: "सेव किए गए पिन",
+                settingsTitle: "सेटिंग्स",
+                noAccount: "कोई खाता नहीं है?",
+                haveAccount: "पहले से पंजीकृत हैं?",
+                signIn: "साइन इन करें",
+                createNew: "नया खाता बनाएं",
+                settingsOpt1: "1. नाम, बायो और हैंडल संपादित करें",
+                settingsOpt2: "2. प्रोफ़ाइल फोटो बदलें",
+                settingsOpt3: "3. सिस्टम भाषा",
+                settingsOpt4: "4. ग्राहक सहायता",
+                settingsOpt5: "5. गोपनीयता नीति",
+                settingsOpt6: "6. सेवा की शर्तें",
+                settingsOpt7: "7. खाता हटाएं",
+                closeSettings: "बंद करें",
+                signOut: "साइन आउट",
+                deleteAccountTitle: "खाता हटाएं",
+                deleteAccountWarning: "यह कार्रवाई स्थायी है और इसे पूर्ववत नहीं किया जा सकता। आपका सारा डेटा जिसमें पोस्ट, चैट और प्रोफ़ाइल जानकारी शामिल है, हटा दिया जाएगा।",
+                deleteAccountBtn: "मेरा खाता स्थायी रूप से हटाएं",
+                legalPrivacy: "गोपनीयता नीति",
+                legalTerms: "सेवा की शर्तें",
+                closeLang: "बंद करें",
+                savePin: "पिन सहेजें",
+                unsavePin: "पिन हटाएं",
+                download: "डाउनलोड"
+            },
+            bn: {
+                tagline: "আপনার ক্লাউড সিঙ্ক প্রোফাইলের সাথে প্রিমিয়াম ভিজ্যুয়াল আইডিয়া আবিষ্কার, ট্র্যাক এবং শেয়ার করুন তাৎক্ষণিকভাবে।",
+                loginBtn: "সাইন ইন করুন",
+                signupBtn: "অ্যাকাউন্ট তৈরি করুন",
+                searchPlaceholder: "আইডিয়া, আর্টিকেল বা ব্যবহারকারী খুঁজুন...",
+                myUploads: "আমার আপলোড",
+                savedPins: "সংরক্ষিত পিন",
+                settingsTitle: "সেটিংস",
+                noAccount: "কোন অ্যাকাউন্ট নেই?",
+                haveAccount: "ইতিমধ্যে নিবন্ধিত?",
+                signIn: "সাইন ইন করুন",
+                createNew: "নতুন অ্যাকাউন্ট তৈরি করুন",
+                settingsOpt1: "১. নাম, বায়ো এবং হ্যান্ডেল সম্পাদনা করুন",
+                settingsOpt2: "২. প্রোফাইল ছবি পরিবর্তন করুন",
+                settingsOpt3: "৩. সিস্টেম ভাষা",
+                settingsOpt4: "৪. গ্রাহক সহায়তা",
+                settingsOpt5: "৫. গোপনীয়তা নীতি",
+                settingsOpt6: "৬. সেবার শর্তাবলী",
+                settingsOpt7: "৭. অ্যাকাউন্ট মুছুন",
+                closeSettings: "বন্ধ করুন",
+                signOut: "সাইন আউট",
+                deleteAccountTitle: "অ্যাকাউন্ট মুছুন",
+                deleteAccountWarning: "এই কাজটি স্থায়ী এবং পূর্বাবস্থায় ফেরানো যাবে না। আপনার পোস্ট, চ্যাট এবং প্রোফাইলের তথ্য সহ সমস্ত ডেটা মুছে ফেলা হবে।",
+                deleteAccountBtn: "আমার অ্যাকাউন্ট স্থায়ীভাবে মুছুন",
+                legalPrivacy: "গোপনীয়তা নীতি",
+                legalTerms: "সেবার শর্তাবলী",
+                closeLang: "বন্ধ করুন",
+                savePin: "পিন সংরক্ষণ করুন",
+                unsavePin: "পিন সরান",
+                download: "ডাউনলোড"
+            },
+            gu: {
+                tagline: "તમારા ક્લાઉડ સિંક પ્રોફાઇલ સાથે પ્રીમિયમ વિઝ્યુઅલ આઈડિયાઝ શોધો, ટ્રેક કરો અને તાત્કાલિક શેર કરો.",
+                loginBtn: "સાઇન ઇન કરો",
+                signupBtn: "ખાતું બનાવો",
+                searchPlaceholder: "વિચારો, આર્ટિકલ અથવા વપરાશકર્તાઓ શોધો...",
+                myUploads: "મારા અપલોડ્સ",
+                savedPins: "સેવ કરેલા પિન",
+                settingsTitle: "સેટિંગ્સ",
+                noAccount: "ખાતું નથી?",
+                haveAccount: "પહેલેથી નોંધાયેલા?",
+                signIn: "સાઇન ઇન કરો",
+                createNew: "નવું ખાતું બનાવો",
+                settingsOpt1: "૧. નામ, બાયો અને હેન્ડલ સંપાદિત કરો",
+                settingsOpt2: "૨. પ્રોફાઇલ ચિત્ર બદલો",
+                settingsOpt3: "૩. સિસ્ટમ ભાષા",
+                settingsOpt4: "૪. ગ્રાહક સહાય",
+                settingsOpt5: "૫. ગોપનીયતા નીતિ",
+                settingsOpt6: "૬. સેવાની શરતો",
+                settingsOpt7: "૭. ખાતું કાઢી નાખો",
+                closeSettings: "બંધ કરો",
+                signOut: "સાઇન આઉટ",
+                deleteAccountTitle: "ખાતું કાઢી નાખો",
+                deleteAccountWarning: "આ ક્રિયા કાયમી છે અને તેને પૂર્વવત્ કરી શકાતી નથી. તમારા પોસ્ટ્સ, ચેટ્સ અને પ્રોફાઇલ માહિતી સહિતનો તમામ ડેટા દૂર કરવામાં આવશે.",
+                deleteAccountBtn: "મારું ખાતું કાયમી રૂપે કાઢી નાખો",
+                legalPrivacy: "ગોપનીયતા નીતિ",
+                legalTerms: "સેવાની શરતો",
+                closeLang: "બંધ કરો",
+                savePin: "પિન સાચવો",
+                unsavePin: "પિન દૂર કરો",
+                download: "ડાઉનલોડ"
+            },
+            ko: {
+                tagline: "클라우드 동기화 프로필로 프리미엄 시각적 아이디어를 즉시 발견, 추적 및 공유하세요.",
+                loginBtn: "로그인",
+                signupBtn: "계정 만들기",
+                searchPlaceholder: "아이디어, 기사 또는 사용자 검색...",
+                myUploads: "내 업로드",
+                savedPins: "저장된 핀",
+                settingsTitle: "설정",
+                noAccount: "계정이 없으신가요?",
+                haveAccount: "이미 등록하셨나요?",
+                signIn: "로그인",
+                createNew: "새 계정 만들기",
+                settingsOpt1: "1. 이름, 소개 및 핸들 편집",
+                settingsOpt2: "2. 프로필 사진 변경",
+                settingsOpt3: "3. 시스템 언어",
+                settingsOpt4: "4. 고객 지원",
+                settingsOpt5: "5. 개인정보 보호정책",
+                settingsOpt6: "6. 서비스 약관",
+                settingsOpt7: "7. 계정 삭제",
+                closeSettings: "닫기",
+                signOut: "로그아웃",
+                deleteAccountTitle: "계정 삭제",
+                deleteAccountWarning: "이 작업은 영구적이며 취소할 수 없습니다. 게시물, 채팅 및 프로필 정보를 포함한 모든 데이터가 삭제됩니다.",
+                deleteAccountBtn: "내 계정 영구 삭제",
+                legalPrivacy: "개인정보 보호정책",
+                legalTerms: "서비스 약관",
+                closeLang: "닫기",
+                savePin: "핀 저장",
+                unsavePin: "핀 제거",
+                download: "다운로드"
+            },
+            zh: {
+                tagline: "通过云同步个人资料即时发现、跟踪和分享高级视觉创意。",
+                loginBtn: "登录",
+                signupBtn: "创建帐户",
+                searchPlaceholder: "搜索创意、文章或用户名...",
+                myUploads: "我的上传",
+                savedPins: "已保存的图钉",
+                settingsTitle: "设置",
+                noAccount: "没有帐户？",
+                haveAccount: "已经注册？",
+                signIn: "登录",
+                createNew: "创建新帐户",
+                settingsOpt1: "1. 编辑姓名、简介和用户名",
+                settingsOpt2: "2. 更改个人资料图片",
+                settingsOpt3: "3. 系统语言",
+                settingsOpt4: "4. 客户支持",
+                settingsOpt5: "5. 隐私政策",
+                settingsOpt6: "6. 服务条款",
+                settingsOpt7: "7. 删除帐户",
+                closeSettings: "关闭",
+                signOut: "退出",
+                deleteAccountTitle: "删除帐户",
+                deleteAccountWarning: "此操作是永久性的，无法撤消。您的所有数据，包括帖子、聊天和个人资料信息都将被删除。",
+                deleteAccountBtn: "永久删除我的帐户",
+                legalPrivacy: "隐私政策",
+                legalTerms: "服务条款",
+                closeLang: "关闭",
+                savePin: "保存图钉",
+                unsavePin: "取消保存",
+                download: "下载"
+            },
+            'zh-TW': {
+                tagline: "透過雲端同步個人檔案即時發現、追蹤和分享高級視覺創意。",
+                loginBtn: "登入",
+                signupBtn: "建立帳戶",
+                searchPlaceholder: "搜尋創意、文章或用戶名...",
+                myUploads: "我的上傳",
+                savedPins: "已儲存的圖釘",
+                settingsTitle: "設定",
+                noAccount: "沒有帳戶？",
+                haveAccount: "已經註冊？",
+                signIn: "登入",
+                createNew: "建立新帳戶",
+                settingsOpt1: "1. 編輯姓名、簡介和用戶名",
+                settingsOpt2: "2. 更改個人資料圖片",
+                settingsOpt3: "3. 系統語言",
+                settingsOpt4: "4. 客戶支援",
+                settingsOpt5: "5. 隱私政策",
+                settingsOpt6: "6. 服務條款",
+                settingsOpt7: "7. 刪除帳戶",
+                closeSettings: "關閉",
+                signOut: "登出",
+                deleteAccountTitle: "刪除帳戶",
+                deleteAccountWarning: "此操作是永久性的，無法撤消。您的所有數據，包括帖子、聊天和個人資料信息都將被刪除。",
+                deleteAccountBtn: "永久刪除我的帳戶",
+                legalPrivacy: "隱私政策",
+                legalTerms: "服務條款",
+                closeLang: "關閉",
+                savePin: "儲存圖釘",
+                unsavePin: "取消儲存",
+                download: "下載"
+            },
+            ru: {
+                tagline: "Открывайте, отслеживайте и делитесь премиальными визуальными идеями с помощью облачного синхронизированного профиля мгновенно.",
+                loginBtn: "Войти",
+                signupBtn: "Создать аккаунт",
+                searchPlaceholder: "Поиск идей, статей или пользователей...",
+                myUploads: "Мои загрузки",
+                savedPins: "Сохранённые пины",
+                settingsTitle: "Настройки",
+                noAccount: "Нет аккаунта?",
+                haveAccount: "Уже зарегистрированы?",
+                signIn: "Войти",
+                createNew: "Создать новый аккаунт",
+                settingsOpt1: "1. Редактировать имя, био и хэндл",
+                settingsOpt2: "2. Изменить фото профиля",
+                settingsOpt3: "3. Язык системы",
+                settingsOpt4: "4. Поддержка клиентов",
+                settingsOpt5: "5. Политика конфиденциальности",
+                settingsOpt6: "6. Условия использования",
+                settingsOpt7: "7. Удалить аккаунт",
+                closeSettings: "Закрыть",
+                signOut: "Выйти",
+                deleteAccountTitle: "Удалить аккаунт",
+                deleteAccountWarning: "Это действие является постоянным и не может быть отменено. Все ваши данные, включая посты, чаты и информацию профиля, будут удалены.",
+                deleteAccountBtn: "Навсегда удалить мой аккаунт",
+                legalPrivacy: "Политика конфиденциальности",
+                legalTerms: "Условия использования",
+                closeLang: "Закрыть",
+                savePin: "Сохранить пин",
+                unsavePin: "Отменить сохранение",
+                download: "Скачать"
+            },
+            vi: {
+                tagline: "Khám phá, theo dõi và chia sẻ ý tưởng hình ảnh cao cấp với hồ sơ đồng bộ đám mây của bạn ngay lập tức.",
+                loginBtn: "Đăng nhập",
+                signupBtn: "Tạo tài khoản",
+                searchPlaceholder: "Tìm kiếm ý tưởng, bài viết hoặc tên người dùng...",
+                myUploads: "Tải lên của tôi",
+                savedPins: "Ghim đã lưu",
+                settingsTitle: "Cài đặt",
+                noAccount: "Chưa có tài khoản?",
+                haveAccount: "Đã đăng ký?",
+                signIn: "Đăng nhập",
+                createNew: "Tạo tài khoản mới",
+                settingsOpt1: "1. Chỉnh sửa tên, tiểu sử và tên người dùng",
+                settingsOpt2: "2. Thay đổi ảnh đại diện",
+                settingsOpt3: "3. Ngôn ngữ hệ thống",
+                settingsOpt4: "4. Hỗ trợ khách hàng",
+                settingsOpt5: "5. Chính sách bảo mật",
+                settingsOpt6: "6. Điều khoản dịch vụ",
+                settingsOpt7: "7. Xóa tài khoản",
+                closeSettings: "Đóng",
+                signOut: "Đăng xuất",
+                deleteAccountTitle: "Xóa tài khoản",
+                deleteAccountWarning: "Hành động này là vĩnh viễn và không thể hoàn tác. Tất cả dữ liệu của bạn bao gồm bài đăng, trò chuyện và thông tin hồ sơ sẽ bị xóa.",
+                deleteAccountBtn: "Xóa vĩnh viễn tài khoản của tôi",
+                legalPrivacy: "Chính sách bảo mật",
+                legalTerms: "Điều khoản dịch vụ",
+                closeLang: "Đóng",
+                savePin: "Lưu Ghim",
+                unsavePin: "Bỏ lưu",
+                download: "Tải xuống"
+            },
+            th: {
+                tagline: "ค้นหา ติดตาม และแบ่งปันไอเดียภาพระดับพรีเมียมด้วยโปรไฟล์ที่ซิงค์กับคลาวด์ของคุณได้ทันที",
+                loginBtn: "เข้าสู่ระบบ",
+                signupBtn: "สร้างบัญชี",
+                searchPlaceholder: "ค้นหาไอเดีย บทความ หรือชื่อผู้ใช้...",
+                myUploads: "อัปโหลดของฉัน",
+                savedPins: "พินที่บันทึกไว้",
+                settingsTitle: "การตั้งค่า",
+                noAccount: "ยังไม่มีบัญชี?",
+                haveAccount: "ลงทะเบียนแล้ว?",
+                signIn: "เข้าสู่ระบบ",
+                createNew: "สร้างบัญชีใหม่",
+                settingsOpt1: "1. แก้ไขชื่อ ประวัติ และแฮนเดิล",
+                settingsOpt2: "2. เปลี่ยนรูปโปรไฟล์",
+                settingsOpt3: "3. ภาษาระบบ",
+                settingsOpt4: "4. การสนับสนุนลูกค้า",
+                settingsOpt5: "5. นโยบายความเป็นส่วนตัว",
+                settingsOpt6: "6. ข้อกำหนดการให้บริการ",
+                settingsOpt7: "7. ลบบัญชี",
+                closeSettings: "ปิด",
+                signOut: "ออกจากระบบ",
+                deleteAccountTitle: "ลบบัญชี",
+                deleteAccountWarning: "การดำเนินการนี้เป็นแบบถาวรและไม่สามารถยกเลิกได้ ข้อมูลทั้งหมดของคุณรวมถึงโพสต์ แชท และข้อมูลโปรไฟล์จะถูกลบ",
+                deleteAccountBtn: "ลบบัญชีของฉันอย่างถาวร",
+                legalPrivacy: "นโยบายความเป็นส่วนตัว",
+                legalTerms: "ข้อกำหนดการให้บริการ",
+                closeLang: "ปิด",
+                savePin: "บันทึกพิน",
+                unsavePin: "ยกเลิกการบันทึก",
+                download: "ดาวน์โหลด"
+            },
+            ur: {
+                tagline: "اپنے کلاؤڈ سنک پروفائل کے ساتھ پریمیم بصری آئیڈیاز کو فوری طور پر دریافت، ٹریک اور شیئر کریں۔",
+                loginBtn: "سائن ان کریں",
+                signupBtn: "اکاؤنٹ بنائیں",
+                searchPlaceholder: "آئیڈیاز، آرٹیکل یا صارفین تلاش کریں...",
+                myUploads: "میرے اپ لوڈز",
+                savedPins: "محفوظ کردہ پن",
+                settingsTitle: "ترتیبات",
+                noAccount: "اکاؤنٹ نہیں ہے؟",
+                haveAccount: "پہلے سے رجسٹرڈ ہیں؟",
+                signIn: "سائن ان کریں",
+                createNew: "نیا اکاؤنٹ بنائیں",
+                settingsOpt1: "1. نام، بائیو اور ہینڈل میں ترمیم کریں",
+                settingsOpt2: "2. پروفائل تصویر تبدیل کریں",
+                settingsOpt3: "3. نظام کی زبان",
+                settingsOpt4: "4. کسٹمر سپورٹ",
+                settingsOpt5: "5. رازداری کی پالیسی",
+                settingsOpt6: "6. خدمت کی شرائط",
+                settingsOpt7: "7. اکاؤنٹ حذف کریں",
+                closeSettings: "بند کریں",
+                signOut: "سائن آؤٹ",
+                deleteAccountTitle: "اکاؤنٹ حذف کریں",
+                deleteAccountWarning: "یہ عمل مستقل ہے اور اسے واپس نہیں لیا جا سکتا۔ آپ کا تمام ڈیٹا بشمول پوسٹس، چیٹس اور پروفائل کی معلومات حذف کر دی جائے گی۔",
+                deleteAccountBtn: "میرا اکاؤنٹ مستقل طور پر حذف کریں",
+                legalPrivacy: "رازداری کی پالیسی",
+                legalTerms: "خدمت کی شرائط",
+                closeLang: "بند کریں",
+                savePin: "پن محفوظ کریں",
+                unsavePin: "پن ہٹائیں",
+                download: "ڈاؤن لوڈ"
+            },
+            ar: {
+                tagline: "اكتشف وتتبع وشارك الأفكار البصرية المتميزة مع ملف التعريف المتزامن مع السحابة الخاص بك على الفور.",
+                loginBtn: "تسجيل الدخول",
+                signupBtn: "إنشاء حساب",
+                searchPlaceholder: "ابحث عن أفكار أو مقالات أو أسماء مستخدمين...",
+                myUploads: "تحميلاتي",
+                savedPins: "الدبابيس المحفوظة",
+                settingsTitle: "الإعدادات",
+                noAccount: "ليس لديك حساب؟",
+                haveAccount: "مسجل بالفعل؟",
+                signIn: "تسجيل الدخول",
+                createNew: "إنشاء حساب جديد",
+                settingsOpt1: "1. تحرير الاسم والسيرة الذاتية والمعرف",
+                settingsOpt2: "2. تغيير صورة الملف الشخصي",
+                settingsOpt3: "3. لغة النظام",
+                settingsOpt4: "4. دعم العملاء",
+                settingsOpt5: "5. سياسة الخصوصية",
+                settingsOpt6: "6. شروط الخدمة",
+                settingsOpt7: "7. حذف الحساب",
+                closeSettings: "إغلاق",
+                signOut: "تسجيل الخروج",
+                deleteAccountTitle: "حذف الحساب",
+                deleteAccountWarning: "هذا الإجراء دائم ولا يمكن التراجع عنه. سيتم حذف جميع بياناتك بما في ذلك المنشورات والمحادثات ومعلومات الملف الشخصي.",
+                deleteAccountBtn: "حذف حسابي بشكل دائم",
+                legalPrivacy: "سياسة الخصوصية",
+                legalTerms: "شروط الخدمة",
+                closeLang: "إغلاق",
+                savePin: "حفظ الدبوس",
+                unsavePin: "إلغاء الحفظ",
+                download: "تحميل"
+            },
+            ja: {
+                tagline: "クラウド同期プロファイルでプレミアムなビジュアルアイデアを瞬時に発見、追跡、共有できます。",
+                loginBtn: "サインイン",
+                signupBtn: "アカウント作成",
+                searchPlaceholder: "アイデア、記事またはユーザー名を検索...",
+                myUploads: "アップロード履歴",
+                savedPins: "保存したピン",
+                settingsTitle: "設定",
+                noAccount: "アカウントをお持ちでないですか？",
+                haveAccount: "すでに登録済みですか？",
+                signIn: "サインイン",
+                createNew: "新規アカウント作成",
+                settingsOpt1: "1. 名前、バイオ、ハンドルを編集",
+                settingsOpt2: "2. プロフィール画像を変更",
+                settingsOpt3: "3. システム言語",
+                settingsOpt4: "4. カスタマーサポート",
+                settingsOpt5: "5. プライバシーポリシー",
+                settingsOpt6: "6. 利用規約",
+                settingsOpt7: "7. アカウント削除",
+                closeSettings: "閉じる",
+                signOut: "サインアウト",
+                deleteAccountTitle: "アカウント削除",
+                deleteAccountWarning: "この操作は永続的であり、元に戻すことはできません。投稿、チャット、プロフィール情報を含むすべてのデータが削除されます。",
+                deleteAccountBtn: "アカウントを完全に削除",
+                legalPrivacy: "プライバシーポリシー",
+                legalTerms: "利用規約",
+                closeLang: "閉じる",
+                savePin: "ピンを保存",
+                unsavePin: "保存を解除",
+                download: "ダウンロード"
+            },
+            ro: {
+                tagline: "Descoperiți, urmăriți și partajați idei vizuale premium cu profilul dvs. sincronizat în cloud instantaneu.",
+                loginBtn: "Autentificare",
+                signupBtn: "Creați cont",
+                searchPlaceholder: "Căutați idei, articole sau nume de utilizator...",
+                myUploads: "Încărcările mele",
+                savedPins: "Pinuri salvate",
+                settingsTitle: "Setări",
+                noAccount: "Nu aveți cont?",
+                haveAccount: "Deja înregistrat?",
+                signIn: "Autentificare",
+                createNew: "Creați cont nou",
+                settingsOpt1: "1. Editați numele, biografia și numele de utilizator",
+                settingsOpt2: "2. Schimbați poza de profil",
+                settingsOpt3: "3. Limba sistemului",
+                settingsOpt4: "4. Asistență clienți",
+                settingsOpt5: "5. Politica de confidențialitate",
+                settingsOpt6: "6. Termeni și condiții",
+                settingsOpt7: "7. Ștergeți contul",
+                closeSettings: "Închideți",
+                signOut: "Deconectare",
+                deleteAccountTitle: "Ștergeți contul",
+                deleteAccountWarning: "Această acțiune este permanentă și nu poate fi anulată. Toate datele dvs., inclusiv postările, chat-urile și informațiile de profil, vor fi șterse.",
+                deleteAccountBtn: "Ștergeți definitiv contul meu",
+                legalPrivacy: "Politica de confidențialitate",
+                legalTerms: "Termeni și condiții",
+                closeLang: "Închideți",
+                savePin: "Salvați pinul",
+                unsavePin: "Anulați salvarea",
+                download: "Descărcați"
+            },
+            es: {
+                tagline: "Descubra, rastree y comparta ideas visuales premium con su perfil sincronizado en la nube al instante.",
+                loginBtn: "Iniciar sesión",
+                signupBtn: "Crear cuenta",
+                searchPlaceholder: "Buscar ideas, artículos o nombres de usuario...",
+                myUploads: "Mis subidas",
+                savedPins: "Pines guardados",
+                settingsTitle: "Ajustes",
+                noAccount: "¿No tienes cuenta?",
+                haveAccount: "¿Ya estás registrado?",
+                signIn: "Iniciar sesión",
+                createNew: "Crear nueva cuenta",
+                settingsOpt1: "1. Editar nombre, biografía y usuario",
+                settingsOpt2: "2. Cambiar foto de perfil",
+                settingsOpt3: "3. Idioma del sistema",
+                settingsOpt4: "4. Atención al cliente",
+                settingsOpt5: "5. Política de privacidad",
+                settingsOpt6: "6. Términos de servicio",
+                settingsOpt7: "7. Eliminar cuenta",
+                closeSettings: "Cerrar",
+                signOut: "Cerrar sesión",
+                deleteAccountTitle: "Eliminar cuenta",
+                deleteAccountWarning: "Esta acción es permanente y no se puede deshacer. Se eliminarán todos sus datos, incluidas publicaciones, chats e información de perfil.",
+                deleteAccountBtn: "Eliminar mi cuenta permanentemente",
+                legalPrivacy: "Política de privacidad",
+                legalTerms: "Términos de servicio",
+                closeLang: "Cerrar",
+                savePin: "Guardar Pin",
+                unsavePin: "Cancelar guardado",
+                download: "Descargar"
+            }
         };
 
-        // Simplified language list
         const languageList = [
             { code: 'en', name: 'English', native: 'English' },
             { code: 'hi', name: 'Hindi', native: 'हिन्दी' },
@@ -1240,6 +1650,10 @@
                     }
 
                     setupPremiumUIElements(customProfileCache.isPremium);
+                    // Only load profile if we're viewing "me" or if viewingUserProfileUid is null
+                    if(!viewingUserProfileUid || viewingUserProfileUid === user.uid || selectedProfileUid === null || selectedProfileUid === "me") {
+                        loadUserIdentitySpace("me");
+                    }
                 });
                 
                 listenToCloudDataStream();
@@ -1257,7 +1671,6 @@
                 
                 // Always default to home tab on app load
                 switchTab('home');
-                hideLoadingScreen();
             } else {
                 currentUserData = null;
                 document.getElementById('auth-wall').classList.remove('hidden');
@@ -1402,21 +1815,26 @@
                 return;
             }
             
+            // If targetUid is "me" or null, use current user
             const isMe = (targetUid === "me" || targetUid === null || targetUid === currentUserData.uid);
             const finalUid = isMe ? currentUserData.uid : targetUid;
             
+            // Store the uid being viewed
             viewingUserProfileUid = finalUid;
             selectedProfileUid = isMe ? null : finalUid;
             
             switchTab('profile');
             
+            // Show/hide back button and settings
             document.getElementById('profile-back-to-my-btn').style.display = isMe ? "none" : "block";
             document.getElementById('profile-settings-trigger-btn').style.display = isMe ? "block" : "none";
             document.getElementById('profile-follow-action-btn').style.display = isMe ? "none" : "block";
             
+            // Show viewing indicator
             const viewingIndicator = document.getElementById('profile-viewing-indicator');
             if(!isMe) {
                 viewingIndicator.classList.remove('hidden');
+                viewingIndicator.innerText = `Viewing ${finalUid.substring(0, 8)}...`;
             } else {
                 viewingIndicator.classList.add('hidden');
             }
@@ -1433,10 +1851,12 @@
                 const pfpImg = document.getElementById('profile-img');
                 const premBadge = document.getElementById('premium-badge');
 
+                // Reset classes
                 profSection.className = "tab-content text-center mt-4 max-w-xl mx-auto p-8 rounded-3xl transition-all duration-300 relative border shadow-xl min-h-[70vh]";
                 pfpImg.className = "w-36 h-36 rounded-full object-cover bg-white frame-none";
                 premBadge.classList.add('hidden');
 
+                // Apply premium styles if user has premium
                 if(uData.isPremium) {
                     premBadge.classList.remove('hidden');
                     if(uData.frame) {
@@ -1447,11 +1867,13 @@
                     if(uData.font) profSection.classList.add(uData.font);
                 }
 
+                // Set profile data
                 document.getElementById('profile-name').innerText = uData.name || "Stardust Member";
                 document.getElementById('profile-username').innerText = '@' + (uData.username || "creator");
                 document.getElementById('profile-img').src = uData.pfp || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150";
                 document.getElementById('profile-bio').innerText = uData.bio || "No bio written yet.";
                 
+                // Update viewing indicator with username
                 if(!isMe) {
                     document.getElementById('profile-viewing-indicator').innerText = `Viewing @${uData.username || 'user'}`;
                 }
@@ -1608,7 +2030,7 @@
         }
 
         // ============================================================
-        // SEARCH
+        // SEARCH - Enhanced with 3 tabs (Users, Posts, Articles)
         // ============================================================
         function switchSearchTab(tab) {
             searchActiveTab = tab;
@@ -1725,6 +2147,7 @@
                         container.innerHTML = html;
                         container.classList.remove('hidden');
                         
+                        // Reset to Users tab by default
                         searchActiveTab = "users";
                         document.querySelectorAll('.search-tab-btn').forEach(btn => {
                             btn.classList.remove('active');
@@ -1739,10 +2162,10 @@
             });
         }
 
+        // Helper functions for search clicks
         function handleUserProfileClick(uid) {
             document.getElementById('search-results-container').classList.add('hidden');
             document.getElementById('search-bar').value = '';
-            // Reset any viewing state and load the user's profile
             loadUserIdentitySpace(uid);
         }
 
@@ -1877,9 +2300,24 @@
 
         function openArticleCommentModal(articleId) {
             activeCommentPinId = articleId;
-            activeCommentType = "articles";
             document.getElementById('comment-modal').style.display = 'flex';
-            loadComments(articleId, 'articles');
+            database.ref('articles/' + articleId + '/comments').on('value', (snapshot) => {
+                const container = document.getElementById('comments-list-container');
+                container.innerHTML = '';
+                const list = snapshot.val();
+                if(!list) {
+                    container.innerHTML = `<p class="text-gray-400 text-center text-xs py-6">No comments yet.</p>`;
+                    return;
+                }
+                Object.keys(list).forEach(cKey => {
+                    const comment = list[cKey];
+                    const row = document.createElement('div');
+                    row.className = "bg-gray-50 rounded-2xl p-2.5 border text-xs text-left";
+                    row.innerHTML = `<p class="font-black text-gray-700">@${comment.username || 'member'}</p><p class="text-gray-600 mt-0.5">${comment.text}</p>`;
+                    container.appendChild(row);
+                });
+                container.scrollTop = container.scrollHeight;
+            });
             document.getElementById('submit-comment-btn').onclick = () => {
                 const input = document.getElementById('comment-input-field');
                 const val = input.value.trim();
@@ -1891,52 +2329,6 @@
                     timestamp: Date.now()
                 }).then(() => { input.value = ''; });
             };
-        }
-
-        function loadComments(pinId, type) {
-            const container = document.getElementById('comments-list-container');
-            container.innerHTML = '';
-            const path = type === 'articles' ? 'articles' : 'pins';
-            
-            database.ref(path + '/' + pinId + '/comments').on('value', (snapshot) => {
-                container.innerHTML = '';
-                const list = snapshot.val();
-                if(!list) {
-                    container.innerHTML = `<p class="text-gray-400 text-center text-xs py-6">No comments yet.</p>`;
-                    return;
-                }
-                
-                // Get the post/author data to check who can delete
-                database.ref(path + '/' + pinId).once('value', (postSnap) => {
-                    const postData = postSnap.val() || {};
-                    const postUploaderUid = postData.uploaderUid;
-                    
-                    Object.keys(list).forEach(cKey => {
-                        const comment = list[cKey];
-                        const row = document.createElement('div');
-                        row.className = "bg-gray-50 rounded-2xl p-2.5 border text-xs text-left relative comment-item";
-                        
-                        let deleteBtn = '';
-                        // Only show delete button to comment author OR post uploader
-                        if(currentUserData && (comment.userId === currentUserData.uid || postUploaderUid === currentUserData.uid)) {
-                            deleteBtn = `<button class="comment-delete-btn" onclick="deleteComment('${path}','${pinId}','${cKey}')">✕</button>`;
-                        }
-                        
-                        row.innerHTML = `
-                            ${deleteBtn}
-                            <p class="font-black text-gray-700">@${comment.username || 'member'}</p>
-                            <p class="text-gray-600 mt-0.5 pr-6">${comment.text}</p>
-                        `;
-                        container.appendChild(row);
-                    });
-                    container.scrollTop = container.scrollHeight;
-                });
-            });
-        }
-
-        function deleteComment(path, pinId, commentKey) {
-            if(!confirm("Delete this comment?")) return;
-            database.ref(path + '/' + pinId + '/comments/' + commentKey).remove();
         }
 
         function toggleArticleSave(articleId) {
@@ -1970,6 +2362,7 @@
             database.ref('articles/' + articleId).once('value', (snap) => {
                 const article = snap.val();
                 if(!article) return;
+                // Use article.image if exists, otherwise a placeholder
                 const imgSrc = article.image || 'https://via.placeholder.com/400x300?text=Article';
                 openPhotoModal(
                     imgSrc,
@@ -2147,10 +2540,13 @@
                 }
             });
             
+            // Handle profile tab specially
             if(tabName === 'profile') {
+                // If we're not viewing anyone specific, show current user
                 if(!viewingUserProfileUid || viewingUserProfileUid === currentUserData?.uid) {
                     loadUserIdentitySpace("me");
                 } else {
+                    // If we're viewing someone else's profile, stay on it
                     loadUserIdentitySpace(viewingUserProfileUid);
                 }
             }
@@ -2409,9 +2805,24 @@
 
         function openCommentModal(pinId) {
             activeCommentPinId = pinId;
-            activeCommentType = "pins";
             document.getElementById('comment-modal').style.display = 'flex';
-            loadComments(pinId, 'pins');
+            database.ref('pins/' + pinId + '/comments').on('value', (snapshot) => {
+                const container = document.getElementById('comments-list-container');
+                container.innerHTML = '';
+                const list = snapshot.val();
+                if(!list) {
+                    container.innerHTML = `<p class="text-gray-400 text-center text-xs py-6">No comments yet.</p>`;
+                    return;
+                }
+                Object.keys(list).forEach(cKey => {
+                    const comment = list[cKey];
+                    const row = document.createElement('div');
+                    row.className = "bg-gray-50 rounded-2xl p-2.5 border text-xs text-left";
+                    row.innerHTML = `<p class="font-black text-gray-700">@${comment.username || 'member'}</p><p class="text-gray-600 mt-0.5">${comment.text}</p>`;
+                    container.appendChild(row);
+                });
+                container.scrollTop = container.scrollHeight;
+            });
             document.getElementById('submit-comment-btn').onclick = () => {
                 const input = document.getElementById('comment-input-field');
                 const val = input.value.trim();
@@ -2589,6 +3000,22 @@
                     el.classList.remove('show');
                 }
             });
+        });
+
+        // Handle page visibility change - always go to home when tab becomes visible
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') {
+                if (currentUserData && lastTab !== 'home') {
+                    // Reset viewing state when coming back
+                    selectedProfileUid = null;
+                    viewingUserProfileUid = null;
+                    switchTab('home');
+                    document.getElementById('search-bar').value = '';
+                    document.getElementById('search-results-container').classList.add('hidden');
+                    document.getElementById('search-results-container').innerHTML = '';
+                    searchActiveTab = "users";
+                }
+            }
         });
 
         console.log("✅ STARDUST App Loaded Successfully!");
