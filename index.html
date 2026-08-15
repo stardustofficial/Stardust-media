@@ -9,8 +9,10 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Fira+Code:wght@600&family=Orbitron:wght@800&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Fira+Code:wght@600&family=Orbitron:wght@800&family=Inter:wght@400;700;900&family=Playfair+Display:wght@700&family=Space+Grotesk:wght@400;700&family=Unbounded:wght@700&family=DM+Serif+Display&family=JetBrains+Mono:wght@700&family=Oswald:wght@700&family=Poppins:wght@700&family=Raleway:wght@700&display=swap" rel="stylesheet">
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         .pin-grid {
             columns: 2;
             column-gap: 16px;
@@ -33,12 +35,22 @@
             color: #78350f !important;
             box-shadow: inset 0 0 50px rgba(251, 191, 36, 0.25) !important;
         }
+        .theme-rose { background: linear-gradient(135deg, #1f0a12, #4a0a20) !important; color: #fbcfe8 !important; }
+        .theme-ocean { background: linear-gradient(135deg, #0a1628, #0a2a4a) !important; color: #7dd3fc !important; }
         
         /* FONTS MAPPING */
         .font-modern { font-family: 'Inter', sans-serif !important; }
         .font-serif { font-family: 'Cinzel', serif !important; }
         .font-retro { font-family: 'Fira Code', monospace !important; }
         .font-future { font-family: 'Orbitron', sans-serif !important; }
+        .font-playfair { font-family: 'Playfair Display', serif !important; }
+        .font-space { font-family: 'Space Grotesk', sans-serif !important; }
+        .font-unbounded { font-family: 'Unbounded', cursive !important; }
+        .font-dm { font-family: 'DM Serif Display', serif !important; }
+        .font-jetbrains { font-family: 'JetBrains Mono', monospace !important; }
+        .font-oswald { font-family: 'Oswald', sans-serif !important; }
+        .font-poppins { font-family: 'Poppins', sans-serif !important; }
+        .font-raleway { font-family: 'Raleway', sans-serif !important; }
 
         /* PREMIUM FRAMES (STEADY) */
         .frame-none { border: 2px solid #e5e7eb; padding: 2px; }
@@ -47,6 +59,8 @@
         .frame-cyber { border: 4px solid #0ea5e9; box-shadow: 0 0 15px #0ea5e9; padding: 3px; }
         .frame-almond { border: 4px solid #f59e0b; box-shadow: 0 0 20px rgba(245, 158, 11, 0.6); padding: 3px; }
         .frame-diamond { border: 4px dashed #14b8a6; box-shadow: 0 0 15px #14b8a6; padding: 3px; }
+        .frame-rose { border: 4px solid #ec4899; box-shadow: 0 0 15px #ec4899; padding: 3px; }
+        .frame-ocean { border: 4px solid #0ea5e9; box-shadow: 0 0 20px rgba(14, 165, 233, 0.5); padding: 3px; }
 
         @keyframes badgeGlow {
             0%, 100% { filter: drop-shadow(0 0 2px #fbbf24); }
@@ -54,19 +68,6 @@
         }
         .nitro-badge-glow {
             animation: badgeGlow 2s infinite ease-in-out;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .spinner {
-            border: 3px solid rgba(220, 38, 38, 0.1);
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            border-left-color: #dc2626;
-            animation: spin 0.8s linear infinite;
         }
 
         .legal-link {
@@ -124,7 +125,6 @@
             color: white;
         }
         
-        /* Language modal container scroll fix */
         #language-options-container {
             max-height: 55vh;
             overflow-y: auto;
@@ -142,7 +142,6 @@
             border-radius: 10px;
         }
 
-        /* Settings sub-page scroll fix */
         .settings-sub-page {
             overflow-y: auto;
             max-height: 70vh;
@@ -159,35 +158,6 @@
             border-radius: 10px;
         }
 
-        /* Legal buttons in settings */
-        .legal-settings-btn {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.75rem 1rem;
-            border-radius: 0.75rem;
-            border: 1px solid #f3f4f6;
-            background: #ffffff;
-            transition: all 0.2s ease;
-            font-weight: 700;
-            font-size: 0.875rem;
-            color: #1f2937;
-            width: 100%;
-            text-decoration: none;
-        }
-        .legal-settings-btn:hover {
-            background: #fef2f2;
-            border-color: #fecaca;
-        }
-        .legal-settings-btn .arrow {
-            color: #9ca3af;
-            transition: color 0.2s ease;
-        }
-        .legal-settings-btn:hover .arrow {
-            color: #dc2626;
-        }
-
-        /* Photo modal buttons */
         .modal-action-btn {
             display: flex;
             align-items: center;
@@ -224,7 +194,6 @@
             background: #d1d5db;
         }
 
-        /* Profile tabs */
         .profile-tab-btn {
             padding: 0.5rem 1.5rem;
             border-radius: 9999px;
@@ -299,13 +268,6 @@
             font-weight: 700;
             flex-shrink: 0;
         }
-        .search-result-item .result-type {
-            font-size: 0.6rem;
-            color: #9ca3af;
-            font-weight: 600;
-            text-transform: uppercase;
-            flex-shrink: 0;
-        }
         .search-section-title {
             font-size: 0.65rem;
             font-weight: 800;
@@ -331,7 +293,7 @@
             margin: 0 auto 0.5rem;
             opacity: 0.3;
         }
-        /* Cached data indicator */
+
         .cache-badge {
             font-size: 0.5rem;
             background: #10b981;
@@ -341,24 +303,106 @@
             font-weight: 700;
             margin-left: 0.5rem;
         }
-        .cache-badge.syncing {
-            background: #f59e0b;
-            animation: pulse 1s infinite;
+
+        /* ===== LOADING SCREEN - PERCENTAGE PROGRESS BAR ===== */
+        #loading-screen {
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
         }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        #loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .loading-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 0 2rem;
+            text-align: center;
+        }
+        .loading-logo {
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            font-size: 3rem;
+            color: #dc2626;
+            letter-spacing: -0.05em;
+            margin-bottom: 2rem;
+        }
+        .progress-track {
+            width: 100%;
+            height: 4px;
+            background: #f1f1f1;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #dc2626;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        .progress-percentage {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 2.5rem;
+            color: #dc2626;
+            margin-top: 1rem;
+            letter-spacing: -0.02em;
+        }
+        .progress-label {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 0.7rem;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 0.25rem;
+        }
+        .loading-dots {
+            display: flex;
+            gap: 6px;
+            margin-top: 1.5rem;
+            justify-content: center;
+        }
+        .loading-dots span {
+            width: 6px;
+            height: 6px;
+            background: #dc2626;
+            border-radius: 50%;
+            animation: dotBounce 1.4s infinite ease-in-out both;
+        }
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0s; }
+        @keyframes dotBounce {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+            40% { transform: scale(1); opacity: 1; }
         }
     </style>
 </head>
 <body id="app-body" class="bg-white text-gray-950 font-sans antialiased pb-24">
 
-    <!-- PROFESSIONAL LOADING SCREEN FOR PRE-LOGGED USERS -->
-    <div id="loading-screen" class="fixed inset-0 bg-white z-[250] flex flex-col items-center justify-center p-6 text-center transition-opacity duration-300">
-        <h1 class="text-red-600 font-black text-5xl tracking-tighter select-none mb-6 animate-pulse">STARDUST</h1>
-        <div class="spinner"></div>
-        <p id="loading-text" class="text-xs font-bold text-gray-400 mt-4 tracking-widest uppercase">Initializing Core System...</p>
-        <p id="loading-cache-status" class="text-[10px] text-gray-300 mt-2"></p>
+    <!-- ===== LOADING SCREEN WITH PROGRESS BAR ===== -->
+    <div id="loading-screen">
+        <div class="loading-container">
+            <div class="loading-logo">STARDUST</div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="progress-percentage" id="progress-percentage">0%</div>
+            <div class="progress-label" id="progress-label">Initializing System...</div>
+            <div class="loading-dots">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
     </div>
 
     <!-- AUTHENTICATION CONTAINER -->
@@ -367,7 +411,6 @@
             <h1 class="text-red-600 font-black text-5xl tracking-tighter select-none mb-1">STARDUST</h1>
             <p id="lang-tagline" class="text-gray-500 text-sm font-medium leading-relaxed px-2">Discover, track and share premium visual ideas with your cloud sync profile instantly.</p>
 
-            <!-- LOGIN FORM -->
             <div id="auth-login-view" class="space-y-3 pt-2 text-left">
                 <div>
                     <label id="login-email-label" class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Email Address</label>
@@ -390,7 +433,6 @@
                 </div>
             </div>
 
-            <!-- CREATE NEW ACCOUNT FORM -->
             <div id="auth-signup-view" class="space-y-3 pt-1 text-left hidden">
                 <div class="flex flex-col items-center justify-center mb-2">
                     <div onclick="document.getElementById('signup-pfp-input').click()" class="w-20 h-20 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 cursor-pointer overflow-hidden relative group">
@@ -402,7 +444,6 @@
                     <span id="signup-pfp-label" class="text-[10px] font-bold text-gray-400 mt-1">Upload PFP from Gallery</span>
                     <input type="file" id="signup-pfp-input" accept="image/*" class="hidden" onchange="previewSignupPfp(event)">
                 </div>
-
                 <div>
                     <label id="signup-name-label" class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Full Name</label>
                     <input type="text" id="signup-name" placeholder="John Doe" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:border-red-600 transition">
@@ -423,7 +464,6 @@
                     <label id="signup-password-label" class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Password</label>
                     <input type="password" id="signup-password" placeholder="••••••••" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:border-red-600 transition">
                 </div>
-
                 <button onclick="handleEmailSignUp()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-sm py-3.5 px-6 rounded-full flex items-center justify-center gap-2 transition shadow-lg active:scale-95 mt-3">
                     <span id="signup-btn-text">Create Account</span>
                 </button>
@@ -439,7 +479,7 @@
         </div>
     </div>
 
-    <!-- HEADER - Only STARDUST CANVAS logo -->
+    <!-- HEADER -->
     <nav id="app-nav" class="sticky top-0 bg-white/95 backdrop-blur-md px-5 py-4 flex items-center justify-between z-40 border-b border-gray-100 shadow-sm transition-all duration-300">
         <div onclick="switchTab('home')" class="text-red-600 font-black text-2xl tracking-tighter cursor-pointer select-none">STARDUST CANVAS</div>
         <div id="cache-status-indicator" class="flex items-center gap-2">
@@ -461,7 +501,7 @@
             <div class="bg-white border border-gray-100 rounded-3xl p-4 shadow-sm min-h-[480px]">
                 <div class="relative mb-4">
                     <svg class="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    <input type="text" id="search-input-tab" onkeyup="performSearch()" placeholder="Search ideas or usernames..." class="w-full bg-[#E9E9E9] pl-10 pr-4 py-3 rounded-full text-sm font-medium focus:outline-none transition">
+                    <input type="text" id="search-input-tab" oninput="performSearch()" placeholder="Search ideas or usernames..." class="w-full bg-[#E9E9E9] pl-10 pr-4 py-3 rounded-full text-sm font-medium focus:outline-none transition">
                 </div>
                 <div id="search-results-container" class="space-y-4">
                     <div class="search-empty-state">
@@ -506,7 +546,6 @@
                 <p id="profile-bio" class="text-sm mt-4 px-8 font-medium italic opacity-85 max-w-md leading-relaxed">No bio written yet.</p>
             </div>
             
-            <!-- Profile Tabs -->
             <div class="flex justify-center gap-2 mt-10 border-b border-gray-100 pb-3 text-sm font-bold">
                 <button onclick="switchProfileTab('uploads')" id="profile-tab-uploads" class="profile-tab-btn active"><span id="profile-tab-uploads-text">Upload Records</span></button>
                 <button onclick="switchProfileTab('saved')" id="profile-tab-saved" class="profile-tab-btn"><span id="profile-tab-saved-text">Saved Pins</span></button>
@@ -526,11 +565,9 @@
                 </div>
                 <button onclick="closeUploadModal()" class="text-gray-400 hover:text-black font-bold p-1 transition">✕</button>
             </div>
-
             <div class="w-full h-40 rounded-2xl bg-gray-50 border border-gray-100 overflow-hidden flex items-center justify-center relative">
                 <img id="upload-preview-img" src="" class="w-full h-full object-cover">
             </div>
-
             <div class="space-y-3">
                 <div>
                     <label id="upload-title-label" class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Post Title</label>
@@ -541,7 +578,6 @@
                     <textarea id="upload-desc-input" rows="2" placeholder="Write a short description..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-red-600 transition resize-none"></textarea>
                 </div>
             </div>
-
             <div class="flex gap-2 pt-2">
                 <button onclick="closeUploadModal()" id="upload-cancel-btn" class="w-1/3 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold py-3 rounded-full transition">Cancel</button>
                 <button onclick="confirmAndPublishUpload()" id="upload-publish-btn" class="w-2/3 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-3 rounded-full transition shadow-lg active:scale-95 flex items-center justify-center gap-1.5">
@@ -551,7 +587,7 @@
         </div>
     </div>
 
-    <!-- SUCCESS POPUP NOTICE -->
+    <!-- SUCCESS TOAST -->
     <div id="upload-success-toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-[220] hidden items-center gap-2.5 bg-gray-900 text-white px-5 py-3 rounded-full shadow-2xl border border-white/20 transition-all duration-300">
         <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
         <span id="toast-success-text" class="text-xs font-bold tracking-wide">Post Published Successfully!</span>
@@ -589,6 +625,8 @@
                             <option value="theme-cyber">Cyberpunk Midnight Blue</option>
                             <option value="theme-gold">Golden Royal Aura</option>
                             <option value="theme-mint">Emerald Mint Luxury</option>
+                            <option value="theme-rose">Rose Gold Elegance</option>
+                            <option value="theme-ocean">Deep Ocean Blue</option>
                         </select>
                     </div>
 
@@ -601,16 +639,26 @@
                             <option value="frame-gold">Royal Gold Border</option>
                             <option value="frame-cyber">Cyber Electric Pulse</option>
                             <option value="frame-diamond">Diamond Sparkle Cut</option>
+                            <option value="frame-rose">Rose Gold Shimmer</option>
+                            <option value="frame-ocean">Ocean Blue Wave</option>
                         </select>
                     </div>
 
                     <div>
                         <label id="nitro-font-label" class="block text-[10px] font-bold text-gray-500 mb-1">SELECT PREMIUM PROFILE FONT</label>
                         <select id="premium-font-select" onchange="applyPremiumCustomization()" class="w-full bg-white border border-purple-300 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none">
-                            <option value="font-modern">Default Modern Sans</option>
-                            <option value="font-serif">Elegant Royal Serif</option>
-                            <option value="font-retro">Retro Hacker Monospace</option>
-                            <option value="font-future">Futuristic Sci-Fi Display</option>
+                            <option value="font-modern">Modern Sans (Inter)</option>
+                            <option value="font-serif">Royal Serif (Cinzel)</option>
+                            <option value="font-retro">Retro Hacker (Fira Code)</option>
+                            <option value="font-future">Sci-Fi Display (Orbitron)</option>
+                            <option value="font-playfair">Elegant Serif (Playfair)</option>
+                            <option value="font-space">Space Grotesk</option>
+                            <option value="font-unbounded">Unbounded Bold</option>
+                            <option value="font-dm">DM Serif Display</option>
+                            <option value="font-jetbrains">JetBrains Mono</option>
+                            <option value="font-oswald">Oswald Bold</option>
+                            <option value="font-poppins">Poppins Bold</option>
+                            <option value="font-raleway">Raleway Bold</option>
                         </select>
                     </div>
                 </div>
@@ -826,14 +874,71 @@
             } catch {}
         }
 
-        function clearCache(key) {
-            try {
-                localStorage.removeItem(key);
-            } catch {}
+        // ========== LOADING SCREEN PROGRESS ==========
+        let loadingProgress = 0;
+        let loadingInterval = null;
+
+        function updateLoadingProgress(percentage, label) {
+            loadingProgress = Math.min(percentage, 100);
+            document.getElementById('progress-fill').style.width = loadingProgress + '%';
+            document.getElementById('progress-percentage').textContent = Math.floor(loadingProgress) + '%';
+            if (label) {
+                document.getElementById('progress-label').textContent = label;
+            }
         }
 
-        let isDataLoadedFromCache = false;
-        let isFirebaseSyncComplete = false;
+        function startLoadingProgress() {
+            let current = 0;
+            const steps = [
+                { target: 10, label: 'Initializing Core System...' },
+                { target: 25, label: 'Loading User Data...' },
+                { target: 40, label: 'Connecting to Firebase...' },
+                { target: 55, label: 'Fetching Posts...' },
+                { target: 70, label: 'Loading Profiles...' },
+                { target: 85, label: 'Finalizing Setup...' },
+                { target: 95, label: 'Almost Ready...' }
+            ];
+            
+            let stepIndex = 0;
+            
+            loadingInterval = setInterval(() => {
+                if (stepIndex < steps.length) {
+                    const step = steps[stepIndex];
+                    if (current < step.target) {
+                        current += 1 + Math.random() * 2;
+                        current = Math.min(current, step.target);
+                        updateLoadingProgress(current, step.label);
+                    } else {
+                        stepIndex++;
+                    }
+                } else {
+                    current += 0.5;
+                    if (current >= 100) {
+                        clearInterval(loadingInterval);
+                        updateLoadingProgress(100, 'Ready!');
+                        setTimeout(() => {
+                            document.getElementById('loading-screen').classList.add('hidden');
+                        }, 500);
+                    } else {
+                        updateLoadingProgress(current, 'Loading...');
+                    }
+                }
+            }, 80);
+        }
+
+        function completeLoading() {
+            if (loadingInterval) {
+                clearInterval(loadingInterval);
+                loadingInterval = null;
+            }
+            updateLoadingProgress(100, 'Ready!');
+            setTimeout(() => {
+                document.getElementById('loading-screen').classList.add('hidden');
+            }, 500);
+        }
+
+        // Start loading
+        startLoadingProgress();
 
         // ========== COMPLETE LANGUAGE PACK ==========
         const langPack = {
@@ -1009,7 +1114,6 @@
                 cached: "● कैश्ड",
                 syncing: "⟳ सिंक हो रहा..."
             },
-            // ... (other languages compressed for space - same as previous with cached/syncing added)
             bn: {
                 loadingText: "কোর সিস্টেম শুরু হচ্ছে...",
                 tagline: "আপনার ক্লাউড সিঙ্ক প্রোফাইলের সাথে প্রিমিয়াম ভিজ্যুয়াল আইডিয়া আবিষ্কার, ট্র্যাক এবং শেয়ার করুন তাৎক্ষণিকভাবে।",
@@ -1096,8 +1200,1038 @@
                 cached: "● ক্যাশেড",
                 syncing: "⟳ সিঙ্ক হচ্ছে..."
             },
-            // ... (other languages continue with cached/syncing added similarly)
-            // For brevity, I'm including just the key languages fully. The full code would have all languages.
+            gu: {
+                loadingText: "કોર સિસ્ટમ શરૂ થઈ રહી છે...",
+                tagline: "તમારા ક્લાઉડ સિંક પ્રોફાઇલ સાથે પ્રીમિયમ વિઝ્યુઅલ આઈડિયાઝ શોધો, ટ્રેક કરો અને તાત્કાલિક શેર કરો.",
+                loginBtn: "સાઇન ઇન કરો",
+                signupBtn: "ખાતું બનાવો",
+                emailLabel: "ઇમેઇલ સરનામું",
+                passwordLabel: "પાસવર્ડ",
+                noAccount: "ખાતું નથી?",
+                haveAccount: "પહેલેથી નોંધાયેલા?",
+                signIn: "સાઇન ઇન કરો",
+                createNew: "નવું ખાતું બનાવો",
+                privacyPolicy: "ગોપનીયતા નીતિ",
+                termsService: "સેવાની શરતો",
+                uploadPfp: "ગેલેરીમાંથી PFP અપલોડ કરો",
+                fullName: "પૂરું નામ",
+                usernameLabel: "વપરાશકર્તા નામ (@)",
+                bioLabel: "બાયો",
+                searchPlaceholder: "વિચારો અથવા વપરાશકર્તાઓ શોધો...",
+                searchHint: "શીર્ષક, વર્ણન અથવા વપરાશકર્તા નામ દ્વારા વપરાશકર્તાઓ અથવા પોસ્ટ્સ શોધો",
+                noResults: "કોઈ પરિણામ મળ્યું નથી",
+                users: "વપરાશકર્તાઓ",
+                posts: "પોસ્ટ્સ",
+                viewProfile: "પ્રોફાઇલ જુઓ",
+                viewPost: "પોસ્ટ જુઓ",
+                postTitle: "પોસ્ટ શીર્ષક",
+                description: "વર્ણન (વૈકલ્પિક)",
+                cancel: "રદ કરો",
+                publish: "પોસ્ટ પ્રકાશિત કરો",
+                successToast: "પોસ્ટ સફળતાપૂર્વક પ્રકાશિત!",
+                settingsTitle: "સેટિંગ્સ",
+                nitroTitle: "સ્ટારડસ્ટ નાઇટ્રો પ્રીમિયમ",
+                nitroDesc: "રંગો, એનિમેશન, પ્રીમિયમ ફોન્ટ્સ અને કસ્ટમ પૃષ્ઠભૂમિઓ અનલૉક કરો!",
+                nitroActivate: "સદસ્યતા સક્રિય કરો",
+                nitroCustom: "નાઇટ્રો કસ્ટમાઇઝેશન પેડ",
+                nitroTheme: "પ્રોફાઇલ પૃષ્ઠભૂમિ થીમ પસંદ કરો",
+                nitroFrame: "પ્રીમિયમ PFP ફ્રેમ પસંદ કરો",
+                nitroFont: "પ્રીમિયમ પ્રોફાઇલ ફોન્ટ પસંદ કરો",
+                optAccount: "૧. નામ, બાયો અને હેન્ડલ સંપાદિત કરો",
+                optPfp: "૨. પ્રોફાઇલ ચિત્ર બદલો",
+                optLang: "૩. સિસ્ટમ ભાષા",
+                optSupport: "૪. ગ્રાહક સહાય",
+                optPrivacy: "૫. ગોપનીયતા નીતિ",
+                optTerms: "૬. સેવાની શરતો",
+                optDelete: "૭. ખાતું કાઢી નાખો",
+                closeSettings: "બંધ કરો",
+                signOut: "સાઇન આઉટ",
+                identityTitle: "ઓળખ વ્યવસ્થાપન",
+                handleLabel: "સ્ટારડસ્ટ અનોખું હેન્ડલ (@)",
+                displayName: "પ્રદર્શન નામ",
+                customBio: "કસ્ટમ બાયો",
+                saveIdentity: "ઓળખ સાચવો",
+                pfpTitle: "પ્રોફાઇલ ચિત્ર",
+                openGallery: "સ્થાનિક ગેલેરી ખોલો",
+                langSelectTitle: "ભાષા પસંદ કરો",
+                langClose: "બંધ કરો",
+                supportTitle: "સપોર્ટ પોર્ટલ",
+                submitTicket: "ટિકિટ સબમિટ કરો",
+                deleteTitle: "ખાતું કાઢી નાખો",
+                deleteWarning: "આ ક્રિયા કાયમી છે અને તેને પૂર્વવત્ કરી શકાતી નથી. તમારા પોસ્ટ્સ, ચેટ્સ અને પ્રોફાઇલ માહિતી સહિતનો તમામ ડેટા દૂર કરવામાં આવશે.",
+                deletePermanent: "મારું ખાતું કાયમી રૂપે કાઢી નાખો",
+                commentsTitle: "ટિપ્પણીઓ",
+                commentPlaceholder: "પ્રતિસાદ લખો...",
+                commentPost: "પોસ્ટ",
+                downloadBtn: "ડાઉનલોડ",
+                savePin: "પિન સાચવો",
+                unsavePin: "પિન દૂર કરો",
+                likes: "લાઇક્સ",
+                commentsBtn: "ટિપ્પણીઓ",
+                by: "દ્વારા",
+                followers: "અનુયાયીઓ",
+                following: "અનુસરે છે",
+                uploadRecords: "અપલોડ રેકોર્ડ્સ",
+                savedPins: "સેવ કરેલા પિન",
+                backToMySpace: "મારી જગ્યા પર પાછા",
+                noUploads: "કોઈ અપલોડ શેર કરવામાં આવ્યા નથી.",
+                noSavedPins: "હજી સુધી કોઈ પિન સેવ કરવામાં આવી નથી. તમારી પસંદીદા પોસ્ટ્સ સેવ કરવાનું શરૂ કરો!",
+                loginToSave: "સેવ કરવા માટે લોગિન કરો",
+                createPost: "નવી પોસ્ટ બનાવો",
+                titlePlaceholder: "તમારા વિઝ્યુઅલને એક શીર્ષક આપો...",
+                descPlaceholder: "એક ટૂંકું વર્ણન લખો...",
+                noCards: "કોઈ કાર્ડ શેર કરવામાં આવ્યા નથી.",
+                searchUsers: "વપરાશકર્તાઓ અથવા પોસ્ટ્સ શોધો...",
+                submitComment: "પોસ્ટ",
+                cached: "● કેશ્ડ",
+                syncing: "⟳ સિંક થઈ રહ્યું છે..."
+            },
+            ko: {
+                loadingText: "코어 시스템 초기화 중...",
+                tagline: "클라우드 동기화 프로필로 프리미엄 시각적 아이디어를 즉시 발견, 추적 및 공유하세요.",
+                loginBtn: "로그인",
+                signupBtn: "계정 만들기",
+                emailLabel: "이메일 주소",
+                passwordLabel: "비밀번호",
+                noAccount: "계정이 없으신가요?",
+                haveAccount: "이미 등록하셨나요?",
+                signIn: "로그인",
+                createNew: "새 계정 만들기",
+                privacyPolicy: "개인정보 보호정책",
+                termsService: "서비스 약관",
+                uploadPfp: "갤러리에서 PFP 업로드",
+                fullName: "전체 이름",
+                usernameLabel: "사용자 이름 (@)",
+                bioLabel: "소개",
+                searchPlaceholder: "아이디어 또는 사용자 검색...",
+                searchHint: "제목, 설명 또는 사용자 이름으로 사용자 또는 게시물 검색",
+                noResults: "결과를 찾을 수 없음",
+                users: "사용자",
+                posts: "게시물",
+                viewProfile: "프로필 보기",
+                viewPost: "게시물 보기",
+                postTitle: "게시물 제목",
+                description: "설명 (선택 사항)",
+                cancel: "취소",
+                publish: "게시물 게시",
+                successToast: "게시물이 성공적으로 게시되었습니다!",
+                settingsTitle: "설정",
+                nitroTitle: "스타더스트 나이트로 프리미엄",
+                nitroDesc: "색상, 애니메이션, 프리미엄 글꼴 및 사용자 정의 배경을 잠금 해제하세요!",
+                nitroActivate: "멤버십 활성화",
+                nitroCustom: "나이트로 맞춤 설정 패드",
+                nitroTheme: "프로필 배경 테마 선택",
+                nitroFrame: "프리미엄 PFP 프레임 선택",
+                nitroFont: "프리미엄 프로필 글꼴 선택",
+                optAccount: "1. 이름, 소개 및 핸들 편집",
+                optPfp: "2. 프로필 사진 변경",
+                optLang: "3. 시스템 언어",
+                optSupport: "4. 고객 지원",
+                optPrivacy: "5. 개인정보 보호정책",
+                optTerms: "6. 서비스 약관",
+                optDelete: "7. 계정 삭제",
+                closeSettings: "닫기",
+                signOut: "로그아웃",
+                identityTitle: "신원 관리",
+                handleLabel: "스타더스트 고유 핸들 (@)",
+                displayName: "표시 이름",
+                customBio: "사용자 정의 소개",
+                saveIdentity: "신원 저장",
+                pfpTitle: "프로필 사진",
+                openGallery: "로컬 갤러리 열기",
+                langSelectTitle: "언어 선택",
+                langClose: "닫기",
+                supportTitle: "지원 포털",
+                submitTicket: "티켓 제출",
+                deleteTitle: "계정 삭제",
+                deleteWarning: "이 작업은 영구적이며 취소할 수 없습니다. 게시물, 채팅 및 프로필 정보를 포함한 모든 데이터가 삭제됩니다.",
+                deletePermanent: "내 계정 영구 삭제",
+                commentsTitle: "댓글",
+                commentPlaceholder: "의견을 작성하세요...",
+                commentPost: "게시",
+                downloadBtn: "다운로드",
+                savePin: "핀 저장",
+                unsavePin: "핀 제거",
+                likes: "좋아요",
+                commentsBtn: "댓글",
+                by: "작성자",
+                followers: "팔로워",
+                following: "팔로잉",
+                uploadRecords: "업로드 기록",
+                savedPins: "저장된 핀",
+                backToMySpace: "내 공간으로 돌아가기",
+                noUploads: "공유된 업로드가 없습니다.",
+                noSavedPins: "아직 저장된 핀이 없습니다. 좋아하는 게시물을 저장하세요!",
+                loginToSave: "저장하려면 로그인하세요",
+                createPost: "새 게시물 만들기",
+                titlePlaceholder: "시각 자료에 제목을 붙이세요...",
+                descPlaceholder: "간단한 설명을 작성하세요...",
+                noCards: "공유된 카드가 없습니다.",
+                searchUsers: "사용자 또는 게시물 검색...",
+                submitComment: "게시",
+                cached: "● 캐시됨",
+                syncing: "⟳ 동기화 중..."
+            },
+            zh: {
+                loadingText: "核心系统初始化中...",
+                tagline: "通过云同步个人资料即时发现、跟踪和分享高级视觉创意。",
+                loginBtn: "登录",
+                signupBtn: "创建帐户",
+                emailLabel: "电子邮件地址",
+                passwordLabel: "密码",
+                noAccount: "没有帐户？",
+                haveAccount: "已经注册？",
+                signIn: "登录",
+                createNew: "创建新帐户",
+                privacyPolicy: "隐私政策",
+                termsService: "服务条款",
+                uploadPfp: "从图库上传头像",
+                fullName: "全名",
+                usernameLabel: "用户名 (@)",
+                bioLabel: "简介",
+                searchPlaceholder: "搜索创意或用户名...",
+                searchHint: "按标题、描述或用户名搜索用户或帖子",
+                noResults: "未找到结果",
+                users: "用户",
+                posts: "帖子",
+                viewProfile: "查看个人资料",
+                viewPost: "查看帖子",
+                postTitle: "帖子标题",
+                description: "描述（可选）",
+                cancel: "取消",
+                publish: "发布帖子",
+                successToast: "帖子发布成功！",
+                settingsTitle: "设置",
+                nitroTitle: "星尘氮气高级版",
+                nitroDesc: "解锁颜色、动画、高级字体和自定义背景！",
+                nitroActivate: "激活会员资格",
+                nitroCustom: "氮气定制面板",
+                nitroTheme: "选择个人资料背景主题",
+                nitroFrame: "选择高级头像边框",
+                nitroFont: "选择高级个人资料字体",
+                optAccount: "1. 编辑姓名、简介和用户名",
+                optPfp: "2. 更改个人资料图片",
+                optLang: "3. 系统语言",
+                optSupport: "4. 客户支持",
+                optPrivacy: "5. 隐私政策",
+                optTerms: "6. 服务条款",
+                optDelete: "7. 删除帐户",
+                closeSettings: "关闭",
+                signOut: "退出",
+                identityTitle: "身份管理",
+                handleLabel: "星尘唯一用户名 (@)",
+                displayName: "显示名称",
+                customBio: "自定义简介",
+                saveIdentity: "保存身份",
+                pfpTitle: "个人资料图片",
+                openGallery: "打开本地图库",
+                langSelectTitle: "选择语言",
+                langClose: "关闭",
+                supportTitle: "支持门户",
+                submitTicket: "提交工单",
+                deleteTitle: "删除帐户",
+                deleteWarning: "此操作是永久性的，无法撤消。您的所有数据，包括帖子、聊天和个人资料信息都将被删除。",
+                deletePermanent: "永久删除我的帐户",
+                commentsTitle: "评论",
+                commentPlaceholder: "写反馈...",
+                commentPost: "发布",
+                downloadBtn: "下载",
+                savePin: "保存图钉",
+                unsavePin: "取消保存",
+                likes: "点赞",
+                commentsBtn: "评论",
+                by: "发布者",
+                followers: "关注者",
+                following: "正在关注",
+                uploadRecords: "上传记录",
+                savedPins: "已保存的图钉",
+                backToMySpace: "返回我的空间",
+                noUploads: "没有分享的上传。",
+                noSavedPins: "还没有保存的图钉。开始保存您最喜欢的帖子！",
+                loginToSave: "登录以保存",
+                createPost: "创建新帖子",
+                titlePlaceholder: "为您的视觉创意添加标题...",
+                descPlaceholder: "写一个简短描述...",
+                noCards: "没有分享的卡片。",
+                searchUsers: "搜索用户或帖子...",
+                submitComment: "发布",
+                cached: "● 已缓存",
+                syncing: "⟳ 同步中..."
+            },
+            'zh-TW': {
+                loadingText: "核心系統初始化中...",
+                tagline: "透過雲端同步個人檔案即時發現、追蹤和分享高級視覺創意。",
+                loginBtn: "登入",
+                signupBtn: "建立帳戶",
+                emailLabel: "電子郵件地址",
+                passwordLabel: "密碼",
+                noAccount: "沒有帳戶？",
+                haveAccount: "已經註冊？",
+                signIn: "登入",
+                createNew: "建立新帳戶",
+                privacyPolicy: "隱私政策",
+                termsService: "服務條款",
+                uploadPfp: "從圖庫上傳大頭貼",
+                fullName: "全名",
+                usernameLabel: "用戶名稱 (@)",
+                bioLabel: "簡介",
+                searchPlaceholder: "搜尋創意或用戶名...",
+                searchHint: "按標題、描述或用戶名稱搜尋用戶或貼文",
+                noResults: "找不到結果",
+                users: "用戶",
+                posts: "貼文",
+                viewProfile: "查看個人檔案",
+                viewPost: "查看貼文",
+                postTitle: "貼文標題",
+                description: "描述（可選）",
+                cancel: "取消",
+                publish: "發佈貼文",
+                successToast: "貼文發佈成功！",
+                settingsTitle: "設定",
+                nitroTitle: "星塵氮氣高級版",
+                nitroDesc: "解鎖顏色、動畫、高級字體和自訂背景！",
+                nitroActivate: "啟動會員資格",
+                nitroCustom: "氮氣自訂面板",
+                nitroTheme: "選擇個人檔案背景主題",
+                nitroFrame: "選擇高級大頭貼邊框",
+                nitroFont: "選擇高級個人檔案字體",
+                optAccount: "1. 編輯姓名、簡介和用戶名",
+                optPfp: "2. 更改個人資料圖片",
+                optLang: "3. 系統語言",
+                optSupport: "4. 客戶支援",
+                optPrivacy: "5. 隱私政策",
+                optTerms: "6. 服務條款",
+                optDelete: "7. 刪除帳戶",
+                closeSettings: "關閉",
+                signOut: "登出",
+                identityTitle: "身份管理",
+                handleLabel: "星塵唯一用戶名 (@)",
+                displayName: "顯示名稱",
+                customBio: "自訂簡介",
+                saveIdentity: "儲存身份",
+                pfpTitle: "個人檔案圖片",
+                openGallery: "打開本地圖庫",
+                langSelectTitle: "選擇語言",
+                langClose: "關閉",
+                supportTitle: "支援入口",
+                submitTicket: "提交工單",
+                deleteTitle: "刪除帳戶",
+                deleteWarning: "此操作是永久性的，無法撤消。您的所有數據，包括貼文、聊天和個人檔案信息都將被刪除。",
+                deletePermanent: "永久刪除我的帳戶",
+                commentsTitle: "評論",
+                commentPlaceholder: "寫回饋...",
+                commentPost: "發佈",
+                downloadBtn: "下載",
+                savePin: "儲存圖釘",
+                unsavePin: "取消儲存",
+                likes: "讚",
+                commentsBtn: "評論",
+                by: "發布者",
+                followers: "追蹤者",
+                following: "正在追蹤",
+                uploadRecords: "上傳記錄",
+                savedPins: "已儲存的圖釘",
+                backToMySpace: "返回我的空間",
+                noUploads: "沒有分享的上傳。",
+                noSavedPins: "還沒有儲存的圖釘。開始儲存您最喜歡的貼文！",
+                loginToSave: "登入以儲存",
+                createPost: "建立新貼文",
+                titlePlaceholder: "為您的視覺創意添加標題...",
+                descPlaceholder: "寫一個簡短描述...",
+                noCards: "沒有分享的卡片。",
+                searchUsers: "搜尋用戶或貼文...",
+                submitComment: "發佈",
+                cached: "● 已快取",
+                syncing: "⟳ 同步中..."
+            },
+            ru: {
+                loadingText: "Инициализация основной системы...",
+                tagline: "Открывайте, отслеживайте и делитесь премиальными визуальными идеями с помощью облачного синхронизированного профиля мгновенно.",
+                loginBtn: "Войти",
+                signupBtn: "Создать аккаунт",
+                emailLabel: "Адрес электронной почты",
+                passwordLabel: "Пароль",
+                noAccount: "Нет аккаунта?",
+                haveAccount: "Уже зарегистрированы?",
+                signIn: "Войти",
+                createNew: "Создать новый аккаунт",
+                privacyPolicy: "Политика конфиденциальности",
+                termsService: "Условия использования",
+                uploadPfp: "Загрузить фото из галереи",
+                fullName: "Полное имя",
+                usernameLabel: "Имя пользователя (@)",
+                bioLabel: "Биография",
+                searchPlaceholder: "Поиск идей или пользователей...",
+                searchHint: "Поиск пользователей или постов по названию, описанию или имени пользователя",
+                noResults: "Результаты не найдены",
+                users: "Пользователи",
+                posts: "Посты",
+                viewProfile: "Просмотр профиля",
+                viewPost: "Просмотр поста",
+                postTitle: "Заголовок поста",
+                description: "Описание (необязательно)",
+                cancel: "Отмена",
+                publish: "Опубликовать",
+                successToast: "Пост успешно опубликован!",
+                settingsTitle: "Настройки",
+                nitroTitle: "STARDUST NITRO PREMIUM",
+                nitroDesc: "Разблокируйте цвета, анимации, премиальные шрифты и пользовательские фоны!",
+                nitroActivate: "Активировать членство",
+                nitroCustom: "Панель настройки Nitro",
+                nitroTheme: "ВЫБЕРИТЕ ТЕМУ ФОНА ПРОФИЛЯ",
+                nitroFrame: "ВЫБЕРИТЕ ПРЕМИАЛЬНУЮ РАМКУ ДЛЯ ФОТО",
+                nitroFont: "ВЫБЕРИТЕ ПРЕМИАЛЬНЫЙ ШРИФТ ПРОФИЛЯ",
+                optAccount: "1. Редактировать имя, био и хэндл",
+                optPfp: "2. Изменить фото профиля",
+                optLang: "3. Язык системы",
+                optSupport: "4. Поддержка клиентов",
+                optPrivacy: "5. Политика конфиденциальности",
+                optTerms: "6. Условия использования",
+                optDelete: "7. Удалить аккаунт",
+                closeSettings: "Закрыть",
+                signOut: "Выйти",
+                identityTitle: "Управление идентификацией",
+                handleLabel: "УНИКАЛЬНЫЙ ХЭНДЛ STARDUST (@)",
+                displayName: "ОТОБРАЖАЕМОЕ ИМЯ",
+                customBio: "ПОЛЬЗОВАТЕЛЬСКАЯ БИОГРАФИЯ",
+                saveIdentity: "Сохранить",
+                pfpTitle: "Фото профиля",
+                openGallery: "Открыть галерею",
+                langSelectTitle: "Выберите язык",
+                langClose: "Закрыть",
+                supportTitle: "Портал поддержки",
+                submitTicket: "Отправить запрос",
+                deleteTitle: "Удалить аккаунт",
+                deleteWarning: "Это действие является постоянным и не может быть отменено. Все ваши данные, включая посты, чаты и информацию профиля, будут удалены.",
+                deletePermanent: "Навсегда удалить мой аккаунт",
+                commentsTitle: "Комментарии",
+                commentPlaceholder: "Напишите отзыв...",
+                commentPost: "Опубликовать",
+                downloadBtn: "Скачать",
+                savePin: "Сохранить пин",
+                unsavePin: "Отменить сохранение",
+                likes: "лайков",
+                commentsBtn: "Комментарии",
+                by: "ОТ",
+                followers: "Подписчики",
+                following: "Подписки",
+                uploadRecords: "Записи загрузок",
+                savedPins: "Сохранённые пины",
+                backToMySpace: "Назад в мое пространство",
+                noUploads: "Нет опубликованных загрузок.",
+                noSavedPins: "Нет сохранённых пинов. Начните сохранять ваши любимые посты!",
+                loginToSave: "Войдите, чтобы сохранять",
+                createPost: "Создать новый пост",
+                titlePlaceholder: "Дайте заголовок вашему визуалу...",
+                descPlaceholder: "Напишите краткое описание...",
+                noCards: "Нет опубликованных карточек.",
+                searchUsers: "Поиск пользователей или постов...",
+                submitComment: "Опубликовать",
+                cached: "● Кешировано",
+                syncing: "⟳ Синхронизация..."
+            },
+            vi: {
+                loadingText: "Khởi tạo hệ thống cốt lõi...",
+                tagline: "Khám phá, theo dõi và chia sẻ ý tưởng hình ảnh cao cấp với hồ sơ đồng bộ đám mây của bạn ngay lập tức.",
+                loginBtn: "Đăng nhập",
+                signupBtn: "Tạo tài khoản",
+                emailLabel: "Địa chỉ email",
+                passwordLabel: "Mật khẩu",
+                noAccount: "Chưa có tài khoản?",
+                haveAccount: "Đã đăng ký?",
+                signIn: "Đăng nhập",
+                createNew: "Tạo tài khoản mới",
+                privacyPolicy: "Chính sách bảo mật",
+                termsService: "Điều khoản dịch vụ",
+                uploadPfp: "Tải ảnh đại diện từ thư viện",
+                fullName: "Họ và tên",
+                usernameLabel: "Tên người dùng (@)",
+                bioLabel: "Tiểu sử",
+                searchPlaceholder: "Tìm kiếm ý tưởng hoặc tên người dùng...",
+                searchHint: "Tìm kiếm người dùng hoặc bài đăng theo tiêu đề, mô tả hoặc tên người dùng",
+                noResults: "Không tìm thấy kết quả",
+                users: "Người dùng",
+                posts: "Bài đăng",
+                viewProfile: "Xem hồ sơ",
+                viewPost: "Xem bài đăng",
+                postTitle: "Tiêu đề bài đăng",
+                description: "Mô tả (Tùy chọn)",
+                cancel: "Hủy",
+                publish: "Đăng bài",
+                successToast: "Đăng bài thành công!",
+                settingsTitle: "Cài đặt",
+                nitroTitle: "STARDUST NITRO PREMIUM",
+                nitroDesc: "Mở khóa màu sắc, hoạt ảnh, phông chữ cao cấp và nền tùy chỉnh!",
+                nitroActivate: "Kích hoạt thành viên",
+                nitroCustom: "Bảng tùy chỉnh Nitro",
+                nitroTheme: "CHỌN CHỦ ĐỀ NỀN HỒ SƠ",
+                nitroFrame: "CHỌN KHUNG ẢNH ĐẠI DIỆN CAO CẤP",
+                nitroFont: "CHỌN PHÔNG CHỮ HỒ SƠ CAO CẤP",
+                optAccount: "1. Chỉnh sửa tên, tiểu sử và tên người dùng",
+                optPfp: "2. Thay đổi ảnh đại diện",
+                optLang: "3. Ngôn ngữ hệ thống",
+                optSupport: "4. Hỗ trợ khách hàng",
+                optPrivacy: "5. Chính sách bảo mật",
+                optTerms: "6. Điều khoản dịch vụ",
+                optDelete: "7. Xóa tài khoản",
+                closeSettings: "Đóng",
+                signOut: "Đăng xuất",
+                identityTitle: "Quản lý danh tính",
+                handleLabel: "TÊN NGƯỜI DÙNG DUY NHẤT STARDUST (@)",
+                displayName: "TÊN HIỂN THỊ",
+                customBio: "TIỂU SỬ TÙY CHỈNH",
+                saveIdentity: "Lưu danh tính",
+                pfpTitle: "Ảnh đại diện",
+                openGallery: "Mở thư viện ảnh",
+                langSelectTitle: "Chọn ngôn ngữ",
+                langClose: "Đóng",
+                supportTitle: "Cổng hỗ trợ",
+                submitTicket: "Gửi yêu cầu",
+                deleteTitle: "Xóa tài khoản",
+                deleteWarning: "Hành động này là vĩnh viễn và không thể hoàn tác. Tất cả dữ liệu của bạn bao gồm bài đăng, trò chuyện và thông tin hồ sơ sẽ bị xóa.",
+                deletePermanent: "Xóa vĩnh viễn tài khoản của tôi",
+                commentsTitle: "Bình luận",
+                commentPlaceholder: "Viết phản hồi...",
+                commentPost: "Đăng",
+                downloadBtn: "Tải xuống",
+                savePin: "Lưu Ghim",
+                unsavePin: "Bỏ lưu",
+                likes: "lượt thích",
+                commentsBtn: "Bình luận",
+                by: "BỞI",
+                followers: "Người theo dõi",
+                following: "Đang theo dõi",
+                uploadRecords: "Bản ghi tải lên",
+                savedPins: "Ghim đã lưu",
+                backToMySpace: "Quay lại không gian của tôi",
+                noUploads: "Chưa có tải lên nào được chia sẻ.",
+                noSavedPins: "Chưa có ghim nào được lưu. Bắt đầu lưu các bài đăng yêu thích của bạn!",
+                loginToSave: "Đăng nhập để lưu",
+                createPost: "Tạo bài đăng mới",
+                titlePlaceholder: "Đặt tiêu đề cho hình ảnh của bạn...",
+                descPlaceholder: "Viết mô tả ngắn...",
+                noCards: "Chưa có thẻ nào được chia sẻ.",
+                searchUsers: "Tìm kiếm người dùng hoặc bài đăng...",
+                submitComment: "Đăng",
+                cached: "● Đã lưu cache",
+                syncing: "⟳ Đang đồng bộ..."
+            },
+            th: {
+                loadingText: "กำลังเริ่มต้นระบบหลัก...",
+                tagline: "ค้นหา ติดตาม และแบ่งปันไอเดียภาพระดับพรีเมียมด้วยโปรไฟล์ที่ซิงค์กับคลาวด์ของคุณได้ทันที",
+                loginBtn: "เข้าสู่ระบบ",
+                signupBtn: "สร้างบัญชี",
+                emailLabel: "ที่อยู่อีเมล",
+                passwordLabel: "รหัสผ่าน",
+                noAccount: "ยังไม่มีบัญชี?",
+                haveAccount: "ลงทะเบียนแล้ว?",
+                signIn: "เข้าสู่ระบบ",
+                createNew: "สร้างบัญชีใหม่",
+                privacyPolicy: "นโยบายความเป็นส่วนตัว",
+                termsService: "ข้อกำหนดการให้บริการ",
+                uploadPfp: "อัปโหลดรูปโปรไฟล์จากแกลเลอรี",
+                fullName: "ชื่อเต็ม",
+                usernameLabel: "ชื่อผู้ใช้ (@)",
+                bioLabel: "ประวัติ",
+                searchPlaceholder: "ค้นหาไอเดียหรือชื่อผู้ใช้...",
+                searchHint: "ค้นหาผู้ใช้หรือโพสต์ตามชื่อเรื่อง คำอธิบาย หรือชื่อผู้ใช้",
+                noResults: "ไม่พบผลลัพธ์",
+                users: "ผู้ใช้",
+                posts: "โพสต์",
+                viewProfile: "ดูโปรไฟล์",
+                viewPost: "ดูโพสต์",
+                postTitle: "หัวข้อโพสต์",
+                description: "คำอธิบาย (ไม่บังคับ)",
+                cancel: "ยกเลิก",
+                publish: "เผยแพร่โพสต์",
+                successToast: "โพสต์เผยแพร่สำเร็จ!",
+                settingsTitle: "การตั้งค่า",
+                nitroTitle: "STARDUST NITRO PREMIUM",
+                nitroDesc: "ปลดล็อกสีสัน แอนิเมชัน ฟอนต์พรีเมียม และพื้นหลังแบบกำหนดเอง!",
+                nitroActivate: "เปิดใช้งานสมาชิกภาพ",
+                nitroCustom: "แผงปรับแต่ง Nitro",
+                nitroTheme: "เลือกธีมพื้นหลังโปรไฟล์",
+                nitroFrame: "เลือกกรอบรูปโปรไฟล์พรีเมียม",
+                nitroFont: "เลือกฟอนต์โปรไฟล์พรีเมียม",
+                optAccount: "1. แก้ไขชื่อ ประวัติ และแฮนเดิล",
+                optPfp: "2. เปลี่ยนรูปโปรไฟล์",
+                optLang: "3. ภาษาระบบ",
+                optSupport: "4. การสนับสนุนลูกค้า",
+                optPrivacy: "5. นโยบายความเป็นส่วนตัว",
+                optTerms: "6. ข้อกำหนดการให้บริการ",
+                optDelete: "7. ลบบัญชี",
+                closeSettings: "ปิด",
+                signOut: "ออกจากระบบ",
+                identityTitle: "การจัดการข้อมูลประจำตัว",
+                handleLabel: "แฮนเดิลเฉพาะ STARDUST (@)",
+                displayName: "ชื่อที่แสดง",
+                customBio: "ประวัติแบบกำหนดเอง",
+                saveIdentity: "บันทึกข้อมูล",
+                pfpTitle: "รูปโปรไฟล์",
+                openGallery: "เปิดแกลเลอรีในเครื่อง",
+                langSelectTitle: "เลือกภาษา",
+                langClose: "ปิด",
+                supportTitle: "พอร์ทัลสนับสนุน",
+                submitTicket: "ส่งคำขอ",
+                deleteTitle: "ลบบัญชี",
+                deleteWarning: "การดำเนินการนี้เป็นแบบถาวรและไม่สามารถยกเลิกได้ ข้อมูลทั้งหมดของคุณรวมถึงโพสต์ แชท และข้อมูลโปรไฟล์จะถูกลบ",
+                deletePermanent: "ลบบัญชีของฉันอย่างถาวร",
+                commentsTitle: "ความคิดเห็น",
+                commentPlaceholder: "เขียนข้อเสนอแนะ...",
+                commentPost: "โพสต์",
+                downloadBtn: "ดาวน์โหลด",
+                savePin: "บันทึกพิน",
+                unsavePin: "ยกเลิกการบันทึก",
+                likes: "ถูกใจ",
+                commentsBtn: "ความคิดเห็น",
+                by: "โดย",
+                followers: "ผู้ติดตาม",
+                following: "กำลังติดตาม",
+                uploadRecords: "บันทึกการอัปโหลด",
+                savedPins: "พินที่บันทึกไว้",
+                backToMySpace: "กลับสู่พื้นที่ของฉัน",
+                noUploads: "ไม่มีการอัปโหลดที่แชร์",
+                noSavedPins: "ยังไม่มีพินที่บันทึกไว้ เริ่มบันทึกโพสต์ที่คุณชอบ!",
+                loginToSave: "เข้าสู่ระบบเพื่อบันทึก",
+                createPost: "สร้างโพสต์ใหม่",
+                titlePlaceholder: "ตั้งชื่อให้ภาพของคุณ...",
+                descPlaceholder: "เขียนคำอธิบายสั้นๆ...",
+                noCards: "ไม่มีบัตรที่แชร์",
+                searchUsers: "ค้นหาผู้ใช้หรือโพสต์...",
+                submitComment: "โพสต์",
+                cached: "● แคชแล้ว",
+                syncing: "⟳ กำลังซิงค์..."
+            },
+            ur: {
+                loadingText: "کور سسٹم شروع ہو رہا ہے...",
+                tagline: "اپنے کلاؤڈ سنک پروفائل کے ساتھ پریمیم بصری آئیڈیاز کو فوری طور پر دریافت، ٹریک اور شیئر کریں۔",
+                loginBtn: "سائن ان کریں",
+                signupBtn: "اکاؤنٹ بنائیں",
+                emailLabel: "ای میل پتہ",
+                passwordLabel: "پاس ورڈ",
+                noAccount: "اکاؤنٹ نہیں ہے؟",
+                haveAccount: "پہلے سے رجسٹرڈ ہیں؟",
+                signIn: "سائن ان کریں",
+                createNew: "نیا اکاؤنٹ بنائیں",
+                privacyPolicy: "رازداری کی پالیسی",
+                termsService: "خدمت کی شرائط",
+                uploadPfp: "گیلری سے PFP اپ لوڈ کریں",
+                fullName: "مکمل نام",
+                usernameLabel: "صارف کا نام (@)",
+                bioLabel: "بایو",
+                searchPlaceholder: "آئیڈیاز یا صارفین تلاش کریں...",
+                searchHint: "عنوان، تفصیل یا صارف نام کے ذریعے صارفین یا پوسٹس تلاش کریں",
+                noResults: "کوئی نتیجہ نہیں ملا",
+                users: "صارفین",
+                posts: "پوسٹس",
+                viewProfile: "پروفائل دیکھیں",
+                viewPost: "پوسٹ دیکھیں",
+                postTitle: "پوسٹ کا عنوان",
+                description: "تفصیل (اختیاری)",
+                cancel: "منسوخ کریں",
+                publish: "پوسٹ شائع کریں",
+                successToast: "پوسٹ کامیابی سے شائع ہوگئی!",
+                settingsTitle: "ترتیبات",
+                nitroTitle: "اسٹارڈسٹ نائٹرو پریمیم",
+                nitroDesc: "رنگ، اینیمیشنز، پریمیم فونٹس اور کسٹم پس منظر انلاک کریں!",
+                nitroActivate: "رکنیت فعال کریں",
+                nitroCustom: "نائٹرو تخصیص پیڈ",
+                nitroTheme: "پروفائل پس منظر تھیم منتخب کریں",
+                nitroFrame: "پریمیم PFP فریم منتخب کریں",
+                nitroFont: "پریمیم پروفائل فونٹ منتخب کریں",
+                optAccount: "1. نام، بایو اور ہینڈل میں ترمیم کریں",
+                optPfp: "2. پروفائل تصویر تبدیل کریں",
+                optLang: "3. نظام کی زبان",
+                optSupport: "4. کسٹمر سپورٹ",
+                optPrivacy: "5. رازداری کی پالیسی",
+                optTerms: "6. خدمت کی شرائط",
+                optDelete: "7. اکاؤنٹ حذف کریں",
+                closeSettings: "بند کریں",
+                signOut: "سائن آؤٹ",
+                identityTitle: "شناخت کا انتظام",
+                handleLabel: "اسٹارڈسٹ منفرد ہینڈل (@)",
+                displayName: "نمائش کا نام",
+                customBio: "کسٹم بایو",
+                saveIdentity: "شناخت محفوظ کریں",
+                pfpTitle: "پروفائل تصویر",
+                openGallery: "مقامی گیلری کھولیں",
+                langSelectTitle: "زبان منتخب کریں",
+                langClose: "بند کریں",
+                supportTitle: "سپورٹ پورٹل",
+                submitTicket: "ٹکٹ جمع کروائیں",
+                deleteTitle: "اکاؤنٹ حذف کریں",
+                deleteWarning: "یہ عمل مستقل ہے اور اسے واپس نہیں لیا جا سکتا۔ آپ کا تمام ڈیٹا بشمول پوسٹس، چیٹس اور پروفائل کی معلومات حذف کر دی جائے گی۔",
+                deletePermanent: "میرا اکاؤنٹ مستقل طور پر حذف کریں",
+                commentsTitle: "تبصرے",
+                commentPlaceholder: "رائے لکھیں...",
+                commentPost: "پوسٹ",
+                downloadBtn: "ڈاؤن لوڈ",
+                savePin: "پن محفوظ کریں",
+                unsavePin: "پن ہٹائیں",
+                likes: "پسند",
+                commentsBtn: "تبصرے",
+                by: "از",
+                followers: "پیروکار",
+                following: "پیروی",
+                uploadRecords: "اپ لوڈ ریکارڈز",
+                savedPins: "محفوظ کردہ پن",
+                backToMySpace: "میری جگہ پر واپس",
+                noUploads: "کوئی اپ لوڈ شیئر نہیں کیا گیا۔",
+                noSavedPins: "ابھی تک کوئی پن محفوظ نہیں۔ اپنی پسندیدہ پوسٹس محفوظ کرنا شروع کریں!",
+                loginToSave: "محفوظ کرنے کے لیے لاگ ان کریں",
+                createPost: "نئی پوسٹ بنائیں",
+                titlePlaceholder: "اپنے ویژول کو ایک عنوان دیں...",
+                descPlaceholder: "ایک مختصر تفصیل لکھیں...",
+                noCards: "کوئی کارڈ شیئر نہیں کیا گیا۔",
+                searchUsers: "صارفین یا پوسٹس تلاش کریں...",
+                submitComment: "پوسٹ",
+                cached: "● کیش شدہ",
+                syncing: "⟳ ہم آہنگ ہو رہا ہے..."
+            },
+            ar: {
+                loadingText: "جاري تهيئة النظام الأساسي...",
+                tagline: "اكتشف وتتبع وشارك الأفكار البصرية المتميزة مع ملف التعريف المتزامن مع السحابة الخاص بك على الفور.",
+                loginBtn: "تسجيل الدخول",
+                signupBtn: "إنشاء حساب",
+                emailLabel: "البريد الإلكتروني",
+                passwordLabel: "كلمة المرور",
+                noAccount: "ليس لديك حساب؟",
+                haveAccount: "مسجل بالفعل؟",
+                signIn: "تسجيل الدخول",
+                createNew: "إنشاء حساب جديد",
+                privacyPolicy: "سياسة الخصوصية",
+                termsService: "شروط الخدمة",
+                uploadPfp: "تحميل صورة من المعرض",
+                fullName: "الاسم الكامل",
+                usernameLabel: "اسم المستخدم (@)",
+                bioLabel: "السيرة الذاتية",
+                searchPlaceholder: "ابحث عن أفكار أو أسماء مستخدمين...",
+                searchHint: "ابحث عن مستخدمين أو منشورات حسب العنوان أو الوصف أو اسم المستخدم",
+                noResults: "لم يتم العثور على نتائج",
+                users: "المستخدمين",
+                posts: "المنشورات",
+                viewProfile: "عرض الملف الشخصي",
+                viewPost: "عرض المنشور",
+                postTitle: "عنوان المنشور",
+                description: "الوصف (اختياري)",
+                cancel: "إلغاء",
+                publish: "نشر المنشور",
+                successToast: "تم نشر المنشور بنجاح!",
+                settingsTitle: "الإعدادات",
+                nitroTitle: "ستاردست نيترو بريميوم",
+                nitroDesc: "افتح الألوان والرسوم المتحركة والخطوط المميزة والخلفيات المخصصة!",
+                nitroActivate: "تفعيل العضوية",
+                nitroCustom: "لوحة تخصيص نيترو",
+                nitroTheme: "اختر سمة خلفية الملف الشخصي",
+                nitroFrame: "اختر إطار صورة بريميوم",
+                nitroFont: "اختر خط الملف الشخصي بريميوم",
+                optAccount: "1. تحرير الاسم والسيرة الذاتية والمعرف",
+                optPfp: "2. تغيير صورة الملف الشخصي",
+                optLang: "3. لغة النظام",
+                optSupport: "4. دعم العملاء",
+                optPrivacy: "5. سياسة الخصوصية",
+                optTerms: "6. شروط الخدمة",
+                optDelete: "7. حذف الحساب",
+                closeSettings: "إغلاق",
+                signOut: "تسجيل الخروج",
+                identityTitle: "إدارة الهوية",
+                handleLabel: "معرف ستاردست الفريد (@)",
+                displayName: "الاسم المعروض",
+                customBio: "سيرة ذاتية مخصصة",
+                saveIdentity: "حفظ الهوية",
+                pfpTitle: "صورة الملف الشخصي",
+                openGallery: "فتح المعرض المحلي",
+                langSelectTitle: "اختر اللغة",
+                langClose: "إغلاق",
+                supportTitle: "بوابة الدعم",
+                submitTicket: "إرسال تذكرة",
+                deleteTitle: "حذف الحساب",
+                deleteWarning: "هذا الإجراء دائم ولا يمكن التراجع عنه. سيتم حذف جميع بياناتك بما في ذلك المنشورات والمحادثات ومعلومات الملف الشخصي.",
+                deletePermanent: "حذف حسابي بشكل دائم",
+                commentsTitle: "التعليقات",
+                commentPlaceholder: "اكتب تعليقك...",
+                commentPost: "نشر",
+                downloadBtn: "تحميل",
+                savePin: "حفظ الدبوس",
+                unsavePin: "إلغاء الحفظ",
+                likes: "إعجاب",
+                commentsBtn: "تعليقات",
+                by: "بواسطة",
+                followers: "المتابعون",
+                following: "المتابَعون",
+                uploadRecords: "سجلات التحميل",
+                savedPins: "الدبابيس المحفوظة",
+                backToMySpace: "العودة إلى مساحتي",
+                noUploads: "لا توجد تحميلات مشاركة.",
+                noSavedPins: "لا توجد دبابيس محفوظة بعد. ابدأ بحفظ منشوراتك المفضلة!",
+                loginToSave: "سجل الدخول للحفظ",
+                createPost: "إنشاء منشور جديد",
+                titlePlaceholder: "أعط عنوانًا لتصميمك...",
+                descPlaceholder: "اكتب وصفًا قصيرًا...",
+                noCards: "لا توجد بطاقات مشاركة.",
+                searchUsers: "ابحث عن مستخدمين أو منشورات...",
+                submitComment: "نشر",
+                cached: "● مخبأ",
+                syncing: "⟳ مزامنة..."
+            },
+            ja: {
+                loadingText: "コアシステムを初期化中...",
+                tagline: "クラウド同期プロファイルでプレミアムなビジュアルアイデアを瞬時に発見、追跡、共有できます。",
+                loginBtn: "サインイン",
+                signupBtn: "アカウント作成",
+                emailLabel: "メールアドレス",
+                passwordLabel: "パスワード",
+                noAccount: "アカウントをお持ちでないですか？",
+                haveAccount: "すでに登録済みですか？",
+                signIn: "サインイン",
+                createNew: "新規アカウント作成",
+                privacyPolicy: "プライバシーポリシー",
+                termsService: "利用規約",
+                uploadPfp: "ギャラリーからPFPをアップロード",
+                fullName: "フルネーム",
+                usernameLabel: "ユーザー名 (@)",
+                bioLabel: "バイオ",
+                searchPlaceholder: "アイデアまたはユーザー名を検索...",
+                searchHint: "タイトル、説明、またはユーザー名でユーザーまたは投稿を検索",
+                noResults: "結果が見つかりません",
+                users: "ユーザー",
+                posts: "投稿",
+                viewProfile: "プロフィールを見る",
+                viewPost: "投稿を見る",
+                postTitle: "投稿タイトル",
+                description: "説明（オプション）",
+                cancel: "キャンセル",
+                publish: "投稿を公開",
+                successToast: "投稿が公開されました！",
+                settingsTitle: "設定",
+                nitroTitle: "スターダストニトロプレミアム",
+                nitroDesc: "色、アニメーション、プレミアムフォント、カスタム背景をアンロック！",
+                nitroActivate: "メンバーシップを有効化",
+                nitroCustom: "ニトロカスタマイズパッド",
+                nitroTheme: "プロフィール背景テーマを選択",
+                nitroFrame: "プレミアムPFPフレームを選択",
+                nitroFont: "プレミアムプロフィールフォントを選択",
+                optAccount: "1. 名前、バイオ、ハンドルを編集",
+                optPfp: "2. プロフィール画像を変更",
+                optLang: "3. システム言語",
+                optSupport: "4. カスタマーサポート",
+                optPrivacy: "5. プライバシーポリシー",
+                optTerms: "6. 利用規約",
+                optDelete: "7. アカウント削除",
+                closeSettings: "閉じる",
+                signOut: "サインアウト",
+                identityTitle: "身元管理",
+                handleLabel: "スターダストユニークハンドル (@)",
+                displayName: "表示名",
+                customBio: "カスタムバイオ",
+                saveIdentity: "身元を保存",
+                pfpTitle: "プロフィール画像",
+                openGallery: "ローカルギャラリーを開く",
+                langSelectTitle: "言語を選択",
+                langClose: "閉じる",
+                supportTitle: "サポートポータル",
+                submitTicket: "チケットを送信",
+                deleteTitle: "アカウント削除",
+                deleteWarning: "この操作は永続的であり、元に戻すことはできません。投稿、チャット、プロフィール情報を含むすべてのデータが削除されます。",
+                deletePermanent: "アカウントを完全に削除",
+                commentsTitle: "コメント",
+                commentPlaceholder: "フィードバックを書く...",
+                commentPost: "投稿",
+                downloadBtn: "ダウンロード",
+                savePin: "ピンを保存",
+                unsavePin: "保存を解除",
+                likes: "いいね",
+                commentsBtn: "コメント",
+                by: "投稿者",
+                followers: "フォロワー",
+                following: "フォロー中",
+                uploadRecords: "アップロード履歴",
+                savedPins: "保存したピン",
+                backToMySpace: "マイスペースに戻る",
+                noUploads: "共有されたアップロードはありません。",
+                noSavedPins: "保存されたピンはまだありません。お気に入りの投稿を保存しましょう！",
+                loginToSave: "保存するにはログイン",
+                createPost: "新しい投稿を作成",
+                titlePlaceholder: "ビジュアルにタイトルを付ける...",
+                descPlaceholder: "短い説明を書く...",
+                noCards: "共有されたカードはありません。",
+                searchUsers: "ユーザーまたは投稿を検索...",
+                submitComment: "投稿",
+                cached: "● キャッシュ済み",
+                syncing: "⟳ 同期中..."
+            },
+            ro: {
+                loadingText: "Inițializarea sistemului de bază...",
+                tagline: "Descoperiți, urmăriți și partajați idei vizuale premium cu profilul dvs. sincronizat în cloud instantaneu.",
+                loginBtn: "Autentificare",
+                signupBtn: "Creați cont",
+                emailLabel: "Adresă email",
+                passwordLabel: "Parolă",
+                noAccount: "Nu aveți cont?",
+                haveAccount: "Deja înregistrat?",
+                signIn: "Autentificare",
+                createNew: "Creați cont nou",
+                privacyPolicy: "Politica de confidențialitate",
+                termsService: "Termeni și condiții",
+                uploadPfp: "Încărcați PFP din galerie",
+                fullName: "Nume complet",
+                usernameLabel: "Nume utilizator (@)",
+                bioLabel: "Biografie",
+                searchPlaceholder: "Căutați idei sau nume de utilizator...",
+                searchHint: "Căutați utilizatori sau postări după titlu, descriere sau nume de utilizator",
+                noResults: "Nu s-au găsit rezultate",
+                users: "Utilizatori",
+                posts: "Postări",
+                viewProfile: "Vedeți profilul",
+                viewPost: "Vedeți postarea",
+                postTitle: "Titlul postării",
+                description: "Descriere (Opțional)",
+                cancel: "Anulare",
+                publish: "Publicați postarea",
+                successToast: "Postarea publicată cu succes!",
+                settingsTitle: "Setări",
+                nitroTitle: "STARDUST NITRO PREMIUM",
+                nitroDesc: "Deblocați culori, animații, fonturi premium și fundaluri personalizate!",
+                nitroActivate: "Activați membru",
+                nitroCustom: "Panou de personalizare Nitro",
+                nitroTheme: "SELECTAȚI TEMA FUNDALULUI PROFILULUI",
+                nitroFrame: "SELECTAȚI CADRUL PFP PREMIUM",
+                nitroFont: "SELECTAȚI FONTUL PREMIUM AL PROFILULUI",
+                optAccount: "1. Editați numele, biografia și numele de utilizator",
+                optPfp: "2. Schimbați poza de profil",
+                optLang: "3. Limba sistemului",
+                optSupport: "4. Asistență clienți",
+                optPrivacy: "5. Politica de confidențialitate",
+                optTerms: "6. Termeni și condiții",
+                optDelete: "7. Ștergeți contul",
+                closeSettings: "Închideți",
+                signOut: "Deconectare",
+                identityTitle: "Gestionarea identității",
+                handleLabel: "HANDLE UNIC STARDUST (@)",
+                displayName: "NUME AFIȘAT",
+                customBio: "BIOGRAFIE PERSONALIZATĂ",
+                saveIdentity: "Salvați identitatea",
+                pfpTitle: "Poză de profil",
+                openGallery: "Deschideți galeria locală",
+                langSelectTitle: "Selectați limba",
+                langClose: "Închideți",
+                supportTitle: "Portal de asistență",
+                submitTicket: "Trimiteți tichet",
+                deleteTitle: "Ștergeți contul",
+                deleteWarning: "Această acțiune este permanentă și nu poate fi anulată. Toate datele dvs., inclusiv postările, chat-urile și informațiile de profil, vor fi șterse.",
+                deletePermanent: "Ștergeți definitiv contul meu",
+                commentsTitle: "Comentarii",
+                commentPlaceholder: "Scrieți feedback...",
+                commentPost: "Publicați",
+                downloadBtn: "Descărcați",
+                savePin: "Salvați pinul",
+                unsavePin: "Anulați salvarea",
+                likes: "aprecieri",
+                commentsBtn: "Comentarii",
+                by: "DE",
+                followers: "Urmăritori",
+                following: "Urmăriți",
+                uploadRecords: "Înregistrări încărcate",
+                savedPins: "Pinuri salvate",
+                backToMySpace: "Înapoi la spațiul meu",
+                noUploads: "Nicio încărcare partajată.",
+                noSavedPins: "Niciun pin salvat. Începeți să salvați postările preferate!",
+                loginToSave: "Autentificați-vă pentru a salva",
+                createPost: "Creați o postare nouă",
+                titlePlaceholder: "Dați un titlu vizualului dvs...",
+                descPlaceholder: "Scrieți o scurtă descriere...",
+                noCards: "Nicio carte partajată.",
+                searchUsers: "Căutați utilizatori sau postări...",
+                submitComment: "Publicați",
+                cached: "● Stocat în cache",
+                syncing: "⟳ Se sincronizează..."
+            },
+            es: {
+                loadingText: "Inicializando el sistema central...",
+                tagline: "Descubra, rastree y comparta ideas visuales premium con su perfil sincronizado en la nube al instante.",
+                loginBtn: "Iniciar sesión",
+                signupBtn: "Crear cuenta",
+                emailLabel: "Dirección de correo electrónico",
+                passwordLabel: "Contraseña",
+                noAccount: "¿No tienes cuenta?",
+                haveAccount: "¿Ya estás registrado?",
+                signIn: "Iniciar sesión",
+                createNew: "Crear nueva cuenta",
+                privacyPolicy: "Política de privacidad",
+                termsService: "Términos de servicio",
+                uploadPfp: "Subir foto desde galería",
+                fullName: "Nombre completo",
+                usernameLabel: "Nombre de usuario (@)",
+                bioLabel: "Biografía",
+                searchPlaceholder: "Buscar ideas o nombres de usuario...",
+                searchHint: "Buscar usuarios o publicaciones por título, descripción o nombre de usuario",
+                noResults: "No se encontraron resultados",
+                users: "Usuarios",
+                posts: "Publicaciones",
+                viewProfile: "Ver perfil",
+                viewPost: "Ver publicación",
+                postTitle: "Título de la publicación",
+                description: "Descripción (Opcional)",
+                cancel: "Cancelar",
+                publish: "Publicar",
+                successToast: "¡Publicación publicada con éxito!",
+                settingsTitle: "Ajustes",
+                nitroTitle: "STARDUST NITRO PREMIUM",
+                nitroDesc: "¡Desbloquea colores, animaciones, fuentes premium y fondos personalizados!",
+                nitroActivate: "Activar membresía",
+                nitroCustom: "Panel de personalización Nitro",
+                nitroTheme: "SELECCIONAR TEMA DE FONDO DEL PERFIL",
+                nitroFrame: "SELECCIONAR MARCO DE FOTO PREMIUM",
+                nitroFont: "SELECCIONAR FUENTE PREMIUM DEL PERFIL",
+                optAccount: "1. Editar nombre, biografía y usuario",
+                optPfp: "2. Cambiar foto de perfil",
+                optLang: "3. Idioma del sistema",
+                optSupport: "4. Atención al cliente",
+                optPrivacy: "5. Política de privacidad",
+                optTerms: "6. Términos de servicio",
+                optDelete: "7. Eliminar cuenta",
+                closeSettings: "Cerrar",
+                signOut: "Cerrar sesión",
+                identityTitle: "Gestión de identidad",
+                handleLabel: "HANDLE ÚNICO DE STARDUST (@)",
+                displayName: "NOMBRE MOSTRADO",
+                customBio: "BIOGRAFÍA PERSONALIZADA",
+                saveIdentity: "Guardar identidad",
+                pfpTitle: "Foto de perfil",
+                openGallery: "Abrir galería local",
+                langSelectTitle: "Seleccionar idioma",
+                langClose: "Cerrar",
+                supportTitle: "Portal de soporte",
+                submitTicket: "Enviar ticket",
+                deleteTitle: "Eliminar cuenta",
+                deleteWarning: "Esta acción es permanente y no se puede deshacer. Se eliminarán todos sus datos, incluidas publicaciones, chats e información de perfil.",
+                deletePermanent: "Eliminar mi cuenta permanentemente",
+                commentsTitle: "Comentarios",
+                commentPlaceholder: "Escribe tu comentario...",
+                commentPost: "Publicar",
+                downloadBtn: "Descargar",
+                savePin: "Guardar Pin",
+                unsavePin: "Cancelar guardado",
+                likes: "me gusta",
+                commentsBtn: "Comentarios",
+                by: "POR",
+                followers: "Seguidores",
+                following: "Siguiendo",
+                uploadRecords: "Registros de subidas",
+                savedPins: "Pines guardados",
+                backToMySpace: "Volver a mi espacio",
+                noUploads: "No hay subidas compartidas.",
+                noSavedPins: "No hay pines guardados. ¡Empieza a guardar tus publicaciones favoritas!",
+                loginToSave: "Inicia sesión para guardar",
+                createPost: "Crear nueva publicación",
+                titlePlaceholder: "Dale un título a tu visual...",
+                descPlaceholder: "Escribe una descripción breve...",
+                noCards: "No hay tarjetas compartidas.",
+                searchUsers: "Buscar usuarios o publicaciones...",
+                submitComment: "Publicar",
+                cached: "● En caché",
+                syncing: "⟳ Sincronizando..."
+            }
         };
 
         // Language list for UI
@@ -1131,38 +2265,93 @@
         let selectedProfileUid = "me";
         let pendingUploadData = null;
         let activeProfileTab = "uploads";
-        let savedPinsCache = {};
-        let isFirstLoad = true;
+        let isDataLoadedFromCache = false;
 
-        // ========== CACHE FUNCTIONS ==========
-        function loadFromCache() {
-            const cachedPins = getCache(CACHE_KEYS.PINS);
-            const cachedUsers = getCache(CACHE_KEYS.USERS);
-            const cachedLang = getCache(CACHE_KEYS.LANGUAGE);
-            
-            if (cachedPins) {
-                renderPinsFromCache(cachedPins);
-                document.getElementById('loading-cache-status').textContent = '✓ Loaded from cache';
-                document.getElementById('cache-badge-text').textContent = '● Cached';
-                document.getElementById('cache-badge-text').className = 'text-[8px] text-green-600 font-bold';
-                isDataLoadedFromCache = true;
-            }
-            
-            if (cachedLang) {
-                activeLanguage = cachedLang;
-                changeSystemLanguage(cachedLang);
-            }
-            
-            if (cachedUsers && currentUserData) {
-                const userCacheKey = CACHE_KEYS.USER_PROFILE + currentUserData.uid;
+        // ========== AUTH STATE ==========
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                currentUserData = user;
+                document.getElementById('auth-wall').classList.add('hidden');
+                
+                // Load from cache first
+                const cachedLang = getCache(CACHE_KEYS.LANGUAGE);
+                if (cachedLang && langPack[cachedLang]) {
+                    activeLanguage = cachedLang;
+                    changeSystemLanguage(cachedLang);
+                }
+
+                const userCacheKey = CACHE_KEYS.USER_PROFILE + user.uid;
                 const cachedProfile = getCache(userCacheKey);
                 if (cachedProfile) {
                     Object.assign(customProfileCache, cachedProfile);
                     updateProfileUI();
                 }
-            }
-        }
 
+                database.ref('users/' + user.uid).on('value', (snapshot) => {
+                    const cloudData = snapshot.val() || {};
+                    customProfileCache.name = cloudData.name || user.displayName || "Stardust User";
+                    customProfileCache.pfp = cloudData.pfp || user.photoURL || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150";
+                    customProfileCache.bio = cloudData.bio || "No bio written yet.";
+                    customProfileCache.username = cloudData.username || (user.email ? user.email.split('@')[0] : "stardust_member");
+                    customProfileCache.isPremium = cloudData.isPremium || false;
+                    customProfileCache.theme = cloudData.theme || "default";
+                    customProfileCache.font = cloudData.font || "font-modern";
+                    customProfileCache.frame = cloudData.frame || "frame-none";
+
+                    setCache(userCacheKey, customProfileCache);
+                    
+                    if (cloudData.language && langPack[cloudData.language]) {
+                        activeLanguage = cloudData.language;
+                        setCache(CACHE_KEYS.LANGUAGE, cloudData.language);
+                        changeSystemLanguage(cloudData.language);
+                    }
+
+                    if (!cloudData.username) {
+                        database.ref('users/' + user.uid).set({
+                            name: customProfileCache.name, pfp: customProfileCache.pfp, bio: customProfileCache.bio, username: customProfileCache.username, isPremium: false, theme: "default", font: "font-modern", frame: "frame-none"
+                        });
+                    }
+
+                    setupPremiumUIElements(customProfileCache.isPremium);
+                    updateProfileUI();
+
+                    if(selectedProfileUid === "me") {
+                        loadUserIdentitySpace("me");
+                    }
+                    
+                    document.getElementById('cache-badge-text').textContent = '● Synced';
+                    document.getElementById('cache-badge-text').className = 'text-[8px] text-green-600 font-bold';
+                });
+                
+                // Listen to pins
+                database.ref('pins').on('value', (snapshot) => {
+                    const pinsData = snapshot.val() || {};
+                    setCache(CACHE_KEYS.PINS, pinsData);
+                    
+                    if (!isDataLoadedFromCache) {
+                        renderPinsFromCache(pinsData);
+                        isDataLoadedFromCache = true;
+                        completeLoading();
+                    }
+                });
+                
+                // Listen to users
+                database.ref('users').on('value', (snapshot) => {
+                    const usersData = snapshot.val() || {};
+                    setCache(CACHE_KEYS.USERS, usersData);
+                });
+                
+                switchTab('home');
+            } else {
+                currentUserData = null;
+                document.getElementById('auth-wall').classList.remove('hidden');
+                completeLoading();
+                renderLanguageOptions();
+                applyLanguageToUI();
+            }
+        });
+
+        // ========== RENDER PINS FROM CACHE ==========
         function renderPinsFromCache(pinsData) {
             const globalContainer = document.getElementById('pin-container');
             globalContainer.innerHTML = '';
@@ -1171,6 +2360,7 @@
             if (pinsData && Object.keys(pinsData).length > 0) {
                 Object.keys(pinsData).reverse().forEach(key => {
                     const pin = pinsData[key];
+                    if (!pin) return;
                     const likesObj = pin.likes || {};
                     const totalLikes = Object.keys(likesObj).length;
                     const likedByMe = currentUserData ? !!likesObj[currentUserData.uid] : false;
@@ -1224,85 +2414,7 @@
             }
         }
 
-        // ========== AUTH STATE ==========
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                currentUserData = user;
-                document.getElementById('auth-wall').classList.add('hidden');
-                
-                // Load from cache first
-                loadFromCache();
-                
-                // Then sync with Firebase
-                database.ref('users/' + user.uid).on('value', (snapshot) => {
-                    const cloudData = snapshot.val() || {};
-                    customProfileCache.name = cloudData.name || user.displayName || "Stardust User";
-                    customProfileCache.pfp = cloudData.pfp || user.photoURL || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150";
-                    customProfileCache.bio = cloudData.bio || "No bio written yet.";
-                    customProfileCache.username = cloudData.username || (user.email ? user.email.split('@')[0] : "stardust_member");
-                    customProfileCache.isPremium = cloudData.isPremium || false;
-                    customProfileCache.theme = cloudData.theme || "default";
-                    customProfileCache.font = cloudData.font || "font-modern";
-                    customProfileCache.frame = cloudData.frame || "frame-none";
-
-                    // Save to cache
-                    const userCacheKey = CACHE_KEYS.USER_PROFILE + user.uid;
-                    setCache(userCacheKey, customProfileCache);
-                    
-                    // Save language
-                    if (cloudData.language) {
-                        activeLanguage = cloudData.language;
-                        setCache(CACHE_KEYS.LANGUAGE, cloudData.language);
-                        changeSystemLanguage(cloudData.language);
-                    }
-
-                    if (!cloudData.username) {
-                        database.ref('users/' + user.uid).set({
-                            name: customProfileCache.name, pfp: customProfileCache.pfp, bio: customProfileCache.bio, username: customProfileCache.username, isPremium: false, theme: "default", font: "font-modern", frame: "frame-none"
-                        });
-                    }
-
-                    setupPremiumUIElements(customProfileCache.isPremium);
-                    updateProfileUI();
-
-                    if(selectedProfileUid === "me") {
-                        loadUserIdentitySpace("me");
-                    }
-                    
-                    // Update cache status
-                    document.getElementById('cache-badge-text').textContent = '● Synced';
-                    document.getElementById('cache-badge-text').className = 'text-[8px] text-green-600 font-bold';
-                });
-                
-                // Listen to pins
-                database.ref('pins').on('value', (snapshot) => {
-                    const pinsData = snapshot.val() || {};
-                    setCache(CACHE_KEYS.PINS, pinsData);
-                    
-                    if (!isDataLoadedFromCache || isFirstLoad) {
-                        renderPinsFromCache(pinsData);
-                        isFirstLoad = false;
-                    }
-                    hideLoadingScreen();
-                });
-                
-                // Listen to users
-                database.ref('users').on('value', (snapshot) => {
-                    const usersData = snapshot.val() || {};
-                    setCache(CACHE_KEYS.USERS, usersData);
-                });
-                
-                switchTab('home');
-            } else {
-                currentUserData = null;
-                document.getElementById('auth-wall').classList.remove('hidden');
-                hideLoadingScreen();
-                renderLanguageOptions();
-                applyLanguageToUI();
-            }
-        });
-
-        // ========== TOGGLE AUTH VIEW ==========
+        // ========== AUTH FUNCTIONS ==========
         function toggleAuthView(view) {
             if(view === 'signup') {
                 document.getElementById('auth-login-view').classList.add('hidden');
@@ -1328,12 +2440,10 @@
         function handleEmailLogin() {
             const email = document.getElementById('login-email').value.trim();
             const password = document.getElementById('login-password').value.trim();
-
             if(!email || !password) {
                 alert("Please enter both email and password!");
                 return;
             }
-
             auth.signInWithEmailAndPassword(email, password)
                 .catch((err) => { alert("Login Failed: " + err.message); });
         }
@@ -1381,10 +2491,8 @@
 
         function handleLogOut() { 
             auth.signOut().then(() => { 
-                // Clear cache on logout
                 Object.values(CACHE_KEYS).forEach(key => {
                     if (key.startsWith('stardust_user_profile_')) {
-                        // Clear all user profile caches
                         const keys = Object.keys(localStorage);
                         keys.forEach(k => {
                             if (k.startsWith(CACHE_KEYS.USER_PROFILE)) {
@@ -1403,15 +2511,12 @@
             if(!currentUserData) return;
             const confirmDelete = confirm("WARNING: This will permanently delete your account and all associated data. This action cannot be undone. Are you sure?");
             if(!confirmDelete) return;
-            
             const finalConfirm = confirm("Type 'YES' to confirm permanent deletion.");
             if(!finalConfirm) return;
 
             const uid = currentUserData.uid;
-            
             database.ref('users/' + uid).remove().then(() => {
                 currentUserData.delete().then(() => {
-                    // Clear cache
                     Object.values(CACHE_KEYS).forEach(key => {
                         if (key.startsWith('stardust_user_profile_')) {
                             const keys = Object.keys(localStorage);
@@ -1434,6 +2539,7 @@
             });
         }
 
+        // ========== PREMIUM FEATURES ==========
         function simulatePremiumPurchase() {
             if(!currentUserData) return;
             const confirmBuy = confirm("Activate STARDUST NITRO PREMIUM membership?");
@@ -1448,14 +2554,13 @@
             const promoCard = document.getElementById('nitro-promo-card');
             const premiumSec = document.getElementById('premium-settings-section');
             if(isPremium) {
-                const dict = langPack[activeLanguage] || langPack['en'];
                 promoCard.innerHTML = `<div class='text-center font-black text-xs py-1 tracking-widest'>YOU ARE A NITRO PREMIUM MEMBER</div>`;
                 promoCard.className = "bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 p-3 rounded-2xl text-white shadow-inner";
                 premiumSec.classList.remove('hidden');
                 
-                document.getElementById('premium-theme-select').value = customProfileCache.theme;
-                document.getElementById('premium-font-select').value = customProfileCache.font;
-                document.getElementById('premium-frame-select').value = customProfileCache.frame;
+                document.getElementById('premium-theme-select').value = customProfileCache.theme || 'default';
+                document.getElementById('premium-font-select').value = customProfileCache.font || 'font-modern';
+                document.getElementById('premium-frame-select').value = customProfileCache.frame || 'frame-none';
             } else {
                 premiumSec.classList.add('hidden');
             }
@@ -1463,13 +2568,40 @@
 
         function applyPremiumCustomization() {
             if(!currentUserData || !customProfileCache.isPremium) return;
+            const theme = document.getElementById('premium-theme-select').value;
+            const font = document.getElementById('premium-font-select').value;
+            const frame = document.getElementById('premium-frame-select').value;
+            
             database.ref('users/' + currentUserData.uid).update({
-                theme: document.getElementById('premium-theme-select').value,
-                font: document.getElementById('premium-font-select').value,
-                frame: document.getElementById('premium-frame-select').value
+                theme: theme,
+                font: font,
+                frame: frame
+            }).then(() => {
+                // Apply changes immediately
+                const profSection = document.getElementById('tab-profile');
+                const pfpImg = document.getElementById('profile-img');
+                
+                // Remove all theme classes
+                profSection.className = "tab-content text-center mt-4 max-w-xl mx-auto p-8 rounded-3xl transition-all duration-300 relative border shadow-xl min-h-[70vh]";
+                // Remove all font classes
+                profSection.className = profSection.className.replace(/font-\w+/g, '');
+                // Remove all frame classes
+                pfpImg.className = "w-36 h-36 rounded-full object-cover bg-white";
+                
+                if(theme !== 'default') profSection.classList.add(theme);
+                if(font) profSection.classList.add(font);
+                if(frame) pfpImg.classList.add(frame);
+                
+                // Update cache
+                customProfileCache.theme = theme;
+                customProfileCache.font = font;
+                customProfileCache.frame = frame;
+                const userCacheKey = CACHE_KEYS.USER_PROFILE + currentUserData.uid;
+                setCache(userCacheKey, customProfileCache);
             });
         }
 
+        // ========== LOAD USER PROFILE ==========
         function loadUserIdentitySpace(targetUid) {
             if(!currentUserData) return;
             selectedProfileUid = targetUid;
@@ -1481,7 +2613,6 @@
             document.getElementById('profile-settings-trigger-btn').style.display = isMe ? "block" : "none";
             document.getElementById('profile-follow-action-btn').style.display = isMe ? "none" : "block";
 
-            // Check cache first
             const userCacheKey = CACHE_KEYS.USER_PROFILE + finalUid;
             const cachedProfile = getCache(userCacheKey);
             if (cachedProfile && cachedProfile.username) {
@@ -1527,10 +2658,8 @@
         // ========== PROFILE TABS ==========
         function switchProfileTab(tab) {
             activeProfileTab = tab;
-            
             document.getElementById('profile-tab-uploads').className = `profile-tab-btn ${tab === 'uploads' ? 'active' : ''}`;
             document.getElementById('profile-tab-saved').className = `profile-tab-btn ${tab === 'saved' ? 'active' : ''}`;
-            
             document.getElementById('profile-uploads-container').style.display = tab === 'uploads' ? 'block' : 'none';
             document.getElementById('profile-saved-container').style.display = tab === 'saved' ? 'block' : 'none';
             
@@ -1656,42 +2785,25 @@
             
             let resultsHTML = '';
             let hasResults = false;
+            let foundUsers = [];
+            let foundPins = [];
             
-            // Search from cache first
+            // Search from cache
             const cachedUsers = getCache(CACHE_KEYS.USERS) || {};
             const cachedPins = getCache(CACHE_KEYS.PINS) || {};
             
-            // Search Users from cache
-            let userResults = [];
+            // Search Users
             Object.keys(cachedUsers).forEach(uid => {
                 const u = cachedUsers[uid];
                 if (!u) return;
                 const nameMatch = u.name && u.name.toLowerCase().includes(query);
                 const userMatch = u.username && u.username.toLowerCase().includes(query);
                 if(nameMatch || userMatch) {
-                    userResults.push({ uid, ...u });
+                    foundUsers.push({ uid, ...u });
                 }
             });
             
-            if(userResults.length > 0) {
-                hasResults = true;
-                resultsHTML += `<div class="search-section-title">${dict.users || 'Users'}</div>`;
-                userResults.forEach(u => {
-                    resultsHTML += `
-                        <div class="search-result-item" onclick="loadUserIdentitySpace('${u.uid}'); switchTab('profile');">
-                            <img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" class="result-avatar">
-                            <div class="result-info">
-                                <div class="result-name">${u.name || 'User'}</div>
-                                <div class="result-username">@${u.username || ''}</div>
-                            </div>
-                            <span class="result-badge">${dict.viewProfile || 'View Profile'}</span>
-                        </div>
-                    `;
-                });
-            }
-            
-            // Search Posts from cache
-            let pinResults = [];
+            // Search Pins
             Object.keys(cachedPins).forEach(key => {
                 const p = cachedPins[key];
                 if (!p) return;
@@ -1699,63 +2811,43 @@
                 const descMatch = p.desc && p.desc.toLowerCase().includes(query);
                 const uploaderMatch = p.uploaderName && p.uploaderName.toLowerCase().includes(query);
                 if(titleMatch || descMatch || uploaderMatch) {
-                    pinResults.push({ key, ...p });
+                    foundPins.push({ key, ...p });
                 }
             });
             
-            if(pinResults.length > 0) {
-                hasResults = true;
-                resultsHTML += `<div class="search-section-title">${dict.posts || 'Posts'}</div>`;
-                pinResults.forEach(p => {
-                    resultsHTML += `
-                        <div class="search-result-item" onclick="openPhotoModal('${p.img}', '${p.title || 'Stardust Card'}', '${p.desc || ''}', '${p.uploaderName || 'Anonymous'}', '${p.key}', '${p.uploaderUid}')">
-                            <img src="${p.img}" class="result-avatar" style="border-radius:0.75rem; width:3rem; height:3rem; object-fit:cover;">
-                            <div class="result-info">
-                                <div class="result-name">${p.title || 'Untitled'}</div>
-                                <div class="result-username">by ${p.uploaderName || 'Anonymous'}</div>
-                            </div>
-                            <span class="result-badge">${dict.viewPost || 'View Post'}</span>
-                        </div>
-                    `;
-                });
-            }
-            
-            // Also query Firebase for fresh results (for newly added content)
+            // Also check Firebase for fresh results
             if (currentUserData) {
                 database.ref('users').once('value', (snapshot) => {
                     const users = snapshot.val() || {};
-                    const newUserResults = [];
                     Object.keys(users).forEach(uid => {
                         const u = users[uid];
                         if (!u) return;
                         const nameMatch = u.name && u.name.toLowerCase().includes(query);
                         const userMatch = u.username && u.username.toLowerCase().includes(query);
-                        if((nameMatch || userMatch) && !userResults.find(r => r.uid === uid)) {
-                            newUserResults.push({ uid, ...u });
+                        if((nameMatch || userMatch) && !foundUsers.find(r => r.uid === uid)) {
+                            foundUsers.push({ uid, ...u });
                         }
                     });
                     
                     database.ref('pins').once('value', (pinsSnapshot) => {
                         const pins = pinsSnapshot.val() || {};
-                        const newPinResults = [];
                         Object.keys(pins).forEach(key => {
                             const p = pins[key];
                             if (!p) return;
                             const titleMatch = p.title && p.title.toLowerCase().includes(query);
                             const descMatch = p.desc && p.desc.toLowerCase().includes(query);
                             const uploaderMatch = p.uploaderName && p.uploaderName.toLowerCase().includes(query);
-                            if((titleMatch || descMatch || uploaderMatch) && !pinResults.find(r => r.key === key)) {
-                                newPinResults.push({ key, ...p });
+                            if((titleMatch || descMatch || uploaderMatch) && !foundPins.find(r => r.key === key)) {
+                                foundPins.push({ key, ...p });
                             }
                         });
                         
-                        let finalHTML = resultsHTML;
-                        if (newUserResults.length > 0) {
-                            if (!resultsHTML.includes(dict.users || 'Users')) {
-                                finalHTML += `<div class="search-section-title">${dict.users || 'Users'}</div>`;
-                            }
-                            newUserResults.forEach(u => {
-                                finalHTML += `
+                        // Render results
+                        if (foundUsers.length > 0) {
+                            hasResults = true;
+                            resultsHTML += `<div class="search-section-title">${dict.users || 'Users'}</div>`;
+                            foundUsers.forEach(u => {
+                                resultsHTML += `
                                     <div class="search-result-item" onclick="loadUserIdentitySpace('${u.uid}'); switchTab('profile');">
                                         <img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" class="result-avatar">
                                         <div class="result-info">
@@ -1767,12 +2859,12 @@
                                 `;
                             });
                         }
-                        if (newPinResults.length > 0) {
-                            if (!resultsHTML.includes(dict.posts || 'Posts')) {
-                                finalHTML += `<div class="search-section-title">${dict.posts || 'Posts'}</div>`;
-                            }
-                            newPinResults.forEach(p => {
-                                finalHTML += `
+                        
+                        if (foundPins.length > 0) {
+                            hasResults = true;
+                            resultsHTML += `<div class="search-section-title">${dict.posts || 'Posts'}</div>`;
+                            foundPins.forEach(p => {
+                                resultsHTML += `
                                     <div class="search-result-item" onclick="openPhotoModal('${p.img}', '${p.title || 'Stardust Card'}', '${p.desc || ''}', '${p.uploaderName || 'Anonymous'}', '${p.key}', '${p.uploaderUid}')">
                                         <img src="${p.img}" class="result-avatar" style="border-radius:0.75rem; width:3rem; height:3rem; object-fit:cover;">
                                         <div class="result-info">
@@ -1785,7 +2877,7 @@
                             });
                         }
                         
-                        if (!hasResults && newUserResults.length === 0 && newPinResults.length === 0) {
+                        if (!hasResults) {
                             container.innerHTML = `
                                 <div class="search-empty-state">
                                     <svg class="mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -1793,19 +2885,56 @@
                                 </div>
                             `;
                         } else {
-                            container.innerHTML = finalHTML;
+                            container.innerHTML = resultsHTML;
                         }
                     });
                 });
-            } else if (!hasResults) {
-                container.innerHTML = `
-                    <div class="search-empty-state">
-                        <svg class="mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <p class="text-gray-400 font-medium">${dict.noResults || 'No results found'}</p>
-                    </div>
-                `;
             } else {
-                container.innerHTML = resultsHTML;
+                // No user logged in, just show cached results
+                if (foundUsers.length > 0) {
+                    hasResults = true;
+                    resultsHTML += `<div class="search-section-title">${dict.users || 'Users'}</div>`;
+                    foundUsers.forEach(u => {
+                        resultsHTML += `
+                            <div class="search-result-item" onclick="loadUserIdentitySpace('${u.uid}'); switchTab('profile');">
+                                <img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" class="result-avatar">
+                                <div class="result-info">
+                                    <div class="result-name">${u.name || 'User'}</div>
+                                    <div class="result-username">@${u.username || ''}</div>
+                                </div>
+                                <span class="result-badge">${dict.viewProfile || 'View Profile'}</span>
+                            </div>
+                        `;
+                    });
+                }
+                
+                if (foundPins.length > 0) {
+                    hasResults = true;
+                    resultsHTML += `<div class="search-section-title">${dict.posts || 'Posts'}</div>`;
+                    foundPins.forEach(p => {
+                        resultsHTML += `
+                            <div class="search-result-item" onclick="openPhotoModal('${p.img}', '${p.title || 'Stardust Card'}', '${p.desc || ''}', '${p.uploaderName || 'Anonymous'}', '${p.key}', '${p.uploaderUid}')">
+                                <img src="${p.img}" class="result-avatar" style="border-radius:0.75rem; width:3rem; height:3rem; object-fit:cover;">
+                                <div class="result-info">
+                                    <div class="result-name">${p.title || 'Untitled'}</div>
+                                    <div class="result-username">by ${p.uploaderName || 'Anonymous'}</div>
+                                </div>
+                                <span class="result-badge">${dict.viewPost || 'View Post'}</span>
+                            </div>
+                        `;
+                    });
+                }
+                
+                if (!hasResults) {
+                    container.innerHTML = `
+                        <div class="search-empty-state">
+                            <svg class="mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <p class="text-gray-400 font-medium">${dict.noResults || 'No results found'}</p>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = resultsHTML;
+                }
             }
         }
 
@@ -2088,9 +3217,6 @@
             // Toast
             document.getElementById('toast-success-text').innerText = dict.successToast;
             
-            // Loading
-            document.getElementById('loading-text').innerText = dict.loadingText;
-            
             // Comments Modal
             document.getElementById('comments-title').innerText = dict.commentsTitle;
             document.getElementById('comment-input-field').placeholder = dict.commentPlaceholder;
@@ -2191,17 +3317,6 @@
                 navBar.classList.remove('hidden');
             }
 
-            const searchTray = document.getElementById('user-search-results-tray');
-            if(searchTray) {
-                searchTray.classList.add('hidden');
-                searchTray.innerHTML = '';
-            }
-
-            const headerSearch = document.getElementById('search-bar');
-            if(headerSearch) {
-                headerSearch.value = '';
-            }
-
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById(`tab-${tabName}`).classList.remove('hidden');
             
@@ -2224,39 +3339,12 @@
             applyLanguageToUI();
         }
 
-        function hideLoadingScreen() {
-            const loader = document.getElementById('loading-screen');
-            if (loader) {
-                loader.style.opacity = '0';
-                setTimeout(() => { loader.style.display = 'none'; }, 300);
-            }
-        }
-
         // ========== INIT ==========
         // Load language from cache
         const cachedLang = getCache(CACHE_KEYS.LANGUAGE);
         if (cachedLang && langPack[cachedLang]) {
             activeLanguage = cachedLang;
-        }
-
-        // Show loading status
-        document.getElementById('loading-cache-status').textContent = 'Checking cache...';
-        
-        // If user already logged in, load from cache quickly
-        const cachedUser = localStorage.getItem('firebase:authUser:AIzaSyAuFUuH0pnldHPlW0BJDR8Pj8Q09mG7zGc:[DEFAULT]');
-        if (cachedUser) {
-            try {
-                const userData = JSON.parse(cachedUser);
-                if (userData && userData.uid) {
-                    // Pre-load user profile from cache
-                    const userCacheKey = CACHE_KEYS.USER_PROFILE + userData.uid;
-                    const cachedProfile = getCache(userCacheKey);
-                    if (cachedProfile) {
-                        Object.assign(customProfileCache, cachedProfile);
-                        document.getElementById('loading-cache-status').textContent = '✓ Loading from cache...';
-                    }
-                }
-            } catch {}
+            changeSystemLanguage(cachedLang);
         }
 
         // Load pins from cache
@@ -2264,12 +3352,10 @@
         if (cachedPins && Object.keys(cachedPins).length > 0) {
             setTimeout(() => {
                 renderPinsFromCache(cachedPins);
-                document.getElementById('loading-cache-status').textContent = '✓ Loaded from cache';
+                isDataLoadedFromCache = true;
                 document.getElementById('cache-badge-text').textContent = '● Cached';
                 document.getElementById('cache-badge-text').className = 'text-[8px] text-green-600 font-bold';
-                isDataLoadedFromCache = true;
-                hideLoadingScreen();
-            }, 200);
+            }, 300);
         }
 
         // Apply language
