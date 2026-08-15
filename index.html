@@ -6,7 +6,7 @@
     <meta name="google-site-verification" content="zh5BJ-Ey5wYrIasM5nubqNjBvucgHB9jqf1d0zfxleg" />
     <title>Stardust canvas</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/f keirebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Fira+Code:wght@600&family=Orbitron:wght@800&family=Inter:wght@400;700;900&family=Playfair+Display:wght@700&family=Space+Grotesk:wght@400;700&family=Unbounded:wght@700&family=DM+Serif+Display&family=JetBrains+Mono:wght@700&family=Oswald:wght@700&family=Poppins:wght@700&family=Raleway:wght@700&display=swap" rel="stylesheet">
@@ -294,54 +294,6 @@
             opacity: 0.3;
         }
 
-        .auth-language-menu {
-            width: 12rem;
-            max-height: 16rem;
-            overflow-y: auto;
-        }
-        .auth-language-option {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 0.6rem 0.75rem;
-            border-radius: 0.75rem;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-align: left;
-            transition: background 0.2s ease;
-        }
-        .auth-language-option:hover,
-        .auth-language-option.active {
-            background: #fef2f2;
-            color: #dc2626;
-        }
-
-        .post-owner-menu {
-            min-width: 8.5rem;
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 0.9rem;
-            padding: 0.35rem;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
-            z-index: 20;
-        }
-        .post-owner-menu button {
-            display: block;
-            width: 100%;
-            padding: 0.55rem 0.65rem;
-            border-radius: 0.65rem;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-align: left;
-        }
-        .post-owner-menu button:hover {
-            background: #fef2f2;
-        }
-        .post-owner-menu .danger {
-            color: #dc2626;
-        }
-
         .cache-badge {
             font-size: 0.5rem;
             background: #10b981;
@@ -455,15 +407,6 @@
 
     <!-- AUTHENTICATION CONTAINER -->
     <div id="auth-wall" class="fixed inset-0 bg-white z-[200] hidden flex flex-col items-center justify-center p-6 text-center overflow-y-auto">
-        <div class="absolute top-5 right-5 z-10">
-            <button id="auth-language-btn" onclick="toggleAuthLanguageMenu()" class="flex items-center gap-1.5 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-full px-3 py-2 text-[10px] font-bold transition">
-                <span id="auth-language-btn-text">English</span>
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 9 6 6 6-6"></path></svg>
-            </button>
-            <div id="auth-language-menu" class="auth-language-menu hidden absolute right-0 mt-2 bg-white border border-gray-100 rounded-2xl p-2 shadow-xl">
-                <div id="auth-language-options"></div>
-            </div>
-        </div>
         <div class="max-w-sm w-full space-y-5 my-auto">
             <h1 class="text-red-600 font-black text-5xl tracking-tighter select-none mb-1">STARDUST</h1>
             <p id="lang-tagline" class="text-gray-500 text-sm font-medium leading-relaxed px-2">Discover, track and share premium visual ideas with your cloud sync profile instantly.</p>
@@ -843,20 +786,9 @@
     <div id="photo-modal" class="fixed inset-0 bg-black/95 z-[100] hidden flex flex-col justify-between p-4 backdrop-blur-md">
         <div class="flex justify-between items-center w-full max-w-md mx-auto pt-2">
             <h3 id="modal-title" class="text-white text-base font-bold tracking-wide truncate max-w-[70%]">Stardust Image</h3>
-            <div class="flex items-center gap-2">
-                <div id="modal-owner-actions" class="relative hidden">
-                    <button id="modal-post-menu-btn" onclick="toggleModalPostMenu(event)" aria-label="Post options" class="bg-white/10 text-white rounded-full p-2 hover:bg-white/20 transition">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.7"></circle><circle cx="12" cy="12" r="1.7"></circle><circle cx="19" cy="12" r="1.7"></circle></svg>
-                    </button>
-                    <div id="modal-post-menu" class="post-owner-menu hidden absolute right-0 top-11">
-                        <button id="modal-edit-post-btn" onclick="openEditPostModal(event)">Edit</button>
-                        <button id="modal-delete-post-btn" onclick="deleteCurrentPost(event)" class="danger">Delete</button>
-                    </div>
-                </div>
-                <button onclick="closePhotoModal()" aria-label="Close post" class="bg-white/10 text-white rounded-full p-2 hover:bg-white/20 transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </div>
+            <button onclick="closePhotoModal()" class="bg-white/10 text-white rounded-full p-2 hover:bg-white/20 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
         </div>
         
         <div class="flex-1 flex flex-col items-center justify-center max-w-lg mx-auto my-1 overflow-hidden w-full relative">
@@ -885,30 +817,6 @@
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
                 <span id="modal-save-text">Save Pin</span>
             </button>
-        </div>
-    </div>
-
-    <!-- EDIT POST MODAL -->
-    <div id="edit-post-modal" class="fixed inset-0 bg-black/60 z-[230] hidden items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl w-full max-w-sm p-6 shadow-2xl text-gray-900">
-            <div class="flex items-center justify-between border-b pb-3 mb-4">
-                <h3 id="edit-post-title" class="font-black text-base">Edit Post</h3>
-                <button onclick="closeEditPostModal()" aria-label="Close edit post" class="text-gray-400 hover:text-black font-bold p-1 transition">✕</button>
-            </div>
-            <div class="space-y-3">
-                <div>
-                    <label id="edit-post-title-label" class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Post Title</label>
-                    <input id="edit-post-title-input" type="text" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-red-600 transition">
-                </div>
-                <div>
-                    <label id="edit-post-description-label" class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Description</label>
-                    <textarea id="edit-post-description-input" rows="3" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs font-medium focus:outline-none focus:border-red-600 transition resize-none"></textarea>
-                </div>
-            </div>
-            <div class="flex gap-2 pt-4">
-                <button onclick="closeEditPostModal()" id="edit-post-cancel-btn" class="w-1/3 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold py-3 rounded-full transition">Cancel</button>
-                <button onclick="saveEditedPost()" id="edit-post-save-btn" class="w-2/3 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-3 rounded-full transition shadow-lg">Save Changes</button>
-            </div>
         </div>
     </div>
 
@@ -2326,26 +2234,6 @@
             }
         };
 
-        // Extra UI copy used by the live post and account controls.
-        const extraLanguagePack = {
-            en: { language: "Language", moreOptions: "Post options", editPost: "Edit", deletePost: "Delete", editPostTitle: "Edit Post", editPostDescription: "Description", saveChanges: "Save Changes", postDeleted: "Post deleted.", postUpdated: "Post updated.", deleteConfirm: "Delete this post permanently?", deleteComment: "Delete comment", supportPlaceholder: "Write context here...", follow: "Follow", unfollow: "Unfollow" },
-            hi: { language: "भाषा", moreOptions: "पोस्ट विकल्प", editPost: "संपादित करें", deletePost: "हटाएं", editPostTitle: "पोस्ट संपादित करें", editPostDescription: "विवरण", saveChanges: "बदलाव सहेजें", postDeleted: "पोस्ट हटा दी गई।", postUpdated: "पोस्ट अपडेट हो गई।", deleteConfirm: "क्या यह पोस्ट स्थायी रूप से हटानी है?", deleteComment: "टिप्पणी हटाएं", supportPlaceholder: "यहां विवरण लिखें...", follow: "फ़ॉलो करें", unfollow: "अनफ़ॉलो करें" },
-            bn: { language: "ভাষা", moreOptions: "পোস্টের বিকল্প", editPost: "সম্পাদনা", deletePost: "মুছুন", editPostTitle: "পোস্ট সম্পাদনা", editPostDescription: "বিবরণ", saveChanges: "পরিবর্তন সংরক্ষণ করুন", postDeleted: "পোস্ট মুছে ফেলা হয়েছে।", postUpdated: "পোস্ট আপডেট হয়েছে।", deleteConfirm: "এই পোস্টটি কি স্থায়ীভাবে মুছবেন?", deleteComment: "মন্তব্য মুছুন", supportPlaceholder: "এখানে বিস্তারিত লিখুন...", follow: "অনুসরণ করুন", unfollow: "অনুসরণ বন্ধ করুন" },
-            gu: { language: "ભાષા", moreOptions: "પોસ્ટ વિકલ્પો", editPost: "ફેરફાર કરો", deletePost: "કાઢી નાખો", editPostTitle: "પોસ્ટમાં ફેરફાર કરો", editPostDescription: "વર્ણન", saveChanges: "ફેરફારો સાચવો", postDeleted: "પોસ્ટ કાઢી નાખવામાં આવી.", postUpdated: "પોસ્ટ અપડેટ થઈ.", deleteConfirm: "શું આ પોસ્ટ કાયમ માટે કાઢી નાખવી છે?", deleteComment: "ટિપ્પણી કાઢી નાખો", supportPlaceholder: "અહીં વિગતો લખો...", follow: "ફોલો કરો", unfollow: "અનફોલો કરો" },
-            ko: { language: "언어", moreOptions: "게시물 옵션", editPost: "편집", deletePost: "삭제", editPostTitle: "게시물 편집", editPostDescription: "설명", saveChanges: "변경사항 저장", postDeleted: "게시물이 삭제되었습니다.", postUpdated: "게시물이 업데이트되었습니다.", deleteConfirm: "이 게시물을 영구적으로 삭제하시겠습니까?", deleteComment: "댓글 삭제", supportPlaceholder: "내용을 작성하세요...", follow: "팔로우", unfollow: "팔로우 취소" },
-            zh: { language: "语言", moreOptions: "帖子选项", editPost: "编辑", deletePost: "删除", editPostTitle: "编辑帖子", editPostDescription: "描述", saveChanges: "保存更改", postDeleted: "帖子已删除。", postUpdated: "帖子已更新。", deleteConfirm: "要永久删除这篇帖子吗？", deleteComment: "删除评论", supportPlaceholder: "请在此写下详细信息...", follow: "关注", unfollow: "取消关注" },
-            "zh-TW": { language: "語言", moreOptions: "貼文選項", editPost: "編輯", deletePost: "刪除", editPostTitle: "編輯貼文", editPostDescription: "描述", saveChanges: "儲存變更", postDeleted: "貼文已刪除。", postUpdated: "貼文已更新。", deleteConfirm: "要永久刪除這篇貼文嗎？", deleteComment: "刪除評論", supportPlaceholder: "請在此寫下詳細資訊...", follow: "追蹤", unfollow: "取消追蹤" },
-            ru: { language: "Язык", moreOptions: "Параметры поста", editPost: "Изменить", deletePost: "Удалить", editPostTitle: "Изменить пост", editPostDescription: "Описание", saveChanges: "Сохранить изменения", postDeleted: "Пост удалён.", postUpdated: "Пост обновлён.", deleteConfirm: "Удалить этот пост навсегда?", deleteComment: "Удалить комментарий", supportPlaceholder: "Напишите подробности...", follow: "Подписаться", unfollow: "Отписаться" },
-            vi: { language: "Ngôn ngữ", moreOptions: "Tùy chọn bài đăng", editPost: "Chỉnh sửa", deletePost: "Xóa", editPostTitle: "Chỉnh sửa bài đăng", editPostDescription: "Mô tả", saveChanges: "Lưu thay đổi", postDeleted: "Đã xóa bài đăng.", postUpdated: "Đã cập nhật bài đăng.", deleteConfirm: "Xóa vĩnh viễn bài đăng này?", deleteComment: "Xóa bình luận", supportPlaceholder: "Viết chi tiết tại đây...", follow: "Theo dõi", unfollow: "Bỏ theo dõi" },
-            th: { language: "ภาษา", moreOptions: "ตัวเลือกโพสต์", editPost: "แก้ไข", deletePost: "ลบ", editPostTitle: "แก้ไขโพสต์", editPostDescription: "คำอธิบาย", saveChanges: "บันทึกการเปลี่ยนแปลง", postDeleted: "ลบโพสต์แล้ว", postUpdated: "อัปเดตโพสต์แล้ว", deleteConfirm: "ต้องการลบโพสต์นี้อย่างถาวรหรือไม่", deleteComment: "ลบความคิดเห็น", supportPlaceholder: "เขียนรายละเอียดที่นี่...", follow: "ติดตาม", unfollow: "เลิกติดตาม" },
-            ur: { language: "زبان", moreOptions: "پوسٹ کے اختیارات", editPost: "ترمیم", deletePost: "حذف", editPostTitle: "پوسٹ میں ترمیم", editPostDescription: "تفصیل", saveChanges: "تبدیلیاں محفوظ کریں", postDeleted: "پوسٹ حذف کر دی گئی۔", postUpdated: "پوسٹ اپ ڈیٹ ہو گئی۔", deleteConfirm: "کیا یہ پوسٹ مستقل طور پر حذف کرنی ہے؟", deleteComment: "تبصرہ حذف کریں", supportPlaceholder: "یہاں تفصیل لکھیں...", follow: "فالو کریں", unfollow: "ان فالو کریں" },
-            ar: { language: "اللغة", moreOptions: "خيارات المنشور", editPost: "تعديل", deletePost: "حذف", editPostTitle: "تعديل المنشور", editPostDescription: "الوصف", saveChanges: "حفظ التغييرات", postDeleted: "تم حذف المنشور.", postUpdated: "تم تحديث المنشور.", deleteConfirm: "هل تريد حذف هذا المنشور نهائيًا؟", deleteComment: "حذف التعليق", supportPlaceholder: "اكتب التفاصيل هنا...", follow: "متابعة", unfollow: "إلغاء المتابعة" },
-            ja: { language: "言語", moreOptions: "投稿オプション", editPost: "編集", deletePost: "削除", editPostTitle: "投稿を編集", editPostDescription: "説明", saveChanges: "変更を保存", postDeleted: "投稿を削除しました。", postUpdated: "投稿を更新しました。", deleteConfirm: "この投稿を完全に削除しますか？", deleteComment: "コメントを削除", supportPlaceholder: "ここに詳細を書いてください...", follow: "フォロー", unfollow: "フォロー解除" },
-            ro: { language: "Limbă", moreOptions: "Opțiuni postare", editPost: "Editați", deletePost: "Ștergeți", editPostTitle: "Editați postarea", editPostDescription: "Descriere", saveChanges: "Salvați modificările", postDeleted: "Postarea a fost ștearsă.", postUpdated: "Postarea a fost actualizată.", deleteConfirm: "Ștergeți definitiv această postare?", deleteComment: "Ștergeți comentariul", supportPlaceholder: "Scrieți detaliile aici...", follow: "Urmăriți", unfollow: "Nu mai urmăriți" },
-            es: { language: "Idioma", moreOptions: "Opciones de publicación", editPost: "Editar", deletePost: "Eliminar", editPostTitle: "Editar publicación", editPostDescription: "Descripción", saveChanges: "Guardar cambios", postDeleted: "Publicación eliminada.", postUpdated: "Publicación actualizada.", deleteConfirm: "¿Eliminar esta publicación permanentemente?", deleteComment: "Eliminar comentario", supportPlaceholder: "Escribe los detalles aquí...", follow: "Seguir", unfollow: "Dejar de seguir" }
-        };
-        Object.keys(langPack).forEach((code) => Object.assign(langPack[code], extraLanguagePack[code] || extraLanguagePack.en));
-
         // Language list for UI
         const languageList = [
             { code: 'en', name: 'English', native: 'English' },
@@ -2378,30 +2266,6 @@
         let pendingUploadData = null;
         let activeProfileTab = "uploads";
         let isDataLoadedFromCache = false;
-        let editingPinId = null;
-        let searchRequestVersion = 0;
-
-        function toggleAuthLanguageMenu() {
-            document.getElementById('auth-language-menu').classList.toggle('hidden');
-            renderAuthLanguageOptions();
-        }
-
-        function renderAuthLanguageOptions() {
-            const container = document.getElementById('auth-language-options');
-            if (!container) return;
-            container.innerHTML = '';
-            languageList.forEach((lang) => {
-                const option = document.createElement('button');
-                option.type = 'button';
-                option.className = `auth-language-option ${activeLanguage === lang.code ? 'active' : ''}`;
-                option.innerHTML = `<span>${lang.native}</span><span class="text-[9px] opacity-60">${lang.name}</span>`;
-                option.onclick = () => {
-                    changeSystemLanguage(lang.code);
-                    document.getElementById('auth-language-menu').classList.add('hidden');
-                };
-                container.appendChild(option);
-            });
-        }
 
         // ========== AUTH STATE ==========
         auth.onAuthStateChanged((user) => {
@@ -2463,25 +2327,18 @@
                 database.ref('pins').on('value', (snapshot) => {
                     const pinsData = snapshot.val() || {};
                     setCache(CACHE_KEYS.PINS, pinsData);
-
-                    // Firebase listeners are live. Re-render on every value event
-                    // so a newly published or deleted post appears without refresh.
-                    renderPinsFromCache(pinsData);
-                    isDataLoadedFromCache = true;
-                    if (selectedProfileUid !== "me") {
-                        renderProfileUploadsFromData(pinsData, selectedProfileUid);
-                    } else if (currentUserData) {
-                        renderProfileUploadsFromData(pinsData, currentUserData.uid);
+                    
+                    if (!isDataLoadedFromCache) {
+                        renderPinsFromCache(pinsData);
+                        isDataLoadedFromCache = true;
+                        completeLoading();
                     }
-                    if (document.getElementById('search-input-tab').value.trim()) performSearch();
-                    completeLoading();
                 });
                 
                 // Listen to users
                 database.ref('users').on('value', (snapshot) => {
                     const usersData = snapshot.val() || {};
                     setCache(CACHE_KEYS.USERS, usersData);
-                    if (document.getElementById('search-input-tab').value.trim()) performSearch();
                 });
                 
                 switchTab('home');
@@ -2866,9 +2723,9 @@
                 if(uid !== currentUserData.uid) {
                     const btn = document.getElementById('profile-follow-action-btn');
                     if(data[currentUserData.uid]) {
-                        btn.innerText = dict.unfollow || "Unfollow"; btn.className = "mt-5 w-40 text-xs font-black py-3 rounded-full bg-gray-100 text-gray-800 transition shadow-md";
+                        btn.innerText = "Unfollow"; btn.className = "mt-5 w-40 text-xs font-black py-3 rounded-full bg-gray-100 text-gray-800 transition shadow-md";
                     } else {
-                        btn.innerText = dict.follow || "Follow"; btn.className = "mt-5 w-40 text-xs font-black py-3 rounded-full bg-red-600 text-white transition shadow-md";
+                        btn.innerText = "Follow"; btn.className = "mt-5 w-40 text-xs font-black py-3 rounded-full bg-red-600 text-white transition shadow-md";
                     }
                 }
             });
@@ -2879,84 +2736,25 @@
             });
 
             database.ref('pins').once('value', (snapshot) => {
-                renderProfileUploadsFromData(snapshot.val() || {}, uid);
-            });
-        }
-
-        function escapeHtml(value) {
-            return String(value ?? '').replace(/[&<>"']/g, (char) => ({
-                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
-            }[char]));
-        }
-
-        function renderProfileUploadsFromData(data, uid) {
-            const profileContainer = document.getElementById('profile-uploads-container');
-            if (!profileContainer) return;
-            profileContainer.innerHTML = '';
-            let totalPins = 0;
-            const dictLocal = langPack[activeLanguage] || langPack.en;
-
-            Object.keys(data || {}).reverse().forEach((key) => {
-                const pin = data[key];
-                if (!pin || pin.uploaderUid !== uid) return;
-                totalPins++;
-                const element = document.createElement('div');
-                element.className = "pin-item bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:opacity-95 text-gray-900 cursor-zoom-in relative";
-                element.setAttribute('itemscope', '');
-                element.setAttribute('itemtype', 'https://schema.org/ImageObject');
-                element.innerHTML = `<img src="${escapeHtml(pin.img)}" itemprop="contentUrl" alt="${escapeHtml(pin.title || 'Stardust Pin')}" class="w-full h-auto object-cover"><div class="p-2 text-[11px] font-bold truncate" itemprop="caption">${escapeHtml(pin.title || 'Idea')}</div>`;
-                element.onclick = () => openPhotoModal(pin.img, pin.title || "Stardust Card", pin.desc || "", pin.uploaderName || "Anonymous", key, pin.uploaderUid);
-                if (currentUserData && pin.uploaderUid === currentUserData.uid) {
-                    attachOwnerMenuToCard(element, key);
+                const profileContainer = document.getElementById('profile-uploads-container');
+                profileContainer.innerHTML = ''; const data = snapshot.val(); let totalPins = 0;
+                const dictLocal = langPack[activeLanguage] || langPack['en'];
+                if(data) {
+                    Object.keys(data).reverse().forEach(key => {
+                        const pin = data[key];
+                        if(pin.uploaderUid === uid) {
+                            totalPins++; const element = document.createElement('div');
+                            element.className = "pin-item bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:opacity-95 text-gray-900 cursor-zoom-in";
+                            element.setAttribute('itemscope', '');
+                            element.setAttribute('itemtype', 'https://schema.org/ImageObject');
+                            element.onclick = () => openPhotoModal(pin.img, pin.title || "Stardust Card", pin.desc || "", pin.uploaderName || "Anonymous", key, pin.uploaderUid);
+                            element.innerHTML = `<img src="${pin.img}" itemprop="contentUrl" alt="${pin.title || 'Stardust Pin'}" class="w-full h-auto object-cover"><div class="p-2 text-[11px] font-bold truncate" itemprop="caption">${pin.title || 'Idea'}</div>`;
+                            profileContainer.appendChild(element);
+                        }
+                    });
                 }
-                profileContainer.appendChild(element);
+                if(totalPins === 0) profileContainer.innerHTML = `<div class="text-center text-gray-400 text-xs py-10 col-span-2">${dictLocal.noUploads || 'No uploads shared.'}</div>`;
             });
-
-            if (totalPins === 0) {
-                profileContainer.innerHTML = `<div class="text-center text-gray-400 text-xs py-10 col-span-2">${dictLocal.noUploads || 'No uploads shared.'}</div>`;
-            }
-        }
-
-        function attachOwnerMenuToCard(card, pinId) {
-            const dict = langPack[activeLanguage] || langPack.en;
-            const wrapper = document.createElement('div');
-            wrapper.className = 'absolute top-2 right-2';
-
-            const trigger = document.createElement('button');
-            trigger.type = 'button';
-            trigger.className = 'bg-white/95 rounded-full p-1.5 shadow-md text-gray-700 hover:text-black transition';
-            trigger.setAttribute('aria-label', dict.moreOptions || 'Post options');
-            trigger.innerHTML = `<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.7"></circle><circle cx="12" cy="12" r="1.7"></circle><circle cx="19" cy="12" r="1.7"></circle></svg>`;
-
-            const menu = document.createElement('div');
-            menu.className = 'post-owner-menu hidden absolute right-0 top-9';
-            const editButton = document.createElement('button');
-            editButton.textContent = dict.editPost || 'Edit';
-            const deleteButton = document.createElement('button');
-            deleteButton.textContent = dict.deletePost || 'Delete';
-            deleteButton.className = 'danger';
-
-            trigger.onclick = (event) => {
-                event.stopPropagation();
-                document.querySelectorAll('.post-owner-menu').forEach((item) => {
-                    if (item !== menu) item.classList.add('hidden');
-                });
-                menu.classList.toggle('hidden');
-            };
-            editButton.onclick = (event) => {
-                event.stopPropagation();
-                menu.classList.add('hidden');
-                openEditPostModalById(pinId);
-            };
-            deleteButton.onclick = (event) => {
-                event.stopPropagation();
-                menu.classList.add('hidden');
-                deletePostById(pinId);
-            };
-
-            menu.append(editButton, deleteButton);
-            wrapper.append(trigger, menu);
-            card.appendChild(wrapper);
         }
 
         function handleNetworkFollowToggle() {
@@ -3140,156 +2938,6 @@
             }
         }
 
-        // Live search implementation. It starts with the local cache for speed,
-        // then refreshes from Firebase so newly created profiles and posts appear
-        // without requiring a page reload.
-        function performSearch() {
-            const input = document.getElementById('search-input-tab');
-            const container = document.getElementById('search-results-container');
-            if (!input || !container) return;
-
-            const query = input.value.toLowerCase().trim();
-            const requestVersion = ++searchRequestVersion;
-            const cachedUsers = getCache(CACHE_KEYS.USERS) || {};
-            const cachedPins = getCache(CACHE_KEYS.PINS) || {};
-
-            if (!query) {
-                renderSearchResults([], [], '', requestVersion);
-                return;
-            }
-
-            const collectMatches = (users, pins) => {
-                const foundUsers = Object.keys(users || {}).map((uid) => {
-                    const user = users[uid];
-                    if (!user) return null;
-                    const name = String(user.name || '').toLowerCase();
-                    const username = String(user.username || '').toLowerCase();
-                    return (name.includes(query) || username.includes(query)) ? { uid, ...user } : null;
-                }).filter(Boolean);
-
-                const foundPins = Object.keys(pins || {}).map((key) => {
-                    const pin = pins[key];
-                    if (!pin) return null;
-                    const title = String(pin.title || '').toLowerCase();
-                    const description = String(pin.desc || '').toLowerCase();
-                    const uploader = String(pin.uploaderName || '').toLowerCase();
-                    const uploaderUid = String(pin.uploaderUid || '').toLowerCase();
-                    return (title.includes(query) || description.includes(query) || uploader.includes(query) || uploaderUid.includes(query))
-                        ? { key, ...pin } : null;
-                }).filter(Boolean);
-                return { foundUsers, foundPins };
-            };
-
-            const cachedMatches = collectMatches(cachedUsers, cachedPins);
-            renderSearchResults(cachedMatches.foundUsers, cachedMatches.foundPins, query, requestVersion);
-
-            if (!currentUserData) return;
-            Promise.all([
-                database.ref('users').once('value'),
-                database.ref('pins').once('value')
-            ]).then(([usersSnapshot, pinsSnapshot]) => {
-                if (requestVersion !== searchRequestVersion) return;
-                const users = usersSnapshot.val() || {};
-                const pins = pinsSnapshot.val() || {};
-                setCache(CACHE_KEYS.USERS, users);
-                setCache(CACHE_KEYS.PINS, pins);
-                const freshMatches = collectMatches(users, pins);
-                renderSearchResults(freshMatches.foundUsers, freshMatches.foundPins, query, requestVersion);
-            }).catch(() => {
-                // Cached results remain visible if a live search request fails.
-            });
-        }
-
-        function renderSearchResults(foundUsers, foundPins, query, requestVersion) {
-            const container = document.getElementById('search-results-container');
-            if (!container || requestVersion !== searchRequestVersion) return;
-            const dict = langPack[activeLanguage] || langPack.en;
-
-            if (!query) {
-                container.innerHTML = '';
-                const empty = document.createElement('div');
-                empty.className = 'search-empty-state';
-                empty.innerHTML = '<svg class="mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>';
-                const message = document.createElement('p');
-                message.className = 'text-gray-400 font-medium';
-                message.textContent = dict.searchHint || 'Search for users or posts by title, description, or username';
-                empty.appendChild(message);
-                container.appendChild(empty);
-                return;
-            }
-
-            container.innerHTML = '';
-            const appendSection = (label, items, itemFactory) => {
-                if (!items.length) return;
-                const heading = document.createElement('div');
-                heading.className = 'search-section-title';
-                heading.textContent = label;
-                container.appendChild(heading);
-                items.forEach((item) => container.appendChild(itemFactory(item)));
-            };
-
-            appendSection(dict.users || 'Users', foundUsers, (user) => {
-                const row = document.createElement('div');
-                row.className = 'search-result-item';
-                const image = document.createElement('img');
-                image.className = 'result-avatar';
-                image.src = user.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150';
-                const info = document.createElement('div');
-                info.className = 'result-info';
-                const name = document.createElement('div');
-                name.className = 'result-name';
-                name.textContent = user.name || 'User';
-                const username = document.createElement('div');
-                username.className = 'result-username';
-                username.textContent = '@' + (user.username || '');
-                info.append(name, username);
-                const badge = document.createElement('span');
-                badge.className = 'result-badge';
-                badge.textContent = dict.viewProfile || 'View Profile';
-                row.append(image, info, badge);
-                row.onclick = () => {
-                    loadUserIdentitySpace(user.uid);
-                    switchTab('profile');
-                };
-                return row;
-            });
-
-            appendSection(dict.posts || 'Posts', foundPins, (pin) => {
-                const row = document.createElement('div');
-                row.className = 'search-result-item';
-                const image = document.createElement('img');
-                image.className = 'result-avatar';
-                image.style.borderRadius = '0.75rem';
-                image.src = pin.img;
-                const info = document.createElement('div');
-                info.className = 'result-info';
-                const title = document.createElement('div');
-                title.className = 'result-name';
-                title.textContent = pin.title || 'Untitled';
-                const uploader = document.createElement('div');
-                uploader.className = 'result-username';
-                uploader.textContent = (dict.by || 'BY') + ': ' + (pin.uploaderName || 'Anonymous');
-                info.append(title, uploader);
-                const badge = document.createElement('span');
-                badge.className = 'result-badge';
-                badge.textContent = dict.viewPost || 'View Post';
-                row.append(image, info, badge);
-                row.onclick = () => openPhotoModal(pin.img, pin.title || 'Stardust Card', pin.desc || '', pin.uploaderName || 'Anonymous', pin.key, pin.uploaderUid);
-                return row;
-            });
-
-            if (!foundUsers.length && !foundPins.length) {
-                const empty = document.createElement('div');
-                empty.className = 'search-empty-state';
-                empty.innerHTML = '<svg class="mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>';
-                const message = document.createElement('p');
-                message.className = 'text-gray-400 font-medium';
-                message.textContent = dict.noResults || 'No results found';
-                empty.appendChild(message);
-                container.appendChild(empty);
-            }
-        }
-
         // ========== TOGGLE LIKE ==========
         function toggleLikePost(pinId) {
             if(!currentUserData) return;
@@ -3331,85 +2979,6 @@
         }
 
         function closeCommentModal() { if(activeCommentPinId) database.ref('pins/' + activeCommentPinId + '/comments').off(); document.getElementById('comment-modal').style.display = 'none'; }
-
-        function openCommentModal(pinId) {
-            if (activeCommentPinId) database.ref('pins/' + activeCommentPinId + '/comments').off();
-            activeCommentPinId = pinId;
-            document.getElementById('comment-modal').style.display = 'flex';
-            const dict = langPack[activeLanguage] || langPack.en;
-            document.getElementById('comments-title').innerText = dict.commentsTitle || 'Comments';
-            document.getElementById('comment-input-field').placeholder = dict.commentPlaceholder || 'Write feedback...';
-            document.getElementById('submit-comment-btn').innerText = dict.submitComment || 'Post';
-
-            database.ref('pins/' + pinId).once('value').then((pinSnapshot) => {
-                const pin = pinSnapshot.val() || {};
-                const postOwnerUid = pin.uploaderUid;
-                database.ref('pins/' + pinId + '/comments').on('value', (snapshot) => {
-                    const container = document.getElementById('comments-list-container');
-                    container.innerHTML = '';
-                    const list = snapshot.val();
-                    if (!list) {
-                        const empty = document.createElement('p');
-                        empty.className = 'text-gray-400 text-center text-xs py-6';
-                        empty.textContent = dict.commentsTitle || 'No comments yet.';
-                        container.appendChild(empty);
-                        return;
-                    }
-
-                    Object.keys(list).forEach((commentKey) => {
-                        const comment = list[commentKey];
-                        if (!comment) return;
-                        const row = document.createElement('div');
-                        row.className = 'bg-gray-50 rounded-2xl p-2.5 border text-xs text-left';
-                        const user = document.createElement('p');
-                        user.className = 'font-black text-gray-700';
-                        user.textContent = '@' + (comment.username || 'member');
-                        const text = document.createElement('p');
-                        text.className = 'text-gray-600 mt-0.5 break-words';
-                        text.textContent = comment.text || '';
-                        row.append(user, text);
-
-                        const canDelete = currentUserData && (
-                            comment.userId === currentUserData.uid || postOwnerUid === currentUserData.uid
-                        );
-                        if (canDelete) {
-                            const deleteButton = document.createElement('button');
-                            deleteButton.type = 'button';
-                            deleteButton.className = 'text-red-600 text-[10px] font-bold mt-2 hover:underline';
-                            deleteButton.textContent = dict.deleteComment || 'Delete comment';
-                            deleteButton.onclick = () => deleteComment(pinId, commentKey);
-                            row.appendChild(deleteButton);
-                        }
-                        container.appendChild(row);
-                    });
-                    container.scrollTop = container.scrollHeight;
-                });
-            });
-
-            document.getElementById('submit-comment-btn').onclick = () => {
-                const input = document.getElementById('comment-input-field');
-                const value = input.value.trim();
-                if (!value || !currentUserData) return;
-                database.ref('pins/' + pinId + '/comments').push({
-                    userId: currentUserData.uid,
-                    username: customProfileCache.username,
-                    text: value,
-                    timestamp: Date.now()
-                }).then(() => { input.value = ''; });
-            };
-        }
-
-        function deleteComment(pinId, commentKey) {
-            if (!currentUserData || !confirm((langPack[activeLanguage] || langPack.en).deleteComment || 'Delete comment')) return;
-            database.ref('pins/' + pinId).once('value').then((snapshot) => {
-                const pin = snapshot.val();
-                const comment = pin && pin.comments ? pin.comments[commentKey] : null;
-                if (!pin || !comment) return;
-                const canDelete = comment.userId === currentUserData.uid || pin.uploaderUid === currentUserData.uid;
-                if (!canDelete) return;
-                return database.ref('pins/' + pinId + '/comments/' + commentKey).remove();
-            });
-        }
 
         // ========== PHOTO MODAL ==========
         function openPhotoModal(imgSrc, titleText, descText, author, pinKey, uploaderUid) {
@@ -3493,126 +3062,6 @@
 
         function closePhotoModal() { if(window.activeModalPinRefKey) database.ref('pins/' + window.activeModalPinRefKey + '/likes').off(); document.getElementById('photo-modal').style.display = 'none'; }
 
-        function openPhotoModal(imgSrc, titleText, descText, author, pinKey, uploaderUid) {
-            currentModalImgData = imgSrc;
-            currentModalTitle = titleText;
-            currentModalPinKey = pinKey;
-            currentModalUploaderUid = uploaderUid;
-
-            const dict = langPack[activeLanguage] || langPack.en;
-            document.getElementById('modal-img').src = imgSrc;
-            document.getElementById('modal-title').innerText = titleText;
-            document.getElementById('modal-desc').innerText = descText;
-            const authorEl = document.getElementById('modal-author');
-            authorEl.innerText = `${dict.by || 'BY'}: ${author.toUpperCase()}`;
-            authorEl.onclick = () => {
-                closePhotoModal();
-                loadUserIdentitySpace(uploaderUid);
-                switchTab('profile');
-            };
-            document.getElementById('download-btn-text').innerText = dict.downloadBtn || 'Download';
-            document.getElementById('comments-btn-text').innerText = dict.commentsBtn || 'Comments';
-            document.getElementById('modal-owner-actions').classList.toggle('hidden', !(currentUserData && uploaderUid === currentUserData.uid));
-            document.getElementById('modal-post-menu').classList.add('hidden');
-            document.getElementById('modal-post-menu-btn').setAttribute('aria-label', dict.moreOptions || 'Post options');
-            document.getElementById('modal-edit-post-btn').innerText = dict.editPost || 'Edit';
-            document.getElementById('modal-delete-post-btn').innerText = dict.deletePost || 'Delete';
-
-            updateSaveButtonState(pinKey);
-            const likeSvg = document.getElementById('modal-like-svg');
-            const likeTxt = document.getElementById('modal-like-counter-text');
-            database.ref('pins/' + pinKey + '/likes').on('value', (snapshot) => {
-                const likes = snapshot.val() || {};
-                const total = Object.keys(likes).length;
-                likeTxt.innerText = `${total} ${dict.likes || 'likes'}`;
-                likeSvg.className = currentUserData && likes[currentUserData.uid]
-                    ? "w-5 h-5 text-red-500 fill-current"
-                    : "w-5 h-5 text-gray-400";
-            });
-            document.getElementById('modal-like-trigger-btn').onclick = () => toggleLikePost(pinKey);
-            document.getElementById('modal-comment-trigger-btn').onclick = () => openCommentModal(pinKey);
-            document.getElementById('photo-modal').style.display = 'flex';
-            window.activeModalPinRefKey = pinKey;
-        }
-
-        function toggleModalPostMenu(event) {
-            if (event) event.stopPropagation();
-            document.getElementById('modal-post-menu').classList.toggle('hidden');
-        }
-
-        function openEditPostModal(event) {
-            if (event) event.stopPropagation();
-            if (!currentModalPinKey) return;
-            document.getElementById('modal-post-menu').classList.add('hidden');
-            openEditPostModalById(currentModalPinKey);
-        }
-
-        function openEditPostModalById(pinId) {
-            if (!currentUserData || !pinId) return;
-            database.ref('pins/' + pinId).once('value').then((snapshot) => {
-                const pin = snapshot.val();
-                if (!pin || pin.uploaderUid !== currentUserData.uid) return;
-                editingPinId = pinId;
-                document.getElementById('edit-post-title-input').value = pin.title || '';
-                document.getElementById('edit-post-description-input').value = pin.desc || '';
-                applyLanguageToUI();
-                const modal = document.getElementById('edit-post-modal');
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-            });
-        }
-
-        function closeEditPostModal() {
-            editingPinId = null;
-            const modal = document.getElementById('edit-post-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
-        function saveEditedPost() {
-            if (!currentUserData || !editingPinId) return;
-            const title = document.getElementById('edit-post-title-input').value.trim();
-            const description = document.getElementById('edit-post-description-input').value.trim();
-            if (!title) return;
-
-            const pinId = editingPinId;
-            database.ref('pins/' + pinId).once('value').then((snapshot) => {
-                const pin = snapshot.val();
-                if (!pin || pin.uploaderUid !== currentUserData.uid) return false;
-                return database.ref('pins/' + pinId).update({ title, desc: description }).then(() => true);
-            }).then((updated) => {
-                if (!updated) return;
-                if (currentModalPinKey === pinId) {
-                    currentModalTitle = title;
-                    document.getElementById('modal-title').innerText = title;
-                    document.getElementById('modal-desc').innerText = description;
-                }
-                closeEditPostModal();
-                alert((langPack[activeLanguage] || langPack.en).postUpdated || 'Post updated.');
-            });
-        }
-
-        function deleteCurrentPost(event) {
-            if (event) event.stopPropagation();
-            document.getElementById('modal-post-menu').classList.add('hidden');
-            deletePostById(currentModalPinKey);
-        }
-
-        function deletePostById(pinId) {
-            if (!currentUserData || !pinId) return;
-            const dict = langPack[activeLanguage] || langPack.en;
-            if (!confirm(dict.deleteConfirm || 'Delete this post permanently?')) return;
-            database.ref('pins/' + pinId).once('value').then((snapshot) => {
-                const pin = snapshot.val();
-                if (!pin || pin.uploaderUid !== currentUserData.uid) return false;
-                return database.ref('pins/' + pinId).remove().then(() => true);
-            }).then((deleted) => {
-                if (!deleted) return;
-                if (currentModalPinKey === pinId) closePhotoModal();
-                alert(dict.postDeleted || 'Post deleted.');
-            });
-        }
-
         function downloadImage() { if(!currentModalImgData) return; const link = document.createElement("a"); link.href = currentModalImgData; link.download = currentModalTitle.replace(/\s+/g, '_') + ".jpg"; document.body.appendChild(link); link.click(); document.body.removeChild(link); }
 
         // ========== SETTINGS ==========
@@ -3691,12 +3140,6 @@
             setCache(CACHE_KEYS.LANGUAGE, langKey);
             
             const dict = langPack[langKey] || langPack['en'];
-            document.documentElement.lang = langKey;
-            document.documentElement.dir = (langKey === 'ar' || langKey === 'ur') ? 'rtl' : 'ltr';
-            const selectedLanguage = languageList.find((lang) => lang.code === langKey);
-            const authLanguageButton = document.getElementById('auth-language-btn-text');
-            if (authLanguageButton) authLanguageButton.innerText = selectedLanguage ? selectedLanguage.native : 'English';
-            renderAuthLanguageOptions();
             
             // Auth page
             document.getElementById('lang-tagline').innerText = dict.tagline;
@@ -3758,7 +3201,6 @@
             document.getElementById('lang-close-btn').innerText = dict.langClose;
             document.getElementById('support-title').innerText = dict.supportTitle;
             document.getElementById('submit-ticket-btn').innerText = dict.submitTicket;
-            document.getElementById('support-text-input').placeholder = dict.supportPlaceholder || 'Write context here...';
             document.getElementById('delete-title').innerText = dict.deleteTitle;
             document.getElementById('delete-warning').innerHTML = dict.deleteWarning;
             document.getElementById('delete-permanent-btn').innerText = dict.deletePermanent;
@@ -3779,15 +3221,6 @@
             document.getElementById('comments-title').innerText = dict.commentsTitle;
             document.getElementById('comment-input-field').placeholder = dict.commentPlaceholder;
             document.getElementById('submit-comment-btn').innerText = dict.submitComment || 'Post';
-
-            // Owner-only post controls
-            document.getElementById('edit-post-title').innerText = dict.editPostTitle || 'Edit Post';
-            document.getElementById('edit-post-title-label').innerText = dict.postTitle || 'Post Title';
-            document.getElementById('edit-post-description-label').innerText = dict.editPostDescription || dict.description || 'Description';
-            document.getElementById('edit-post-cancel-btn').innerText = dict.cancel || 'Cancel';
-            document.getElementById('edit-post-save-btn').innerText = dict.saveChanges || 'Save Changes';
-            document.getElementById('modal-edit-post-btn').innerText = dict.editPost || 'Edit';
-            document.getElementById('modal-delete-post-btn').innerText = dict.deletePost || 'Delete';
             
             // Photo Modal
             document.getElementById('download-btn-text').innerText = dict.downloadBtn;
@@ -3803,11 +3236,7 @@
             
             if(currentUserData) {
                 database.ref('users/' + currentUserData.uid + '/language').set(langKey);
-                const pins = getCache(CACHE_KEYS.PINS) || {};
-                const profileUid = selectedProfileUid === 'me' ? currentUserData.uid : selectedProfileUid;
-                renderProfileUploadsFromData(pins, profileUid);
             }
-            if (document.getElementById('search-input-tab').value.trim()) performSearch();
         }
 
         function applyLanguageToUI() {
