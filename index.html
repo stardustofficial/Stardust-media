@@ -386,6 +386,220 @@
             0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
             40% { transform: scale(1); opacity: 1; }
         }
+
+        /* Photo Modal 3-dot menu */
+        .photo-menu-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            z-index: 50;
+            min-width: 160px;
+            overflow: hidden;
+            display: none;
+        }
+        .photo-menu-dropdown.show {
+            display: block;
+        }
+        .photo-menu-dropdown button {
+            display: block;
+            width: 100%;
+            padding: 10px 16px;
+            text-align: left;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: none;
+            background: white;
+            cursor: pointer;
+            transition: background 0.2s;
+            color: #1f2937;
+        }
+        .photo-menu-dropdown button:hover {
+            background: #f3f4f6;
+        }
+        .photo-menu-dropdown button.danger {
+            color: #dc2626;
+        }
+        .photo-menu-dropdown button.danger:hover {
+            background: #fef2f2;
+        }
+
+        /* Edit Post Modal */
+        .edit-post-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+        .edit-post-modal-overlay.show {
+            display: flex;
+        }
+        .edit-post-modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .edit-post-modal-content h3 {
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #f3f4f6;
+            padding-bottom: 12px;
+        }
+        .edit-post-modal-content label {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+        .edit-post-modal-content input,
+        .edit-post-modal-content textarea {
+            width: 100%;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+            outline: none;
+            transition: border 0.2s;
+        }
+        .edit-post-modal-content input:focus,
+        .edit-post-modal-content textarea:focus {
+            border-color: #dc2626;
+        }
+        .edit-post-modal-content .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        .edit-post-modal-content .btn-row button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .edit-post-modal-content .btn-row .cancel-btn {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+        .edit-post-modal-content .btn-row .cancel-btn:hover {
+            background: #e5e7eb;
+        }
+        .edit-post-modal-content .btn-row .save-btn {
+            background: #dc2626;
+            color: white;
+        }
+        .edit-post-modal-content .btn-row .save-btn:hover {
+            background: #b91c1c;
+        }
+
+        /* Auth language button */
+        .auth-lang-btn {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 300;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #1f2937;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transition: all 0.2s;
+        }
+        .auth-lang-btn:hover {
+            border-color: #dc2626;
+            color: #dc2626;
+        }
+        .auth-lang-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Auth language dropdown */
+        .auth-lang-dropdown {
+            position: fixed;
+            top: 68px;
+            right: 16px;
+            z-index: 300;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            padding: 8px;
+            min-width: 200px;
+            max-height: 60vh;
+            overflow-y: auto;
+            display: none;
+            border: 1px solid #f3f4f6;
+        }
+        .auth-lang-dropdown.show {
+            display: block;
+        }
+        .auth-lang-dropdown .lang-option {
+            border: none;
+            border-radius: 10px;
+            padding: 8px 12px;
+        }
+        .auth-lang-dropdown .lang-option.active {
+            background: #dc2626;
+            color: white;
+        }
+        .auth-lang-dropdown .lang-option:hover {
+            background: #fef2f2;
+        }
+        .auth-lang-dropdown .lang-option.active:hover {
+            background: #dc2626;
+        }
+
+        /* Comment delete button */
+        .comment-delete-btn {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            font-size: 0.6rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .comment-delete-btn:hover {
+            color: #dc2626;
+            background: #fef2f2;
+        }
+        .comment-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        .comment-item .comment-text {
+            flex: 1;
+        }
     </style>
 </head>
 <body id="app-body" class="bg-white text-gray-950 font-sans antialiased pb-24">
@@ -407,6 +621,14 @@
 
     <!-- AUTHENTICATION CONTAINER -->
     <div id="auth-wall" class="fixed inset-0 bg-white z-[200] hidden flex flex-col items-center justify-center p-6 text-center overflow-y-auto">
+        <!-- Auth Language Button -->
+        <button onclick="toggleAuthLanguageDropdown()" class="auth-lang-btn" id="auth-lang-btn">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
+            <span id="auth-lang-label">Language</span>
+        </button>
+        <!-- Auth Language Dropdown -->
+        <div class="auth-lang-dropdown" id="auth-lang-dropdown"></div>
+
         <div class="max-w-sm w-full space-y-5 my-auto">
             <h1 class="text-red-600 font-black text-5xl tracking-tighter select-none mb-1">STARDUST</h1>
             <p id="lang-tagline" class="text-gray-500 text-sm font-medium leading-relaxed px-2">Discover, track and share premium visual ideas with your cloud sync profile instantly.</p>
@@ -418,7 +640,7 @@
                 </div>
                 <div>
                     <label id="login-password-label" class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Password</label>
-                    <input type="password" id="login-password" placeholder="••••••••" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-red-600 transition">
+                    <input type="password" id="login-password" placeholder="********" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-red-600 transition">
                 </div>
                 <button onclick="handleEmailLogin()" class="w-full bg-black hover:opacity-90 text-white font-bold text-sm py-4 px-6 rounded-full flex items-center justify-center gap-2 transition shadow-lg active:scale-95 mt-4">
                     <span id="login-btn-text">Sign In</span>
@@ -462,7 +684,7 @@
                 </div>
                 <div>
                     <label id="signup-password-label" class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Password</label>
-                    <input type="password" id="signup-password" placeholder="••••••••" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:border-red-600 transition">
+                    <input type="password" id="signup-password" placeholder="********" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:border-red-600 transition">
                 </div>
                 <button onclick="handleEmailSignUp()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-sm py-3.5 px-6 rounded-full flex items-center justify-center gap-2 transition shadow-lg active:scale-95 mt-3">
                     <span id="signup-btn-text">Create Account</span>
@@ -483,7 +705,7 @@
     <nav id="app-nav" class="sticky top-0 bg-white/95 backdrop-blur-md px-5 py-4 flex items-center justify-between z-40 border-b border-gray-100 shadow-sm transition-all duration-300">
         <div onclick="switchTab('home')" class="text-red-600 font-black text-2xl tracking-tighter cursor-pointer select-none">STARDUST CANVAS</div>
         <div id="cache-status-indicator" class="flex items-center gap-2">
-            <span id="cache-badge-text" class="text-[8px] text-green-600 font-bold hidden">● Cached</span>
+            <span id="cache-badge-text" class="text-[8px] text-green-600 font-bold hidden">Cached</span>
         </div>
     </nav>
 
@@ -563,7 +785,7 @@
                     <span class="w-2.5 h-2.5 bg-red-600 rounded-full animate-ping"></span>
                     <h3 id="create-post-title" class="font-black text-base tracking-wide text-gray-900">Create New Post</h3>
                 </div>
-                <button onclick="closeUploadModal()" class="text-gray-400 hover:text-black font-bold p-1 transition">✕</button>
+                <button onclick="closeUploadModal()" class="text-gray-400 hover:text-black font-bold p-1 transition">X</button>
             </div>
             <div class="w-full h-40 rounded-2xl bg-gray-50 border border-gray-100 overflow-hidden flex items-center justify-center relative">
                 <img id="upload-preview-img" src="" class="w-full h-full object-cover">
@@ -772,7 +994,7 @@
         <div class="bg-white rounded-3xl w-full max-w-sm p-5 flex flex-col max-h-[80vh] text-gray-900">
             <div class="flex items-center justify-between border-b pb-3 mb-3">
                 <h3 id="comments-title" class="font-bold text-lg">Comments</h3>
-                <button onclick="closeCommentModal()" class="text-gray-500 font-bold p-1">✕</button>
+                <button onclick="closeCommentModal()" class="text-gray-500 font-bold p-1">X</button>
             </div>
             <div id="comments-list-container" class="flex-1 overflow-y-auto space-y-3 pr-1 text-sm my-2 min-h-[160px]"></div>
             <div class="flex gap-2 pt-3 border-t">
@@ -784,11 +1006,23 @@
 
     <!-- PHOTO MODAL -->
     <div id="photo-modal" class="fixed inset-0 bg-black/95 z-[100] hidden flex flex-col justify-between p-4 backdrop-blur-md">
-        <div class="flex justify-between items-center w-full max-w-md mx-auto pt-2">
+        <div class="flex justify-between items-center w-full max-w-md mx-auto pt-2 relative">
             <h3 id="modal-title" class="text-white text-base font-bold tracking-wide truncate max-w-[70%]">Stardust Image</h3>
-            <button onclick="closePhotoModal()" class="bg-white/10 text-white rounded-full p-2 hover:bg-white/20 transition">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
+            <div class="flex items-center gap-2">
+                <!-- 3-dot menu button - only shown to post owner -->
+                <button id="photo-menu-btn" onclick="togglePhotoMenu()" class="text-white/50 hover:text-white transition p-1 hidden">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 8a2 2 0 100-4 2 2 0 000 4zm0 6a2 2 0 100-4 2 2 0 000 4zm0 6a2 2 0 100-4 2 2 0 000 4z"/></svg>
+                </button>
+                <button onclick="closePhotoModal()" class="bg-white/10 text-white rounded-full p-2 hover:bg-white/20 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 3-dot dropdown menu -->
+        <div id="photo-menu-dropdown" class="photo-menu-dropdown">
+            <button id="photo-edit-btn" onclick="openEditPostModal()">Edit Post</button>
+            <button id="photo-delete-btn" onclick="deleteCurrentPost()" class="danger">Delete Post</button>
         </div>
         
         <div class="flex-1 flex flex-col items-center justify-center max-w-lg mx-auto my-1 overflow-hidden w-full relative">
@@ -817,6 +1051,21 @@
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
                 <span id="modal-save-text">Save Pin</span>
             </button>
+        </div>
+    </div>
+
+    <!-- EDIT POST MODAL -->
+    <div id="edit-post-modal" class="edit-post-modal-overlay">
+        <div class="edit-post-modal-content">
+            <h3 id="edit-post-title-text">Edit Post</h3>
+            <label id="edit-post-title-label">Post Title</label>
+            <input type="text" id="edit-post-title-input" placeholder="Post title...">
+            <label id="edit-post-desc-label">Description</label>
+            <textarea id="edit-post-desc-input" rows="3" placeholder="Write description..."></textarea>
+            <div class="btn-row">
+                <button onclick="closeEditPostModal()" class="cancel-btn" id="edit-cancel-btn">Cancel</button>
+                <button onclick="savePostEdit()" class="save-btn" id="edit-save-btn">Save Changes</button>
+            </div>
         </div>
     </div>
 
@@ -1025,8 +1274,14 @@
                 noCards: "No cards shared.",
                 searchUsers: "Search users or posts...",
                 submitComment: "Post",
-                cached: "● Cached",
-                syncing: "⟳ Syncing..."
+                cached: "Cached",
+                syncing: "Syncing...",
+                editPost: "Edit Post",
+                deletePost: "Delete Post",
+                saveChanges: "Save Changes",
+                deleteConfirm: "Delete this post permanently?",
+                commentDelete: "Delete",
+                language: "Language"
             },
             hi: {
                 loadingText: "कोर सिस्टम प्रारंभ हो रहा है...",
@@ -1111,8 +1366,14 @@
                 noCards: "कोई कार्ड साझा नहीं किया गया।",
                 searchUsers: "उपयोगकर्ताओं या पोस्ट खोजें...",
                 submitComment: "पोस्ट करें",
-                cached: "● कैश्ड",
-                syncing: "⟳ सिंक हो रहा..."
+                cached: "कैश्ड",
+                syncing: "सिंक हो रहा",
+                editPost: "पोस्ट संपादित करें",
+                deletePost: "पोस्ट हटाएं",
+                saveChanges: "बदलाव सहेजें",
+                deleteConfirm: "इस पोस्ट को स्थायी रूप से हटाएं?",
+                commentDelete: "हटाएं",
+                language: "भाषा"
             },
             bn: {
                 loadingText: "কোর সিস্টেম শুরু হচ্ছে...",
@@ -1197,8 +1458,14 @@
                 noCards: "কোন কার্ড শেয়ার করা হয়নি।",
                 searchUsers: "ব্যবহারকারী বা পোস্ট অনুসন্ধান করুন...",
                 submitComment: "পোস্ট",
-                cached: "● ক্যাশেড",
-                syncing: "⟳ সিঙ্ক হচ্ছে..."
+                cached: "ক্যাশেড",
+                syncing: "সিঙ্ক হচ্ছে",
+                editPost: "পোস্ট সম্পাদনা করুন",
+                deletePost: "পোস্ট মুছুন",
+                saveChanges: "পরিবর্তন সংরক্ষণ করুন",
+                deleteConfirm: "এই পোস্টটি স্থায়ীভাবে মুছবেন?",
+                commentDelete: "মুছুন",
+                language: "ভাষা"
             },
             gu: {
                 loadingText: "કોર સિસ્ટમ શરૂ થઈ રહી છે...",
@@ -1283,8 +1550,14 @@
                 noCards: "કોઈ કાર્ડ શેર કરવામાં આવ્યા નથી.",
                 searchUsers: "વપરાશકર્તાઓ અથવા પોસ્ટ્સ શોધો...",
                 submitComment: "પોસ્ટ",
-                cached: "● કેશ્ડ",
-                syncing: "⟳ સિંક થઈ રહ્યું છે..."
+                cached: "કેશ્ડ",
+                syncing: "સિંક થઈ રહ્યું",
+                editPost: "પોસ્ટ સંપાદિત કરો",
+                deletePost: "પોસ્ટ કાઢી નાખો",
+                saveChanges: "ફેરફારો સાચવો",
+                deleteConfirm: "આ પોસ્ટ કાયમી રૂપે કાઢી નાખો?",
+                commentDelete: "કાઢી નાખો",
+                language: "ભાષા"
             },
             ko: {
                 loadingText: "코어 시스템 초기화 중...",
@@ -1369,8 +1642,14 @@
                 noCards: "공유된 카드가 없습니다.",
                 searchUsers: "사용자 또는 게시물 검색...",
                 submitComment: "게시",
-                cached: "● 캐시됨",
-                syncing: "⟳ 동기화 중..."
+                cached: "캐시됨",
+                syncing: "동기화 중",
+                editPost: "게시물 수정",
+                deletePost: "게시물 삭제",
+                saveChanges: "변경사항 저장",
+                deleteConfirm: "이 게시물을 영구 삭제하시겠습니까?",
+                commentDelete: "삭제",
+                language: "언어"
             },
             zh: {
                 loadingText: "核心系统初始化中...",
@@ -1455,8 +1734,14 @@
                 noCards: "没有分享的卡片。",
                 searchUsers: "搜索用户或帖子...",
                 submitComment: "发布",
-                cached: "● 已缓存",
-                syncing: "⟳ 同步中..."
+                cached: "已缓存",
+                syncing: "同步中",
+                editPost: "编辑帖子",
+                deletePost: "删除帖子",
+                saveChanges: "保存更改",
+                deleteConfirm: "永久删除此帖子？",
+                commentDelete: "删除",
+                language: "语言"
             },
             'zh-TW': {
                 loadingText: "核心系統初始化中...",
@@ -1541,8 +1826,14 @@
                 noCards: "沒有分享的卡片。",
                 searchUsers: "搜尋用戶或貼文...",
                 submitComment: "發佈",
-                cached: "● 已快取",
-                syncing: "⟳ 同步中..."
+                cached: "已快取",
+                syncing: "同步中",
+                editPost: "編輯貼文",
+                deletePost: "刪除貼文",
+                saveChanges: "儲存更改",
+                deleteConfirm: "永久刪除此貼文？",
+                commentDelete: "刪除",
+                language: "語言"
             },
             ru: {
                 loadingText: "Инициализация основной системы...",
@@ -1627,8 +1918,14 @@
                 noCards: "Нет опубликованных карточек.",
                 searchUsers: "Поиск пользователей или постов...",
                 submitComment: "Опубликовать",
-                cached: "● Кешировано",
-                syncing: "⟳ Синхронизация..."
+                cached: "Кешировано",
+                syncing: "Синхронизация",
+                editPost: "Редактировать пост",
+                deletePost: "Удалить пост",
+                saveChanges: "Сохранить изменения",
+                deleteConfirm: "Удалить этот пост навсегда?",
+                commentDelete: "Удалить",
+                language: "Язык"
             },
             vi: {
                 loadingText: "Khởi tạo hệ thống cốt lõi...",
@@ -1713,8 +2010,14 @@
                 noCards: "Chưa có thẻ nào được chia sẻ.",
                 searchUsers: "Tìm kiếm người dùng hoặc bài đăng...",
                 submitComment: "Đăng",
-                cached: "● Đã lưu cache",
-                syncing: "⟳ Đang đồng bộ..."
+                cached: "Đã lưu cache",
+                syncing: "Đang đồng bộ",
+                editPost: "Sửa bài đăng",
+                deletePost: "Xóa bài đăng",
+                saveChanges: "Lưu thay đổi",
+                deleteConfirm: "Xóa vĩnh viễn bài đăng này?",
+                commentDelete: "Xóa",
+                language: "Ngôn ngữ"
             },
             th: {
                 loadingText: "กำลังเริ่มต้นระบบหลัก...",
@@ -1799,8 +2102,14 @@
                 noCards: "ไม่มีบัตรที่แชร์",
                 searchUsers: "ค้นหาผู้ใช้หรือโพสต์...",
                 submitComment: "โพสต์",
-                cached: "● แคชแล้ว",
-                syncing: "⟳ กำลังซิงค์..."
+                cached: "แคชแล้ว",
+                syncing: "กำลังซิงค์",
+                editPost: "แก้ไขโพสต์",
+                deletePost: "ลบโพสต์",
+                saveChanges: "บันทึกการเปลี่ยนแปลง",
+                deleteConfirm: "ลบโพสต์นี้ถาวร?",
+                commentDelete: "ลบ",
+                language: "ภาษา"
             },
             ur: {
                 loadingText: "کور سسٹم شروع ہو رہا ہے...",
@@ -1885,8 +2194,14 @@
                 noCards: "کوئی کارڈ شیئر نہیں کیا گیا۔",
                 searchUsers: "صارفین یا پوسٹس تلاش کریں...",
                 submitComment: "پوسٹ",
-                cached: "● کیش شدہ",
-                syncing: "⟳ ہم آہنگ ہو رہا ہے..."
+                cached: "کیش شدہ",
+                syncing: "ہم آہنگ ہو رہا",
+                editPost: "پوسٹ میں ترمیم کریں",
+                deletePost: "پوسٹ حذف کریں",
+                saveChanges: "تبدیلیاں محفوظ کریں",
+                deleteConfirm: "اس پوسٹ کو مستقل طور پر حذف کریں؟",
+                commentDelete: "حذف کریں",
+                language: "زبان"
             },
             ar: {
                 loadingText: "جاري تهيئة النظام الأساسي...",
@@ -1971,8 +2286,14 @@
                 noCards: "لا توجد بطاقات مشاركة.",
                 searchUsers: "ابحث عن مستخدمين أو منشورات...",
                 submitComment: "نشر",
-                cached: "● مخبأ",
-                syncing: "⟳ مزامنة..."
+                cached: "مخبأ",
+                syncing: "مزامنة",
+                editPost: "تحرير المنشور",
+                deletePost: "حذف المنشور",
+                saveChanges: "حفظ التغييرات",
+                deleteConfirm: "حذف هذا المنشور بشكل دائم؟",
+                commentDelete: "حذف",
+                language: "اللغة"
             },
             ja: {
                 loadingText: "コアシステムを初期化中...",
@@ -2057,8 +2378,14 @@
                 noCards: "共有されたカードはありません。",
                 searchUsers: "ユーザーまたは投稿を検索...",
                 submitComment: "投稿",
-                cached: "● キャッシュ済み",
-                syncing: "⟳ 同期中..."
+                cached: "キャッシュ済み",
+                syncing: "同期中",
+                editPost: "投稿を編集",
+                deletePost: "投稿を削除",
+                saveChanges: "変更を保存",
+                deleteConfirm: "この投稿を完全に削除しますか？",
+                commentDelete: "削除",
+                language: "言語"
             },
             ro: {
                 loadingText: "Inițializarea sistemului de bază...",
@@ -2143,8 +2470,14 @@
                 noCards: "Nicio carte partajată.",
                 searchUsers: "Căutați utilizatori sau postări...",
                 submitComment: "Publicați",
-                cached: "● Stocat în cache",
-                syncing: "⟳ Se sincronizează..."
+                cached: "Stocat în cache",
+                syncing: "Se sincronizează",
+                editPost: "Editați postarea",
+                deletePost: "Ștergeți postarea",
+                saveChanges: "Salvați modificările",
+                deleteConfirm: "Ștergeți definitiv această postare?",
+                commentDelete: "Ștergeți",
+                language: "Limbă"
             },
             es: {
                 loadingText: "Inicializando el sistema central...",
@@ -2229,8 +2562,14 @@
                 noCards: "No hay tarjetas compartidas.",
                 searchUsers: "Buscar usuarios o publicaciones...",
                 submitComment: "Publicar",
-                cached: "● En caché",
-                syncing: "⟳ Sincronizando..."
+                cached: "En caché",
+                syncing: "Sincronizando",
+                editPost: "Editar publicación",
+                deletePost: "Eliminar publicación",
+                saveChanges: "Guardar cambios",
+                deleteConfirm: "¿Eliminar esta publicación permanentemente?",
+                commentDelete: "Eliminar",
+                language: "Idioma"
             }
         };
 
@@ -2266,6 +2605,7 @@
         let pendingUploadData = null;
         let activeProfileTab = "uploads";
         let isDataLoadedFromCache = false;
+        let isAuthLangDropdownOpen = false;
 
         // ========== AUTH STATE ==========
         auth.onAuthStateChanged((user) => {
@@ -2319,17 +2659,19 @@
                         loadUserIdentitySpace("me");
                     }
                     
-                    document.getElementById('cache-badge-text').textContent = '● Synced';
+                    document.getElementById('cache-badge-text').textContent = 'Synced';
                     document.getElementById('cache-badge-text').className = 'text-[8px] text-green-600 font-bold';
                 });
                 
-                // Listen to pins
+                // REAL-TIME PINS LISTENER - FIXED: Always update in real-time without refresh
                 database.ref('pins').on('value', (snapshot) => {
                     const pinsData = snapshot.val() || {};
                     setCache(CACHE_KEYS.PINS, pinsData);
                     
+                    // Always render pins in real-time
+                    renderPinsFromCache(pinsData);
+                    
                     if (!isDataLoadedFromCache) {
-                        renderPinsFromCache(pinsData);
                         isDataLoadedFromCache = true;
                         completeLoading();
                     }
@@ -2347,6 +2689,7 @@
                 document.getElementById('auth-wall').classList.remove('hidden');
                 completeLoading();
                 renderLanguageOptions();
+                renderAuthLanguageOptions();
                 applyLanguageToUI();
             }
         });
@@ -2539,6 +2882,44 @@
             });
         }
 
+        // ========== AUTH LANGUAGE DROPDOWN ==========
+        function toggleAuthLanguageDropdown() {
+            const dropdown = document.getElementById('auth-lang-dropdown');
+            isAuthLangDropdownOpen = !isAuthLangDropdownOpen;
+            dropdown.classList.toggle('show');
+            if (isAuthLangDropdownOpen) {
+                renderAuthLanguageOptions();
+            }
+        }
+
+        function renderAuthLanguageOptions() {
+            const container = document.getElementById('auth-lang-dropdown');
+            if (!container) return;
+            container.innerHTML = '';
+            
+            languageList.forEach(lang => {
+                const option = document.createElement('div');
+                const isActive = activeLanguage === lang.code;
+                option.className = `lang-option ${isActive ? 'active' : ''}`;
+                option.onclick = function() {
+                    document.querySelectorAll('#auth-lang-dropdown .lang-option').forEach(el => el.classList.remove('active'));
+                    this.classList.add('active');
+                    changeSystemLanguage(lang.code);
+                    // Close dropdown after selection
+                    document.getElementById('auth-lang-dropdown').classList.remove('show');
+                    isAuthLangDropdownOpen = false;
+                };
+                option.innerHTML = `
+                    <div>
+                        <div class="lang-name">${lang.name}</div>
+                        <div class="lang-native">${lang.native}</div>
+                    </div>
+                    <svg class="w-5 h-5 lang-check ${isActive ? 'block' : 'hidden'}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                `;
+                container.appendChild(option);
+            });
+        }
+
         // ========== PREMIUM FEATURES ==========
         function simulatePremiumPurchase() {
             if(!currentUserData) return;
@@ -2577,22 +2958,17 @@
                 font: font,
                 frame: frame
             }).then(() => {
-                // Apply changes immediately
                 const profSection = document.getElementById('tab-profile');
                 const pfpImg = document.getElementById('profile-img');
                 
-                // Remove all theme classes
                 profSection.className = "tab-content text-center mt-4 max-w-xl mx-auto p-8 rounded-3xl transition-all duration-300 relative border shadow-xl min-h-[70vh]";
-                // Remove all font classes
                 profSection.className = profSection.className.replace(/font-\w+/g, '');
-                // Remove all frame classes
                 pfpImg.className = "w-36 h-36 rounded-full object-cover bg-white";
                 
                 if(theme !== 'default') profSection.classList.add(theme);
                 if(font) profSection.classList.add(font);
                 if(frame) pfpImg.classList.add(frame);
                 
-                // Update cache
                 customProfileCache.theme = theme;
                 customProfileCache.font = font;
                 customProfileCache.frame = frame;
@@ -2767,7 +3143,7 @@
             });
         }
 
-        // ========== SEARCH FUNCTION ==========
+        // ========== SEARCH FUNCTION - FIXED ==========
         function performSearch() {
             const query = document.getElementById('search-input-tab').value.toLowerCase().trim();
             const container = document.getElementById('search-results-container');
@@ -2788,109 +3164,44 @@
             let foundUsers = [];
             let foundPins = [];
             
-            // Search from cache
-            const cachedUsers = getCache(CACHE_KEYS.USERS) || {};
-            const cachedPins = getCache(CACHE_KEYS.PINS) || {};
+            // Get data from Firebase directly for real-time search
+            const usersRef = database.ref('users');
+            const pinsRef = database.ref('pins');
             
-            // Search Users
-            Object.keys(cachedUsers).forEach(uid => {
-                const u = cachedUsers[uid];
-                if (!u) return;
-                const nameMatch = u.name && u.name.toLowerCase().includes(query);
-                const userMatch = u.username && u.username.toLowerCase().includes(query);
-                if(nameMatch || userMatch) {
-                    foundUsers.push({ uid, ...u });
-                }
-            });
-            
-            // Search Pins
-            Object.keys(cachedPins).forEach(key => {
-                const p = cachedPins[key];
-                if (!p) return;
-                const titleMatch = p.title && p.title.toLowerCase().includes(query);
-                const descMatch = p.desc && p.desc.toLowerCase().includes(query);
-                const uploaderMatch = p.uploaderName && p.uploaderName.toLowerCase().includes(query);
-                if(titleMatch || descMatch || uploaderMatch) {
-                    foundPins.push({ key, ...p });
-                }
-            });
-            
-            // Also check Firebase for fresh results
-            if (currentUserData) {
-                database.ref('users').once('value', (snapshot) => {
-                    const users = snapshot.val() || {};
-                    Object.keys(users).forEach(uid => {
-                        const u = users[uid];
-                        if (!u) return;
-                        const nameMatch = u.name && u.name.toLowerCase().includes(query);
-                        const userMatch = u.username && u.username.toLowerCase().includes(query);
-                        if((nameMatch || userMatch) && !foundUsers.find(r => r.uid === uid)) {
-                            foundUsers.push({ uid, ...u });
-                        }
+            Promise.all([
+                new Promise((resolve) => {
+                    usersRef.once('value', (snapshot) => {
+                        const users = snapshot.val() || {};
+                        Object.keys(users).forEach(uid => {
+                            const u = users[uid];
+                            if (!u) return;
+                            const nameMatch = u.name && u.name.toLowerCase().includes(query);
+                            const userMatch = u.username && u.username.toLowerCase().includes(query);
+                            if(nameMatch || userMatch) {
+                                foundUsers.push({ uid, ...u });
+                            }
+                        });
+                        resolve();
                     });
-                    
-                    database.ref('pins').once('value', (pinsSnapshot) => {
-                        const pins = pinsSnapshot.val() || {};
+                }),
+                new Promise((resolve) => {
+                    pinsRef.once('value', (snapshot) => {
+                        const pins = snapshot.val() || {};
                         Object.keys(pins).forEach(key => {
                             const p = pins[key];
                             if (!p) return;
                             const titleMatch = p.title && p.title.toLowerCase().includes(query);
                             const descMatch = p.desc && p.desc.toLowerCase().includes(query);
                             const uploaderMatch = p.uploaderName && p.uploaderName.toLowerCase().includes(query);
-                            if((titleMatch || descMatch || uploaderMatch) && !foundPins.find(r => r.key === key)) {
+                            if(titleMatch || descMatch || uploaderMatch) {
                                 foundPins.push({ key, ...p });
                             }
                         });
-                        
-                        // Render results
-                        if (foundUsers.length > 0) {
-                            hasResults = true;
-                            resultsHTML += `<div class="search-section-title">${dict.users || 'Users'}</div>`;
-                            foundUsers.forEach(u => {
-                                resultsHTML += `
-                                    <div class="search-result-item" onclick="loadUserIdentitySpace('${u.uid}'); switchTab('profile');">
-                                        <img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" class="result-avatar">
-                                        <div class="result-info">
-                                            <div class="result-name">${u.name || 'User'}</div>
-                                            <div class="result-username">@${u.username || ''}</div>
-                                        </div>
-                                        <span class="result-badge">${dict.viewProfile || 'View Profile'}</span>
-                                    </div>
-                                `;
-                            });
-                        }
-                        
-                        if (foundPins.length > 0) {
-                            hasResults = true;
-                            resultsHTML += `<div class="search-section-title">${dict.posts || 'Posts'}</div>`;
-                            foundPins.forEach(p => {
-                                resultsHTML += `
-                                    <div class="search-result-item" onclick="openPhotoModal('${p.img}', '${p.title || 'Stardust Card'}', '${p.desc || ''}', '${p.uploaderName || 'Anonymous'}', '${p.key}', '${p.uploaderUid}')">
-                                        <img src="${p.img}" class="result-avatar" style="border-radius:0.75rem; width:3rem; height:3rem; object-fit:cover;">
-                                        <div class="result-info">
-                                            <div class="result-name">${p.title || 'Untitled'}</div>
-                                            <div class="result-username">by ${p.uploaderName || 'Anonymous'}</div>
-                                        </div>
-                                        <span class="result-badge">${dict.viewPost || 'View Post'}</span>
-                                    </div>
-                                `;
-                            });
-                        }
-                        
-                        if (!hasResults) {
-                            container.innerHTML = `
-                                <div class="search-empty-state">
-                                    <svg class="mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                    <p class="text-gray-400 font-medium">${dict.noResults || 'No results found'}</p>
-                                </div>
-                            `;
-                        } else {
-                            container.innerHTML = resultsHTML;
-                        }
+                        resolve();
                     });
-                });
-            } else {
-                // No user logged in, just show cached results
+                })
+            ]).then(() => {
+                // Render results
                 if (foundUsers.length > 0) {
                     hasResults = true;
                     resultsHTML += `<div class="search-section-title">${dict.users || 'Users'}</div>`;
@@ -2935,7 +3246,7 @@
                 } else {
                     container.innerHTML = resultsHTML;
                 }
-            }
+            });
         }
 
         // ========== TOGGLE LIKE ==========
@@ -2964,9 +3275,22 @@
                 const container = document.getElementById('comments-list-container'); container.innerHTML = ''; const list = snapshot.val();
                 if(!list) { container.innerHTML = `<p class="text-gray-400 text-center text-xs py-6">${dict.commentsTitle || 'No comments yet.'}</p>`; return; }
                 Object.keys(list).forEach(cKey => {
-                    const comment = list[cKey]; const row = document.createElement('div');
-                    row.className = "bg-gray-50 rounded-2xl p-2.5 border text-xs text-left";
-                    row.innerHTML = `<p class="font-black text-gray-700">@${comment.username || 'member'}</p><p class="text-gray-600 mt-0.5">${comment.text}</p>`;
+                    const comment = list[cKey]; 
+                    const row = document.createElement('div');
+                    row.className = "bg-gray-50 rounded-2xl p-2.5 border text-xs text-left comment-item";
+                    
+                    // Check if current user can delete this comment (comment author OR post owner)
+                    const isCommentAuthor = currentUserData && comment.userId === currentUserData.uid;
+                    const isPostOwner = currentUserData && currentModalPinKey && currentModalUploaderUid === currentUserData.uid;
+                    const canDeleteComment = isCommentAuthor || isPostOwner;
+                    
+                    row.innerHTML = `
+                        <div class="comment-text">
+                            <p class="font-black text-gray-700">@${comment.username || 'member'}</p>
+                            <p class="text-gray-600 mt-0.5">${comment.text}</p>
+                        </div>
+                        ${canDeleteComment ? `<button onclick="deleteComment('${pinId}', '${cKey}')" class="comment-delete-btn">${dict.commentDelete || 'Delete'}</button>` : ''}
+                    `;
                     container.appendChild(row);
                 });
                 container.scrollTop = container.scrollHeight;
@@ -2976,6 +3300,14 @@
                 const input = document.getElementById('comment-input-field'); const val = input.value.trim(); if(!val || !currentUserData) return;
                 database.ref('pins/' + pinId + '/comments').push({ userId: currentUserData.uid, username: customProfileCache.username, text: val, timestamp: Date.now() }).then(() => { input.value = ''; });
             };
+        }
+
+        function deleteComment(pinId, commentKey) {
+            if(!currentUserData) return;
+            const dict = langPack[activeLanguage] || langPack['en'];
+            if(confirm(dict.deleteConfirm || 'Delete this comment?')) {
+                database.ref('pins/' + pinId + '/comments/' + commentKey).remove();
+            }
         }
 
         function closeCommentModal() { if(activeCommentPinId) database.ref('pins/' + activeCommentPinId + '/comments').off(); document.getElementById('comment-modal').style.display = 'none'; }
@@ -2999,6 +3331,16 @@
             document.getElementById('download-btn-text').innerText = dict.downloadBtn || 'Download';
             document.getElementById('comments-btn-text').innerText = dict.commentsBtn || 'Comments';
 
+            // Show 3-dot menu only for post owner
+            const menuBtn = document.getElementById('photo-menu-btn');
+            if(currentUserData && uploaderUid === currentUserData.uid) {
+                menuBtn.classList.remove('hidden');
+            } else {
+                menuBtn.classList.add('hidden');
+            }
+            // Hide dropdown by default
+            document.getElementById('photo-menu-dropdown').classList.remove('show');
+
             updateSaveButtonState(pinKey);
 
             const likeSvg = document.getElementById('modal-like-svg'); const likeTxt = document.getElementById('modal-like-counter-text');
@@ -3011,6 +3353,76 @@
             document.getElementById('modal-like-trigger-btn').onclick = () => toggleLikePost(pinKey);
             document.getElementById('modal-comment-trigger-btn').onclick = () => openCommentModal(pinKey);
             document.getElementById('photo-modal').style.display = 'flex'; window.activeModalPinRefKey = pinKey;
+        }
+
+        function togglePhotoMenu() {
+            const dropdown = document.getElementById('photo-menu-dropdown');
+            dropdown.classList.toggle('show');
+            const dict = langPack[activeLanguage] || langPack['en'];
+            document.getElementById('photo-edit-btn').innerText = dict.editPost || 'Edit Post';
+            document.getElementById('photo-delete-btn').innerText = dict.deletePost || 'Delete Post';
+        }
+
+        function openEditPostModal() {
+            // Close photo menu dropdown
+            document.getElementById('photo-menu-dropdown').classList.remove('show');
+            
+            if(!currentModalPinKey || !currentUserData) return;
+            
+            // Get current post data
+            database.ref('pins/' + currentModalPinKey).once('value', (snapshot) => {
+                const post = snapshot.val();
+                if(!post) return;
+                
+                const dict = langPack[activeLanguage] || langPack['en'];
+                document.getElementById('edit-post-title-text').innerText = dict.editPost || 'Edit Post';
+                document.getElementById('edit-post-title-label').innerText = dict.postTitle || 'Post Title';
+                document.getElementById('edit-post-desc-label').innerText = dict.description || 'Description';
+                document.getElementById('edit-cancel-btn').innerText = dict.cancel || 'Cancel';
+                document.getElementById('edit-save-btn').innerText = dict.saveChanges || 'Save Changes';
+                
+                document.getElementById('edit-post-title-input').value = post.title || '';
+                document.getElementById('edit-post-desc-input').value = post.desc || '';
+                document.getElementById('edit-post-modal').classList.add('show');
+            });
+        }
+
+        function closeEditPostModal() {
+            document.getElementById('edit-post-modal').classList.remove('show');
+        }
+
+        function savePostEdit() {
+            if(!currentModalPinKey || !currentUserData) return;
+            
+            const newTitle = document.getElementById('edit-post-title-input').value.trim() || 'Untitled';
+            const newDesc = document.getElementById('edit-post-desc-input').value.trim() || '';
+            
+            database.ref('pins/' + currentModalPinKey).update({
+                title: newTitle,
+                desc: newDesc
+            }).then(() => {
+                closeEditPostModal();
+                // Update the modal display
+                document.getElementById('modal-title').innerText = newTitle;
+                document.getElementById('modal-desc').innerText = newDesc;
+                // Show success toast
+                showUploadSuccessToast();
+            });
+        }
+
+        function deleteCurrentPost() {
+            if(!currentModalPinKey || !currentUserData) return;
+            const dict = langPack[activeLanguage] || langPack['en'];
+            if(confirm(dict.deleteConfirm || 'Delete this post permanently?')) {
+                database.ref('pins/' + currentModalPinKey).remove().then(() => {
+                    closePhotoModal();
+                    // Refresh profile uploads if on profile tab
+                    if(activeProfileTab === 'uploads') {
+                        syncSocialNetworkCounters(selectedProfileUid === 'me' ? currentUserData.uid : selectedProfileUid);
+                    }
+                });
+            }
+            document.getElementById('photo-menu-dropdown').classList.remove('show');
         }
 
         function updateSaveButtonState(pinKey) {
@@ -3134,19 +3546,29 @@
             });
         }
 
-        // ========== CHANGE SYSTEM LANGUAGE ==========
+        // ========== CHANGE SYSTEM LANGUAGE - COMPLETE ==========
         function changeSystemLanguage(langKey) {
             activeLanguage = langKey;
             setCache(CACHE_KEYS.LANGUAGE, langKey);
             
             const dict = langPack[langKey] || langPack['en'];
             
-            // Auth page
+            // ---- AUTH PAGE ----
             document.getElementById('lang-tagline').innerText = dict.tagline;
             document.getElementById('login-btn-text').innerText = dict.loginBtn;
             document.getElementById('signup-btn-text').innerText = dict.signupBtn;
-            document.getElementById('no-account-text').innerHTML = `${dict.noAccount} <button onclick="toggleAuthView('signup')" class="text-red-600 font-bold hover:underline">${dict.createNew}</button>`;
-            document.getElementById('have-account-text').innerHTML = `${dict.haveAccount} <button onclick="toggleAuthView('login')" class="text-black font-bold hover:underline">${dict.signIn}</button>`;
+            document.getElementById('auth-lang-label').innerText = dict.language || 'Language';
+            
+            // Update login/signup toggle texts
+            const noAccountEl = document.getElementById('no-account-text');
+            if (noAccountEl) {
+                noAccountEl.innerHTML = `${dict.noAccount} <button onclick="toggleAuthView('signup')" class="text-red-600 font-bold hover:underline">${dict.createNew}</button>`;
+            }
+            const haveAccountEl = document.getElementById('have-account-text');
+            if (haveAccountEl) {
+                haveAccountEl.innerHTML = `${dict.haveAccount} <button onclick="toggleAuthView('login')" class="text-black font-bold hover:underline">${dict.signIn}</button>`;
+            }
+            
             document.getElementById('login-email-label').innerText = dict.emailLabel;
             document.getElementById('login-password-label').innerText = dict.passwordLabel;
             document.getElementById('signup-pfp-label').innerText = dict.uploadPfp;
@@ -3160,18 +3582,18 @@
             document.getElementById('legal-privacy-signup').innerText = dict.privacyPolicy;
             document.getElementById('legal-terms-signup').innerText = dict.termsService;
             
-            // Search Tab
+            // ---- SEARCH TAB ----
             document.getElementById('search-input-tab').placeholder = dict.searchPlaceholder;
             document.getElementById('search-hint-text').innerText = dict.searchHint || 'Search for users or posts by title, description, or username';
             
-            // Profile
+            // ---- PROFILE ----
             document.getElementById('profile-tab-uploads-text').innerText = dict.uploadRecords;
             document.getElementById('profile-tab-saved-text').innerText = dict.savedPins;
             document.getElementById('back-to-my-space-text').innerText = dict.backToMySpace;
             document.getElementById('followers-label').innerText = dict.followers;
             document.getElementById('following-label').innerText = dict.following;
             
-            // Settings
+            // ---- SETTINGS MAIN ----
             document.getElementById('lang-settings-title').innerText = dict.settingsTitle;
             document.getElementById('nitro-desc').innerText = dict.nitroDesc;
             document.getElementById('activate-premium-btn').innerText = dict.nitroActivate;
@@ -3189,7 +3611,7 @@
             document.getElementById('lang-close-settings').innerText = dict.closeSettings;
             document.getElementById('lang-signout-btn').innerText = dict.signOut;
             
-            // Settings Sub-pages
+            // ---- SETTINGS SUB-PAGES ----
             document.getElementById('identity-title').innerText = dict.identityTitle;
             document.getElementById('edit-handle-label').innerText = dict.handleLabel;
             document.getElementById('edit-name-label').innerText = dict.displayName;
@@ -3205,7 +3627,7 @@
             document.getElementById('delete-warning').innerHTML = dict.deleteWarning;
             document.getElementById('delete-permanent-btn').innerText = dict.deletePermanent;
             
-            // Upload Modal
+            // ---- UPLOAD MODAL ----
             document.getElementById('create-post-title').innerText = dict.createPost;
             document.getElementById('upload-title-label').innerText = dict.postTitle;
             document.getElementById('upload-title-input').placeholder = dict.titlePlaceholder;
@@ -3214,25 +3636,34 @@
             document.getElementById('upload-cancel-btn').innerText = dict.cancel;
             document.getElementById('upload-publish-btn').innerHTML = `<span>${dict.publish}</span>`;
             
-            // Toast
+            // ---- TOAST ----
             document.getElementById('toast-success-text').innerText = dict.successToast;
             
-            // Comments Modal
+            // ---- COMMENTS MODAL ----
             document.getElementById('comments-title').innerText = dict.commentsTitle;
             document.getElementById('comment-input-field').placeholder = dict.commentPlaceholder;
             document.getElementById('submit-comment-btn').innerText = dict.submitComment || 'Post';
             
-            // Photo Modal
+            // ---- PHOTO MODAL ----
             document.getElementById('download-btn-text').innerText = dict.downloadBtn;
             document.getElementById('comments-btn-text').innerText = dict.commentsBtn;
             if(currentModalPinKey) {
                 updateSaveButtonState(currentModalPinKey);
             }
             
-            // Cache badge
-            document.getElementById('cache-badge-text').textContent = dict.cached || '● Cached';
+            // ---- EDIT POST MODAL ----
+            document.getElementById('edit-post-title-text').innerText = dict.editPost || 'Edit Post';
+            document.getElementById('edit-post-title-label').innerText = dict.postTitle || 'Post Title';
+            document.getElementById('edit-post-desc-label').innerText = dict.description || 'Description';
+            document.getElementById('edit-cancel-btn').innerText = dict.cancel || 'Cancel';
+            document.getElementById('edit-save-btn').innerText = dict.saveChanges || 'Save Changes';
             
+            // ---- CACHE BADGE ----
+            document.getElementById('cache-badge-text').textContent = dict.cached || 'Cached';
+            
+            // Update language options in both places
             renderLanguageOptions();
+            renderAuthLanguageOptions();
             
             if(currentUserData) {
                 database.ref('users/' + currentUserData.uid + '/language').set(langKey);
@@ -3353,7 +3784,7 @@
             setTimeout(() => {
                 renderPinsFromCache(cachedPins);
                 isDataLoadedFromCache = true;
-                document.getElementById('cache-badge-text').textContent = '● Cached';
+                document.getElementById('cache-badge-text').textContent = 'Cached';
                 document.getElementById('cache-badge-text').className = 'text-[8px] text-green-600 font-bold';
             }, 300);
         }
@@ -3361,6 +3792,19 @@
         // Apply language
         changeSystemLanguage(activeLanguage);
         renderLanguageOptions();
+        renderAuthLanguageOptions();
+
+        // Close auth language dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('auth-lang-dropdown');
+            const btn = document.getElementById('auth-lang-btn');
+            if (dropdown && btn) {
+                if (!dropdown.contains(e.target) && !btn.contains(e.target)) {
+                    dropdown.classList.remove('show');
+                    isAuthLangDropdownOpen = false;
+                }
+            }
+        });
     </script>
 </body>
 </html>
