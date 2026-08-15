@@ -247,6 +247,90 @@
             background: #fef2f2;
             color: #dc2626;
         }
+
+        /* Search results styling */
+        .search-result-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            border: 1px solid #f3f4f6;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+        }
+        .search-result-item:hover {
+            background: #fef2f2;
+            border-color: #fecaca;
+        }
+        .search-result-item .result-avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .search-result-item .result-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .search-result-item .result-name {
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: #1f2937;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .search-result-item .result-username {
+            font-size: 0.7rem;
+            color: #6b7280;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .search-result-item .result-badge {
+            font-size: 0.6rem;
+            background: #dc2626;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .search-result-item .result-type {
+            font-size: 0.6rem;
+            color: #9ca3af;
+            font-weight: 600;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+        .search-section-title {
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.5rem 0.25rem;
+            border-bottom: 1px solid #f3f4f6;
+            margin-top: 0.5rem;
+        }
+        .search-section-title:first-of-type {
+            margin-top: 0;
+        }
+        .search-empty-state {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: #9ca3af;
+            font-size: 0.8rem;
+        }
+        .search-empty-state svg {
+            width: 2.5rem;
+            height: 2.5rem;
+            margin: 0 auto 0.5rem;
+            opacity: 0.3;
+        }
     </style>
 </head>
 <body id="app-body" class="bg-white text-gray-950 font-sans antialiased pb-24">
@@ -255,7 +339,7 @@
     <div id="loading-screen" class="fixed inset-0 bg-white z-[250] flex flex-col items-center justify-center p-6 text-center transition-opacity duration-300">
         <h1 class="text-red-600 font-black text-5xl tracking-tighter select-none mb-6 animate-pulse">STARDUST</h1>
         <div class="spinner"></div>
-        <p class="text-xs font-bold text-gray-400 mt-4 tracking-widest uppercase">Initializing Core System...</p>
+        <p id="loading-text" class="text-xs font-bold text-gray-400 mt-4 tracking-widest uppercase">Initializing Core System...</p>
     </div>
 
     <!-- AUTHENTICATION CONTAINER -->
@@ -267,11 +351,11 @@
             <!-- LOGIN FORM -->
             <div id="auth-login-view" class="space-y-3 pt-2 text-left">
                 <div>
-                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Email Address</label>
+                    <label id="login-email-label" class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Email Address</label>
                     <input type="email" id="login-email" placeholder="name@domain.com" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-red-600 transition">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Password</label>
+                    <label id="login-password-label" class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Password</label>
                     <input type="password" id="login-password" placeholder="••••••••" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-red-600 transition">
                 </div>
                 <button onclick="handleEmailLogin()" class="w-full bg-black hover:opacity-90 text-white font-bold text-sm py-4 px-6 rounded-full flex items-center justify-center gap-2 transition shadow-lg active:scale-95 mt-4">
@@ -282,9 +366,9 @@
                 </div>
                 <!-- Privacy & Terms Links on Login -->
                 <div class="text-center pt-2 flex items-center justify-center gap-3 text-[10px]">
-                    <a href="privacy.html" target="_blank" class="legal-link">Privacy Policy</a>
+                    <a href="privacy.html" target="_blank" class="legal-link" id="legal-privacy-login">Privacy Policy</a>
                     <span class="text-gray-300">|</span>
-                    <a href="terms.html" target="_blank" class="legal-link">Terms of Service</a>
+                    <a href="terms.html" target="_blank" class="legal-link" id="legal-terms-login">Terms of Service</a>
                 </div>
             </div>
 
@@ -297,28 +381,28 @@
                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
                         </div>
                     </div>
-                    <span class="text-[10px] font-bold text-gray-400 mt-1">Upload PFP from Gallery</span>
+                    <span id="signup-pfp-label" class="text-[10px] font-bold text-gray-400 mt-1">Upload PFP from Gallery</span>
                     <input type="file" id="signup-pfp-input" accept="image/*" class="hidden" onchange="previewSignupPfp(event)">
                 </div>
 
                 <div>
-                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Full Name</label>
+                    <label id="signup-name-label" class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Full Name</label>
                     <input type="text" id="signup-name" placeholder="John Doe" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:border-red-600 transition">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Username (@)</label>
+                    <label id="signup-username-label" class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Username (@)</label>
                     <input type="text" id="signup-username" placeholder="johndoe" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:border-red-600 transition">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Bio</label>
+                    <label id="signup-bio-label" class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Bio</label>
                     <input type="text" id="signup-bio" placeholder="Digital Creator & Visual Explorer" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:border-red-600 transition">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Email Address</label>
+                    <label id="signup-email-label" class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Email Address</label>
                     <input type="email" id="signup-email" placeholder="name@domain.com" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:border-red-600 transition">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Password</label>
+                    <label id="signup-password-label" class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Password</label>
                     <input type="password" id="signup-password" placeholder="••••••••" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:border-red-600 transition">
                 </div>
 
@@ -330,9 +414,9 @@
                 </div>
                 <!-- Privacy & Terms Links on Signup -->
                 <div class="text-center pt-2 flex items-center justify-center gap-3 text-[10px]">
-                    <a href="privacy.html" target="_blank" class="legal-link">Privacy Policy</a>
+                    <a href="privacy.html" target="_blank" class="legal-link" id="legal-privacy-signup">Privacy Policy</a>
                     <span class="text-gray-300">|</span>
-                    <a href="terms.html" target="_blank" class="legal-link">Terms of Service</a>
+                    <a href="terms.html" target="_blank" class="legal-link" id="legal-terms-signup">Terms of Service</a>
                 </div>
             </div>
         </div>
@@ -358,28 +442,18 @@
             <div id="pin-container" class="pin-grid"></div>
         </section>
 
-        <section id="tab-messages" class="tab-content hidden max-w-lg mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 border border-gray-200/60 rounded-3xl p-4 shadow-sm min-h-[480px]">
-            <div class="md:col-span-1 border-r pr-2 flex flex-col">
-                <h3 class="text-[10px] font-black uppercase tracking-wider text-gray-400 mb-2 px-1">Active Chat Members</h3>
-                <div id="inbox-users-list" class="flex-1 overflow-y-auto space-y-1 max-h-[110px] md:max-h-[400px]">
-                    <p class="text-[11px] text-gray-400 text-center py-2">Loading users...</p>
+        <!-- SEARCH TAB - Replaces Messages/Chat -->
+        <section id="tab-search" class="tab-content hidden max-w-2xl mx-auto">
+            <div class="bg-white border border-gray-100 rounded-3xl p-4 shadow-sm min-h-[480px]">
+                <div class="relative mb-4">
+                    <svg class="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <input type="text" id="search-input-tab" onkeyup="performSearch()" placeholder="Search ideas or usernames..." class="w-full bg-[#E9E9E9] pl-10 pr-4 py-3 rounded-full text-sm font-medium focus:outline-none transition">
                 </div>
-            </div>
-            
-            <div class="md:col-span-2 flex flex-col justify-between">
-                <div class="flex items-center gap-2 border-b pb-2 mb-2">
-                    <span id="chat-window-header-title" class="text-sm font-black text-gray-800">Stardust Core Bot</span>
-                </div>
-                
-                <div class="space-y-3 h-64 overflow-y-auto p-3 bg-white rounded-2xl border border-gray-100 mb-3" id="chat-box">
-                    <div id="lang-welcome-msg" class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">
-                        Welcome to STARDUST Core System! Click any dynamic active user on the left to start a private encrypted real-time chat.
+                <div id="search-results-container" class="space-y-4">
+                    <div class="search-empty-state">
+                        <svg class="mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        <p id="search-hint-text" class="text-gray-400 font-medium">Search for users or posts by title, description, or username</p>
                     </div>
-                </div>
-                
-                <div class="flex gap-2 items-center bg-white p-1 rounded-full border border-gray-200">
-                    <input type="text" id="chat-input" placeholder="Ask Stardust..." class="flex-1 pl-4 pr-2 py-2 text-sm font-medium focus:outline-none bg-transparent">
-                    <button onclick="sendChatMessage()" id="lang-send-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-2.5 px-4 rounded-full transition active:scale-95">Send</button>
                 </div>
             </div>
         </section>
@@ -387,7 +461,7 @@
         <section id="tab-profile" class="tab-content hidden text-center mt-4 max-w-xl mx-auto p-8 rounded-3xl transition-all duration-300 relative border border-transparent shadow-xl min-h-[70vh]">
             <div class="w-full flex justify-between items-center px-2 mb-6">
                 <button id="profile-back-to-my-btn" onclick="loadUserIdentitySpace('me')" class="hidden flex items-center gap-1 text-xs font-black text-red-600 bg-red-50/80 backdrop-blur py-2 px-4 rounded-full transition active:scale-95 shadow-sm">
-                    Back to My Space
+                    <span id="back-to-my-space-text">Back to My Space</span>
                 </button>
                 <div class="flex-1"></div>
                 <button onclick="openSettingsModal()" id="profile-settings-trigger-btn" class="p-2.5 text-gray-700 hover:bg-gray-100 rounded-full bg-white/90 backdrop-blur transition shadow-md">
@@ -409,8 +483,8 @@
                 <p id="profile-username" class="text-gray-500 text-base font-bold mt-1 tracking-wide">@stardust_creator</p>
                 
                 <div class="flex items-center gap-6 mt-4 text-sm font-black opacity-90 bg-black/5 px-5 py-2 rounded-full">
-                    <div><span id="profile-followers-count">0</span> Followers</div>
-                    <div><span id="profile-following-count">0</span> Following</div>
+                    <div><span id="profile-followers-count">0</span> <span id="followers-label">Followers</span></div>
+                    <div><span id="profile-following-count">0</span> <span id="following-label">Following</span></div>
                 </div>
                 
                 <button id="profile-follow-action-btn" onclick="handleNetworkFollowToggle()" class="hidden mt-5 w-40 text-xs font-black py-3 rounded-full transition active:scale-95 shadow-md"></button>
@@ -420,8 +494,8 @@
             
             <!-- Profile Tabs -->
             <div class="flex justify-center gap-2 mt-10 border-b border-gray-100 pb-3 text-sm font-bold">
-                <button onclick="switchProfileTab('uploads')" id="profile-tab-uploads" class="profile-tab-btn active">Upload Records</button>
-                <button onclick="switchProfileTab('saved')" id="profile-tab-saved" class="profile-tab-btn">Saved Pins</button>
+                <button onclick="switchProfileTab('uploads')" id="profile-tab-uploads" class="profile-tab-btn active"><span id="profile-tab-uploads-text">Upload Records</span></button>
+                <button onclick="switchProfileTab('saved')" id="profile-tab-saved" class="profile-tab-btn"><span id="profile-tab-saved-text">Saved Pins</span></button>
             </div>
             <div id="profile-uploads-container" class="pin-grid mt-6"></div>
             <div id="profile-saved-container" class="pin-grid mt-6 hidden"></div>
@@ -434,7 +508,7 @@
             <div class="flex items-center justify-between border-b pb-3">
                 <div class="flex items-center gap-2">
                     <span class="w-2.5 h-2.5 bg-red-600 rounded-full animate-ping"></span>
-                    <h3 class="font-black text-base tracking-wide text-gray-900">Create New Post</h3>
+                    <h3 id="create-post-title" class="font-black text-base tracking-wide text-gray-900">Create New Post</h3>
                 </div>
                 <button onclick="closeUploadModal()" class="text-gray-400 hover:text-black font-bold p-1 transition">✕</button>
             </div>
@@ -445,18 +519,18 @@
 
             <div class="space-y-3">
                 <div>
-                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Post Title</label>
+                    <label id="upload-title-label" class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Post Title</label>
                     <input type="text" id="upload-title-input" placeholder="Give your visual a title..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-red-600 transition">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Description (Optional)</label>
+                    <label id="upload-desc-label" class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-wider">Description (Optional)</label>
                     <textarea id="upload-desc-input" rows="2" placeholder="Write a short description..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-red-600 transition resize-none"></textarea>
                 </div>
             </div>
 
             <div class="flex gap-2 pt-2">
-                <button onclick="closeUploadModal()" class="w-1/3 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold py-3 rounded-full transition">Cancel</button>
-                <button onclick="confirmAndPublishUpload()" class="w-2/3 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-3 rounded-full transition shadow-lg active:scale-95 flex items-center justify-center gap-1.5">
+                <button onclick="closeUploadModal()" id="upload-cancel-btn" class="w-1/3 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold py-3 rounded-full transition">Cancel</button>
+                <button onclick="confirmAndPublishUpload()" id="upload-publish-btn" class="w-2/3 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-3 rounded-full transition shadow-lg active:scale-95 flex items-center justify-center gap-1.5">
                     <span>Publish Post</span>
                 </button>
             </div>
@@ -466,7 +540,7 @@
     <!-- SUCCESS POPUP NOTICE -->
     <div id="upload-success-toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-[220] hidden items-center gap-2.5 bg-gray-900 text-white px-5 py-3 rounded-full shadow-2xl border border-white/20 transition-all duration-300">
         <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
-        <span class="text-xs font-bold tracking-wide">Post Published Successfully!</span>
+        <span id="toast-success-text" class="text-xs font-bold tracking-wide">Post Published Successfully!</span>
     </div>
 
     <div id="settings-modal" class="fixed inset-0 bg-black/50 z-[160] hidden items-center justify-center p-4 backdrop-blur-sm">
@@ -479,7 +553,7 @@
                     <div class="flex justify-between items-start">
                         <div>
                             <h4 class="font-black text-sm tracking-wide">STARDUST NITRO PREMIUM</h4>
-                            <p class="text-[10px] opacity-90">Unlock Colors, Animations, Premium Fonts & Custom Backgrounds!</p>
+                            <p id="nitro-desc" class="text-[10px] opacity-90">Unlock Colors, Animations, Premium Fonts & Custom Backgrounds!</p>
                         </div>
                         <span class="bg-white/20 text-[9px] font-black px-2 py-0.5 rounded-full">SALE</span>
                     </div>
@@ -489,10 +563,10 @@
                 </div>
 
                 <div id="premium-settings-section" class="hidden border-2 border-purple-500 bg-purple-50/50 p-3 rounded-2xl space-y-3">
-                    <h4 class="text-xs font-black text-purple-700 tracking-wider uppercase">Nitro Customization Pad</h4>
+                    <h4 id="nitro-custom-title" class="text-xs font-black text-purple-700 tracking-wider uppercase">Nitro Customization Pad</h4>
                     
                     <div>
-                        <label class="block text-[10px] font-bold text-gray-500 mb-1">SELECT PROFILE BACKGROUND THEME</label>
+                        <label id="nitro-theme-label" class="block text-[10px] font-bold text-gray-500 mb-1">SELECT PROFILE BACKGROUND THEME</label>
                         <select id="premium-theme-select" onchange="applyPremiumCustomization()" class="w-full bg-white border border-purple-300 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none">
                             <option value="default">Default White Elegant</option>
                             <option value="theme-almond">Almond Gold Glow</option>
@@ -504,7 +578,7 @@
                     </div>
 
                     <div>
-                        <label class="block text-[10px] font-bold text-gray-500 mb-1">SELECT PREMIUM PFP FRAME</label>
+                        <label id="nitro-frame-label" class="block text-[10px] font-bold text-gray-500 mb-1">SELECT PREMIUM PFP FRAME</label>
                         <select id="premium-frame-select" onchange="applyPremiumCustomization()" class="w-full bg-white border border-purple-300 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none">
                             <option value="frame-none">Standard Minimal Clean</option>
                             <option value="frame-almond">Cute Almond Golden Glow</option>
@@ -516,7 +590,7 @@
                     </div>
 
                     <div>
-                        <label class="block text-[10px] font-bold text-gray-500 mb-1">SELECT PREMIUM PROFILE FONT</label>
+                        <label id="nitro-font-label" class="block text-[10px] font-bold text-gray-500 mb-1">SELECT PREMIUM PROFILE FONT</label>
                         <select id="premium-font-select" onchange="applyPremiumCustomization()" class="w-full bg-white border border-purple-300 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none">
                             <option value="font-modern">Default Modern Sans</option>
                             <option value="font-serif">Elegant Royal Serif</option>
@@ -568,40 +642,40 @@
             <div id="page-account" class="settings-sub-page hidden space-y-4 flex-1">
                 <div class="flex items-center gap-2 border-b pb-2 mb-2">
                     <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
-                    <h4 class="font-black text-sm uppercase tracking-wider">Identity Management</h4>
+                    <h4 id="identity-title" class="font-black text-sm uppercase tracking-wider">Identity Management</h4>
                 </div>
                 <div class="space-y-3">
                     <div>
-                        <label class="block text-[10px] font-bold text-gray-400 mb-1">STARDUST UNIQUE HANDLE (@)</label>
+                        <label id="edit-handle-label" class="block text-[10px] font-bold text-gray-400 mb-1">STARDUST UNIQUE HANDLE (@)</label>
                         <input type="text" id="edit-username-input" class="w-full bg-gray-50 text-gray-800 border rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold text-gray-400 mb-1">DISPLAY NAME</label>
+                        <label id="edit-name-label" class="block text-[10px] font-bold text-gray-400 mb-1">DISPLAY NAME</label>
                         <input type="text" id="edit-name-input" class="w-full bg-gray-50 text-gray-800 border rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold text-gray-400 mb-1">CUSTOM BIO</label>
+                        <label id="edit-bio-label" class="block text-[10px] font-bold text-gray-400 mb-1">CUSTOM BIO</label>
                         <textarea id="edit-bio-input" rows="3" class="w-full bg-gray-50 text-gray-800 border rounded-xl px-3 py-2 text-sm font-medium focus:outline-none resize-none"></textarea>
                     </div>
-                    <button onclick="saveProfileCustomizations()" class="w-full bg-black text-white text-xs font-bold py-3 rounded-xl transition">Save Identity</button>
+                    <button onclick="saveProfileCustomizations()" id="save-identity-btn" class="w-full bg-black text-white text-xs font-bold py-3 rounded-xl transition">Save Identity</button>
                 </div>
             </div>
 
             <div id="page-pfp" class="settings-sub-page hidden space-y-4 flex-1">
                 <div class="flex items-center gap-2 border-b pb-2 mb-2">
                     <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
-                    <h4 class="font-black text-sm uppercase tracking-wider">Profile Picture</h4>
+                    <h4 id="pfp-title" class="font-black text-sm uppercase tracking-wider">Profile Picture</h4>
                 </div>
                 <div class="text-center py-4 space-y-4">
-                    <button onclick="document.getElementById('pfp-file-input').click()" class="bg-red-600 text-white font-bold text-xs py-3 px-6 rounded-full transition shadow-md">Open Local Gallery</button>
+                    <button onclick="document.getElementById('pfp-file-input').click()" id="open-gallery-btn" class="bg-red-600 text-white font-bold text-xs py-3 px-6 rounded-full transition shadow-md">Open Local Gallery</button>
                 </div>
             </div>
 
             <div id="page-lang" class="settings-sub-page hidden space-y-4 flex-1">
                 <div class="flex items-center justify-between border-b pb-2 mb-2">
                     <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
-                    <h4 class="font-black text-sm uppercase tracking-wider">Select Language</h4>
-                    <button onclick="backToSettingsMain()" class="bg-black text-white text-xs font-bold py-1.5 px-4 rounded-full transition hover:opacity-90">Close</button>
+                    <h4 id="lang-select-title" class="font-black text-sm uppercase tracking-wider">Select Language</h4>
+                    <button onclick="backToSettingsMain()" id="lang-close-btn" class="bg-black text-white text-xs font-bold py-1.5 px-4 rounded-full transition hover:opacity-90">Close</button>
                 </div>
                 <div class="space-y-2" id="language-options-container">
                     <!-- Languages will be rendered by JS -->
@@ -611,20 +685,20 @@
             <div id="page-support" class="settings-sub-page hidden space-y-4 flex-1">
                 <div class="flex items-center gap-2 border-b pb-2 mb-2">
                     <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
-                    <h4 class="font-black text-sm uppercase tracking-wider">Support Portal</h4>
+                    <h4 id="support-title" class="font-black text-sm uppercase tracking-wider">Support Portal</h4>
                 </div>
                 <textarea id="support-text-input" rows="4" placeholder="Write context here..." class="w-full bg-gray-50 border rounded-xl px-3 py-2 text-xs resize-none"></textarea>
-                <button onclick="submitSupportTicket()" class="w-full bg-red-600 text-white font-bold text-xs py-2.5 rounded-xl">Submit Ticket</button>
+                <button onclick="submitSupportTicket()" id="submit-ticket-btn" class="w-full bg-red-600 text-white font-bold text-xs py-2.5 rounded-xl">Submit Ticket</button>
             </div>
 
             <div id="page-delete" class="settings-sub-page hidden space-y-4 flex-1">
                 <div class="flex items-center gap-2 border-b pb-2 mb-2">
                     <button onclick="backToSettingsMain()" class="p-1 hover:bg-gray-100 rounded-full"><svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
-                    <h4 class="font-black text-sm uppercase tracking-wider text-red-600">Delete Account</h4>
+                    <h4 id="delete-title" class="font-black text-sm uppercase tracking-wider text-red-600">Delete Account</h4>
                 </div>
                 <div class="text-center py-4 space-y-4">
-                    <p class="text-sm text-gray-600 leading-relaxed">This action is <strong>permanent</strong> and cannot be undone. All your data including posts, chats, and profile information will be removed.</p>
-                    <button onclick="handleDeleteAccount()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-sm py-3.5 rounded-full transition shadow-lg active:scale-95">
+                    <p id="delete-warning" class="text-sm text-gray-600 leading-relaxed">This action is <strong>permanent</strong> and cannot be undone. All your data including posts, chats, and profile information will be removed.</p>
+                    <button onclick="handleDeleteAccount()" id="delete-permanent-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-sm py-3.5 rounded-full transition shadow-lg active:scale-95">
                         Permanently Delete My Account
                     </button>
                 </div>
@@ -635,7 +709,7 @@
     <div id="comment-modal" class="fixed inset-0 bg-black/60 z-[160] hidden items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl w-full max-w-sm p-5 flex flex-col max-h-[80vh] text-gray-900">
             <div class="flex items-center justify-between border-b pb-3 mb-3">
-                <h3 class="font-bold text-lg">Comments</h3>
+                <h3 id="comments-title" class="font-bold text-lg">Comments</h3>
                 <button onclick="closeCommentModal()" class="text-gray-500 font-bold p-1">✕</button>
             </div>
             <div id="comments-list-container" class="flex-1 overflow-y-auto space-y-3 pr-1 text-sm my-2 min-h-[160px]"></div>
@@ -666,7 +740,7 @@
                 </button>
                 <button id="modal-comment-trigger-btn" class="flex items-center gap-1.5 text-white text-xs font-bold transition active:scale-110">
                     <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                    <span>Comments</span>
+                    <span id="comments-btn-text">Comments</span>
                 </button>
             </div>
         </div>
@@ -674,7 +748,7 @@
         <div class="w-full max-w-sm mx-auto pb-4 flex gap-3">
             <button id="modal-download-btn" onclick="downloadImage()" class="modal-action-btn download flex-1">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                Download
+                <span id="download-btn-text">Download</span>
             </button>
             <button id="modal-save-btn" onclick="toggleSavePin()" class="modal-action-btn save flex-1">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
@@ -683,6 +757,7 @@
         </div>
     </div>
 
+    <!-- BOTTOM NAVIGATION -->
     <div class="fixed bottom-4 left-1/2 -translate-x-1/2 max-w-sm w-[90%] bg-white/95 backdrop-blur-md py-3 px-6 flex justify-between items-center z-30 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100/80">
         <button onclick="switchTab('home')" id="nav-home" class="flex items-center justify-center p-2.5 rounded-full bg-black text-white transition-all duration-200">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg>
@@ -690,8 +765,9 @@
         <button onclick="document.getElementById('file-input').click()" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
         </button>
-        <button onclick="switchTab('messages')" id="nav-messages" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+        <!-- SEARCH NAV BUTTON - Replaces Messages -->
+        <button onclick="switchTab('search')" id="nav-search" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
         </button>
         <button onclick="switchTab('profile')" id="nav-profile" class="flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
@@ -723,539 +799,1273 @@
         let activeLanguage = "en";
         let signupPfpBase64 = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150";
         
-        let activeChatTargetUid = "bot";
         let activeCommentPinId = null;
         let selectedProfileUid = "me";
         let pendingUploadData = null;
         let activeProfileTab = "uploads";
         let savedPinsCache = {};
 
-        // ========== COMPLETE LANGUAGE PACK ==========
+        // ========== COMPLETE LANGUAGE PACK - EVERYTHING TRANSLATED ==========
         const langPack = {
             en: {
+                loadingText: "Initializing Core System...",
                 tagline: "Discover, track and share premium visual ideas with your cloud sync profile instantly.",
                 loginBtn: "Sign In",
                 signupBtn: "Create Account",
-                searchPlaceholder: "Search ideas or usernames...",
-                sendBtn: "Send",
-                myUploads: "Upload Records",
-                savedPins: "Saved Pins",
-                settingsTitle: "Settings",
+                emailLabel: "Email Address",
+                passwordLabel: "Password",
                 noAccount: "Don't have an account?",
                 haveAccount: "Already registered?",
                 signIn: "Sign In",
                 createNew: "Create New Account",
-                welcomeChat: "Welcome to STARDUST Core System! Click any dynamic active user on the left to start a private encrypted real-time chat.",
-                chatPlaceholder: "Ask Stardust...",
-                chatHeader: "Stardust Core Bot",
-                settingsOpt1: "1. Edit Name, Bio & Handle",
-                settingsOpt2: "2. Change Profile Picture",
-                settingsOpt3: "3. System Language",
-                settingsOpt4: "4. Customer Support",
-                settingsOpt5: "5. Privacy Policy",
-                settingsOpt6: "6. Terms of Service",
-                settingsOpt7: "7. Delete Account",
+                privacyPolicy: "Privacy Policy",
+                termsService: "Terms of Service",
+                uploadPfp: "Upload PFP from Gallery",
+                fullName: "Full Name",
+                usernameLabel: "Username (@)",
+                bioLabel: "Bio",
+                searchPlaceholder: "Search ideas or usernames...",
+                searchHint: "Search for users or posts by title, description, or username",
+                noResults: "No results found",
+                users: "Users",
+                posts: "Posts",
+                viewProfile: "View Profile",
+                viewPost: "View Post",
+                postTitle: "Post Title",
+                description: "Description (Optional)",
+                cancel: "Cancel",
+                publish: "Publish Post",
+                successToast: "Post Published Successfully!",
+                settingsTitle: "Settings",
+                nitroTitle: "STARDUST NITRO PREMIUM",
+                nitroDesc: "Unlock Colors, Animations, Premium Fonts & Custom Backgrounds!",
+                nitroActivate: "Activate Membership",
+                nitroCustom: "Nitro Customization Pad",
+                nitroTheme: "SELECT PROFILE BACKGROUND THEME",
+                nitroFrame: "SELECT PREMIUM PFP FRAME",
+                nitroFont: "SELECT PREMIUM PROFILE FONT",
+                optAccount: "1. Edit Name, Bio & Handle",
+                optPfp: "2. Change Profile Picture",
+                optLang: "3. System Language",
+                optSupport: "4. Customer Support",
+                optPrivacy: "5. Privacy Policy",
+                optTerms: "6. Terms of Service",
+                optDelete: "7. Delete Account",
                 closeSettings: "Close",
                 signOut: "Sign Out",
-                deleteAccountTitle: "Delete Account",
-                deleteAccountWarning: "This action is permanent and cannot be undone. All your data including posts, chats, and profile information will be removed.",
-                deleteAccountBtn: "Permanently Delete My Account",
-                legalPrivacy: "Privacy Policy",
-                legalTerms: "Terms of Service",
-                closeLang: "Close",
+                identityTitle: "Identity Management",
+                handleLabel: "STARDUST UNIQUE HANDLE (@)",
+                displayName: "DISPLAY NAME",
+                customBio: "CUSTOM BIO",
+                saveIdentity: "Save Identity",
+                pfpTitle: "Profile Picture",
+                openGallery: "Open Local Gallery",
+                langSelectTitle: "Select Language",
+                langClose: "Close",
+                supportTitle: "Support Portal",
+                submitTicket: "Submit Ticket",
+                deleteTitle: "Delete Account",
+                deleteWarning: "This action is permanent and cannot be undone. All your data including posts, chats, and profile information will be removed.",
+                deletePermanent: "Permanently Delete My Account",
+                commentsTitle: "Comments",
+                commentPlaceholder: "Write feedback...",
+                commentPost: "Post",
+                downloadBtn: "Download",
                 savePin: "Save Pin",
                 unsavePin: "Unsave Pin",
-                download: "Download"
+                likes: "likes",
+                commentsBtn: "Comments",
+                by: "BY",
+                followers: "Followers",
+                following: "Following",
+                uploadRecords: "Upload Records",
+                savedPins: "Saved Pins",
+                backToMySpace: "Back to My Space",
+                noUploads: "No uploads shared.",
+                noSavedPins: "No saved pins yet. Start saving your favorite posts!",
+                loginToSave: "Login to Save",
+                createPost: "Create New Post",
+                titlePlaceholder: "Give your visual a title...",
+                descPlaceholder: "Write a short description...",
+                noCards: "No cards shared.",
+                searchUsers: "Search users or posts...",
+                submitComment: "Post"
             },
             hi: {
+                loadingText: "कोर सिस्टम प्रारंभ हो रहा है...",
                 tagline: "क्लाउड सिंक प्रोफ़ाइल के साथ प्रीमियम विज़ुअल आइडियाज़ खोजें और तुरंत साझा करें।",
                 loginBtn: "साइन इन करें",
                 signupBtn: "खाता बनाएं",
-                searchPlaceholder: "आइडियाज़ या उपयोगकर्ता खोजें...",
-                sendBtn: "भेजें",
-                myUploads: "मेरे अपलोड",
-                savedPins: "सेव किए गए पिन",
-                settingsTitle: "सेटिंग्स",
+                emailLabel: "ईमेल पता",
+                passwordLabel: "पासवर्ड",
                 noAccount: "कोई खाता नहीं है?",
                 haveAccount: "पहले से पंजीकृत हैं?",
                 signIn: "साइन इन करें",
                 createNew: "नया खाता बनाएं",
-                welcomeChat: "स्टारडस्ट कोर सिस्टम में आपका स्वागत है! प्राइवेट चैट शुरू करने के लिए बाईं ओर किसी भी सक्रिय उपयोगकर्ता पर क्लिक करें।",
-                chatPlaceholder: "स्टारडस्ट से पूछें...",
-                chatHeader: "स्टारडस्ट कोर बॉट",
-                settingsOpt1: "1. नाम, बायो और हैंडल संपादित करें",
-                settingsOpt2: "2. प्रोफ़ाइल फोटो बदलें",
-                settingsOpt3: "3. सिस्टम भाषा",
-                settingsOpt4: "4. ग्राहक सहायता",
-                settingsOpt5: "5. गोपनीयता नीति",
-                settingsOpt6: "6. सेवा की शर्तें",
-                settingsOpt7: "7. खाता हटाएं",
+                privacyPolicy: "गोपनीयता नीति",
+                termsService: "सेवा की शर्तें",
+                uploadPfp: "गैलरी से PFP अपलोड करें",
+                fullName: "पूरा नाम",
+                usernameLabel: "उपयोगकर्ता नाम (@)",
+                bioLabel: "बायो",
+                searchPlaceholder: "आइडियाज़ या उपयोगकर्ता खोजें...",
+                searchHint: "उपयोगकर्ताओं या पोस्ट को शीर्षक, विवरण या उपयोगकर्ता नाम से खोजें",
+                noResults: "कोई परिणाम नहीं मिला",
+                users: "उपयोगकर्ता",
+                posts: "पोस्ट",
+                viewProfile: "प्रोफ़ाइल देखें",
+                viewPost: "पोस्ट देखें",
+                postTitle: "पोस्ट शीर्षक",
+                description: "विवरण (वैकल्पिक)",
+                cancel: "रद्द करें",
+                publish: "पोस्ट प्रकाशित करें",
+                successToast: "पोस्ट सफलतापूर्वक प्रकाशित!",
+                settingsTitle: "सेटिंग्स",
+                nitroTitle: "स्टारडस्ट नाइट्रो प्रीमियम",
+                nitroDesc: "रंग, एनिमेशन, प्रीमियम फ़ॉन्ट और कस्टम पृष्ठभूमि अनलॉक करें!",
+                nitroActivate: "सदस्यता सक्रिय करें",
+                nitroCustom: "नाइट्रो अनुकूलन पैड",
+                nitroTheme: "प्रोफ़ाइल पृष्ठभूमि थीम चुनें",
+                nitroFrame: "प्रीमियम PFP फ्रेम चुनें",
+                nitroFont: "प्रीमियम प्रोफ़ाइल फ़ॉन्ट चुनें",
+                optAccount: "1. नाम, बायो और हैंडल संपादित करें",
+                optPfp: "2. प्रोफ़ाइल फोटो बदलें",
+                optLang: "3. सिस्टम भाषा",
+                optSupport: "4. ग्राहक सहायता",
+                optPrivacy: "5. गोपनीयता नीति",
+                optTerms: "6. सेवा की शर्तें",
+                optDelete: "7. खाता हटाएं",
                 closeSettings: "बंद करें",
                 signOut: "साइन आउट",
-                deleteAccountTitle: "खाता हटाएं",
-                deleteAccountWarning: "यह कार्रवाई स्थायी है और इसे पूर्ववत नहीं किया जा सकता। आपका सारा डेटा जिसमें पोस्ट, चैट और प्रोफ़ाइल जानकारी शामिल है, हटा दिया जाएगा।",
-                deleteAccountBtn: "मेरा खाता स्थायी रूप से हटाएं",
-                legalPrivacy: "गोपनीयता नीति",
-                legalTerms: "सेवा की शर्तें",
-                closeLang: "बंद करें",
+                identityTitle: "पहचान प्रबंधन",
+                handleLabel: "स्टारडस्ट अनोखा हैंडल (@)",
+                displayName: "प्रदर्शन नाम",
+                customBio: "कस्टम बायो",
+                saveIdentity: "पहचान सहेजें",
+                pfpTitle: "प्रोफ़ाइल चित्र",
+                openGallery: "स्थानीय गैलरी खोलें",
+                langSelectTitle: "भाषा चुनें",
+                langClose: "बंद करें",
+                supportTitle: "सहायता पोर्टल",
+                submitTicket: "टिकट सबमिट करें",
+                deleteTitle: "खाता हटाएं",
+                deleteWarning: "यह कार्रवाई स्थायी है और इसे पूर्ववत नहीं किया जा सकता। आपका सारा डेटा जिसमें पोस्ट, चैट और प्रोफ़ाइल जानकारी शामिल है, हटा दिया जाएगा।",
+                deletePermanent: "मेरा खाता स्थायी रूप से हटाएं",
+                commentsTitle: "टिप्पणियाँ",
+                commentPlaceholder: "प्रतिक्रिया लिखें...",
+                commentPost: "पोस्ट करें",
+                downloadBtn: "डाउनलोड",
                 savePin: "पिन सहेजें",
                 unsavePin: "पिन हटाएं",
-                download: "डाउनलोड"
+                likes: "लाइक",
+                commentsBtn: "टिप्पणियाँ",
+                by: "द्वारा",
+                followers: "अनुयायी",
+                following: "अनुसरण",
+                uploadRecords: "अपलोड रिकॉर्ड",
+                savedPins: "सहेजे गए पिन",
+                backToMySpace: "मेरे स्थान पर वापस",
+                noUploads: "कोई अपलोड साझा नहीं किया।",
+                noSavedPins: "अभी तक कोई पिन सहेजा नहीं। अपनी पसंदीदा पोस्ट सहेजना शुरू करें!",
+                loginToSave: "सहेजने के लिए लॉगिन करें",
+                createPost: "नई पोस्ट बनाएं",
+                titlePlaceholder: "अपने विज़ुअल को एक शीर्षक दें...",
+                descPlaceholder: "एक संक्षिप्त विवरण लिखें...",
+                noCards: "कोई कार्ड साझा नहीं किया गया।",
+                searchUsers: "उपयोगकर्ताओं या पोस्ट खोजें...",
+                submitComment: "पोस्ट करें"
             },
             bn: {
+                loadingText: "কোর সিস্টেম শুরু হচ্ছে...",
                 tagline: "আপনার ক্লাউড সিঙ্ক প্রোফাইলের সাথে প্রিমিয়াম ভিজ্যুয়াল আইডিয়া আবিষ্কার, ট্র্যাক এবং শেয়ার করুন তাৎক্ষণিকভাবে।",
                 loginBtn: "সাইন ইন করুন",
                 signupBtn: "অ্যাকাউন্ট তৈরি করুন",
-                searchPlaceholder: "আইডিয়া বা ব্যবহারকারী খুঁজুন...",
-                sendBtn: "পাঠান",
-                myUploads: "আমার আপলোড",
-                savedPins: "সংরক্ষিত পিন",
-                settingsTitle: "সেটিংস",
+                emailLabel: "ইমেইল ঠিকানা",
+                passwordLabel: "পাসওয়ার্ড",
                 noAccount: "কোন অ্যাকাউন্ট নেই?",
                 haveAccount: "ইতিমধ্যে নিবন্ধিত?",
                 signIn: "সাইন ইন করুন",
                 createNew: "নতুন অ্যাকাউন্ট তৈরি করুন",
-                welcomeChat: "স্টারডাস্ট কোর সিস্টেমে স্বাগতম! একটি প্রাইভেট চ্যাট শুরু করতে বাম দিকে যেকোনো সক্রিয় ব্যবহারকারীতে ক্লিক করুন।",
-                chatPlaceholder: "স্টারডাস্টকে জিজ্ঞাসা করুন...",
-                chatHeader: "স্টারডাস্ট কোর বট",
-                settingsOpt1: "১. নাম, বায়ো এবং হ্যান্ডেল সম্পাদনা করুন",
-                settingsOpt2: "২. প্রোফাইল ছবি পরিবর্তন করুন",
-                settingsOpt3: "৩. সিস্টেম ভাষা",
-                settingsOpt4: "৪. গ্রাহক সহায়তা",
-                settingsOpt5: "৫. গোপনীয়তা নীতি",
-                settingsOpt6: "৬. সেবার শর্তাবলী",
-                settingsOpt7: "৭. অ্যাকাউন্ট মুছুন",
+                privacyPolicy: "গোপনীয়তা নীতি",
+                termsService: "সেবার শর্তাবলী",
+                uploadPfp: "গ্যালারি থেকে PFP আপলোড করুন",
+                fullName: "পুরো নাম",
+                usernameLabel: "ব্যবহারকারীর নাম (@)",
+                bioLabel: "বায়ো",
+                searchPlaceholder: "আইডিয়া বা ব্যবহারকারী খুঁজুন...",
+                searchHint: "শিরোনাম, বিবরণ বা ব্যবহারকারীর নাম দ্বারা ব্যবহারকারী বা পোস্ট অনুসন্ধান করুন",
+                noResults: "কোন ফলাফল পাওয়া যায়নি",
+                users: "ব্যবহারকারী",
+                posts: "পোস্ট",
+                viewProfile: "প্রোফাইল দেখুন",
+                viewPost: "পোস্ট দেখুন",
+                postTitle: "পোস্ট শিরোনাম",
+                description: "বিবরণ (ঐচ্ছিক)",
+                cancel: "বাতিল",
+                publish: "পোস্ট প্রকাশ করুন",
+                successToast: "পোস্ট সফলভাবে প্রকাশিত!",
+                settingsTitle: "সেটিংস",
+                nitroTitle: "স্টারডাস্ট নাইট্রো প্রিমিয়াম",
+                nitroDesc: "রং, অ্যানিমেশন, প্রিমিয়াম ফন্ট এবং কাস্টম ব্যাকগ্রাউন্ড আনলক করুন!",
+                nitroActivate: "সদস্যতা সক্রিয় করুন",
+                nitroCustom: "নাইট্রো কাস্টমাইজেশন প্যাড",
+                nitroTheme: "প্রোফাইল ব্যাকগ্রাউন্ড থিম নির্বাচন করুন",
+                nitroFrame: "প্রিমিয়াম PFP ফ্রেম নির্বাচন করুন",
+                nitroFont: "প্রিমিয়াম প্রোফাইল ফন্ট নির্বাচন করুন",
+                optAccount: "১. নাম, বায়ো এবং হ্যান্ডেল সম্পাদনা করুন",
+                optPfp: "২. প্রোফাইল ছবি পরিবর্তন করুন",
+                optLang: "৩. সিস্টেম ভাষা",
+                optSupport: "৪. গ্রাহক সহায়তা",
+                optPrivacy: "৫. গোপনীয়তা নীতি",
+                optTerms: "৬. সেবার শর্তাবলী",
+                optDelete: "৭. অ্যাকাউন্ট মুছুন",
                 closeSettings: "বন্ধ করুন",
                 signOut: "সাইন আউট",
-                deleteAccountTitle: "অ্যাকাউন্ট মুছুন",
-                deleteAccountWarning: "এই কাজটি স্থায়ী এবং পূর্বাবস্থায় ফেরানো যাবে না। আপনার পোস্ট, চ্যাট এবং প্রোফাইলের তথ্য সহ সমস্ত ডেটা মুছে ফেলা হবে।",
-                deleteAccountBtn: "আমার অ্যাকাউন্ট স্থায়ীভাবে মুছুন",
-                legalPrivacy: "গোপনীয়তা নীতি",
-                legalTerms: "সেবার শর্তাবলী",
-                closeLang: "বন্ধ করুন",
+                identityTitle: "পরিচয় ব্যবস্থাপনা",
+                handleLabel: "স্টারডাস্ট অনন্য হ্যান্ডেল (@)",
+                displayName: "প্রদর্শন নাম",
+                customBio: "কাস্টম বায়ো",
+                saveIdentity: "পরিচয় সংরক্ষণ করুন",
+                pfpTitle: "প্রোফাইল ছবি",
+                openGallery: "স্থানীয় গ্যালারি খুলুন",
+                langSelectTitle: "ভাষা নির্বাচন করুন",
+                langClose: "বন্ধ করুন",
+                supportTitle: "সহায়তা পোর্টাল",
+                submitTicket: "টিকেট জমা দিন",
+                deleteTitle: "অ্যাকাউন্ট মুছুন",
+                deleteWarning: "এই কাজটি স্থায়ী এবং পূর্বাবস্থায় ফেরানো যাবে না। আপনার পোস্ট, চ্যাট এবং প্রোফাইলের তথ্য সহ সমস্ত ডেটা মুছে ফেলা হবে।",
+                deletePermanent: "আমার অ্যাকাউন্ট স্থায়ীভাবে মুছুন",
+                commentsTitle: "মন্তব্য",
+                commentPlaceholder: "প্রতিক্রিয়া লিখুন...",
+                commentPost: "পোস্ট",
+                downloadBtn: "ডাউনলোড",
                 savePin: "পিন সংরক্ষণ করুন",
                 unsavePin: "পিন সরান",
-                download: "ডাউনলোড"
+                likes: "লাইক",
+                commentsBtn: "মন্তব্য",
+                by: "দ্বারা",
+                followers: "অনুসারী",
+                following: "অনুসরণ",
+                uploadRecords: "আপলোড রেকর্ড",
+                savedPins: "সংরক্ষিত পিন",
+                backToMySpace: "আমার স্পেসে ফিরে যান",
+                noUploads: "কোন আপলোড শেয়ার করা হয়নি।",
+                noSavedPins: "এখনও কোন পিন সংরক্ষিত নেই। আপনার প্রিয় পোস্ট সংরক্ষণ শুরু করুন!",
+                loginToSave: "সংরক্ষণ করতে লগইন করুন",
+                createPost: "নতুন পোস্ট তৈরি করুন",
+                titlePlaceholder: "আপনার ভিজ্যুয়ালকে একটি শিরোনাম দিন...",
+                descPlaceholder: "একটি সংক্ষিপ্ত বিবরণ লিখুন...",
+                noCards: "কোন কার্ড শেয়ার করা হয়নি।",
+                searchUsers: "ব্যবহারকারী বা পোস্ট অনুসন্ধান করুন...",
+                submitComment: "পোস্ট"
             },
             gu: {
+                loadingText: "કોર સિસ્ટમ શરૂ થઈ રહી છે...",
                 tagline: "તમારા ક્લાઉડ સિંક પ્રોફાઇલ સાથે પ્રીમિયમ વિઝ્યુઅલ આઈડિયાઝ શોધો, ટ્રેક કરો અને તાત્કાલિક શેર કરો.",
                 loginBtn: "સાઇન ઇન કરો",
                 signupBtn: "ખાતું બનાવો",
-                searchPlaceholder: "વિચારો અથવા વપરાશકર્તાઓ શોધો...",
-                sendBtn: "મોકલો",
-                myUploads: "મારા અપલોડ્સ",
-                savedPins: "સેવ કરેલા પિન",
-                settingsTitle: "સેટિંગ્સ",
+                emailLabel: "ઇમેઇલ સરનામું",
+                passwordLabel: "પાસવર્ડ",
                 noAccount: "ખાતું નથી?",
                 haveAccount: "પહેલેથી નોંધાયેલા?",
                 signIn: "સાઇન ઇન કરો",
                 createNew: "નવું ખાતું બનાવો",
-                welcomeChat: "સ્ટારડસ્ટ કોર સિસ્ટમમાં આપનું સ્વાગત છે! ખાનગી ચેટ શરૂ કરવા માટે ડાબી બાજુના કોઈપણ સક્રિય વપરાશકર્તા પર ક્લિક કરો।",
-                chatPlaceholder: "સ્ટારડસ્ટને પૂછો...",
-                chatHeader: "સ્ટારડસ્ટ કોર બોટ",
-                settingsOpt1: "૧. નામ, બાયો અને હેન્ડલ સંપાદિત કરો",
-                settingsOpt2: "૨. પ્રોફાઇલ ચિત્ર બદલો",
-                settingsOpt3: "૩. સિસ્ટમ ભાષા",
-                settingsOpt4: "૪. ગ્રાહક સહાય",
-                settingsOpt5: "૫. ગોપનીયતા નીતિ",
-                settingsOpt6: "૬. સેવાની શરતો",
-                settingsOpt7: "૭. ખાતું કાઢી નાખો",
+                privacyPolicy: "ગોપનીયતા નીતિ",
+                termsService: "સેવાની શરતો",
+                uploadPfp: "ગેલેરીમાંથી PFP અપલોડ કરો",
+                fullName: "પૂરું નામ",
+                usernameLabel: "વપરાશકર્તા નામ (@)",
+                bioLabel: "બાયો",
+                searchPlaceholder: "વિચારો અથવા વપરાશકર્તાઓ શોધો...",
+                searchHint: "શીર્ષક, વર્ણન અથવા વપરાશકર્તા નામ દ્વારા વપરાશકર્તાઓ અથવા પોસ્ટ્સ શોધો",
+                noResults: "કોઈ પરિણામ મળ્યું નથી",
+                users: "વપરાશકર્તાઓ",
+                posts: "પોસ્ટ્સ",
+                viewProfile: "પ્રોફાઇલ જુઓ",
+                viewPost: "પોસ્ટ જુઓ",
+                postTitle: "પોસ્ટ શીર્ષક",
+                description: "વર્ણન (વૈકલ્પિક)",
+                cancel: "રદ કરો",
+                publish: "પોસ્ટ પ્રકાશિત કરો",
+                successToast: "પોસ્ટ સફળતાપૂર્વક પ્રકાશિત!",
+                settingsTitle: "સેટિંગ્સ",
+                nitroTitle: "સ્ટારડસ્ટ નાઇટ્રો પ્રીમિયમ",
+                nitroDesc: "રંગો, એનિમેશન, પ્રીમિયમ ફોન્ટ્સ અને કસ્ટમ પૃષ્ઠભૂમિઓ અનલૉક કરો!",
+                nitroActivate: "સદસ્યતા સક્રિય કરો",
+                nitroCustom: "નાઇટ્રો કસ્ટમાઇઝેશન પેડ",
+                nitroTheme: "પ્રોફાઇલ પૃષ્ઠભૂમિ થીમ પસંદ કરો",
+                nitroFrame: "પ્રીમિયમ PFP ફ્રેમ પસંદ કરો",
+                nitroFont: "પ્રીમિયમ પ્રોફાઇલ ફોન્ટ પસંદ કરો",
+                optAccount: "૧. નામ, બાયો અને હેન્ડલ સંપાદિત કરો",
+                optPfp: "૨. પ્રોફાઇલ ચિત્ર બદલો",
+                optLang: "૩. સિસ્ટમ ભાષા",
+                optSupport: "૪. ગ્રાહક સહાય",
+                optPrivacy: "૫. ગોપનીયતા નીતિ",
+                optTerms: "૬. સેવાની શરતો",
+                optDelete: "૭. ખાતું કાઢી નાખો",
                 closeSettings: "બંધ કરો",
                 signOut: "સાઇન આઉટ",
-                deleteAccountTitle: "ખાતું કાઢી નાખો",
-                deleteAccountWarning: "આ ક્રિયા કાયમી છે અને તેને પૂર્વવત્ કરી શકાતી નથી. તમારા પોસ્ટ્સ, ચેટ્સ અને પ્રોફાઇલ માહિતી સહિતનો તમામ ડેટા દૂર કરવામાં આવશે.",
-                deleteAccountBtn: "મારું ખાતું કાયમી રૂપે કાઢી નાખો",
-                legalPrivacy: "ગોપનીયતા નીતિ",
-                legalTerms: "સેવાની શરતો",
-                closeLang: "બંધ કરો",
+                identityTitle: "ઓળખ વ્યવસ્થાપન",
+                handleLabel: "સ્ટારડસ્ટ અનોખું હેન્ડલ (@)",
+                displayName: "પ્રદર્શન નામ",
+                customBio: "કસ્ટમ બાયો",
+                saveIdentity: "ઓળખ સાચવો",
+                pfpTitle: "પ્રોફાઇલ ચિત્ર",
+                openGallery: "સ્થાનિક ગેલેરી ખોલો",
+                langSelectTitle: "ભાષા પસંદ કરો",
+                langClose: "બંધ કરો",
+                supportTitle: "સપોર્ટ પોર્ટલ",
+                submitTicket: "ટિકિટ સબમિટ કરો",
+                deleteTitle: "ખાતું કાઢી નાખો",
+                deleteWarning: "આ ક્રિયા કાયમી છે અને તેને પૂર્વવત્ કરી શકાતી નથી. તમારા પોસ્ટ્સ, ચેટ્સ અને પ્રોફાઇલ માહિતી સહિતનો તમામ ડેટા દૂર કરવામાં આવશે.",
+                deletePermanent: "મારું ખાતું કાયમી રૂપે કાઢી નાખો",
+                commentsTitle: "ટિપ્પણીઓ",
+                commentPlaceholder: "પ્રતિસાદ લખો...",
+                commentPost: "પોસ્ટ",
+                downloadBtn: "ડાઉનલોડ",
                 savePin: "પિન સાચવો",
                 unsavePin: "પિન દૂર કરો",
-                download: "ડાઉનલોડ"
+                likes: "લાઇક્સ",
+                commentsBtn: "ટિપ્પણીઓ",
+                by: "દ્વારા",
+                followers: "અનુયાયીઓ",
+                following: "અનુસરે છે",
+                uploadRecords: "અપલોડ રેકોર્ડ્સ",
+                savedPins: "સેવ કરેલા પિન",
+                backToMySpace: "મારી જગ્યા પર પાછા",
+                noUploads: "કોઈ અપલોડ શેર કરવામાં આવ્યા નથી.",
+                noSavedPins: "હજી સુધી કોઈ પિન સેવ કરવામાં આવી નથી. તમારી પસંદીદા પોસ્ટ્સ સેવ કરવાનું શરૂ કરો!",
+                loginToSave: "સેવ કરવા માટે લોગિન કરો",
+                createPost: "નવી પોસ્ટ બનાવો",
+                titlePlaceholder: "તમારા વિઝ્યુઅલને એક શીર્ષક આપો...",
+                descPlaceholder: "એક ટૂંકું વર્ણન લખો...",
+                noCards: "કોઈ કાર્ડ શેર કરવામાં આવ્યા નથી.",
+                searchUsers: "વપરાશકર્તાઓ અથવા પોસ્ટ્સ શોધો...",
+                submitComment: "પોસ્ટ"
             },
             ko: {
+                loadingText: "코어 시스템 초기화 중...",
                 tagline: "클라우드 동기화 프로필로 프리미엄 시각적 아이디어를 즉시 발견, 추적 및 공유하세요.",
                 loginBtn: "로그인",
                 signupBtn: "계정 만들기",
-                searchPlaceholder: "아이디어 또는 사용자 검색...",
-                sendBtn: "보내기",
-                myUploads: "내 업로드",
-                savedPins: "저장된 핀",
-                settingsTitle: "설정",
+                emailLabel: "이메일 주소",
+                passwordLabel: "비밀번호",
                 noAccount: "계정이 없으신가요?",
                 haveAccount: "이미 등록하셨나요?",
                 signIn: "로그인",
                 createNew: "새 계정 만들기",
-                welcomeChat: "스타더스트 코어 시스템에 오신 것을 환영합니다! 개인 채팅을 시작하려면 왼쪽의 활성 사용자를 클릭하세요.",
-                chatPlaceholder: "스타더스트에게 물어보기...",
-                chatHeader: "스타더스트 코어 봇",
-                settingsOpt1: "1. 이름, 소개 및 핸들 편집",
-                settingsOpt2: "2. 프로필 사진 변경",
-                settingsOpt3: "3. 시스템 언어",
-                settingsOpt4: "4. 고객 지원",
-                settingsOpt5: "5. 개인정보 보호정책",
-                settingsOpt6: "6. 서비스 약관",
-                settingsOpt7: "7. 계정 삭제",
+                privacyPolicy: "개인정보 보호정책",
+                termsService: "서비스 약관",
+                uploadPfp: "갤러리에서 PFP 업로드",
+                fullName: "전체 이름",
+                usernameLabel: "사용자 이름 (@)",
+                bioLabel: "소개",
+                searchPlaceholder: "아이디어 또는 사용자 검색...",
+                searchHint: "제목, 설명 또는 사용자 이름으로 사용자 또는 게시물 검색",
+                noResults: "결과를 찾을 수 없음",
+                users: "사용자",
+                posts: "게시물",
+                viewProfile: "프로필 보기",
+                viewPost: "게시물 보기",
+                postTitle: "게시물 제목",
+                description: "설명 (선택 사항)",
+                cancel: "취소",
+                publish: "게시물 게시",
+                successToast: "게시물이 성공적으로 게시되었습니다!",
+                settingsTitle: "설정",
+                nitroTitle: "스타더스트 나이트로 프리미엄",
+                nitroDesc: "색상, 애니메이션, 프리미엄 글꼴 및 사용자 정의 배경을 잠금 해제하세요!",
+                nitroActivate: "멤버십 활성화",
+                nitroCustom: "나이트로 맞춤 설정 패드",
+                nitroTheme: "프로필 배경 테마 선택",
+                nitroFrame: "프리미엄 PFP 프레임 선택",
+                nitroFont: "프리미엄 프로필 글꼴 선택",
+                optAccount: "1. 이름, 소개 및 핸들 편집",
+                optPfp: "2. 프로필 사진 변경",
+                optLang: "3. 시스템 언어",
+                optSupport: "4. 고객 지원",
+                optPrivacy: "5. 개인정보 보호정책",
+                optTerms: "6. 서비스 약관",
+                optDelete: "7. 계정 삭제",
                 closeSettings: "닫기",
                 signOut: "로그아웃",
-                deleteAccountTitle: "계정 삭제",
-                deleteAccountWarning: "이 작업은 영구적이며 취소할 수 없습니다. 게시물, 채팅 및 프로필 정보를 포함한 모든 데이터가 삭제됩니다.",
-                deleteAccountBtn: "내 계정 영구 삭제",
-                legalPrivacy: "개인정보 보호정책",
-                legalTerms: "서비스 약관",
-                closeLang: "닫기",
+                identityTitle: "신원 관리",
+                handleLabel: "스타더스트 고유 핸들 (@)",
+                displayName: "표시 이름",
+                customBio: "사용자 정의 소개",
+                saveIdentity: "신원 저장",
+                pfpTitle: "프로필 사진",
+                openGallery: "로컬 갤러리 열기",
+                langSelectTitle: "언어 선택",
+                langClose: "닫기",
+                supportTitle: "지원 포털",
+                submitTicket: "티켓 제출",
+                deleteTitle: "계정 삭제",
+                deleteWarning: "이 작업은 영구적이며 취소할 수 없습니다. 게시물, 채팅 및 프로필 정보를 포함한 모든 데이터가 삭제됩니다.",
+                deletePermanent: "내 계정 영구 삭제",
+                commentsTitle: "댓글",
+                commentPlaceholder: "의견을 작성하세요...",
+                commentPost: "게시",
+                downloadBtn: "다운로드",
                 savePin: "핀 저장",
                 unsavePin: "핀 제거",
-                download: "다운로드"
+                likes: "좋아요",
+                commentsBtn: "댓글",
+                by: "작성자",
+                followers: "팔로워",
+                following: "팔로잉",
+                uploadRecords: "업로드 기록",
+                savedPins: "저장된 핀",
+                backToMySpace: "내 공간으로 돌아가기",
+                noUploads: "공유된 업로드가 없습니다.",
+                noSavedPins: "아직 저장된 핀이 없습니다. 좋아하는 게시물을 저장하세요!",
+                loginToSave: "저장하려면 로그인하세요",
+                createPost: "새 게시물 만들기",
+                titlePlaceholder: "시각 자료에 제목을 붙이세요...",
+                descPlaceholder: "간단한 설명을 작성하세요...",
+                noCards: "공유된 카드가 없습니다.",
+                searchUsers: "사용자 또는 게시물 검색...",
+                submitComment: "게시"
             },
             zh: {
+                loadingText: "核心系统初始化中...",
                 tagline: "通过云同步个人资料即时发现、跟踪和分享高级视觉创意。",
                 loginBtn: "登录",
                 signupBtn: "创建帐户",
-                searchPlaceholder: "搜索创意或用户名...",
-                sendBtn: "发送",
-                myUploads: "我的上传",
-                savedPins: "已保存的图钉",
-                settingsTitle: "设置",
+                emailLabel: "电子邮件地址",
+                passwordLabel: "密码",
                 noAccount: "没有帐户？",
                 haveAccount: "已经注册？",
                 signIn: "登录",
                 createNew: "创建新帐户",
-                welcomeChat: "欢迎来到星尘核心系统！点击左侧任何活跃用户开始私密加密实时聊天。",
-                chatPlaceholder: "询问星尘...",
-                chatHeader: "星尘核心机器人",
-                settingsOpt1: "1. 编辑姓名、简介和用户名",
-                settingsOpt2: "2. 更改个人资料图片",
-                settingsOpt3: "3. 系统语言",
-                settingsOpt4: "4. 客户支持",
-                settingsOpt5: "5. 隐私政策",
-                settingsOpt6: "6. 服务条款",
-                settingsOpt7: "7. 删除帐户",
+                privacyPolicy: "隐私政策",
+                termsService: "服务条款",
+                uploadPfp: "从图库上传头像",
+                fullName: "全名",
+                usernameLabel: "用户名 (@)",
+                bioLabel: "简介",
+                searchPlaceholder: "搜索创意或用户名...",
+                searchHint: "按标题、描述或用户名搜索用户或帖子",
+                noResults: "未找到结果",
+                users: "用户",
+                posts: "帖子",
+                viewProfile: "查看个人资料",
+                viewPost: "查看帖子",
+                postTitle: "帖子标题",
+                description: "描述（可选）",
+                cancel: "取消",
+                publish: "发布帖子",
+                successToast: "帖子发布成功！",
+                settingsTitle: "设置",
+                nitroTitle: "星尘氮气高级版",
+                nitroDesc: "解锁颜色、动画、高级字体和自定义背景！",
+                nitroActivate: "激活会员资格",
+                nitroCustom: "氮气定制面板",
+                nitroTheme: "选择个人资料背景主题",
+                nitroFrame: "选择高级头像边框",
+                nitroFont: "选择高级个人资料字体",
+                optAccount: "1. 编辑姓名、简介和用户名",
+                optPfp: "2. 更改个人资料图片",
+                optLang: "3. 系统语言",
+                optSupport: "4. 客户支持",
+                optPrivacy: "5. 隐私政策",
+                optTerms: "6. 服务条款",
+                optDelete: "7. 删除帐户",
                 closeSettings: "关闭",
                 signOut: "退出",
-                deleteAccountTitle: "删除帐户",
-                deleteAccountWarning: "此操作是永久性的，无法撤消。您的所有数据，包括帖子、聊天和个人资料信息都将被删除。",
-                deleteAccountBtn: "永久删除我的帐户",
-                legalPrivacy: "隐私政策",
-                legalTerms: "服务条款",
-                closeLang: "关闭",
+                identityTitle: "身份管理",
+                handleLabel: "星尘唯一用户名 (@)",
+                displayName: "显示名称",
+                customBio: "自定义简介",
+                saveIdentity: "保存身份",
+                pfpTitle: "个人资料图片",
+                openGallery: "打开本地图库",
+                langSelectTitle: "选择语言",
+                langClose: "关闭",
+                supportTitle: "支持门户",
+                submitTicket: "提交工单",
+                deleteTitle: "删除帐户",
+                deleteWarning: "此操作是永久性的，无法撤消。您的所有数据，包括帖子、聊天和个人资料信息都将被删除。",
+                deletePermanent: "永久删除我的帐户",
+                commentsTitle: "评论",
+                commentPlaceholder: "写反馈...",
+                commentPost: "发布",
+                downloadBtn: "下载",
                 savePin: "保存图钉",
                 unsavePin: "取消保存",
-                download: "下载"
+                likes: "点赞",
+                commentsBtn: "评论",
+                by: "发布者",
+                followers: "关注者",
+                following: "正在关注",
+                uploadRecords: "上传记录",
+                savedPins: "已保存的图钉",
+                backToMySpace: "返回我的空间",
+                noUploads: "没有分享的上传。",
+                noSavedPins: "还没有保存的图钉。开始保存您最喜欢的帖子！",
+                loginToSave: "登录以保存",
+                createPost: "创建新帖子",
+                titlePlaceholder: "为您的视觉创意添加标题...",
+                descPlaceholder: "写一个简短描述...",
+                noCards: "没有分享的卡片。",
+                searchUsers: "搜索用户或帖子...",
+                submitComment: "发布"
             },
             'zh-TW': {
+                loadingText: "核心系統初始化中...",
                 tagline: "透過雲端同步個人檔案即時發現、追蹤和分享高級視覺創意。",
                 loginBtn: "登入",
                 signupBtn: "建立帳戶",
-                searchPlaceholder: "搜尋創意或用戶名...",
-                sendBtn: "傳送",
-                myUploads: "我的上傳",
-                savedPins: "已儲存的圖釘",
-                settingsTitle: "設定",
+                emailLabel: "電子郵件地址",
+                passwordLabel: "密碼",
                 noAccount: "沒有帳戶？",
                 haveAccount: "已經註冊？",
                 signIn: "登入",
                 createNew: "建立新帳戶",
-                welcomeChat: "歡迎來到星塵核心系統！點擊左側任何活躍用戶開始私密加密即時聊天。",
-                chatPlaceholder: "詢問星塵...",
-                chatHeader: "星塵核心機器人",
-                settingsOpt1: "1. 編輯姓名、簡介和用戶名",
-                settingsOpt2: "2. 更改個人資料圖片",
-                settingsOpt3: "3. 系統語言",
-                settingsOpt4: "4. 客戶支援",
-                settingsOpt5: "5. 隱私政策",
-                settingsOpt6: "6. 服務條款",
-                settingsOpt7: "7. 刪除帳戶",
+                privacyPolicy: "隱私政策",
+                termsService: "服務條款",
+                uploadPfp: "從圖庫上傳大頭貼",
+                fullName: "全名",
+                usernameLabel: "用戶名稱 (@)",
+                bioLabel: "簡介",
+                searchPlaceholder: "搜尋創意或用戶名...",
+                searchHint: "按標題、描述或用戶名稱搜尋用戶或貼文",
+                noResults: "找不到結果",
+                users: "用戶",
+                posts: "貼文",
+                viewProfile: "查看個人檔案",
+                viewPost: "查看貼文",
+                postTitle: "貼文標題",
+                description: "描述（可選）",
+                cancel: "取消",
+                publish: "發佈貼文",
+                successToast: "貼文發佈成功！",
+                settingsTitle: "設定",
+                nitroTitle: "星塵氮氣高級版",
+                nitroDesc: "解鎖顏色、動畫、高級字體和自訂背景！",
+                nitroActivate: "啟動會員資格",
+                nitroCustom: "氮氣自訂面板",
+                nitroTheme: "選擇個人檔案背景主題",
+                nitroFrame: "選擇高級大頭貼邊框",
+                nitroFont: "選擇高級個人檔案字體",
+                optAccount: "1. 編輯姓名、簡介和用戶名",
+                optPfp: "2. 更改個人資料圖片",
+                optLang: "3. 系統語言",
+                optSupport: "4. 客戶支援",
+                optPrivacy: "5. 隱私政策",
+                optTerms: "6. 服務條款",
+                optDelete: "7. 刪除帳戶",
                 closeSettings: "關閉",
                 signOut: "登出",
-                deleteAccountTitle: "刪除帳戶",
-                deleteAccountWarning: "此操作是永久性的，無法撤消。您的所有數據，包括帖子、聊天和個人資料信息都將被刪除。",
-                deleteAccountBtn: "永久刪除我的帳戶",
-                legalPrivacy: "隱私政策",
-                legalTerms: "服務條款",
-                closeLang: "關閉",
+                identityTitle: "身份管理",
+                handleLabel: "星塵唯一用戶名 (@)",
+                displayName: "顯示名稱",
+                customBio: "自訂簡介",
+                saveIdentity: "儲存身份",
+                pfpTitle: "個人檔案圖片",
+                openGallery: "打開本地圖庫",
+                langSelectTitle: "選擇語言",
+                langClose: "關閉",
+                supportTitle: "支援入口",
+                submitTicket: "提交工單",
+                deleteTitle: "刪除帳戶",
+                deleteWarning: "此操作是永久性的，無法撤消。您的所有數據，包括貼文、聊天和個人檔案信息都將被刪除。",
+                deletePermanent: "永久刪除我的帳戶",
+                commentsTitle: "評論",
+                commentPlaceholder: "寫回饋...",
+                commentPost: "發佈",
+                downloadBtn: "下載",
                 savePin: "儲存圖釘",
                 unsavePin: "取消儲存",
-                download: "下載"
+                likes: "讚",
+                commentsBtn: "評論",
+                by: "發布者",
+                followers: "追蹤者",
+                following: "正在追蹤",
+                uploadRecords: "上傳記錄",
+                savedPins: "已儲存的圖釘",
+                backToMySpace: "返回我的空間",
+                noUploads: "沒有分享的上傳。",
+                noSavedPins: "還沒有儲存的圖釘。開始儲存您最喜歡的貼文！",
+                loginToSave: "登入以儲存",
+                createPost: "建立新貼文",
+                titlePlaceholder: "為您的視覺創意添加標題...",
+                descPlaceholder: "寫一個簡短描述...",
+                noCards: "沒有分享的卡片。",
+                searchUsers: "搜尋用戶或貼文...",
+                submitComment: "發佈"
             },
             ru: {
+                loadingText: "Инициализация основной системы...",
                 tagline: "Открывайте, отслеживайте и делитесь премиальными визуальными идеями с помощью облачного синхронизированного профиля мгновенно.",
                 loginBtn: "Войти",
                 signupBtn: "Создать аккаунт",
-                searchPlaceholder: "Поиск идей или пользователей...",
-                sendBtn: "Отправить",
-                myUploads: "Мои загрузки",
-                savedPins: "Сохранённые пины",
-                settingsTitle: "Настройки",
+                emailLabel: "Адрес электронной почты",
+                passwordLabel: "Пароль",
                 noAccount: "Нет аккаунта?",
                 haveAccount: "Уже зарегистрированы?",
                 signIn: "Войти",
                 createNew: "Создать новый аккаунт",
-                welcomeChat: "Добро пожаловать в систему Stardust Core! Нажмите любого активного пользователя слева, чтобы начать приватный чат.",
-                chatPlaceholder: "Спросить Stardust...",
-                chatHeader: "Stardust Core Bot",
-                settingsOpt1: "1. Редактировать имя, био и хэндл",
-                settingsOpt2: "2. Изменить фото профиля",
-                settingsOpt3: "3. Язык системы",
-                settingsOpt4: "4. Поддержка клиентов",
-                settingsOpt5: "5. Политика конфиденциальности",
-                settingsOpt6: "6. Условия использования",
-                settingsOpt7: "7. Удалить аккаунт",
+                privacyPolicy: "Политика конфиденциальности",
+                termsService: "Условия использования",
+                uploadPfp: "Загрузить фото из галереи",
+                fullName: "Полное имя",
+                usernameLabel: "Имя пользователя (@)",
+                bioLabel: "Биография",
+                searchPlaceholder: "Поиск идей или пользователей...",
+                searchHint: "Поиск пользователей или постов по названию, описанию или имени пользователя",
+                noResults: "Результаты не найдены",
+                users: "Пользователи",
+                posts: "Посты",
+                viewProfile: "Просмотр профиля",
+                viewPost: "Просмотр поста",
+                postTitle: "Заголовок поста",
+                description: "Описание (необязательно)",
+                cancel: "Отмена",
+                publish: "Опубликовать",
+                successToast: "Пост успешно опубликован!",
+                settingsTitle: "Настройки",
+                nitroTitle: "STARDUST NITRO PREMIUM",
+                nitroDesc: "Разблокируйте цвета, анимации, премиальные шрифты и пользовательские фоны!",
+                nitroActivate: "Активировать членство",
+                nitroCustom: "Панель настройки Nitro",
+                nitroTheme: "ВЫБЕРИТЕ ТЕМУ ФОНА ПРОФИЛЯ",
+                nitroFrame: "ВЫБЕРИТЕ ПРЕМИАЛЬНУЮ РАМКУ ДЛЯ ФОТО",
+                nitroFont: "ВЫБЕРИТЕ ПРЕМИАЛЬНЫЙ ШРИФТ ПРОФИЛЯ",
+                optAccount: "1. Редактировать имя, био и хэндл",
+                optPfp: "2. Изменить фото профиля",
+                optLang: "3. Язык системы",
+                optSupport: "4. Поддержка клиентов",
+                optPrivacy: "5. Политика конфиденциальности",
+                optTerms: "6. Условия использования",
+                optDelete: "7. Удалить аккаунт",
                 closeSettings: "Закрыть",
                 signOut: "Выйти",
-                deleteAccountTitle: "Удалить аккаунт",
-                deleteAccountWarning: "Это действие является постоянным и не может быть отменено. Все ваши данные, включая посты, чаты и информацию профиля, будут удалены.",
-                deleteAccountBtn: "Навсегда удалить мой аккаунт",
-                legalPrivacy: "Политика конфиденциальности",
-                legalTerms: "Условия использования",
-                closeLang: "Закрыть",
+                identityTitle: "Управление идентификацией",
+                handleLabel: "УНИКАЛЬНЫЙ ХЭНДЛ STARDUST (@)",
+                displayName: "ОТОБРАЖАЕМОЕ ИМЯ",
+                customBio: "ПОЛЬЗОВАТЕЛЬСКАЯ БИОГРАФИЯ",
+                saveIdentity: "Сохранить",
+                pfpTitle: "Фото профиля",
+                openGallery: "Открыть галерею",
+                langSelectTitle: "Выберите язык",
+                langClose: "Закрыть",
+                supportTitle: "Портал поддержки",
+                submitTicket: "Отправить запрос",
+                deleteTitle: "Удалить аккаунт",
+                deleteWarning: "Это действие является постоянным и не может быть отменено. Все ваши данные, включая посты, чаты и информацию профиля, будут удалены.",
+                deletePermanent: "Навсегда удалить мой аккаунт",
+                commentsTitle: "Комментарии",
+                commentPlaceholder: "Напишите отзыв...",
+                commentPost: "Опубликовать",
+                downloadBtn: "Скачать",
                 savePin: "Сохранить пин",
                 unsavePin: "Отменить сохранение",
-                download: "Скачать"
+                likes: "лайков",
+                commentsBtn: "Комментарии",
+                by: "ОТ",
+                followers: "Подписчики",
+                following: "Подписки",
+                uploadRecords: "Записи загрузок",
+                savedPins: "Сохранённые пины",
+                backToMySpace: "Назад в мое пространство",
+                noUploads: "Нет опубликованных загрузок.",
+                noSavedPins: "Нет сохранённых пинов. Начните сохранять ваши любимые посты!",
+                loginToSave: "Войдите, чтобы сохранять",
+                createPost: "Создать новый пост",
+                titlePlaceholder: "Дайте заголовок вашему визуалу...",
+                descPlaceholder: "Напишите краткое описание...",
+                noCards: "Нет опубликованных карточек.",
+                searchUsers: "Поиск пользователей или постов...",
+                submitComment: "Опубликовать"
             },
             vi: {
+                loadingText: "Khởi tạo hệ thống cốt lõi...",
                 tagline: "Khám phá, theo dõi và chia sẻ ý tưởng hình ảnh cao cấp với hồ sơ đồng bộ đám mây của bạn ngay lập tức.",
                 loginBtn: "Đăng nhập",
                 signupBtn: "Tạo tài khoản",
-                searchPlaceholder: "Tìm kiếm ý tưởng hoặc tên người dùng...",
-                sendBtn: "Gửi",
-                myUploads: "Tải lên của tôi",
-                savedPins: "Ghim đã lưu",
-                settingsTitle: "Cài đặt",
+                emailLabel: "Địa chỉ email",
+                passwordLabel: "Mật khẩu",
                 noAccount: "Chưa có tài khoản?",
                 haveAccount: "Đã đăng ký?",
                 signIn: "Đăng nhập",
                 createNew: "Tạo tài khoản mới",
-                welcomeChat: "Chào mừng đến với Hệ thống Stardust Core! Nhấp vào bất kỳ người dùng hoạt động nào bên trái để bắt đầu trò chuyện riêng tư.",
-                chatPlaceholder: "Hỏi Stardust...",
-                chatHeader: "Bot Stardust Core",
-                settingsOpt1: "1. Chỉnh sửa tên, tiểu sử và tên người dùng",
-                settingsOpt2: "2. Thay đổi ảnh đại diện",
-                settingsOpt3: "3. Ngôn ngữ hệ thống",
-                settingsOpt4: "4. Hỗ trợ khách hàng",
-                settingsOpt5: "5. Chính sách bảo mật",
-                settingsOpt6: "6. Điều khoản dịch vụ",
-                settingsOpt7: "7. Xóa tài khoản",
+                privacyPolicy: "Chính sách bảo mật",
+                termsService: "Điều khoản dịch vụ",
+                uploadPfp: "Tải ảnh đại diện từ thư viện",
+                fullName: "Họ và tên",
+                usernameLabel: "Tên người dùng (@)",
+                bioLabel: "Tiểu sử",
+                searchPlaceholder: "Tìm kiếm ý tưởng hoặc tên người dùng...",
+                searchHint: "Tìm kiếm người dùng hoặc bài đăng theo tiêu đề, mô tả hoặc tên người dùng",
+                noResults: "Không tìm thấy kết quả",
+                users: "Người dùng",
+                posts: "Bài đăng",
+                viewProfile: "Xem hồ sơ",
+                viewPost: "Xem bài đăng",
+                postTitle: "Tiêu đề bài đăng",
+                description: "Mô tả (Tùy chọn)",
+                cancel: "Hủy",
+                publish: "Đăng bài",
+                successToast: "Đăng bài thành công!",
+                settingsTitle: "Cài đặt",
+                nitroTitle: "STARDUST NITRO PREMIUM",
+                nitroDesc: "Mở khóa màu sắc, hoạt ảnh, phông chữ cao cấp và nền tùy chỉnh!",
+                nitroActivate: "Kích hoạt thành viên",
+                nitroCustom: "Bảng tùy chỉnh Nitro",
+                nitroTheme: "CHỌN CHỦ ĐỀ NỀN HỒ SƠ",
+                nitroFrame: "CHỌN KHUNG ẢNH ĐẠI DIỆN CAO CẤP",
+                nitroFont: "CHỌN PHÔNG CHỮ HỒ SƠ CAO CẤP",
+                optAccount: "1. Chỉnh sửa tên, tiểu sử và tên người dùng",
+                optPfp: "2. Thay đổi ảnh đại diện",
+                optLang: "3. Ngôn ngữ hệ thống",
+                optSupport: "4. Hỗ trợ khách hàng",
+                optPrivacy: "5. Chính sách bảo mật",
+                optTerms: "6. Điều khoản dịch vụ",
+                optDelete: "7. Xóa tài khoản",
                 closeSettings: "Đóng",
                 signOut: "Đăng xuất",
-                deleteAccountTitle: "Xóa tài khoản",
-                deleteAccountWarning: "Hành động này là vĩnh viễn và không thể hoàn tác. Tất cả dữ liệu của bạn bao gồm bài đăng, trò chuyện và thông tin hồ sơ sẽ bị xóa.",
-                deleteAccountBtn: "Xóa vĩnh viễn tài khoản của tôi",
-                legalPrivacy: "Chính sách bảo mật",
-                legalTerms: "Điều khoản dịch vụ",
-                closeLang: "Đóng",
+                identityTitle: "Quản lý danh tính",
+                handleLabel: "TÊN NGƯỜI DÙNG DUY NHẤT STARDUST (@)",
+                displayName: "TÊN HIỂN THỊ",
+                customBio: "TIỂU SỬ TÙY CHỈNH",
+                saveIdentity: "Lưu danh tính",
+                pfpTitle: "Ảnh đại diện",
+                openGallery: "Mở thư viện ảnh",
+                langSelectTitle: "Chọn ngôn ngữ",
+                langClose: "Đóng",
+                supportTitle: "Cổng hỗ trợ",
+                submitTicket: "Gửi yêu cầu",
+                deleteTitle: "Xóa tài khoản",
+                deleteWarning: "Hành động này là vĩnh viễn và không thể hoàn tác. Tất cả dữ liệu của bạn bao gồm bài đăng, trò chuyện và thông tin hồ sơ sẽ bị xóa.",
+                deletePermanent: "Xóa vĩnh viễn tài khoản của tôi",
+                commentsTitle: "Bình luận",
+                commentPlaceholder: "Viết phản hồi...",
+                commentPost: "Đăng",
+                downloadBtn: "Tải xuống",
                 savePin: "Lưu Ghim",
                 unsavePin: "Bỏ lưu",
-                download: "Tải xuống"
+                likes: "lượt thích",
+                commentsBtn: "Bình luận",
+                by: "BỞI",
+                followers: "Người theo dõi",
+                following: "Đang theo dõi",
+                uploadRecords: "Bản ghi tải lên",
+                savedPins: "Ghim đã lưu",
+                backToMySpace: "Quay lại không gian của tôi",
+                noUploads: "Chưa có tải lên nào được chia sẻ.",
+                noSavedPins: "Chưa có ghim nào được lưu. Bắt đầu lưu các bài đăng yêu thích của bạn!",
+                loginToSave: "Đăng nhập để lưu",
+                createPost: "Tạo bài đăng mới",
+                titlePlaceholder: "Đặt tiêu đề cho hình ảnh của bạn...",
+                descPlaceholder: "Viết mô tả ngắn...",
+                noCards: "Chưa có thẻ nào được chia sẻ.",
+                searchUsers: "Tìm kiếm người dùng hoặc bài đăng...",
+                submitComment: "Đăng"
             },
             th: {
+                loadingText: "กำลังเริ่มต้นระบบหลัก...",
                 tagline: "ค้นหา ติดตาม และแบ่งปันไอเดียภาพระดับพรีเมียมด้วยโปรไฟล์ที่ซิงค์กับคลาวด์ของคุณได้ทันที",
                 loginBtn: "เข้าสู่ระบบ",
                 signupBtn: "สร้างบัญชี",
-                searchPlaceholder: "ค้นหาไอเดียหรือชื่อผู้ใช้...",
-                sendBtn: "ส่ง",
-                myUploads: "อัปโหลดของฉัน",
-                savedPins: "พินที่บันทึกไว้",
-                settingsTitle: "การตั้งค่า",
+                emailLabel: "ที่อยู่อีเมล",
+                passwordLabel: "รหัสผ่าน",
                 noAccount: "ยังไม่มีบัญชี?",
                 haveAccount: "ลงทะเบียนแล้ว?",
                 signIn: "เข้าสู่ระบบ",
                 createNew: "สร้างบัญชีใหม่",
-                welcomeChat: "ยินดีต้อนรับสู่ระบบหลัก Stardust! คลิกผู้ใช้ที่ใช้งานทางด้านซ้ายเพื่อเริ่มแชทส่วนตัว",
-                chatPlaceholder: "ถาม Stardust...",
-                chatHeader: "บอทหลัก Stardust",
-                settingsOpt1: "1. แก้ไขชื่อ ประวัติ และแฮนเดิล",
-                settingsOpt2: "2. เปลี่ยนรูปโปรไฟล์",
-                settingsOpt3: "3. ภาษาระบบ",
-                settingsOpt4: "4. การสนับสนุนลูกค้า",
-                settingsOpt5: "5. นโยบายความเป็นส่วนตัว",
-                settingsOpt6: "6. ข้อกำหนดการให้บริการ",
-                settingsOpt7: "7. ลบบัญชี",
+                privacyPolicy: "นโยบายความเป็นส่วนตัว",
+                termsService: "ข้อกำหนดการให้บริการ",
+                uploadPfp: "อัปโหลดรูปโปรไฟล์จากแกลเลอรี",
+                fullName: "ชื่อเต็ม",
+                usernameLabel: "ชื่อผู้ใช้ (@)",
+                bioLabel: "ประวัติ",
+                searchPlaceholder: "ค้นหาไอเดียหรือชื่อผู้ใช้...",
+                searchHint: "ค้นหาผู้ใช้หรือโพสต์ตามชื่อเรื่อง คำอธิบาย หรือชื่อผู้ใช้",
+                noResults: "ไม่พบผลลัพธ์",
+                users: "ผู้ใช้",
+                posts: "โพสต์",
+                viewProfile: "ดูโปรไฟล์",
+                viewPost: "ดูโพสต์",
+                postTitle: "หัวข้อโพสต์",
+                description: "คำอธิบาย (ไม่บังคับ)",
+                cancel: "ยกเลิก",
+                publish: "เผยแพร่โพสต์",
+                successToast: "โพสต์เผยแพร่สำเร็จ!",
+                settingsTitle: "การตั้งค่า",
+                nitroTitle: "STARDUST NITRO PREMIUM",
+                nitroDesc: "ปลดล็อกสีสัน แอนิเมชัน ฟอนต์พรีเมียม และพื้นหลังแบบกำหนดเอง!",
+                nitroActivate: "เปิดใช้งานสมาชิกภาพ",
+                nitroCustom: "แผงปรับแต่ง Nitro",
+                nitroTheme: "เลือกธีมพื้นหลังโปรไฟล์",
+                nitroFrame: "เลือกกรอบรูปโปรไฟล์พรีเมียม",
+                nitroFont: "เลือกฟอนต์โปรไฟล์พรีเมียม",
+                optAccount: "1. แก้ไขชื่อ ประวัติ และแฮนเดิล",
+                optPfp: "2. เปลี่ยนรูปโปรไฟล์",
+                optLang: "3. ภาษาระบบ",
+                optSupport: "4. การสนับสนุนลูกค้า",
+                optPrivacy: "5. นโยบายความเป็นส่วนตัว",
+                optTerms: "6. ข้อกำหนดการให้บริการ",
+                optDelete: "7. ลบบัญชี",
                 closeSettings: "ปิด",
                 signOut: "ออกจากระบบ",
-                deleteAccountTitle: "ลบบัญชี",
-                deleteAccountWarning: "การดำเนินการนี้เป็นแบบถาวรและไม่สามารถยกเลิกได้ ข้อมูลทั้งหมดของคุณรวมถึงโพสต์ แชท และข้อมูลโปรไฟล์จะถูกลบ",
-                deleteAccountBtn: "ลบบัญชีของฉันอย่างถาวร",
-                legalPrivacy: "นโยบายความเป็นส่วนตัว",
-                legalTerms: "ข้อกำหนดการให้บริการ",
-                closeLang: "ปิด",
+                identityTitle: "การจัดการข้อมูลประจำตัว",
+                handleLabel: "แฮนเดิลเฉพาะ STARDUST (@)",
+                displayName: "ชื่อที่แสดง",
+                customBio: "ประวัติแบบกำหนดเอง",
+                saveIdentity: "บันทึกข้อมูล",
+                pfpTitle: "รูปโปรไฟล์",
+                openGallery: "เปิดแกลเลอรีในเครื่อง",
+                langSelectTitle: "เลือกภาษา",
+                langClose: "ปิด",
+                supportTitle: "พอร์ทัลสนับสนุน",
+                submitTicket: "ส่งคำขอ",
+                deleteTitle: "ลบบัญชี",
+                deleteWarning: "การดำเนินการนี้เป็นแบบถาวรและไม่สามารถยกเลิกได้ ข้อมูลทั้งหมดของคุณรวมถึงโพสต์ แชท และข้อมูลโปรไฟล์จะถูกลบ",
+                deletePermanent: "ลบบัญชีของฉันอย่างถาวร",
+                commentsTitle: "ความคิดเห็น",
+                commentPlaceholder: "เขียนข้อเสนอแนะ...",
+                commentPost: "โพสต์",
+                downloadBtn: "ดาวน์โหลด",
                 savePin: "บันทึกพิน",
                 unsavePin: "ยกเลิกการบันทึก",
-                download: "ดาวน์โหลด"
+                likes: "ถูกใจ",
+                commentsBtn: "ความคิดเห็น",
+                by: "โดย",
+                followers: "ผู้ติดตาม",
+                following: "กำลังติดตาม",
+                uploadRecords: "บันทึกการอัปโหลด",
+                savedPins: "พินที่บันทึกไว้",
+                backToMySpace: "กลับสู่พื้นที่ของฉัน",
+                noUploads: "ไม่มีการอัปโหลดที่แชร์",
+                noSavedPins: "ยังไม่มีพินที่บันทึกไว้ เริ่มบันทึกโพสต์ที่คุณชอบ!",
+                loginToSave: "เข้าสู่ระบบเพื่อบันทึก",
+                createPost: "สร้างโพสต์ใหม่",
+                titlePlaceholder: "ตั้งชื่อให้ภาพของคุณ...",
+                descPlaceholder: "เขียนคำอธิบายสั้นๆ...",
+                noCards: "ไม่มีบัตรที่แชร์",
+                searchUsers: "ค้นหาผู้ใช้หรือโพสต์...",
+                submitComment: "โพสต์"
             },
             ur: {
+                loadingText: "کور سسٹم شروع ہو رہا ہے...",
                 tagline: "اپنے کلاؤڈ سنک پروفائل کے ساتھ پریمیم بصری آئیڈیاز کو فوری طور پر دریافت، ٹریک اور شیئر کریں۔",
                 loginBtn: "سائن ان کریں",
                 signupBtn: "اکاؤنٹ بنائیں",
-                searchPlaceholder: "آئیڈیاز یا صارفین تلاش کریں...",
-                sendBtn: "بھیجیں",
-                myUploads: "میرے اپ لوڈز",
-                savedPins: "محفوظ کردہ پن",
-                settingsTitle: "ترتیبات",
+                emailLabel: "ای میل پتہ",
+                passwordLabel: "پاس ورڈ",
                 noAccount: "اکاؤنٹ نہیں ہے؟",
                 haveAccount: "پہلے سے رجسٹرڈ ہیں؟",
                 signIn: "سائن ان کریں",
                 createNew: "نیا اکاؤنٹ بنائیں",
-                welcomeChat: "اسٹارڈسٹ کور سسٹم میں خوش آمدید! پرائیویٹ چیٹ شروع کرنے کے لیے بائیں طرف کسی بھی فعال صارف پر کلک کریں۔",
-                chatPlaceholder: "اسٹارڈسٹ سے پوچھیں...",
-                chatHeader: "اسٹارڈسٹ کور بوٹ",
-                settingsOpt1: "1. نام، بائیو اور ہینڈل میں ترمیم کریں",
-                settingsOpt2: "2. پروفائل تصویر تبدیل کریں",
-                settingsOpt3: "3. نظام کی زبان",
-                settingsOpt4: "4. کسٹمر سپورٹ",
-                settingsOpt5: "5. رازداری کی پالیسی",
-                settingsOpt6: "6. خدمت کی شرائط",
-                settingsOpt7: "7. اکاؤنٹ حذف کریں",
+                privacyPolicy: "رازداری کی پالیسی",
+                termsService: "خدمت کی شرائط",
+                uploadPfp: "گیلری سے PFP اپ لوڈ کریں",
+                fullName: "مکمل نام",
+                usernameLabel: "صارف کا نام (@)",
+                bioLabel: "بایو",
+                searchPlaceholder: "آئیڈیاز یا صارفین تلاش کریں...",
+                searchHint: "عنوان، تفصیل یا صارف نام کے ذریعے صارفین یا پوسٹس تلاش کریں",
+                noResults: "کوئی نتیجہ نہیں ملا",
+                users: "صارفین",
+                posts: "پوسٹس",
+                viewProfile: "پروفائل دیکھیں",
+                viewPost: "پوسٹ دیکھیں",
+                postTitle: "پوسٹ کا عنوان",
+                description: "تفصیل (اختیاری)",
+                cancel: "منسوخ کریں",
+                publish: "پوسٹ شائع کریں",
+                successToast: "پوسٹ کامیابی سے شائع ہوگئی!",
+                settingsTitle: "ترتیبات",
+                nitroTitle: "اسٹارڈسٹ نائٹرو پریمیم",
+                nitroDesc: "رنگ، اینیمیشنز، پریمیم فونٹس اور کسٹم پس منظر انلاک کریں!",
+                nitroActivate: "رکنیت فعال کریں",
+                nitroCustom: "نائٹرو تخصیص پیڈ",
+                nitroTheme: "پروفائل پس منظر تھیم منتخب کریں",
+                nitroFrame: "پریمیم PFP فریم منتخب کریں",
+                nitroFont: "پریمیم پروفائل فونٹ منتخب کریں",
+                optAccount: "1. نام، بایو اور ہینڈل میں ترمیم کریں",
+                optPfp: "2. پروفائل تصویر تبدیل کریں",
+                optLang: "3. نظام کی زبان",
+                optSupport: "4. کسٹمر سپورٹ",
+                optPrivacy: "5. رازداری کی پالیسی",
+                optTerms: "6. خدمت کی شرائط",
+                optDelete: "7. اکاؤنٹ حذف کریں",
                 closeSettings: "بند کریں",
                 signOut: "سائن آؤٹ",
-                deleteAccountTitle: "اکاؤنٹ حذف کریں",
-                deleteAccountWarning: "یہ عمل مستقل ہے اور اسے واپس نہیں لیا جا سکتا۔ آپ کا تمام ڈیٹا بشمول پوسٹس، چیٹس اور پروفائل کی معلومات حذف کر دی جائے گی۔",
-                deleteAccountBtn: "میرا اکاؤنٹ مستقل طور پر حذف کریں",
-                legalPrivacy: "رازداری کی پالیسی",
-                legalTerms: "خدمت کی شرائط",
-                closeLang: "بند کریں",
+                identityTitle: "شناخت کا انتظام",
+                handleLabel: "اسٹارڈسٹ منفرد ہینڈل (@)",
+                displayName: "نمائش کا نام",
+                customBio: "کسٹم بایو",
+                saveIdentity: "شناخت محفوظ کریں",
+                pfpTitle: "پروفائل تصویر",
+                openGallery: "مقامی گیلری کھولیں",
+                langSelectTitle: "زبان منتخب کریں",
+                langClose: "بند کریں",
+                supportTitle: "سپورٹ پورٹل",
+                submitTicket: "ٹکٹ جمع کروائیں",
+                deleteTitle: "اکاؤنٹ حذف کریں",
+                deleteWarning: "یہ عمل مستقل ہے اور اسے واپس نہیں لیا جا سکتا۔ آپ کا تمام ڈیٹا بشمول پوسٹس، چیٹس اور پروفائل کی معلومات حذف کر دی جائے گی۔",
+                deletePermanent: "میرا اکاؤنٹ مستقل طور پر حذف کریں",
+                commentsTitle: "تبصرے",
+                commentPlaceholder: "رائے لکھیں...",
+                commentPost: "پوسٹ",
+                downloadBtn: "ڈاؤن لوڈ",
                 savePin: "پن محفوظ کریں",
                 unsavePin: "پن ہٹائیں",
-                download: "ڈاؤن لوڈ"
+                likes: "پسند",
+                commentsBtn: "تبصرے",
+                by: "از",
+                followers: "پیروکار",
+                following: "پیروی",
+                uploadRecords: "اپ لوڈ ریکارڈز",
+                savedPins: "محفوظ کردہ پن",
+                backToMySpace: "میری جگہ پر واپس",
+                noUploads: "کوئی اپ لوڈ شیئر نہیں کیا گیا۔",
+                noSavedPins: "ابھی تک کوئی پن محفوظ نہیں۔ اپنی پسندیدہ پوسٹس محفوظ کرنا شروع کریں!",
+                loginToSave: "محفوظ کرنے کے لیے لاگ ان کریں",
+                createPost: "نئی پوسٹ بنائیں",
+                titlePlaceholder: "اپنے ویژول کو ایک عنوان دیں...",
+                descPlaceholder: "ایک مختصر تفصیل لکھیں...",
+                noCards: "کوئی کارڈ شیئر نہیں کیا گیا۔",
+                searchUsers: "صارفین یا پوسٹس تلاش کریں...",
+                submitComment: "پوسٹ"
             },
             ar: {
+                loadingText: "جاري تهيئة النظام الأساسي...",
                 tagline: "اكتشف وتتبع وشارك الأفكار البصرية المتميزة مع ملف التعريف المتزامن مع السحابة الخاص بك على الفور.",
                 loginBtn: "تسجيل الدخول",
                 signupBtn: "إنشاء حساب",
-                searchPlaceholder: "ابحث عن أفكار أو أسماء مستخدمين...",
-                sendBtn: "إرسال",
-                myUploads: "تحميلاتي",
-                savedPins: "الدبابيس المحفوظة",
-                settingsTitle: "الإعدادات",
+                emailLabel: "البريد الإلكتروني",
+                passwordLabel: "كلمة المرور",
                 noAccount: "ليس لديك حساب؟",
                 haveAccount: "مسجل بالفعل؟",
                 signIn: "تسجيل الدخول",
                 createNew: "إنشاء حساب جديد",
-                welcomeChat: "مرحبًا بك في نظام Stardust Core! انقر على أي مستخدم نشط على اليسار لبدء محادثة خاصة مشفرة في الوقت الفعلي.",
-                chatPlaceholder: "اسأل Stardust...",
-                chatHeader: "بوت Stardust Core",
-                settingsOpt1: "1. تحرير الاسم والسيرة الذاتية والمعرف",
-                settingsOpt2: "2. تغيير صورة الملف الشخصي",
-                settingsOpt3: "3. لغة النظام",
-                settingsOpt4: "4. دعم العملاء",
-                settingsOpt5: "5. سياسة الخصوصية",
-                settingsOpt6: "6. شروط الخدمة",
-                settingsOpt7: "7. حذف الحساب",
+                privacyPolicy: "سياسة الخصوصية",
+                termsService: "شروط الخدمة",
+                uploadPfp: "تحميل صورة من المعرض",
+                fullName: "الاسم الكامل",
+                usernameLabel: "اسم المستخدم (@)",
+                bioLabel: "السيرة الذاتية",
+                searchPlaceholder: "ابحث عن أفكار أو أسماء مستخدمين...",
+                searchHint: "ابحث عن مستخدمين أو منشورات حسب العنوان أو الوصف أو اسم المستخدم",
+                noResults: "لم يتم العثور على نتائج",
+                users: "المستخدمين",
+                posts: "المنشورات",
+                viewProfile: "عرض الملف الشخصي",
+                viewPost: "عرض المنشور",
+                postTitle: "عنوان المنشور",
+                description: "الوصف (اختياري)",
+                cancel: "إلغاء",
+                publish: "نشر المنشور",
+                successToast: "تم نشر المنشور بنجاح!",
+                settingsTitle: "الإعدادات",
+                nitroTitle: "ستاردست نيترو بريميوم",
+                nitroDesc: "افتح الألوان والرسوم المتحركة والخطوط المميزة والخلفيات المخصصة!",
+                nitroActivate: "تفعيل العضوية",
+                nitroCustom: "لوحة تخصيص نيترو",
+                nitroTheme: "اختر سمة خلفية الملف الشخصي",
+                nitroFrame: "اختر إطار صورة بريميوم",
+                nitroFont: "اختر خط الملف الشخصي بريميوم",
+                optAccount: "1. تحرير الاسم والسيرة الذاتية والمعرف",
+                optPfp: "2. تغيير صورة الملف الشخصي",
+                optLang: "3. لغة النظام",
+                optSupport: "4. دعم العملاء",
+                optPrivacy: "5. سياسة الخصوصية",
+                optTerms: "6. شروط الخدمة",
+                optDelete: "7. حذف الحساب",
                 closeSettings: "إغلاق",
                 signOut: "تسجيل الخروج",
-                deleteAccountTitle: "حذف الحساب",
-                deleteAccountWarning: "هذا الإجراء دائم ولا يمكن التراجع عنه. سيتم حذف جميع بياناتك بما في ذلك المنشورات والمحادثات ومعلومات الملف الشخصي.",
-                deleteAccountBtn: "حذف حسابي بشكل دائم",
-                legalPrivacy: "سياسة الخصوصية",
-                legalTerms: "شروط الخدمة",
-                closeLang: "إغلاق",
+                identityTitle: "إدارة الهوية",
+                handleLabel: "معرف ستاردست الفريد (@)",
+                displayName: "الاسم المعروض",
+                customBio: "سيرة ذاتية مخصصة",
+                saveIdentity: "حفظ الهوية",
+                pfpTitle: "صورة الملف الشخصي",
+                openGallery: "فتح المعرض المحلي",
+                langSelectTitle: "اختر اللغة",
+                langClose: "إغلاق",
+                supportTitle: "بوابة الدعم",
+                submitTicket: "إرسال تذكرة",
+                deleteTitle: "حذف الحساب",
+                deleteWarning: "هذا الإجراء دائم ولا يمكن التراجع عنه. سيتم حذف جميع بياناتك بما في ذلك المنشورات والمحادثات ومعلومات الملف الشخصي.",
+                deletePermanent: "حذف حسابي بشكل دائم",
+                commentsTitle: "التعليقات",
+                commentPlaceholder: "اكتب تعليقك...",
+                commentPost: "نشر",
+                downloadBtn: "تحميل",
                 savePin: "حفظ الدبوس",
                 unsavePin: "إلغاء الحفظ",
-                download: "تحميل"
+                likes: "إعجاب",
+                commentsBtn: "تعليقات",
+                by: "بواسطة",
+                followers: "المتابعون",
+                following: "المتابَعون",
+                uploadRecords: "سجلات التحميل",
+                savedPins: "الدبابيس المحفوظة",
+                backToMySpace: "العودة إلى مساحتي",
+                noUploads: "لا توجد تحميلات مشاركة.",
+                noSavedPins: "لا توجد دبابيس محفوظة بعد. ابدأ بحفظ منشوراتك المفضلة!",
+                loginToSave: "سجل الدخول للحفظ",
+                createPost: "إنشاء منشور جديد",
+                titlePlaceholder: "أعط عنوانًا لتصميمك...",
+                descPlaceholder: "اكتب وصفًا قصيرًا...",
+                noCards: "لا توجد بطاقات مشاركة.",
+                searchUsers: "ابحث عن مستخدمين أو منشورات...",
+                submitComment: "نشر"
             },
             ja: {
+                loadingText: "コアシステムを初期化中...",
                 tagline: "クラウド同期プロファイルでプレミアムなビジュアルアイデアを瞬時に発見、追跡、共有できます。",
                 loginBtn: "サインイン",
                 signupBtn: "アカウント作成",
-                searchPlaceholder: "アイデアまたはユーザー名を検索...",
-                sendBtn: "送信",
-                myUploads: "アップロード履歴",
-                savedPins: "保存したピン",
-                settingsTitle: "設定",
+                emailLabel: "メールアドレス",
+                passwordLabel: "パスワード",
                 noAccount: "アカウントをお持ちでないですか？",
                 haveAccount: "すでに登録済みですか？",
                 signIn: "サインイン",
                 createNew: "新規アカウント作成",
-                welcomeChat: "Stardust Coreシステムへようこそ！左側のアクティブユーザーをクリックしてプライベートチャットを開始します。",
-                chatPlaceholder: "Stardustに質問...",
-                chatHeader: "Stardust Coreボット",
-                settingsOpt1: "1. 名前、バイオ、ハンドルを編集",
-                settingsOpt2: "2. プロフィール画像を変更",
-                settingsOpt3: "3. システム言語",
-                settingsOpt4: "4. カスタマーサポート",
-                settingsOpt5: "5. プライバシーポリシー",
-                settingsOpt6: "6. 利用規約",
-                settingsOpt7: "7. アカウント削除",
+                privacyPolicy: "プライバシーポリシー",
+                termsService: "利用規約",
+                uploadPfp: "ギャラリーからPFPをアップロード",
+                fullName: "フルネーム",
+                usernameLabel: "ユーザー名 (@)",
+                bioLabel: "バイオ",
+                searchPlaceholder: "アイデアまたはユーザー名を検索...",
+                searchHint: "タイトル、説明、またはユーザー名でユーザーまたは投稿を検索",
+                noResults: "結果が見つかりません",
+                users: "ユーザー",
+                posts: "投稿",
+                viewProfile: "プロフィールを見る",
+                viewPost: "投稿を見る",
+                postTitle: "投稿タイトル",
+                description: "説明（オプション）",
+                cancel: "キャンセル",
+                publish: "投稿を公開",
+                successToast: "投稿が公開されました！",
+                settingsTitle: "設定",
+                nitroTitle: "スターダストニトロプレミアム",
+                nitroDesc: "色、アニメーション、プレミアムフォント、カスタム背景をアンロック！",
+                nitroActivate: "メンバーシップを有効化",
+                nitroCustom: "ニトロカスタマイズパッド",
+                nitroTheme: "プロフィール背景テーマを選択",
+                nitroFrame: "プレミアムPFPフレームを選択",
+                nitroFont: "プレミアムプロフィールフォントを選択",
+                optAccount: "1. 名前、バイオ、ハンドルを編集",
+                optPfp: "2. プロフィール画像を変更",
+                optLang: "3. システム言語",
+                optSupport: "4. カスタマーサポート",
+                optPrivacy: "5. プライバシーポリシー",
+                optTerms: "6. 利用規約",
+                optDelete: "7. アカウント削除",
                 closeSettings: "閉じる",
                 signOut: "サインアウト",
-                deleteAccountTitle: "アカウント削除",
-                deleteAccountWarning: "この操作は永続的であり、元に戻すことはできません。投稿、チャット、プロフィール情報を含むすべてのデータが削除されます。",
-                deleteAccountBtn: "アカウントを完全に削除",
-                legalPrivacy: "プライバシーポリシー",
-                legalTerms: "利用規約",
-                closeLang: "閉じる",
+                identityTitle: "身元管理",
+                handleLabel: "スターダストユニークハンドル (@)",
+                displayName: "表示名",
+                customBio: "カスタムバイオ",
+                saveIdentity: "身元を保存",
+                pfpTitle: "プロフィール画像",
+                openGallery: "ローカルギャラリーを開く",
+                langSelectTitle: "言語を選択",
+                langClose: "閉じる",
+                supportTitle: "サポートポータル",
+                submitTicket: "チケットを送信",
+                deleteTitle: "アカウント削除",
+                deleteWarning: "この操作は永続的であり、元に戻すことはできません。投稿、チャット、プロフィール情報を含むすべてのデータが削除されます。",
+                deletePermanent: "アカウントを完全に削除",
+                commentsTitle: "コメント",
+                commentPlaceholder: "フィードバックを書く...",
+                commentPost: "投稿",
+                downloadBtn: "ダウンロード",
                 savePin: "ピンを保存",
                 unsavePin: "保存を解除",
-                download: "ダウンロード"
+                likes: "いいね",
+                commentsBtn: "コメント",
+                by: "投稿者",
+                followers: "フォロワー",
+                following: "フォロー中",
+                uploadRecords: "アップロード履歴",
+                savedPins: "保存したピン",
+                backToMySpace: "マイスペースに戻る",
+                noUploads: "共有されたアップロードはありません。",
+                noSavedPins: "保存されたピンはまだありません。お気に入りの投稿を保存しましょう！",
+                loginToSave: "保存するにはログイン",
+                createPost: "新しい投稿を作成",
+                titlePlaceholder: "ビジュアルにタイトルを付ける...",
+                descPlaceholder: "短い説明を書く...",
+                noCards: "共有されたカードはありません。",
+                searchUsers: "ユーザーまたは投稿を検索...",
+                submitComment: "投稿"
             },
             ro: {
+                loadingText: "Inițializarea sistemului de bază...",
                 tagline: "Descoperiți, urmăriți și partajați idei vizuale premium cu profilul dvs. sincronizat în cloud instantaneu.",
                 loginBtn: "Autentificare",
                 signupBtn: "Creați cont",
-                searchPlaceholder: "Căutați idei sau nume de utilizator...",
-                sendBtn: "Trimiteți",
-                myUploads: "Încărcările mele",
-                savedPins: "Pinuri salvate",
-                settingsTitle: "Setări",
+                emailLabel: "Adresă email",
+                passwordLabel: "Parolă",
                 noAccount: "Nu aveți cont?",
                 haveAccount: "Deja înregistrat?",
                 signIn: "Autentificare",
                 createNew: "Creați cont nou",
-                welcomeChat: "Bun venit în sistemul Stardust Core! Faceți clic pe orice utilizator activ din stânga pentru a începe un chat privat.",
-                chatPlaceholder: "Întrebați Stardust...",
-                chatHeader: "Bot Stardust Core",
-                settingsOpt1: "1. Editați numele, biografia și numele de utilizator",
-                settingsOpt2: "2. Schimbați poza de profil",
-                settingsOpt3: "3. Limba sistemului",
-                settingsOpt4: "4. Asistență clienți",
-                settingsOpt5: "5. Politica de confidențialitate",
-                settingsOpt6: "6. Termeni și condiții",
-                settingsOpt7: "7. Ștergeți contul",
+                privacyPolicy: "Politica de confidențialitate",
+                termsService: "Termeni și condiții",
+                uploadPfp: "Încărcați PFP din galerie",
+                fullName: "Nume complet",
+                usernameLabel: "Nume utilizator (@)",
+                bioLabel: "Biografie",
+                searchPlaceholder: "Căutați idei sau nume de utilizator...",
+                searchHint: "Căutați utilizatori sau postări după titlu, descriere sau nume de utilizator",
+                noResults: "Nu s-au găsit rezultate",
+                users: "Utilizatori",
+                posts: "Postări",
+                viewProfile: "Vedeți profilul",
+                viewPost: "Vedeți postarea",
+                postTitle: "Titlul postării",
+                description: "Descriere (Opțional)",
+                cancel: "Anulare",
+                publish: "Publicați postarea",
+                successToast: "Postarea publicată cu succes!",
+                settingsTitle: "Setări",
+                nitroTitle: "STARDUST NITRO PREMIUM",
+                nitroDesc: "Deblocați culori, animații, fonturi premium și fundaluri personalizate!",
+                nitroActivate: "Activați membru",
+                nitroCustom: "Panou de personalizare Nitro",
+                nitroTheme: "SELECTAȚI TEMA FUNDALULUI PROFILULUI",
+                nitroFrame: "SELECTAȚI CADRUL PFP PREMIUM",
+                nitroFont: "SELECTAȚI FONTUL PREMIUM AL PROFILULUI",
+                optAccount: "1. Editați numele, biografia și numele de utilizator",
+                optPfp: "2. Schimbați poza de profil",
+                optLang: "3. Limba sistemului",
+                optSupport: "4. Asistență clienți",
+                optPrivacy: "5. Politica de confidențialitate",
+                optTerms: "6. Termeni și condiții",
+                optDelete: "7. Ștergeți contul",
                 closeSettings: "Închideți",
                 signOut: "Deconectare",
-                deleteAccountTitle: "Ștergeți contul",
-                deleteAccountWarning: "Această acțiune este permanentă și nu poate fi anulată. Toate datele dvs., inclusiv postările, chat-urile și informațiile de profil, vor fi șterse.",
-                deleteAccountBtn: "Ștergeți definitiv contul meu",
-                legalPrivacy: "Politica de confidențialitate",
-                legalTerms: "Termeni și condiții",
-                closeLang: "Închideți",
+                identityTitle: "Gestionarea identității",
+                handleLabel: "HANDLE UNIC STARDUST (@)",
+                displayName: "NUME AFIȘAT",
+                customBio: "BIOGRAFIE PERSONALIZATĂ",
+                saveIdentity: "Salvați identitatea",
+                pfpTitle: "Poză de profil",
+                openGallery: "Deschideți galeria locală",
+                langSelectTitle: "Selectați limba",
+                langClose: "Închideți",
+                supportTitle: "Portal de asistență",
+                submitTicket: "Trimiteți tichet",
+                deleteTitle: "Ștergeți contul",
+                deleteWarning: "Această acțiune este permanentă și nu poate fi anulată. Toate datele dvs., inclusiv postările, chat-urile și informațiile de profil, vor fi șterse.",
+                deletePermanent: "Ștergeți definitiv contul meu",
+                commentsTitle: "Comentarii",
+                commentPlaceholder: "Scrieți feedback...",
+                commentPost: "Publicați",
+                downloadBtn: "Descărcați",
                 savePin: "Salvați pinul",
                 unsavePin: "Anulați salvarea",
-                download: "Descărcați"
+                likes: "aprecieri",
+                commentsBtn: "Comentarii",
+                by: "DE",
+                followers: "Urmăritori",
+                following: "Urmăriți",
+                uploadRecords: "Înregistrări încărcate",
+                savedPins: "Pinuri salvate",
+                backToMySpace: "Înapoi la spațiul meu",
+                noUploads: "Nicio încărcare partajată.",
+                noSavedPins: "Niciun pin salvat. Începeți să salvați postările preferate!",
+                loginToSave: "Autentificați-vă pentru a salva",
+                createPost: "Creați o postare nouă",
+                titlePlaceholder: "Dați un titlu vizualului dvs...",
+                descPlaceholder: "Scrieți o scurtă descriere...",
+                noCards: "Nicio carte partajată.",
+                searchUsers: "Căutați utilizatori sau postări...",
+                submitComment: "Publicați"
             },
             es: {
+                loadingText: "Inicializando el sistema central...",
                 tagline: "Descubra, rastree y comparta ideas visuales premium con su perfil sincronizado en la nube al instante.",
                 loginBtn: "Iniciar sesión",
                 signupBtn: "Crear cuenta",
-                searchPlaceholder: "Buscar ideas o nombres de usuario...",
-                sendBtn: "Enviar",
-                myUploads: "Mis subidas",
-                savedPins: "Pines guardados",
-                settingsTitle: "Ajustes",
+                emailLabel: "Dirección de correo electrónico",
+                passwordLabel: "Contraseña",
                 noAccount: "¿No tienes cuenta?",
                 haveAccount: "¿Ya estás registrado?",
                 signIn: "Iniciar sesión",
                 createNew: "Crear nueva cuenta",
-                welcomeChat: "¡Bienvenido al sistema Stardust Core! Haz clic en cualquier usuario activo de la izquierda para iniciar un chat privado.",
-                chatPlaceholder: "Preguntar a Stardust...",
-                chatHeader: "Bot Stardust Core",
-                settingsOpt1: "1. Editar nombre, biografía y usuario",
-                settingsOpt2: "2. Cambiar foto de perfil",
-                settingsOpt3: "3. Idioma del sistema",
-                settingsOpt4: "4. Atención al cliente",
-                settingsOpt5: "5. Política de privacidad",
-                settingsOpt6: "6. Términos de servicio",
-                settingsOpt7: "7. Eliminar cuenta",
+                privacyPolicy: "Política de privacidad",
+                termsService: "Términos de servicio",
+                uploadPfp: "Subir foto desde galería",
+                fullName: "Nombre completo",
+                usernameLabel: "Nombre de usuario (@)",
+                bioLabel: "Biografía",
+                searchPlaceholder: "Buscar ideas o nombres de usuario...",
+                searchHint: "Buscar usuarios o publicaciones por título, descripción o nombre de usuario",
+                noResults: "No se encontraron resultados",
+                users: "Usuarios",
+                posts: "Publicaciones",
+                viewProfile: "Ver perfil",
+                viewPost: "Ver publicación",
+                postTitle: "Título de la publicación",
+                description: "Descripción (Opcional)",
+                cancel: "Cancelar",
+                publish: "Publicar",
+                successToast: "¡Publicación publicada con éxito!",
+                settingsTitle: "Ajustes",
+                nitroTitle: "STARDUST NITRO PREMIUM",
+                nitroDesc: "¡Desbloquea colores, animaciones, fuentes premium y fondos personalizados!",
+                nitroActivate: "Activar membresía",
+                nitroCustom: "Panel de personalización Nitro",
+                nitroTheme: "SELECCIONAR TEMA DE FONDO DEL PERFIL",
+                nitroFrame: "SELECCIONAR MARCO DE FOTO PREMIUM",
+                nitroFont: "SELECCIONAR FUENTE PREMIUM DEL PERFIL",
+                optAccount: "1. Editar nombre, biografía y usuario",
+                optPfp: "2. Cambiar foto de perfil",
+                optLang: "3. Idioma del sistema",
+                optSupport: "4. Atención al cliente",
+                optPrivacy: "5. Política de privacidad",
+                optTerms: "6. Términos de servicio",
+                optDelete: "7. Eliminar cuenta",
                 closeSettings: "Cerrar",
                 signOut: "Cerrar sesión",
-                deleteAccountTitle: "Eliminar cuenta",
-                deleteAccountWarning: "Esta acción es permanente y no se puede deshacer. Se eliminarán todos sus datos, incluidas publicaciones, chats e información de perfil.",
-                deleteAccountBtn: "Eliminar mi cuenta permanentemente",
-                legalPrivacy: "Política de privacidad",
-                legalTerms: "Términos de servicio",
-                closeLang: "Cerrar",
+                identityTitle: "Gestión de identidad",
+                handleLabel: "HANDLE ÚNICO DE STARDUST (@)",
+                displayName: "NOMBRE MOSTRADO",
+                customBio: "BIOGRAFÍA PERSONALIZADA",
+                saveIdentity: "Guardar identidad",
+                pfpTitle: "Foto de perfil",
+                openGallery: "Abrir galería local",
+                langSelectTitle: "Seleccionar idioma",
+                langClose: "Cerrar",
+                supportTitle: "Portal de soporte",
+                submitTicket: "Enviar ticket",
+                deleteTitle: "Eliminar cuenta",
+                deleteWarning: "Esta acción es permanente y no se puede deshacer. Se eliminarán todos sus datos, incluidas publicaciones, chats e información de perfil.",
+                deletePermanent: "Eliminar mi cuenta permanentemente",
+                commentsTitle: "Comentarios",
+                commentPlaceholder: "Escribe tu comentario...",
+                commentPost: "Publicar",
+                downloadBtn: "Descargar",
                 savePin: "Guardar Pin",
                 unsavePin: "Cancelar guardado",
-                download: "Descargar"
+                likes: "me gusta",
+                commentsBtn: "Comentarios",
+                by: "POR",
+                followers: "Seguidores",
+                following: "Siguiendo",
+                uploadRecords: "Registros de subidas",
+                savedPins: "Pines guardados",
+                backToMySpace: "Volver a mi espacio",
+                noUploads: "No hay subidas compartidas.",
+                noSavedPins: "No hay pines guardados. ¡Empieza a guardar tus publicaciones favoritas!",
+                loginToSave: "Inicia sesión para guardar",
+                createPost: "Crear nueva publicación",
+                titlePlaceholder: "Dale un título a tu visual...",
+                descPlaceholder: "Escribe una descripción breve...",
+                noCards: "No hay tarjetas compartidas.",
+                searchUsers: "Buscar usuarios o publicaciones...",
+                submitComment: "Publicar"
             }
         };
 
@@ -1316,7 +2126,6 @@
                 });
                 
                 listenToCloudDataStream();
-                syncActiveInboxMembers();
                 
                 // Load saved language preference
                 database.ref('users/' + user.uid + '/language').once('value', (snap) => {
@@ -1326,6 +2135,7 @@
                         changeSystemLanguage(savedLang);
                     } else {
                         renderLanguageOptions();
+                        applyLanguageToUI();
                     }
                 });
                 
@@ -1335,6 +2145,7 @@
                 document.getElementById('auth-wall').classList.remove('hidden');
                 hideLoadingScreen();
                 renderLanguageOptions();
+                applyLanguageToUI();
             }
         });
 
@@ -1346,6 +2157,7 @@
                 document.getElementById('auth-signup-view').classList.add('hidden');
                 document.getElementById('auth-login-view').classList.remove('hidden');
             }
+            applyLanguageToUI();
         }
 
         function previewSignupPfp(event) {
@@ -1451,6 +2263,7 @@
             const promoCard = document.getElementById('nitro-promo-card');
             const premiumSec = document.getElementById('premium-settings-section');
             if(isPremium) {
+                const dict = langPack[activeLanguage] || langPack['en'];
                 promoCard.innerHTML = `<div class='text-center font-black text-xs py-1 tracking-widest'>YOU ARE A NITRO PREMIUM MEMBER</div>`;
                 promoCard.className = "bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 p-3 rounded-2xl text-white shadow-inner";
                 premiumSec.classList.remove('hidden');
@@ -1510,6 +2323,7 @@
                 
                 syncSocialNetworkCounters(finalUid);
                 switchProfileTab('uploads');
+                applyLanguageToUI();
             });
         }
 
@@ -1528,14 +2342,16 @@
             if(tab === 'saved') {
                 renderSavedPins();
             }
+            applyLanguageToUI();
         }
 
         function renderSavedPins() {
             const container = document.getElementById('profile-saved-container');
             container.innerHTML = '';
+            const dict = langPack[activeLanguage] || langPack['en'];
             
             if(!currentUserData) {
-                container.innerHTML = '<div class="text-center text-gray-400 text-xs py-10 col-span-2">Please login to see saved pins.</div>';
+                container.innerHTML = `<div class="text-center text-gray-400 text-xs py-10 col-span-2">${dict.loginToSave || 'Please login to see saved pins.'}</div>`;
                 return;
             }
             
@@ -1545,7 +2361,7 @@
                 const savedKeys = Object.keys(savedData);
                 
                 if(savedKeys.length === 0) {
-                    container.innerHTML = '<div class="text-center text-gray-400 text-xs py-10 col-span-2">No saved pins yet. Start saving your favorite posts!</div>';
+                    container.innerHTML = `<div class="text-center text-gray-400 text-xs py-10 col-span-2">${dict.noSavedPins || 'No saved pins yet. Start saving your favorite posts!'}</div>`;
                     return;
                 }
                 
@@ -1569,16 +2385,18 @@
                     });
                     
                     if(!hasPins) {
-                        container.innerHTML = '<div class="text-center text-gray-400 text-xs py-10 col-span-2">No saved pins found.</div>';
+                        container.innerHTML = `<div class="text-center text-gray-400 text-xs py-10 col-span-2">${dict.noSavedPins || 'No saved pins found.'}</div>`;
                     }
                 });
             });
         }
 
         function syncSocialNetworkCounters(uid) {
+            const dict = langPack[activeLanguage] || langPack['en'];
             database.ref('network/followers/' + uid).on('value', (snap) => {
                 const data = snap.val() || {};
                 document.getElementById('profile-followers-count').innerText = Object.keys(data).length;
+                document.getElementById('followers-label').innerText = dict.followers || 'Followers';
                 if(uid !== currentUserData.uid) {
                     const btn = document.getElementById('profile-follow-action-btn');
                     if(data[currentUserData.uid]) {
@@ -1591,11 +2409,13 @@
 
             database.ref('network/following/' + uid).on('value', (snap) => {
                 document.getElementById('profile-following-count').innerText = Object.keys(snap.val() || {}).length;
+                document.getElementById('following-label').innerText = dict.following || 'Following';
             });
 
             database.ref('pins').once('value', (snapshot) => {
                 const profileContainer = document.getElementById('profile-uploads-container');
                 profileContainer.innerHTML = ''; const data = snapshot.val(); let totalPins = 0;
+                const dictLocal = langPack[activeLanguage] || langPack['en'];
                 if(data) {
                     Object.keys(data).reverse().forEach(key => {
                         const pin = data[key];
@@ -1610,7 +2430,7 @@
                         }
                     });
                 }
-                if(totalPins === 0) profileContainer.innerHTML = '<div class="text-center text-gray-400 text-xs py-10 col-span-2">No uploads shared.</div>';
+                if(totalPins === 0) profileContainer.innerHTML = `<div class="text-center text-gray-400 text-xs py-10 col-span-2">${dictLocal.noUploads || 'No uploads shared.'}</div>`;
             });
         }
 
@@ -1624,6 +2444,100 @@
             });
         }
 
+        // ========== NEW SEARCH FUNCTION ==========
+        function performSearch() {
+            const query = document.getElementById('search-input-tab').value.toLowerCase().trim();
+            const container = document.getElementById('search-results-container');
+            const dict = langPack[activeLanguage] || langPack['en'];
+            
+            if(!query) {
+                container.innerHTML = `
+                    <div class="search-empty-state">
+                        <svg class="mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        <p class="text-gray-400 font-medium">${dict.searchHint || 'Search for users or posts by title, description, or username'}</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let resultsHTML = '';
+            let hasResults = false;
+            
+            // Search Users
+            database.ref('users').once('value', (snapshot) => {
+                const users = snapshot.val() || {};
+                let userResults = [];
+                Object.keys(users).forEach(uid => {
+                    const u = users[uid];
+                    const nameMatch = u.name && u.name.toLowerCase().includes(query);
+                    const userMatch = u.username && u.username.toLowerCase().includes(query);
+                    if(nameMatch || userMatch) {
+                        userResults.push({ uid, ...u });
+                    }
+                });
+                
+                if(userResults.length > 0) {
+                    hasResults = true;
+                    resultsHTML += `<div class="search-section-title">${dict.users || 'Users'}</div>`;
+                    userResults.forEach(u => {
+                        resultsHTML += `
+                            <div class="search-result-item" onclick="loadUserIdentitySpace('${u.uid}'); switchTab('profile');">
+                                <img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" class="result-avatar">
+                                <div class="result-info">
+                                    <div class="result-name">${u.name || 'User'}</div>
+                                    <div class="result-username">@${u.username || ''}</div>
+                                </div>
+                                <span class="result-badge">${dict.viewProfile || 'View Profile'}</span>
+                            </div>
+                        `;
+                    });
+                }
+                
+                // Search Posts
+                database.ref('pins').once('value', (pinsSnapshot) => {
+                    const pins = pinsSnapshot.val() || {};
+                    let pinResults = [];
+                    Object.keys(pins).forEach(key => {
+                        const p = pins[key];
+                        const titleMatch = p.title && p.title.toLowerCase().includes(query);
+                        const descMatch = p.desc && p.desc.toLowerCase().includes(query);
+                        const uploaderMatch = p.uploaderName && p.uploaderName.toLowerCase().includes(query);
+                        if(titleMatch || descMatch || uploaderMatch) {
+                            pinResults.push({ key, ...p });
+                        }
+                    });
+                    
+                    if(pinResults.length > 0) {
+                        hasResults = true;
+                        resultsHTML += `<div class="search-section-title">${dict.posts || 'Posts'}</div>`;
+                        pinResults.forEach(p => {
+                            resultsHTML += `
+                                <div class="search-result-item" onclick="openPhotoModal('${p.img}', '${p.title || 'Stardust Card'}', '${p.desc || ''}', '${p.uploaderName || 'Anonymous'}', '${p.key}', '${p.uploaderUid}')">
+                                    <img src="${p.img}" class="result-avatar" style="border-radius:0.75rem; width:3rem; height:3rem; object-fit:cover;">
+                                    <div class="result-info">
+                                        <div class="result-name">${p.title || 'Untitled'}</div>
+                                        <div class="result-username">by ${p.uploaderName || 'Anonymous'}</div>
+                                    </div>
+                                    <span class="result-badge">${dict.viewPost || 'View Post'}</span>
+                                </div>
+                            `;
+                        });
+                    }
+                    
+                    if(!hasResults) {
+                        container.innerHTML = `
+                            <div class="search-empty-state">
+                                <svg class="mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <p class="text-gray-400 font-medium">${dict.noResults || 'No results found'}</p>
+                            </div>
+                        `;
+                    } else {
+                        container.innerHTML = resultsHTML;
+                    }
+                });
+            });
+        }
+
         function filterPinsAndUsers() {
             const query = document.getElementById('search-bar').value.toLowerCase().trim();
             const userTray = document.getElementById('user-search-results-tray');
@@ -1632,6 +2546,7 @@
 
             database.ref('users').once('value', (snapshot) => {
                 userTray.innerHTML = ''; const users = snapshot.val(); let count = 0;
+                const dict = langPack[activeLanguage] || langPack['en'];
                 if(users) {
                     Object.keys(users).forEach(uid => {
                         const u = users[uid]; 
@@ -1641,7 +2556,7 @@
                             count++; const div = document.createElement('div');
                             div.className = "flex items-center justify-between bg-white p-2 rounded-xl border cursor-pointer hover:bg-red-50 text-gray-900";
                             div.onclick = () => { userTray.classList.add('hidden'); document.getElementById('search-bar').value = ''; loadUserIdentitySpace(uid); };
-                            div.innerHTML = `<div class="flex items-center gap-2"><img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" class="w-6 h-6 rounded-full object-cover"><div class="text-xs"><p class="font-black">${u.name || 'Member'}</p><p class="text-gray-400 text-[10px]">@${u.username || ''}</p></div></div><span class="text-[10px] bg-red-600 text-white font-bold py-1 px-2.5 rounded-full">View Hub</span>`;
+                            div.innerHTML = `<div class="flex items-center gap-2"><img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" class="w-6 h-6 rounded-full object-cover"><div class="text-xs"><p class="font-black">${u.name || 'Member'}</p><p class="text-gray-400 text-[10px]">@${u.username || ''}</p></div></div><span class="text-[10px] bg-red-600 text-white font-bold py-1 px-2.5 rounded-full">${dict.viewProfile || 'View Hub'}</span>`;
                             userTray.appendChild(div);
                         }
                     });
@@ -1654,6 +2569,7 @@
             database.ref('pins').on('value', (snapshot) => {
                 const globalContainer = document.getElementById('pin-container');
                 globalContainer.innerHTML = ''; const data = snapshot.val();
+                const dict = langPack[activeLanguage] || langPack['en'];
                 if(data) {
                     Object.keys(data).reverse().forEach(key => {
                         const pin = data[key]; const likesObj = pin.likes || {}; const totalLikes = Object.keys(likesObj).length;
@@ -1672,7 +2588,7 @@
                                     <p class="text-[11px] text-gray-400 truncate mt-0.5" itemprop="description">${pin.desc || ''}</p>
                                 </div>
                                 <div class="flex items-center justify-between mt-3 pt-2 border-t border-gray-50">
-                                    <span class="text-[10px] font-bold text-gray-400">${totalLikes} likes</span>
+                                    <span class="text-[10px] font-bold text-gray-400">${totalLikes} ${dict.likes || 'likes'}</span>
                                     <div class="flex items-center gap-2.5">
                                         <button onclick="openCommentModal('${key}')"><svg class="w-4 h-4 text-gray-500 hover:text-black" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg></button>
                                         <button onclick="toggleLikePost('${key}')"><svg class="w-4 h-4 ${likedByMe ? 'text-red-500 fill-current' : 'text-gray-500'}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg></button>
@@ -1687,7 +2603,7 @@
                         pinElement.querySelector(`#img-wrapper-${key}`).addEventListener('dblclick', (e) => { handleDoubleTapLikeAnimation(e, key); });
                     });
                 }
-                if(!globalContainer.innerHTML) globalContainer.innerHTML = '<div class="text-center text-gray-400 py-16 col-span-2">No cards shared.</div>';
+                if(!globalContainer.innerHTML) globalContainer.innerHTML = `<div class="text-center text-gray-400 py-16 col-span-2">${dict.noCards || 'No cards shared.'}</div>`;
                 
                 hideLoadingScreen();
             });
@@ -1708,9 +2624,14 @@
 
         function openCommentModal(pinId) {
             activeCommentPinId = pinId; document.getElementById('comment-modal').style.display = 'flex';
+            const dict = langPack[activeLanguage] || langPack['en'];
+            document.getElementById('comments-title').innerText = dict.commentsTitle || 'Comments';
+            document.getElementById('comment-input-field').placeholder = dict.commentPlaceholder || 'Write feedback...';
+            document.getElementById('submit-comment-btn').innerText = dict.submitComment || 'Post';
+            
             database.ref('pins/' + pinId + '/comments').on('value', (snapshot) => {
                 const container = document.getElementById('comments-list-container'); container.innerHTML = ''; const list = snapshot.val();
-                if(!list) { container.innerHTML = `<p class="text-gray-400 text-center text-xs py-6">No comments yet.</p>`; return; }
+                if(!list) { container.innerHTML = `<p class="text-gray-400 text-center text-xs py-6">${dict.commentsTitle || 'No comments yet.'}</p>`; return; }
                 Object.keys(list).forEach(cKey => {
                     const comment = list[cKey]; const row = document.createElement('div');
                     row.className = "bg-gray-50 rounded-2xl p-2.5 border text-xs text-left";
@@ -1735,18 +2656,25 @@
             currentModalPinKey = pinKey;
             currentModalUploaderUid = uploaderUid;
             
+            const dict = langPack[activeLanguage] || langPack['en'];
+            
             document.getElementById('modal-img').src = imgSrc;
             document.getElementById('modal-title').innerText = titleText;
             document.getElementById('modal-desc').innerText = descText;
-            const authorEl = document.getElementById('modal-author'); authorEl.innerText = "BY: " + author.toUpperCase();
+            const authorEl = document.getElementById('modal-author'); 
+            authorEl.innerText = `${dict.by || 'BY'}: ${author.toUpperCase()}`;
             authorEl.onclick = () => { closePhotoModal(); loadUserIdentitySpace(uploaderUid); };
+            
+            document.getElementById('download-btn-text').innerText = dict.downloadBtn || 'Download';
+            document.getElementById('comments-btn-text').innerText = dict.commentsBtn || 'Comments';
 
             // Update save button state
             updateSaveButtonState(pinKey);
 
             const likeSvg = document.getElementById('modal-like-svg'); const likeTxt = document.getElementById('modal-like-counter-text');
             database.ref('pins/' + pinKey + '/likes').on('value', (snapshot) => {
-                const likes = snapshot.val() || {}; const total = Object.keys(likes).length; likeTxt.innerText = `${total} likes`;
+                const likes = snapshot.val() || {}; const total = Object.keys(likes).length; 
+                likeTxt.innerText = `${total} ${dict.likes || 'likes'}`;
                 if(currentUserData && likes[currentUserData.uid]) likeSvg.className = "w-5 h-5 text-red-500 fill-current"; else likeSvg.className = "w-5 h-5 text-gray-400";
             });
 
@@ -1762,7 +2690,7 @@
             
             if(!currentUserData) {
                 saveBtn.className = "modal-action-btn saved flex-1";
-                saveText.innerText = "Login to Save";
+                saveText.innerText = dict.loginToSave || "Login to Save";
                 return;
             }
             
@@ -1809,57 +2737,6 @@
 
         function downloadImage() { if(!currentModalImgData) return; const link = document.createElement("a"); link.href = currentModalImgData; link.download = currentModalTitle.replace(/\s+/g, '_') + ".jpg"; document.body.appendChild(link); link.click(); document.body.removeChild(link); }
 
-        function syncActiveInboxMembers() {
-            database.ref('users').on('value', (snapshot) => {
-                const listEl = document.getElementById('inbox-users-list'); listEl.innerHTML = ''; const users = snapshot.val();
-                const botRow = document.createElement('div');
-                botRow.className = "p-2 hover:bg-gray-100 rounded-xl cursor-pointer text-xs font-bold text-red-600 border flex items-center gap-1.5 transition";
-                botRow.onclick = () => selectActiveChatTarget('bot', 'System Bot');
-                botRow.innerHTML = `<svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg> <span>Broadcast Bot</span>`; listEl.appendChild(botRow);
-
-                if(users && currentUserData) {
-                    Object.keys(users).forEach(uid => {
-                        if(uid === currentUserData.uid) return; const u = users[uid]; const row = document.createElement('div');
-                        row.className = "p-2 hover:bg-gray-100 rounded-xl cursor-pointer text-xs font-semibold text-gray-700 truncate flex items-center gap-2";
-                        row.onclick = () => selectActiveChatTarget(uid, u.name || 'User');
-                        row.innerHTML = `<img src="${u.pfp || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'}" class="w-4 h-4 rounded-full object-cover"> <span>@${u.username}</span>`;
-                        listEl.appendChild(row);
-                    });
-                }
-            });
-        }
-
-        function selectActiveChatTarget(uid, nameText) { activeChatTargetUid = uid; document.getElementById('chat-window-header-title').innerText = (uid === 'bot') ? 'Broadcast Bot' : `Chat: @${nameText}`; listenToPrivateChatEngine(); }
-
-        function listenToPrivateChatEngine() {
-            const chatBox = document.getElementById('chat-box'); chatBox.innerHTML = '';
-            if(activeChatTargetUid === 'bot') { chatBox.innerHTML = `<div class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">Welcome to STARDUST Core System! Click any dynamic active user on the left to start a private chat.</div>`; return; }
-            const chatNodeRef = currentUserData.uid < activeChatTargetUid ? `${currentUserData.uid}_${activeChatTargetUid}` : `${activeChatTargetUid}_${currentUserData.uid}`;
-            database.ref('chats/' + chatNodeRef).off();
-            database.ref('chats/' + chatNodeRef).on('value', (snapshot) => {
-                chatBox.innerHTML = ''; const logs = snapshot.val();
-                if(!logs) { chatBox.innerHTML = `<p class="text-center text-xs text-gray-400 py-10">No messages. Say hello!</p>`; return; }
-                Object.keys(logs).forEach(mId => {
-                    const msg = logs[mId]; const bubble = document.createElement('div');
-                    bubble.className = msg.sender === currentUserData.uid ? "bg-black text-white p-3.5 rounded-2xl rounded-tr-none text-sm max-w-[85%] ml-auto text-right font-medium" : "bg-gray-100 text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium";
-                    bubble.innerText = msg.text; chatBox.appendChild(bubble);
-                });
-                chatBox.scrollTop = chatBox.scrollHeight;
-            });
-        }
-
-        function sendChatMessage() {
-            const input = document.getElementById('chat-input'); const msgVal = input.value.trim(); if(!msgVal) return;
-            if(activeChatTargetUid === 'bot') {
-                const chatBox = document.getElementById('chat-box'); chatBox.innerHTML += `<div class="bg-black text-white p-3.5 rounded-2xl rounded-tr-none text-sm max-w-[85%] ml-auto text-right font-medium">${msgVal}</div>`;
-                input.value = ''; chatBox.scrollTop = chatBox.scrollHeight;
-                setTimeout(() => { chatBox.innerHTML += `<div class="bg-[#E9E9E9] text-gray-800 p-3.5 rounded-2xl rounded-tl-none text-sm max-w-[85%] font-medium">SYSTEM NOTICE: Click any active member from the left to start a real chat!</div>`; chatBox.scrollTop = chatBox.scrollHeight; }, 900);
-                return;
-            }
-            const chatNodeRef = currentUserData.uid < activeChatTargetUid ? `${currentUserData.uid}_${activeChatTargetUid}` : `${activeChatTargetUid}_${currentUserData.uid}`;
-            database.ref('chats/' + chatNodeRef).push({ sender: currentUserData.uid, text: msgVal, timestamp: Date.now() }).then(() => { input.value = ''; });
-        }
-
         function showSettingsPage(pageId) {
             document.getElementById('settings-main-screen').classList.add('hidden');
             document.querySelectorAll('.settings-sub-page').forEach(page => page.classList.add('hidden'));
@@ -1872,10 +2749,11 @@
             if(pageId === 'page-lang') {
                 renderLanguageOptions();
             }
+            applyLanguageToUI();
         }
 
-        function backToSettingsMain() { document.querySelectorAll('.settings-sub-page').forEach(page => page.classList.add('hidden')); document.getElementById('settings-main-screen').classList.remove('hidden'); }
-        function openSettingsModal() { backToSettingsMain(); document.getElementById('settings-modal').style.display = 'flex'; }
+        function backToSettingsMain() { document.querySelectorAll('.settings-sub-page').forEach(page => page.classList.add('hidden')); document.getElementById('settings-main-screen').classList.remove('hidden'); applyLanguageToUI(); }
+        function openSettingsModal() { backToSettingsMain(); document.getElementById('settings-modal').style.display = 'flex'; applyLanguageToUI(); }
         function closeSettingsModal() { document.getElementById('settings-modal').style.display = 'none'; }
 
         function saveProfileCustomizations() {
@@ -1928,7 +2806,7 @@
             });
         }
 
-        // ========== CHANGE SYSTEM LANGUAGE ==========
+        // ========== CHANGE SYSTEM LANGUAGE - FULL UI UPDATE ==========
         function changeSystemLanguage(langKey) {
             activeLanguage = langKey;
             const dict = langPack[langKey] || langPack['en'];
@@ -1939,46 +2817,94 @@
             document.getElementById('signup-btn-text').innerText = dict.signupBtn;
             document.getElementById('no-account-text').innerHTML = `${dict.noAccount} <button onclick="toggleAuthView('signup')" class="text-red-600 font-bold hover:underline">${dict.createNew}</button>`;
             document.getElementById('have-account-text').innerHTML = `${dict.haveAccount} <button onclick="toggleAuthView('login')" class="text-black font-bold hover:underline">${dict.signIn}</button>`;
+            document.getElementById('login-email-label').innerText = dict.emailLabel;
+            document.getElementById('login-password-label').innerText = dict.passwordLabel;
+            document.getElementById('signup-pfp-label').innerText = dict.uploadPfp;
+            document.getElementById('signup-name-label').innerText = dict.fullName;
+            document.getElementById('signup-username-label').innerText = dict.usernameLabel;
+            document.getElementById('signup-bio-label').innerText = dict.bioLabel;
+            document.getElementById('signup-email-label').innerText = dict.emailLabel;
+            document.getElementById('signup-password-label').innerText = dict.passwordLabel;
+            document.getElementById('legal-privacy-login').innerText = dict.privacyPolicy;
+            document.getElementById('legal-terms-login').innerText = dict.termsService;
+            document.getElementById('legal-privacy-signup').innerText = dict.privacyPolicy;
+            document.getElementById('legal-terms-signup').innerText = dict.termsService;
             
-            // Search
+            // Search Header
             document.getElementById('search-bar').placeholder = dict.searchPlaceholder;
             
-            // Chat
-            document.getElementById('lang-send-btn').innerText = dict.sendBtn;
-            document.getElementById('lang-welcome-msg').innerText = dict.welcomeChat;
-            document.getElementById('chat-input').placeholder = dict.chatPlaceholder;
-            document.getElementById('chat-window-header-title').innerText = dict.chatHeader;
+            // Search Tab
+            document.getElementById('search-input-tab').placeholder = dict.searchPlaceholder;
+            document.getElementById('search-hint-text').innerText = dict.searchHint || 'Search for users or posts by title, description, or username';
             
             // Profile
-            document.getElementById('lang-my-uploads').innerText = dict.myUploads;
-            document.getElementById('profile-tab-uploads').innerText = dict.myUploads;
-            document.getElementById('profile-tab-saved').innerText = dict.savedPins;
+            document.getElementById('profile-tab-uploads-text').innerText = dict.uploadRecords;
+            document.getElementById('profile-tab-saved-text').innerText = dict.savedPins;
+            document.getElementById('back-to-my-space-text').innerText = dict.backToMySpace;
+            document.getElementById('followers-label').innerText = dict.followers;
+            document.getElementById('following-label').innerText = dict.following;
             
             // Settings
             document.getElementById('lang-settings-title').innerText = dict.settingsTitle;
-            document.getElementById('lang-opt-account').innerText = dict.settingsOpt1;
-            document.getElementById('lang-opt-pfp').innerText = dict.settingsOpt2;
-            document.getElementById('lang-opt-lang').innerText = dict.settingsOpt3;
-            document.getElementById('lang-opt-support').innerText = dict.settingsOpt4;
-            document.getElementById('lang-opt-privacy').innerText = dict.settingsOpt5;
-            document.getElementById('lang-opt-terms').innerText = dict.settingsOpt6;
-            document.getElementById('lang-opt-delete').innerText = dict.settingsOpt7;
+            document.getElementById('nitro-desc').innerText = dict.nitroDesc;
+            document.getElementById('activate-premium-btn').innerText = dict.nitroActivate;
+            document.getElementById('nitro-custom-title').innerText = dict.nitroCustom;
+            document.getElementById('nitro-theme-label').innerText = dict.nitroTheme;
+            document.getElementById('nitro-frame-label').innerText = dict.nitroFrame;
+            document.getElementById('nitro-font-label').innerText = dict.nitroFont;
+            document.getElementById('lang-opt-account').innerText = dict.optAccount;
+            document.getElementById('lang-opt-pfp').innerText = dict.optPfp;
+            document.getElementById('lang-opt-lang').innerText = dict.optLang;
+            document.getElementById('lang-opt-support').innerText = dict.optSupport;
+            document.getElementById('lang-opt-privacy').innerText = dict.optPrivacy;
+            document.getElementById('lang-opt-terms').innerText = dict.optTerms;
+            document.getElementById('lang-opt-delete').innerText = dict.optDelete;
             document.getElementById('lang-close-settings').innerText = dict.closeSettings;
             document.getElementById('lang-signout-btn').innerText = dict.signOut;
             
-            // Photo modal buttons
-            document.getElementById('modal-save-text').innerText = dict.savePin || "Save Pin";
-            document.getElementById('modal-download-btn').innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg> ${dict.download || "Download"}`;
+            // Settings Sub-pages
+            document.getElementById('identity-title').innerText = dict.identityTitle;
+            document.getElementById('edit-handle-label').innerText = dict.handleLabel;
+            document.getElementById('edit-name-label').innerText = dict.displayName;
+            document.getElementById('edit-bio-label').innerText = dict.customBio;
+            document.getElementById('save-identity-btn').innerText = dict.saveIdentity;
+            document.getElementById('pfp-title').innerText = dict.pfpTitle;
+            document.getElementById('open-gallery-btn').innerText = dict.openGallery;
+            document.getElementById('lang-select-title').innerText = dict.langSelectTitle;
+            document.getElementById('lang-close-btn').innerText = dict.langClose;
+            document.getElementById('support-title').innerText = dict.supportTitle;
+            document.getElementById('submit-ticket-btn').innerText = dict.submitTicket;
+            document.getElementById('delete-title').innerText = dict.deleteTitle;
+            document.getElementById('delete-warning').innerHTML = dict.deleteWarning;
+            document.getElementById('delete-permanent-btn').innerText = dict.deletePermanent;
             
-            // Delete Account page
-            const deletePage = document.getElementById('page-delete');
-            if(deletePage) {
-                const title = deletePage.querySelector('h4');
-                if(title) title.innerText = dict.deleteAccountTitle;
-                const warning = deletePage.querySelector('p');
-                if(warning) warning.innerHTML = dict.deleteAccountWarning;
-                const btn = deletePage.querySelector('button');
-                if(btn) btn.innerText = dict.deleteAccountBtn;
+            // Upload Modal
+            document.getElementById('create-post-title').innerText = dict.createPost;
+            document.getElementById('upload-title-label').innerText = dict.postTitle;
+            document.getElementById('upload-title-input').placeholder = dict.titlePlaceholder;
+            document.getElementById('upload-desc-label').innerText = dict.description;
+            document.getElementById('upload-desc-input').placeholder = dict.descPlaceholder;
+            document.getElementById('upload-cancel-btn').innerText = dict.cancel;
+            document.getElementById('upload-publish-btn').innerHTML = `<span>${dict.publish}</span>`;
+            
+            // Toast
+            document.getElementById('toast-success-text').innerText = dict.successToast;
+            
+            // Loading
+            document.getElementById('loading-text').innerText = dict.loadingText;
+            
+            // Comments Modal
+            document.getElementById('comments-title').innerText = dict.commentsTitle;
+            document.getElementById('comment-input-field').placeholder = dict.commentPlaceholder;
+            document.getElementById('submit-comment-btn').innerText = dict.submitComment || 'Post';
+            
+            // Photo Modal
+            document.getElementById('download-btn-text').innerText = dict.downloadBtn;
+            document.getElementById('comments-btn-text').innerText = dict.commentsBtn;
+            // Save button text is handled in updateSaveButtonState
+            // But we update it here for the current modal if open
+            if(currentModalPinKey) {
+                updateSaveButtonState(currentModalPinKey);
             }
             
             renderLanguageOptions();
@@ -1986,6 +2912,17 @@
             if(currentUserData) {
                 database.ref('users/' + currentUserData.uid + '/language').set(langKey);
             }
+        }
+
+        // ========== APPLY LANGUAGE TO UI (for dynamic elements) ==========
+        function applyLanguageToUI() {
+            const dict = langPack[activeLanguage] || langPack['en'];
+            
+            // Update all dynamic elements that might not be covered by changeSystemLanguage
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if(dict[key]) el.innerText = dict[key];
+            });
         }
 
         function submitSupportTicket() {
@@ -2007,6 +2944,7 @@
                 const modal = document.getElementById('upload-modal');
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
+                applyLanguageToUI();
             };
             reader.readAsDataURL(file);
             event.target.value = '';
@@ -2050,18 +2988,48 @@
 
         function switchTab(tabName) {
             const navBar = document.getElementById('app-nav');
-            if(tabName === 'profile') {
+            // Hide header nav when on profile or search
+            if(tabName === 'profile' || tabName === 'search') {
                 navBar.classList.add('hidden');
             } else {
                 navBar.classList.remove('hidden');
             }
 
+            // Hide header search results tray when switching tabs
+            const searchTray = document.getElementById('user-search-results-tray');
+            if(searchTray) {
+                searchTray.classList.add('hidden');
+                searchTray.innerHTML = '';
+            }
+
+            // Clear search bar in header when switching tabs
+            const headerSearch = document.getElementById('search-bar');
+            if(headerSearch) {
+                headerSearch.value = '';
+            }
+
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById(`tab-${tabName}`).classList.remove('hidden');
-            ['home', 'messages', 'profile'].forEach(t => {
+            
+            // Update nav buttons
+            ['home', 'search', 'profile'].forEach(t => {
                 const btn = document.getElementById(`nav-${t}`);
-                if(btn) btn.className = (t === tabName) ? "flex items-center justify-center p-2.5 rounded-full bg-black text-white transition-all" : "flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all";
+                if(btn) {
+                    btn.className = (t === tabName) ? 
+                        "flex items-center justify-center p-2.5 rounded-full bg-black text-white transition-all duration-200" : 
+                        "flex items-center justify-center p-2.5 rounded-full text-gray-500 hover:bg-gray-100 transition-all duration-200";
+                }
             });
+            
+            // If search tab, focus the input
+            if(tabName === 'search') {
+                setTimeout(() => {
+                    document.getElementById('search-input-tab').focus();
+                    performSearch();
+                }, 100);
+            }
+            
+            applyLanguageToUI();
         }
     </script>
 </body>
